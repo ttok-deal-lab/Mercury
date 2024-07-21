@@ -56,7 +56,6 @@ extension Project {
       infoPlist: .file(path: .plistPath("MercuryAppInfo")),
       sources: ["Sources/**"],
       resources: ["Resources/**"],
-      entitlements: .file(path: .entitlementPath("MercuryApp")),
       scripts: scripts,
       dependencies: dependencies,
       settings: .settings(base: [:], configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases)),
@@ -68,10 +67,12 @@ extension Project {
       destinations: destinations,
       product: .unitTests,
       bundleId: "\(bundleId)Tests",
+      deploymentTargets: deploymentTargets,
       sources: ["Tests/**"],
       resources: [],
       scripts: scripts,
-      dependencies: testDependencies
+      dependencies: testDependencies,
+      settings: .settings(configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases))
     )
     
     let sampleApp: Target = .target(

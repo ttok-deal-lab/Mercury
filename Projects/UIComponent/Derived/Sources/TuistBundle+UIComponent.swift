@@ -4,11 +4,11 @@
 import Foundation// MARK: - Swift Bundle Accessor for Frameworks
 private class BundleFinder {}
 extension Foundation.Bundle {
-/// Since UICompoennt is a dynamic framework, the bundle for classes within this module can be used directly.
+/// Since UIComponent is a dynamic framework, the bundle for classes within this module can be used directly.
 static let module = Bundle(for: BundleFinder.self)
 }// MARK: - Objective-C Bundle Accessor
 @objc
-public class UICompoenntResources: NSObject {
+public class UIComponentResources: NSObject {
 @objc public class var bundle: Bundle {
     return .module
 }

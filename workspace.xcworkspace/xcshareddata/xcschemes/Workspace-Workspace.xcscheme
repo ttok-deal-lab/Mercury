@@ -462,10 +462,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4630D582874043FB40FDA7DA"
-               BuildableName = "UIComponent.framework"
-               BlueprintName = "UIComponent"
-               ReferencedContainer = "container:Projects/UIComponent/UIComponent.xcodeproj">
+               BlueprintIdentifier = "C6FF49AC03ED70D3D71463DF"
+               BuildableName = "UICompoennt.framework"
+               BlueprintName = "UICompoennt"
+               ReferencedContainer = "container:Projects/UIComponent/UICompoennt.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -476,10 +476,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5AAE5A6F128E6754CCF280FE"
-               BuildableName = "UIComponentSampleApp.app"
-               BlueprintName = "UIComponentSampleApp"
-               ReferencedContainer = "container:Projects/UIComponent/UIComponent.xcodeproj">
+               BlueprintIdentifier = "35B4110C2BE49AE6B6638FC1"
+               BuildableName = "UICompoenntSampleApp.app"
+               BlueprintName = "UICompoenntSampleApp"
+               ReferencedContainer = "container:Projects/UIComponent/UICompoennt.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -490,10 +490,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "12316EDFCB48A8337851A6BD"
-               BuildableName = "UIComponentTests.xctest"
-               BlueprintName = "UIComponentTests"
-               ReferencedContainer = "container:Projects/UIComponent/UIComponent.xcodeproj">
+               BlueprintIdentifier = "322F095BB2CFCB1FC9561E13"
+               BuildableName = "UICompoenntTests.xctest"
+               BlueprintName = "UICompoenntTests"
+               ReferencedContainer = "container:Projects/UIComponent/UICompoennt.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -532,10 +532,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "12316EDFCB48A8337851A6BD"
-               BuildableName = "UIComponentTests.xctest"
-               BlueprintName = "UIComponentTests"
-               ReferencedContainer = "container:Projects/UIComponent/UIComponent.xcodeproj">
+               BlueprintIdentifier = "322F095BB2CFCB1FC9561E13"
+               BuildableName = "UICompoenntTests.xctest"
+               BlueprintName = "UICompoenntTests"
+               ReferencedContainer = "container:Projects/UIComponent/UICompoennt.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

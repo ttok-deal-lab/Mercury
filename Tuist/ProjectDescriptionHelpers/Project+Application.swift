@@ -56,7 +56,13 @@ extension Project {
       entitlements: .file(path: .entitlementPath("MercuryApp")),
       scripts: scripts,
       dependencies: dependencies,
-      settings: .settings(base: [:], configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases)),
+      settings: .settings(
+        base: [
+          "CODE_SIGN_ENTITLEMENTS": "Entitlements/MercuryApp.entitlements",
+          "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon"
+        ],
+        configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases)
+      ),
       coreDataModels: coreDataModels
     )
     
@@ -65,10 +71,12 @@ extension Project {
       destinations: destinations,
       product: .unitTests,
       bundleId: "\(bundleId)Tests",
+      deploymentTargets: deploymentTargets,
       sources: ["Tests/**"],
       resources: [],
       scripts: scripts,
-      dependencies: testDependencies
+      dependencies: testDependencies,
+      settings: .settings(configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases))
     )
     
     return [mainTarget, testTarget]

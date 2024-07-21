@@ -8,7 +8,7 @@
          location = "group:MercuryApp/MercuryApp.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:UIComponent/UIComponent.xcodeproj">
+         location = "group:UIComponent/UICompoennt.xcodeproj">
       </FileRef>
    </Group>
    <Group

@@ -54,7 +54,6 @@
 
 /* Begin PBXFileReference section */
 		0A2716F9783E22D080B4BA4A /* TuistBundle+UICompoennt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistBundle+UICompoennt.swift"; sourceTree = "<group>"; };
-		133434EB79CEB18BDE6C4E51 /* MercuryApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MercuryApp.entitlements; sourceTree = "<group>"; };
 		3AF8BF42E6BAF5FE2DEEB107 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		443E1967F98C4D4F7CA4C227 /* swiftgen.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		470121822DE42234F26153BD /* TuistBundle+UICompoenntSampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TuistBundle+UICompoenntSampleApp.swift"; sourceTree = "<group>"; };
@@ -112,7 +111,6 @@
 			children = (
 				3F8E9DA3D0F75E930F08A214 /* Derived */,
 				FDE8042315F692EF1A5B426F /* InfoPlists */,
-				636A9B95027630FE38CAE20E /* MercuryApp */,
 				7412437A550F78FC89D4B5EC /* Resources */,
 				870BCA0A8F87C5BAAA7DA27D /* SampleApp */,
 				67A0764C271130D25DC7541C /* Sources */,
@@ -175,15 +173,6 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		636A9B95027630FE38CAE20E /* MercuryApp */ = {
-			isa = PBXGroup;
-			children = (
-				B84C3A089A60CB40230A3701 /* Entitlements */,
-			);
-			name = MercuryApp;
-			path = ../MercuryApp;
-			sourceTree = "<group>";
-		};
 		6575731D961D584651D52BF3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -236,14 +225,6 @@
 				537497383FCF13398B8144C7 /* Images.xcassets */,
 			);
 			path = Assets;
-			sourceTree = "<group>";
-		};
-		B84C3A089A60CB40230A3701 /* Entitlements */ = {
-			isa = PBXGroup;
-			children = (
-				133434EB79CEB18BDE6C4E51 /* MercuryApp.entitlements */,
-			);
-			path = Entitlements;
 			sourceTree = "<group>";
 		};
 		BF80083564BA60E6F6109D80 /* Sources */ = {
@@ -589,7 +570,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 785AC4893AC13BA256FC8471 /* Debug.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = ../MercuryApp/Entitlements/MercuryApp.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -652,7 +632,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EB1B1A8E43B611720CFFC9D4 /* Release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = ../MercuryApp/Entitlements/MercuryApp.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
