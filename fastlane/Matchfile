@@ -1,0 +1,12 @@
+git_url("https://github.com/naldal/SaveEarthProfile")
+
+storage_mode("git")
+
+type("development")
+
+app_identifier(["com.letusgo.saveus.saveearth"])
+
+username("cec7777@naver.com")
+
+git_private_key("./gitPAT.txt")
+
