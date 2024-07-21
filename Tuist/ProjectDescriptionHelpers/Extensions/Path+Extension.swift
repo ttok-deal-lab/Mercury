@@ -18,7 +18,7 @@ extension Path {
   }
   
   public static func entitlementPath(_ entitle: String) -> Path {
-    return .relativeToRoot("Projects/Mercury/Targets/MercuryApp/Entitlements/\(entitle).entitlements")
+    return .relativeToRoot("Projects/MercuryApp/Entitlements/\(entitle).entitlements")
   }
   
   public static func scriptPath(_ scriptName: String) -> Path {

@@ -1,53 +1,56 @@
 //
-//  Project+Application.swift
-//  Packages
+//  Project+Framework.swift
+//  ProjectDescriptionHelpers
 //
-//  Created by 송하민 on 7/11/24.
+//  Created by 송하민 on 7/21/24.
 //
 
 import ProjectDescription
 
 extension Project {
   
-  public static func app(
+  public static func dynamicFramework(
     name: String,
+    bundleId: String = bundleId,
+    product: Product,
     platform: Platform,
-    dependencies: [TargetDependency],
-    testDependencies: [TargetDependency]
+    frameworkDependencies: [TargetDependency],
+    frameworkTestDependencies: [TargetDependency]
   ) -> Project {
     
-    let targets = makeAppTargets(
+    let targets = makeDynamicFramework(
       name: name,
+      bundleId: bundleId,
+      platform: platform,
       scripts: [
         .prebuildScript(utility: .swiftGen, name: "Gen"),
         .prebuildScript(utility: .swiftLint, name: "Lint")
       ],
-      dependencies: dependencies,
-      testDependencies: testDependencies
+      dependencies: frameworkDependencies,
+      testDependencies: frameworkTestDependencies
     )
     
-    return .init(name: name, targets: targets, resourceSynthesizers: [])
+    return Project(name: name, targets: targets, resourceSynthesizers: [])
   }
   
-  // MARK: - Targets
+  // MARK: - framework target
   
-  private static func makeAppTargets(
+  private static func makeDynamicFramework(
     name: String,
     destinations: Destinations = .iOS,
-    productName: String? = productName,
-    bundleId: String = bundleId,
+    bundleId: String,
     deploymentTargets: DeploymentTargets? = deployTarget,
+    platform: Platform,
     scripts: [TargetScript],
     dependencies: [TargetDependency],
     testDependencies: [TargetDependency],
     coreDataModels: [CoreDataModel] = []
   ) -> [Target] {
-    
+
     let mainTarget: Target = .target(
       name: name,
       destinations: destinations,
-      product: .app,
-      productName: productName,
+      product: .framework,
       bundleId: bundleId,
       deploymentTargets: deploymentTargets,
       infoPlist: .file(path: .plistPath("MercuryAppInfo")),
@@ -71,6 +74,17 @@ extension Project {
       dependencies: testDependencies
     )
     
-    return [mainTarget, testTarget]
+    let sampleApp: Target = .target(
+      name: "\(name)SampleApp",
+      destinations: destinations,
+      product: .app,
+      bundleId: "\(bundleId).sampleApp",
+      sources: ["SampleApp/Sources/**"],
+      resources: ["SampleApp/Resources/**"],
+      scripts: scripts,
+      dependencies: dependencies
+    )
+    
+    return [mainTarget, testTarget, sampleApp]
   }
 }

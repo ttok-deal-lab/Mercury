@@ -16,9 +16,9 @@ public extension TargetScript {
     var scriptCommand: String {
       switch self {
       case .swiftGen:
-        return "${PROJECT_DIR}/../../Tools/swiftgen config run --config \"${PROJECT_DIR}/Targets/MercuryApp/Resources/swiftgen.yml\""
+        return "${PROJECT_DIR}/../../Tools/swiftgen config run --config \"${PROJECT_DIR}/../UIComponent/Resources/swiftgen.yml\""
       case .swiftLint:
-        return "${PROJECT_DIR}/../../Tools/swiftlint --config \"${PROJECT_DIR}/Targets/MercuryApp/Resources/swiftlint.yml\""
+        return "${PROJECT_DIR}/../../Tools/swiftlint --config \"${PROJECT_DIR}/../UIComponent/Resources/swiftlint.yml\""
       }
     }
   }

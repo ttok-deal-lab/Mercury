@@ -5,7 +5,10 @@
       location = "group:Projects"
       name = "Projects">
       <FileRef
-         location = "group:Mercury/Mercury.xcodeproj">
+         location = "group:MercuryApp/MercuryApp.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:UIComponent/UICompoennt.xcodeproj">
       </FileRef>
    </Group>
    <Group

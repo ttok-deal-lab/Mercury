@@ -196,10 +196,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "55A5F29E8FABDD5E83B6B3AD"
+               BlueprintIdentifier = "3DB7EF4CE71445D43636F212"
                BuildableName = "AuctionGod.app"
-               BlueprintName = "Mercury"
-               ReferencedContainer = "container:Projects/Mercury/Mercury.xcodeproj">
+               BlueprintName = "MercuryApp"
+               ReferencedContainer = "container:Projects/MercuryApp/MercuryApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -210,10 +210,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "026B3BB983239FEF2D64B554"
-               BuildableName = "MercuryTests.xctest"
-               BlueprintName = "MercuryTests"
-               ReferencedContainer = "container:Projects/Mercury/Mercury.xcodeproj">
+               BlueprintIdentifier = "FEC6A59BB0484EC77DF6ECE8"
+               BuildableName = "MercuryAppTests.xctest"
+               BlueprintName = "MercuryAppTests"
+               ReferencedContainer = "container:Projects/MercuryApp/MercuryApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -462,6 +462,48 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C6FF49AC03ED70D3D71463DF"
+               BuildableName = "UICompoennt.framework"
+               BlueprintName = "UICompoennt"
+               ReferencedContainer = "container:Projects/UIComponent/UICompoennt.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "35B4110C2BE49AE6B6638FC1"
+               BuildableName = "UICompoenntSampleApp.app"
+               BlueprintName = "UICompoenntSampleApp"
+               ReferencedContainer = "container:Projects/UIComponent/UICompoennt.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "322F095BB2CFCB1FC9561E13"
+               BuildableName = "UICompoenntTests.xctest"
+               BlueprintName = "UICompoenntTests"
+               ReferencedContainer = "container:Projects/UIComponent/UICompoennt.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "6D1BFFAE456610AE81A4206D"
                BuildableName = "XCTestDynamicOverlay.framework"
                BlueprintName = "XCTestDynamicOverlay"
@@ -480,10 +522,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "026B3BB983239FEF2D64B554"
-               BuildableName = "MercuryTests.xctest"
-               BlueprintName = "MercuryTests"
-               ReferencedContainer = "container:Projects/Mercury/Mercury.xcodeproj">
+               BlueprintIdentifier = "FEC6A59BB0484EC77DF6ECE8"
+               BuildableName = "MercuryAppTests.xctest"
+               BlueprintName = "MercuryAppTests"
+               ReferencedContainer = "container:Projects/MercuryApp/MercuryApp.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "322F095BB2CFCB1FC9561E13"
+               BuildableName = "UICompoenntTests.xctest"
+               BlueprintName = "UICompoenntTests"
+               ReferencedContainer = "container:Projects/UIComponent/UICompoennt.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
