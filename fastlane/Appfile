@@ -1,9 +1,4 @@
-# app_identifier("[[APP_IDENTIFIER]]") # The bundle identifier of your app
-# apple_id("[[APPLE_ID]]") # Your Apple Developer Portal username
-
 app_identifier "com.letusgo.saveus.saveearth"
 apple_id "cec7777@naver.com"
 team_id "M3U22RZ325"
 
-# For more information about the Appfile, see:
-#     https://docs.fastlane.tools/advanced/#appfile
