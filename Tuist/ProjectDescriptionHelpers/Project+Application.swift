@@ -50,15 +50,15 @@ extension Project {
       productName: productName,
       bundleId: bundleId,
       deploymentTargets: deploymentTargets,
-      infoPlist: .file(path: .plistPath("MercuryAppInfo")),
+      infoPlist: .file(path: .infoPlistPath("MercuryAppInfo")),
       sources: ["Sources/**"],
       resources: ["Resources/**"],
-      entitlements: .file(path: .entitlementPath("MercuryApp")),
+      entitlements: Project.commonEntitlement,
       scripts: scripts,
       dependencies: dependencies,
       settings: .settings(
         base: [
-          "CODE_SIGN_ENTITLEMENTS": "Entitlements/MercuryApp.entitlements",
+          "CODE_SIGN_ENTITLEMENTS": "${WORKSPACE_DIR}/Entitlements/App.entitlements",
           "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon"
         ],
         configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases)

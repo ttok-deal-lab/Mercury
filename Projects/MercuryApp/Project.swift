@@ -6,7 +6,18 @@ let project = Project.app(
   name: "MercuryApp",
   platform: .iOS,
   dependencies: [
-    .TCA
+    .composableArchitecture,
+    .Data,
+    .Domain,
+    .DomainInterface,
+    .UIComponent,
+    .Analysis,
+    .AppleSignIn,
+    .GoogleSignIn,
+    .AuctionInformation,
+    .Comment,
+    .MainTabbar,
+    .Profile
   ],
   testDependencies: []
 )

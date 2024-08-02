@@ -104,10 +104,10 @@ extension Project {
       product: .app,
       bundleId: "\(Project.bundleId).SampleApp",
       deploymentTargets: Project.deploymentTarget,
-      infoPlist: .file(path: .relativeToRoot("FrameworkCommonPlist/CommonFrameworkSampleApp-Info.plist")),
+      infoPlist: .file(path: Path.infoPlistPath("CommonFrameworkSampleApp-Info")),
       sources: ["SampleApp/Sources/**"],
       resources: sampleAppResources,
-      entitlements: .file(path: .relativeToRoot("Tools/App.entitlements")),
+      entitlements: Project.commonEntitlement,
       dependencies: [.target(name: name)]
     )
     

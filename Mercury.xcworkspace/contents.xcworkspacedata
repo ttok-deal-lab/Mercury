@@ -5,11 +5,45 @@
       location = "group:Projects"
       name = "Projects">
       <FileRef
+         location = "group:Data/Data.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Domain/Domain.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:DomainInterface/DomainInterface.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:MercuryApp/MercuryApp.xcodeproj">
       </FileRef>
       <FileRef
          location = "group:UIComponent/UIComponent.xcodeproj">
       </FileRef>
+      <Group
+         location = "group:Feature"
+         name = "Feature">
+         <FileRef
+            location = "group:Analysis/Analysis.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:AppleSignIn/AppleSignIn.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:AuctionInformation/AuctionInformation.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:Comment/Comment.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:GoogleSignIn/GoogleSignIn.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:MainTabbar/MainTabbar.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:Profile/Profile.xcodeproj">
+         </FileRef>
+      </Group>
    </Group>
    <Group
       location = "container:"
