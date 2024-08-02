@@ -17,5 +17,7 @@ public extension Project {
   
   static let bundleId = "com.auction.mercury"
   
+  static let deploymentTarget: DeploymentTargets = .iOS("16.0")
+  
   
 }

@@ -5,21 +5,23 @@
 //  Created by 송하민 on 7/21/24.
 //
 
-import ProjectDescription
+import ProjectDescription  
 
 extension Project {
   
   public static func dynamicFramework(
     name: String,
+    destinations: Destinations = .iOS,
     bundleId: String = bundleId,
-    product: Product,
+    product: Product = .framework,
     platform: Platform,
     frameworkDependencies: [TargetDependency],
     frameworkTestDependencies: [TargetDependency]
   ) -> Project {
     
-    let targets = makeDynamicFramework(
+    let targets = makeDynamicFrameworkTargets(
       name: name,
+      destinations: destinations,
       bundleId: bundleId,
       platform: platform,
       scripts: [
@@ -27,65 +29,100 @@ extension Project {
         .prebuildScript(utility: .swiftLint, name: "Lint")
       ],
       dependencies: frameworkDependencies,
-      testDependencies: frameworkTestDependencies
+      testDependencies: frameworkTestDependencies,
+      product: .framework
     )
     
-    return Project(name: name, targets: targets, resourceSynthesizers: [])
+    return Project(name: name, targets: targets)
   }
   
   // MARK: - framework target
   
-  private static func makeDynamicFramework(
+  private static func makeDynamicFrameworkTargets(
     name: String,
-    destinations: Destinations = .iOS,
+    destinations: Destinations,
+    infoPlist: InfoPlist = .default,
     bundleId: String,
     deploymentTargets: DeploymentTargets? = deployTarget,
     platform: Platform,
     scripts: [TargetScript],
+    sources: SourceFilesList = ["Sources/**"],
+    resources: ResourceFileElements = ["Resources/**"],
     dependencies: [TargetDependency],
     testDependencies: [TargetDependency],
-    coreDataModels: [CoreDataModel] = []
+    sampleAppSources: SourceFilesList = ["SampleApp/Sources/**"],
+    sampleAppResources: ResourceFileElements = ["SampleApp/Resources/**"],
+    product: Product
   ) -> [Target] {
 
-    let mainTarget: Target = .target(
+    return frameworkTarget(
       name: name,
       destinations: destinations,
-      product: .framework,
-      bundleId: bundleId,
-      deploymentTargets: deploymentTargets,
-      infoPlist: .file(path: .plistPath("MercuryAppInfo")),
-      sources: ["Sources/**"],
-      resources: ["Resources/**"],
-      scripts: scripts,
-      dependencies: dependencies,
-      settings: .settings(base: [:], configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases)),
-      coreDataModels: coreDataModels
+      infoPlist: infoPlist,
+      frameworkDependencies: dependencies,
+      testDependencies: testDependencies,
+      targetScripts: scripts,
+      sources: sources,
+      resources: resources,
+      sampleAppSources: sampleAppSources,
+      sampleAppResources: sampleAppResources,
+      product: product
     )
+  }
+  
+  private static func frameworkTarget(
+    name: String,
+    destinations: Destinations,
+    infoPlist: InfoPlist,
+    frameworkDependencies: [TargetDependency],
+    testDependencies: [TargetDependency],
+    targetScripts: [TargetScript],
+    sources: SourceFilesList,
+    resources: ResourceFileElements,
+    sampleAppSources: SourceFilesList,
+    sampleAppResources: ResourceFileElements,
+    product: Product
+  ) -> [Target] {
     
-    let testTarget: Target = .target(
-      name: "\(name)Tests",
+    let sources = Target.target(
+      name: name,
       destinations: destinations,
-      product: .unitTests,
-      bundleId: "\(bundleId)Tests",
-      deploymentTargets: deploymentTargets,
-      sources: ["Tests/**"],
-      resources: [],
-      scripts: scripts,
-      dependencies: testDependencies,
+      product: product,
+      bundleId: "\(Project.bundleId).\(name)",
+      deploymentTargets: Project.deploymentTarget,
+      infoPlist: infoPlist,
+      sources: sources,
+      resources: resources,
+      scripts: targetScripts,
+      dependencies: frameworkDependencies,
       settings: .settings(configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases))
     )
     
-    let sampleApp: Target = .target(
+    let sampleApp = Target.target(
       name: "\(name)SampleApp",
       destinations: destinations,
       product: .app,
-      bundleId: "\(bundleId).sampleApp",
+      bundleId: "\(Project.bundleId).SampleApp",
+      deploymentTargets: Project.deploymentTarget,
+      infoPlist: .file(path: .relativeToRoot("FrameworkCommonPlist/CommonFrameworkSampleApp-Info.plist")),
       sources: ["SampleApp/Sources/**"],
-      resources: ["SampleApp/Resources/**"],
-      scripts: scripts,
-      dependencies: dependencies
+      resources: sampleAppResources,
+      entitlements: .file(path: .relativeToRoot("Tools/App.entitlements")),
+      dependencies: [.target(name: name)]
     )
     
-    return [mainTarget, testTarget, sampleApp]
+    let tests = Target.target(
+      name: "\(name)Tests",
+      destinations: destinations,
+      product: .unitTests,
+      bundleId: "\(Project.bundleId).Tests",
+      deploymentTargets: Project.deploymentTarget,
+      infoPlist: .default,
+      sources: ["Tests/**"],
+      resources: [],
+      dependencies: [.target(name: name)] + testDependencies
+    )
+    
+    return [sources, tests, sampleApp]
   }
 }

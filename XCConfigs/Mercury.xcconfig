@@ -1,4 +1,4 @@
-#include "./BuildVersion.xcconfig"
+#include "./Versioning.xcconfig"
 
 CODE_SIGN_IDENTITY=iPhone Developer
 IPHONEOS_DEPLOYMENT_TARGET=16.0
