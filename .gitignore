@@ -59,4 +59,6 @@ fastlane/screenshots/**/*.png
 fastlane/test_output
 
 *.pbxproj
+*.xcscheme
+*.xcworkspacedata
 iOSInjectionProject/
