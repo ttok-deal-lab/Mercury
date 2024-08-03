@@ -102,7 +102,7 @@ extension Project {
       product: .app,
       bundleId: "\(Project.bundleId).SampleApp",
       deploymentTargets: Project.deploymentTarget,
-      infoPlist: .default,
+      infoPlist: .file(path: Path.infoPlistPath("FrameworkSampleApp-Info")),
       sources: ["SampleApp/Sources/**"],
       resources: sampleAppResources,
       entitlements: Project.commonEntitlement,
