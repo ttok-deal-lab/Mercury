@@ -15,6 +15,7 @@ extension Project {
     bundleId: String = bundleId,
     product: Product = .framework,
     platform: Platform,
+    scripts: [TargetScript] = [],
     frameworkDependencies: [TargetDependency],
     frameworkTestDependencies: [TargetDependency]
   ) -> Project {
@@ -24,10 +25,7 @@ extension Project {
       destinations: destinations,
       bundleId: bundleId,
       platform: platform,
-      scripts: [
-        .prebuildScript(utility: .swiftGen, name: "Gen"),
-        .prebuildScript(utility: .swiftLint, name: "Lint")
-      ],
+      scripts: scripts,
       dependencies: frameworkDependencies,
       testDependencies: frameworkTestDependencies,
       product: .framework
