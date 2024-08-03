@@ -12,7 +12,9 @@ let project = Project.dynamicFramework(
   name: "Auction",
   platform: .iOS,
   frameworkDependencies: [
-  
+    .composableArchitecture,
+    .DomainInterface,
+    .UIComponent,
   ],
   frameworkTestDependencies: []
 )

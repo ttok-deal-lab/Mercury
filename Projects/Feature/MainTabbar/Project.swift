@@ -12,7 +12,12 @@ let project = Project.dynamicFramework(
   name: "MainTabbar",
   platform: .iOS,
   frameworkDependencies: [
-  
+    .composableArchitecture,
+    .DomainInterface,
+    .UIComponent,
+    .Auction,
+    .Analysis,
+    .Profile
   ],
   frameworkTestDependencies: []
 )

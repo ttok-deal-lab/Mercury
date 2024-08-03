@@ -12,7 +12,7 @@ gitPAT.txt
 
 ## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
 build/
-DerivedData/
+**/DerivedData/
 *.moved-aside
 *.pbxuser
 !default.pbxuser
@@ -22,7 +22,7 @@ DerivedData/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-.DS_Store
+**/.DS_Store
 
 ## Obj-C/Swift specific
 *.hmap
@@ -58,7 +58,7 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
-*.pbxproj
-*.xcscheme
-*.xcworkspacedata
+**/*.pbxproj
+**/*.xcscheme
+**/*.xcworkspacedata
 iOSInjectionProject/
