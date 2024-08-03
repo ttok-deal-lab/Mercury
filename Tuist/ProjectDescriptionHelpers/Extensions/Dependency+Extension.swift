@@ -24,7 +24,7 @@ public extension TargetDependency {
   static let Analysis = FeatureDependency.analysis.framework
   static let AppleSignIn = FeatureDependency.appleSignIn.framework
   static let GoogleSignIn = FeatureDependency.googleSignIn.framework
-  static let AuctionInformation = FeatureDependency.auctionInformation.framework
+  static let Auction = FeatureDependency.auction.framework
   static let Comment = FeatureDependency.comment.framework
   static let MainTabbar = FeatureDependency.mainTabbar.framework
   static let Profile = FeatureDependency.profile.framework
@@ -35,7 +35,7 @@ public extension TargetDependency {
     case analysis = "Analysis"
     case appleSignIn = "AppleSignIn"
     case googleSignIn = "GoogleSignIn"
-    case auctionInformation = "AuctionInformation"
+    case auction = "Auction"
     case comment = "Comment"
     case mainTabbar = "MainTabbar"
     case profile = "Profile"

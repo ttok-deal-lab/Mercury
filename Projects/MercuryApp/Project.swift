@@ -14,7 +14,7 @@ let project = Project.app(
     .Analysis,
     .AppleSignIn,
     .GoogleSignIn,
-    .AuctionInformation,
+    .Auction,
     .Comment,
     .MainTabbar,
     .Profile

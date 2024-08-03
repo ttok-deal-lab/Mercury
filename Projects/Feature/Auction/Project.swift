@@ -9,7 +9,7 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.dynamicFramework(
-  name: "AuctionInformation",
+  name: "Auction",
   platform: .iOS,
   frameworkDependencies: [
   
