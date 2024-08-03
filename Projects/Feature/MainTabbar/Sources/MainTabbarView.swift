@@ -22,11 +22,13 @@ public struct MainTabbarView: View {
           Label("Auction", systemImage: "hammer")
         }
         .tag(MainTabbarReducer.Tab.auctionTab)
+      
       AnalysisView(store: store.scope(state: \.analysis, action: \.analysis))
         .tabItem {
           Label("Analysis", systemImage: "chart.bar")
         }
         .tag(MainTabbarReducer.Tab.analysisTab)
+      
       ProfileView(store: store.scope(state: \.profile, action: \.profile))
         .tabItem {
           Label("Profile", systemImage: "person")
