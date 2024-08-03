@@ -19,30 +19,34 @@ public struct MainTabbarReducer {
     case profileTab
   }
   
+  @ObservableState
   public struct State: Equatable {
     public var selectedTab: Tab
     public var auction: AuctionReducer.State
     public var analysis: AnalysisReducer.State
     public var profile: ProfileReducer.State
+    
+    public init(selectedTab: Tab, auction: AuctionReducer.State, analysis: AnalysisReducer.State, profile: ProfileReducer.State) {
+      self.selectedTab = selectedTab
+      self.auction = auction
+      self.analysis = analysis
+      self.profile = profile
+    }
   }
   
-  public enum Action: Equatable {
-    case selectTabAction(Tab)
+  public enum Action: BindableAction {
+    case binding(BindingAction<State>)
     case auction(AuctionReducer.Action)
     case analysis(AnalysisReducer.Action)
     case profile(ProfileReducer.Action)
   }
   
+  public init() {
+    
+  }
+  
   public var body: some ReducerOf<Self> {
-    Reduce { state, action in
-      switch action {
-      case let .selectTabAction(tab):
-        state.selectedTab = tab
-        return .none
-      case .auction, .analysis, .profile:
-        return .none
-      }
-    }
+    BindingReducer()
     Scope(state: \.auction, action: \.auction) {
       AuctionReducer()
     }

@@ -12,6 +12,9 @@ public struct AnalysisReducer {
   @ObservableState
   public struct State: Equatable {
 
+    public init () {
+      
+    }
   }
   
   public enum Action: Equatable  {
