@@ -6,3 +6,42 @@
 //
 
 import Foundation
+import Moya
+
+public enum MockAPI {
+  case mockingAPI
+}
+
+extension MockAPI: TargetType {
+
+  public var baseURL: URL {
+    return RESTDefine.baseURL(.testDomain)!
+  }
+  
+  public var path: String {
+    switch self {
+    case .mockingAPI:
+      return "joke/Any"
+    }
+  }
+  
+  public var method: Moya.Method {
+    switch self {
+    case .mockingAPI:
+      return .get
+    }
+  }
+  
+  public var task: Moya.Task {
+    switch self {
+    case .mockingAPI:
+      return .requestPlain
+    }
+  }
+  
+  public var headers: [String : String]? {
+    return [:]
+  }
+  
+  
+}

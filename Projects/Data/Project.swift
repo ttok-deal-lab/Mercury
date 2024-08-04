@@ -12,7 +12,12 @@ let project = Project.dynamicFramework(
   name: "Data",
   platform: .iOS,
   frameworkDependencies: [
-  
+    .moya,
+    .combineMoya,
+    .composableArchitecture,
+    .swiftyJSON
   ],
-  frameworkTestDependencies: []
+  frameworkTestDependencies: [
+    
+  ]
 )
