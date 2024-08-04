@@ -35,6 +35,7 @@ public struct MainTabbarView: View {
         }
         .tag(MainTabbarReducer.Tab.profileTab)
     }
+    .tint(.red)
   }
   
   public init(store: StoreOf<MainTabbarReducer>) {
