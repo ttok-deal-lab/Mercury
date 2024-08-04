@@ -17,9 +17,11 @@ protocol Networkable {
   func request(target: Target) async -> AnyPublisher<Result<Data, MercuryError>, Never>
 }
 
-public struct NetworkManager<Target: TargetType> {
+public class NetworkManager<Target: TargetType> {
   
   // MARK: - private properties
+  
+  private let reachabilityManager = ReachabilityManager.shared
   
   private let provider: MoyaProvider<Target>
   
@@ -55,24 +57,26 @@ public struct NetworkManager<Target: TargetType> {
 extension NetworkManager: Networkable {
   
   public func request(target: Target) async -> AnyPublisher<Result<Data, MercuryError>, Never> {
-    return ReachabilityManager.shared.isOnline()
-      .flatMap { isOnline -> Future<Result<Data, MercuryError>, Never> in
+    return reachabilityManager.isOnline()
+      .flatMap { [weak self] isOnline -> Future<Result<Data, MercuryError>, Never> in
         Future<Result<Data, MercuryError>, Never> { promise in
           guard isOnline else {
-            promise(.success(.failure(.init(from: .ownModule(.data), type: .failToConnectInternet))))
+            promise(.success(.failure(.init(from: .server, type: .failToConnectInternet))))
             return
           }
-          self.provider.request(target) { result in
-            switch result {
-            case .success(let response):
-              do {
-                let response = try response.filterSuccessfulStatusCodes()
-                promise(.success(.success(response.data)))
-              } catch {
-                promise(.success(.failure(.init(from: .ownModule(.data), type: .failToResponseData))))
+          self?.queue.async { [weak self] in
+            self?.provider.request(target) { result in
+              switch result {
+              case .success(let response):
+                do {
+                  let response = try response.filterSuccessfulStatusCodes()
+                  promise(.success(.success(response.data)))
+                } catch {
+                  promise(.success(.failure(.init(from: .server, type: .failToStatusCodes))))
+                }
+              case .failure(let error):
+                promise(.success(.failure(.init(error))))
               }
-            case .failure(let error):
-              promise(.success(.failure(.init(error))))
             }
           }
       }
