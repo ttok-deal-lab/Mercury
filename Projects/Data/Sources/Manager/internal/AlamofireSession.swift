@@ -8,16 +8,8 @@
 import Foundation
 import Alamofire
 
-protocol NetworkSessionManageable {
-  var configuration { get }
-}
-
-class NetworkSessionManager: Alamofire.Session {
-  
-}
-
-fileprivate class AlamofireSession: Alamofire.Session, NetworkSessionManageable {
-  fileprivate static let configuration: Alamofire.Session = {
+class AlamofireSession: Alamofire.Session {
+  static let configuration: Alamofire.Session = {
     let configuration = URLSessionConfiguration.default
     configuration.headers = HTTPHeaders.default
     configuration.timeoutIntervalForRequest = 60
