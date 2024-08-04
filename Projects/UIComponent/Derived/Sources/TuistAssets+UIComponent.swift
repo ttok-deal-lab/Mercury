@@ -22,6 +22,7 @@
 public enum UIComponentAsset {
   public enum Colors {
   public static let dim = UIComponentColors(name: "Dim")
+    public static let primary = UIComponentColors(name: "primary")
   }
   public enum Images {
   public static let launchScreenMap = UIComponentImages(name: "launchScreenMap")

@@ -12,7 +12,7 @@ let project = Project.dynamicFramework(
   name: "AppleSignIn",
   platform: .iOS,
   frameworkDependencies: [
-  
+    .AppFoundation
   ],
   frameworkTestDependencies: []
 )

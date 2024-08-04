@@ -7,6 +7,7 @@ let project = Project.app(
   platform: .iOS,
   dependencies: [
     .composableArchitecture,
+    .AppFoundation,
     .Data,
     .Domain,
     .DomainInterface,
