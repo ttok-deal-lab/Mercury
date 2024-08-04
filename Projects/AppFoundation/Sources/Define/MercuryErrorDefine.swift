@@ -12,8 +12,8 @@ public enum MercuryErrorDefine {
   case unknown
   /// 온라인이 아님
   case failToConnectInternet
-  /// 서버로부터 Data를 받지 못함
-  case failToResponseData
+  /// 정상 server status code가 아님
+  case failToStatusCodes
   /// Data를 JSON으로 파싱하지 못함
   case failToParseDataToJSON
 }

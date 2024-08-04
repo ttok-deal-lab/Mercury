@@ -25,9 +25,7 @@ public class ReachabilityManager: NSObject {
   
   
   // MARK: - life cycle
-  
 
-  
   static let shared = ReachabilityManager()
   
   override init() {
@@ -44,6 +42,7 @@ public class ReachabilityManager: NSObject {
       self.reachSubject.send(reachable)
     })
   }
+  
   
   // MARK: - internal method
   
