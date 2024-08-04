@@ -10,51 +10,7 @@ import Combine
 import Moya
 import Alamofire
 import CombineMoya
-
-// AppFoundation 모듈로 옮길것
-
-public class MercuryError: Error {
-  
-  enum ErrorFrom {
-    case server
-    case ownModule(ModuleFrom)
-    
-    enum ModuleFrom {
-      case uiComponent
-      case doamin
-      case analysis
-      case auction
-      case mainTabbar
-      case appleSignin
-      case googleSignin
-    }
-  }
-  
-  var description: String?
-  let errorFrom: ErrorFrom
-  
-  init(_ from: ErrorFrom, error: any Error) {
-    self.errorFrom = from
-    self.description = error.localizedDescription
-  }
-  
-  init(_ type: MercuryErrorType) {
-    self.errorFrom = .server
-  }
-  
-  init(_ error: Error) {
-    self.errorFrom = .server
-  }
-}
-
-enum MercuryErrorType {
-  case noData
-}
-
-// AppFoundation 모듈로 옮길것
-
-
-
+import AppFoundation
 
 protocol Networkable {
   associatedtype Target
@@ -69,7 +25,17 @@ public struct NetworkManager<Target: TargetType> {
   
   private let queue: DispatchQueue = DispatchQueue(label: "com.network.merucry", qos: .utility)
   
-  private let logger = NetworkLoggerPlugin()
+  private let logger = NetworkLoggerPlugin(
+    configuration: NetworkLoggerPlugin.Configuration(
+      logOptions: [
+        .requestHeaders,
+        .requestBody,
+        .requestMethod,
+        .successResponseBody,
+        .errorResponseBody
+      ]
+    )
+  )
   
   // MARK: - life cycle
   
@@ -92,20 +58,21 @@ extension NetworkManager: Networkable {
     return ReachabilityManager.shared.isOnline()
       .flatMap { isOnline -> Future<Result<Data, MercuryError>, Never> in
         Future<Result<Data, MercuryError>, Never> { promise in
-          if !isOnline {
-            promise(.success(.failure(.init(.noData))))
-          } else {
-            self.provider.request(target) { result in
-              switch result {
-              case .success(let response):
-                if (200...299).contains(response.statusCode) {
-                  promise(.success(.success(response.data)))
-                } else {
-                  promise(.success(.failure(.init(.noData))))
-                }
-              case .failure(let error):
-                promise(.success(.failure(.init(error))))
+          guard isOnline else {
+            promise(.success(.failure(.init(from: .ownModule(.data), type: .failToConnectInternet))))
+            return
+          }
+          self.provider.request(target) { result in
+            switch result {
+            case .success(let response):
+              do {
+                let response = try response.filterSuccessfulStatusCodes()
+                promise(.success(.success(response.data)))
+              } catch {
+                promise(.success(.failure(.init(from: .ownModule(.data), type: .failToResponseData))))
               }
+            case .failure(let error):
+              promise(.success(.failure(.init(error))))
             }
           }
       }
