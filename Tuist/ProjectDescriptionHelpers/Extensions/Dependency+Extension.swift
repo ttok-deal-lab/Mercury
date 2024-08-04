@@ -13,6 +13,10 @@ public extension TargetDependency {
   // MARK: - swift package manager
   
   static let composableArchitecture: TargetDependency = .external(name: "ComposableArchitecture")
+  static let moya: TargetDependency = .external(name: "Moya")
+  static let combineMoya: TargetDependency = .external(name: "CombineMoya")
+  static let swiftyJSON: TargetDependency = .external(name: "SwiftyJSON")
+  
   
   
   // MARK: - own module
