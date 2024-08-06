@@ -7,18 +7,18 @@ let project = Project.app(
   platform: .iOS,
   dependencies: [
     .composableArchitecture,
-    .AppFoundation,
-    .Data,
-    .Domain,
-    .DomainInterface,
-    .UIComponent,
-    .Analysis,
-    .AppleSignIn,
-    .GoogleSignIn,
-    .Auction,
-    .Comment,
-    .MainTabbar,
-    .Profile
+    .appFoundation,
+    .data,
+    .domain,
+    .domainInterface,
+    .uiComponent,
+    .analysis,
+    .appleSignIn,
+    .googleSignIn,
+    .auction,
+    .comment,
+    .mainTabbar,
+    .profile
   ],
   testDependencies: []
 )

@@ -12,10 +12,12 @@ let project = Project.dynamicFramework(
   name: "Map",
   platform: .iOS,
   frameworkDependencies: [
-    .AppFoundation,
+    .appFoundation,
     .composableArchitecture,
-    .DomainInterface,
-    .UIComponent
+    .swiftAlgorithm,
+    .domainInterface,
+    .uiComponent,
+    .kakaoMap
   ],
   frameworkTestDependencies: []
 )
