@@ -1,0 +1,43 @@
+#!/bin/bash
+
+makeSources() {
+  mkdir Sources && cd $_
+  cat /dev/null > tmp.swift
+  cd "$feature_dir"
+}
+
+makeResources() {
+  mkdir Resources && cd $_
+  cat /dev/null > tmp.swift
+  cd "$feature_dir"
+}
+
+makeSampleApp() {
+  mkdir SampleApp && cd $_
+  mkdir Sources && cd $_
+  cat /dev/null > tmp.swift
+  cd ../
+  mkdir Resources && cd $_
+  cat /dev/null > tmp.swift
+  cd "$feature_dir"
+}
+
+makeTest() {
+  mkdir Tests && cd $_
+  cat /dev/null > tmp.swift
+  cd "$feature_dir"
+}
+
+read -p "Enter feature name: " featureName
+cd ../ && cd Projects && cd Feature
+mkdir "$featureName" && cd "$_" || {
+  echo "디렉토리 생성 실패. 중복된 폴더가 있는지 확인하세요." >&2
+  exit 1
+}
+feature_dir=$(pwd)
+makeSources && makeResources && makeSampleApp && makeTest || {
+  echo "Feature를 만드는 중 오류 발생."
+  exit 1
+}
+
+echo "Feature $featureName 생성 완료"
