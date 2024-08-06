@@ -8,6 +8,7 @@
 let packageSettings = PackageSettings(
   productTypes: [
     "ComposableArchitecture": .framework,
+    "KakaoMapsSDK-SPM": .framework,
     "Moya": .framework,
     "SwiftyJSON": .framework
   ]
@@ -19,6 +20,7 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", branch: "1.10.1"),
     .package(url: "https://github.com/Moya/Moya.git", branch: "15.0.3"),
-    .package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", branch: "5.0.2")
+    .package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", branch: "5.0.2"),
+    .package(url: "https://github.com/kakao-mapsSDK/KakaoMapsSDK-SPM.git", branch: "master")
   ]
 )
