@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "kakaomapssdk-spm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kakao-mapsSDK/KakaoMapsSDK-SPM.git",
+      "state" : {
+        "branch" : "2.10.5",
+        "revision" : "eb68e7b2ada27deb652acf07b985d111b5c16895"
+      }
+    },
+    {
       "identity" : "moya",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Moya/Moya.git",
@@ -43,6 +52,15 @@
       "state" : {
         "revision" : "b06a8c8596e4c3e8e7788e08e720e3248563ce6a",
         "version" : "6.7.1"
+      }
+    },
+    {
+      "identity" : "swift-algorithms",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-algorithms.git",
+      "state" : {
+        "branch" : "1.2.0",
+        "revision" : "f6919dfc309e7f1b56224378b11e28bab5bccc42"
       }
     },
     {
@@ -115,6 +133,15 @@
       "state" : {
         "revision" : "2f5ab6e091dd032b63dacbda052405756010dc3b",
         "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "swift-numerics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-numerics.git",
+      "state" : {
+        "revision" : "0a5bc04095a675662cf24757cc0640aa2204253b",
+        "version" : "1.0.2"
       }
     },
     {

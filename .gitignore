@@ -62,3 +62,5 @@ fastlane/test_output
 **/*.xcscheme
 **/*.xcworkspacedata
 iOSInjectionProject/
+
+Sensitive.xcconfig
