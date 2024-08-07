@@ -8,10 +8,11 @@
 import Map
 import SwiftUI
 import KakaoMapsSDK
-import KakaoMapsSDK_SPM
 
 @main
 struct MapSampleAppEntry: App {
+  @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+  
   var body: some Scene {
     WindowGroup {
       ContentView()
@@ -19,13 +20,13 @@ struct MapSampleAppEntry: App {
   }
 }
 
-struct ContentView: View {
-  @State var draw: Bool = false
-  var body: some View {
-    KakaoMapView(draw: $draw).onAppear(perform: {
-      self.draw = true
-    }).onDisappear(perform: {
-      self.draw = false
-    }).frame(maxWidth: .infinity, maxHeight: .infinity)
+class AppDelegate: NSObject, UIApplicationDelegate {
+  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    
+    if let sdkAppKey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_MAP_KEY") as? String {
+      SDKInitializer.InitSDK(appKey: sdkAppKey)
+    }
+    return true
   }
 }
+

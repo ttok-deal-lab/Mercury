@@ -49,7 +49,8 @@ extension Project {
       sources: ["SampleApp/Sources/**"],
       resources: sampleAppResources,
       entitlements: Project.commonEntitlement,
-      dependencies: [.target(name: name)]
+      dependencies: [.target(name: name)],
+      settings: .settings(configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases))
     )
     
     let tests = Target.target(
