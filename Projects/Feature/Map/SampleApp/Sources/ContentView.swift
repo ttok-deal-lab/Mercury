@@ -10,18 +10,16 @@ import SwiftUI
 
 struct ContentView: View {
   
-  @State var draw: Bool = true
+  @State var draw: Bool = false
   
   var body: some View {
     KakaoMapView(draw: $draw)
       .onAppear(perform: {
         self.draw = true
       })
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
-//      .onDisappear(perform: {
-//        self.draw = false
-//      })
-//      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .onDisappear(perform: {
+        self.draw = false
+      })
   }
   
 }

@@ -32,7 +32,7 @@ import KakaoMapsSDK_SPM
   }
   
   public func updateUIView(_ uiView: KMViewContainer, context: Self.Context) {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { // 타이밍 이슈로 넣음 sdk 참 잘만들어놨네 ㅋㅋ;
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { // 타이밍 이슈로 넣음.
       context.coordinator.controller?.activateEngine()
     })
   }

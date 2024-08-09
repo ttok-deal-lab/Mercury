@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum MercuryErrorDefine {
+public enum MercuryErrorDefine: Int {
   /// 알 수 없는 에러
   case unknown
   /// 온라인이 아님
@@ -15,6 +15,6 @@ public enum MercuryErrorDefine {
   /// 정상 server status code가 아님
   case failToStatusCodes
   /// Data를 JSON으로 파싱하지 못함
-  case failToParseDataToJSON
+  case failToDeserializedDataToJSON
 }
 

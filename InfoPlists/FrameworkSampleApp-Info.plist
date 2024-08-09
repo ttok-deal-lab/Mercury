@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>KAKAO_MAP_KEY</key>
-	<string>${MAP_KEY}</string>
+	<string>${MAP_KEY_DEBUG}</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>

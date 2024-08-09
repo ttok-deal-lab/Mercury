@@ -35,6 +35,7 @@ public extension TargetDependency {
   static let comment = FeatureDependency.comment.framework
   static let mainTabbar = FeatureDependency.mainTabbar.framework
   static let profile = FeatureDependency.profile.framework
+  static let map = FeatureDependency.map.framework
   
   typealias FeatureName = String
   
@@ -46,6 +47,7 @@ public extension TargetDependency {
     case comment = "Comment"
     case mainTabbar = "MainTabbar"
     case profile = "Profile"
+    case map = "Map"
     
     var framework: TargetDependency {
       makeFeature(self.rawValue)

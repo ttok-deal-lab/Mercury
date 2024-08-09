@@ -27,26 +27,34 @@ public class MercuryError: Error {
   
   // MARK: - private properties
   
-  private var description: String?
   private let errorFrom: ErrorFrom
+  private let code: Int
   
   
   // MARK: - public properties
   
+  public var description: String {
+    return "[error code: \(self.code)\nfrom: \(errorFrom)]"
+  }
+  
   
   // MARK: - life cycle
   
-  public init(from: ErrorFrom, type: MercuryErrorDefine) {
-    self.errorFrom = from
+  public init(code: Int) {
+    self.errorFrom = .server
+    self.code = code
   }
   
-  public init(_ error: any Error) {
-    self.errorFrom = .server
+  public init(from: ErrorFrom, _ errorDefine: MercuryErrorDefine) {
+    self.errorFrom = from
+    self.code = errorDefine.rawValue
   }
+  
   
   // MARK: - private method
   
   // MARK: - public method
+  
 }
 
 

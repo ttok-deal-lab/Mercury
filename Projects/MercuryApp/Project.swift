@@ -18,7 +18,8 @@ let project = Project.app(
     .auction,
     .comment,
     .mainTabbar,
-    .profile
+    .profile,
+    .map
   ],
   testDependencies: []
 )

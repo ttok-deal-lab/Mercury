@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
-import SwiftData
+import Map
 
 struct ContentView: View {
+  @State var draw: Bool = false
+  
   var body: some View {
-    VStack {
-      
-    }
+    KakaoMapView(draw: $draw)
+      .onAppear(perform: {
+        self.draw = true
+      })
+      .onDisappear(perform: {
+        self.draw = false
+      })
   }
 }

@@ -26,6 +26,7 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 internal enum Gen {
   internal enum Colors {
     internal static let dim = ColorAsset(name: "Dim")
+    internal static let primary = ColorAsset(name: "primary")
   }
   internal enum Images {
     internal static let launchScreenMap = ImageAsset(name: "launchScreenMap")

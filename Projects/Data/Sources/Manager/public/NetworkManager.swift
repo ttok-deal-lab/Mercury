@@ -61,7 +61,7 @@ extension NetworkManager: Networkable {
       .flatMap { [weak self] isOnline -> Future<Result<Data, MercuryError>, Never> in
         Future<Result<Data, MercuryError>, Never> { promise in
           guard isOnline else {
-            promise(.success(.failure(.init(from: .server, type: .failToConnectInternet))))
+            promise(.success(.failure(.init(from: .server, .failToConnectInternet))))
             return
           }
           self?.queue.async { [weak self] in
@@ -72,10 +72,10 @@ extension NetworkManager: Networkable {
                   let response = try response.filterSuccessfulStatusCodes()
                   promise(.success(.success(response.data)))
                 } catch {
-                  promise(.success(.failure(.init(from: .server, type: .failToStatusCodes))))
+                  promise(.success(.failure(.init(from: .server, .failToStatusCodes))))
                 }
               case .failure(let error):
-                promise(.success(.failure(.init(error))))
+                promise(.success(.failure(.init(code: (error as NSError).code))))
               }
             }
           }
