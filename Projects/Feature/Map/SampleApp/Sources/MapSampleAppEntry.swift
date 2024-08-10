@@ -9,6 +9,7 @@ import Map
 import SwiftUI
 import KakaoMapsSDK
 import AppFoundation
+import CoreLocation
 
 @main
 struct MapSampleAppEntry: App {
@@ -25,7 +26,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
     
     if let sdkAppKey = CommonDefine.mapKey {
-      print("sdk app key -> \(sdkAppKey)")
       SDKInitializer.InitSDK(appKey: sdkAppKey)
     }
     return true

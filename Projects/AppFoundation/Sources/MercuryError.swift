@@ -15,6 +15,7 @@ public class MercuryError: Error {
     
     public enum ModuleFrom {
       case data
+      case map
       case uiComponent
       case doamin
       case analysis
