@@ -10,6 +10,7 @@ import SwiftUI
 import KakaoMapsSDK
 import AppFoundation
 import CoreLocation
+import ComposableArchitecture
 
 @main
 struct MapSampleAppEntry: App {
@@ -17,7 +18,9 @@ struct MapSampleAppEntry: App {
   
   var body: some Scene {
     WindowGroup {
-      ContentView()
+      ContentView(store: Store(initialState: MapReducer.State(), reducer: {
+        MapReducer()
+      }))
     }
   }
 }

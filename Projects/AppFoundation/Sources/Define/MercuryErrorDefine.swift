@@ -16,5 +16,9 @@ public enum MercuryErrorDefine: Int {
   case failToStatusCodes
   /// Data를 JSON으로 파싱하지 못함
   case failToDeserializedDataToJSON
+  
+  // MARK: - map
+  
+  case unknownLocationAuthenticationStatus
 }
 
