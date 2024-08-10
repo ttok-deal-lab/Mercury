@@ -7,17 +7,19 @@
 
 import Foundation
 import SwiftUI
+import CoreLocation
 import KakaoMapsSDK
 import KakaoMapsSDK_SPM
 
 @MainActor public struct KakaoMapView: UIViewRepresentable {
   @Binding public var draw: Bool
-  
+  @Binding public var userLocation: CLLocationCoordinate2D?
   
   // MARK: - life cycle
 
-  public init(draw: Binding<Bool>) {
+  public init(draw: Binding<Bool>, userLocation: Binding<CLLocationCoordinate2D?>) {
     self._draw = draw
+    self._userLocation = userLocation
   }
   
   
@@ -33,8 +35,19 @@ import KakaoMapsSDK_SPM
   
   public func updateUIView(_ uiView: KMViewContainer, context: Self.Context) {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { // 타이밍 이슈로 넣음.
-      context.coordinator.controller?.activateEngine()
+      if draw {
+        context.coordinator.controller?.activateEngine()
+        onMapFullyLoaded(context: context)
+      } else {
+        context.coordinator.controller?.resetEngine()
+      }
     })
+  }
+  
+  private func onMapFullyLoaded(context: Self.Context) {
+    if let userLocation {
+      context.coordinator.setLocationForCamera(location: userLocation)
+    }
   }
   
   public func makeCoordinator() -> KakaoMapCoordinator {
@@ -43,9 +56,43 @@ import KakaoMapsSDK_SPM
   
   public class KakaoMapCoordinator: NSObject, MapControllerDelegate {
     
+    var controller: KMController?
+    var first: Bool
+    var isMapReady: Bool = false
+    var pendingCameraUpdate: (() -> Void)?
+    
+    
+    // MARK: - life cycle
+    
     public override init() {
       first = true
       super.init()
+    }
+    
+    
+    // MARK: - internal method
+    
+    // MARK: - public method
+    
+    public func setLocationForCamera(location: CLLocationCoordinate2D) {
+      let updateCamera = {
+        if let mapView: KakaoMap = self.controller?.getView("mapview") as? KakaoMap {
+          let cameraUpdate = CameraUpdate.make(
+            target: MapPoint(
+              longitude: location.longitude,
+              latitude: location.latitude
+            ),
+            mapView: mapView
+          )
+          mapView.moveCamera(cameraUpdate)
+        }
+      }
+      if isMapReady {
+        updateCamera()
+      } else {
+        self.pendingCameraUpdate = updateCamera
+      }
+      
     }
     
     public func createController(_ view: KMViewContainer) {
@@ -60,6 +107,14 @@ import KakaoMapsSDK_SPM
       controller?.addView(mapviewInfo)
     }
     
+    public func addViewSucceeded(_ viewName: String, viewInfoName: String) {
+      self.isMapReady = true
+      if let pendingCameraUpdate {
+        pendingCameraUpdate()
+        self.pendingCameraUpdate = nil
+      }
+    }
+    
     @objc public func containerDidResized(_ size: CGSize) {
       let mapView: KakaoMap? = controller?.getView("mapview") as? KakaoMap
       mapView?.viewRect = CGRect(origin: CGPoint(x: 0.0, y: 0.0), size: size)
@@ -69,8 +124,6 @@ import KakaoMapsSDK_SPM
         first = false
       }
     }
-    
-    var controller: KMController?
-    var first: Bool
+   
   }
 }

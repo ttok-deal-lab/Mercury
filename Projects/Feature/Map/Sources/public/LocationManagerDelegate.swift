@@ -9,12 +9,20 @@ import UIKit
 import Foundation
 import CoreLocation
 
-public class LocationManagerDelegate: NSObject, CLLocationManagerDelegate, ObservableObject {
+public protocol LocationManagerDelegate: AnyObject {
+  func currentUserLocation(location: CLLocationCoordinate2D?)
+}
+
+public class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObject {
   
   // MARK: - private property
   
   private var locationManager: CLLocationManager = CLLocationManager()
   @Published public var showAlert: Bool = false
+  
+  // MARK:  public property
+  
+  public weak var delegate: LocationManagerDelegate?
   
   
   // MARK: - life cycle
@@ -22,7 +30,6 @@ public class LocationManagerDelegate: NSObject, CLLocationManagerDelegate, Obser
   public override init() {
     super.init()
     self.locationManager.delegate = self
-    
   }
   
   required init?(coder: NSCoder) {
@@ -32,7 +39,7 @@ public class LocationManagerDelegate: NSObject, CLLocationManagerDelegate, Obser
   
   // MARK: - private method
   
-  // MARK: - internal method
+  // MARK: - public method
   
   public func checkLocationAutorizationStatus() {
     let status = self.locationManager.authorizationStatus
@@ -42,7 +49,7 @@ public class LocationManagerDelegate: NSObject, CLLocationManagerDelegate, Obser
     case .denied:
       showAlert = true
     case .authorizedAlways, .authorizedWhenInUse:
-      break
+      self.delegate?.currentUserLocation(location: self.locationManager.location?.coordinate)
     default:
       break
     }

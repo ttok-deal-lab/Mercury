@@ -10,16 +10,17 @@ import SwiftUI
 import CoreLocation
 
 struct ContentView: View {
-
+  
   // MARK: - private property
   
   // MARK: - internal property
- 
-  @StateObject private var locationManagerDelegate = LocationManagerDelegate()
+  
+  @StateObject private var locationManager = LocationManager()
+  @StateObject private var locationDelegateAdopter = LocationManagerDelegateAdopter()
   @State var draw: Bool = false
   
   var body: some View {
-    KakaoMapView(draw: $draw)
+    KakaoMapView(draw: $draw, userLocation: $locationDelegateAdopter.userLocation)
       .onAppear(perform: {
         self.draw = true
       })
@@ -27,12 +28,24 @@ struct ContentView: View {
         self.draw = false
       })
       .task {
-        self.locationManagerDelegate.checkLocationAutorizationStatus()
+        self.locationManager.delegate = self.locationDelegateAdopter
+        self.locationManager.checkLocationAutorizationStatus()
       }
-      .alert(isPresented: $locationManagerDelegate.showAlert) {
+      .alert(isPresented: $locationManager.showAlert) {
         Alert(title: Text("알림"), message: Text("설정에서 위치정보를 허용해주세요."), dismissButton: .default(Text("확인")))
       }
-      
+  }
+  
+  
+  class LocationManagerDelegateAdopter: LocationManagerDelegate, ObservableObject {
+   
+    @Published var userLocation: CLLocationCoordinate2D?
+    
+    func currentUserLocation(location: CLLocationCoordinate2D?) {
+      self.userLocation = location
+    }
   }
   
 }
+
+
