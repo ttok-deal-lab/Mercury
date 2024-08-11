@@ -10,23 +10,13 @@ import Foundation
 import AppFoundation
 import ComposableArchitecture
 
-public protocol LocationAuthorizationUsecase {
+public protocol UserLocationUsecase {
   
   var locationManager: CLLocationManager { get }
-  func userAuthorization() async -> Result<CLAuthorizationStatus, MercuryError>
-  func requestUserAuthorization()
+  
+  func userAuthorization() async -> CLAuthorizationStatus
+  func requestUserAuthorization() async -> CLAuthorizationStatus
+  func startUpdatingLocation() async throws -> CLLocation
   func userCurrentLocation() -> CLLocation?
   
 }
-
-//private enum LocationAuthorizationUsecaseKey: DependencyKey {
-//  static let liveValue: LocationAuthorizationUsecase = LocationAuthorizationUsecaseImplement()
-////  static var testValue: LocationAuthorizationUsecase = UnimplementedLocationAuthorizationUsecase()
-//}
-//
-//extension DependencyValues {
-//  var locationAuthorizationUsecase: LocationAuthorizationUsecase {
-//    get { self[LocationAuthorizationUsecaseKey.self] }
-//    set { self[LocationAuthorizationUsecaseKey.self] = newValue }
-//  }
-//}

@@ -34,7 +34,7 @@ import KakaoMapsSDK_SPM
   }
   
   public func updateUIView(_ uiView: KMViewContainer, context: Self.Context) {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { // 타이밍 이슈로 넣음.
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: { // 타이밍 이슈로 넣음.
       if draw {
         context.coordinator.controller?.activateEngine()
         onMapFullyLoaded(context: context)
@@ -45,6 +45,7 @@ import KakaoMapsSDK_SPM
   }
   
   private func onMapFullyLoaded(context: Self.Context) {
+    print("user location ~> \(String(describing: userLocation))")
     if let userLocation {
       context.coordinator.setLocationForCamera(location: userLocation)
     }

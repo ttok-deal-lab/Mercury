@@ -18,14 +18,9 @@ struct ContentView: View {
   
   @Perception.Bindable var store: StoreOf<MapReducer>
   
-  @StateObject private var locationManager = LocationManager()
-//  @StateObject private var locationDelegateAdopter = LocationManagerDelegateAdopter()
-  
-  @State var draw: Bool = false
-  
   var body: some View {
     KakaoMapView(
-      draw: $store.draw,
+      draw: $store.isMapDraw,
       userLocation: Binding(
         get: { store.userLocation },
         set: { newValue in
@@ -34,29 +29,22 @@ struct ContentView: View {
       )
     )
     .onAppear(perform: {
-      self.draw = true
+      self.store.send(.setDrawMap(true))
     })
     .onDisappear(perform: {
-      self.draw = false
+      self.store.send(.setDrawMap(false))
     })
     .task {
       self.store.send(.checkUserAuthorization)
     }
     .alert(isPresented: $store.isShowAlert) {
-      Alert(title: Text("알림"), message: Text("설정에서 위치정보를 허용해주세요."), dismissButton: .default(Text("확인")))
+      Alert(
+        title: Text("알림"),
+        message: Text("설정에서 위치정보를 허용해주세요."),
+        dismissButton: .default(Text("확인"))
+      )
     }
   }
-  
-  
-  class LocationManagerDelegateAdopter: LocationManagerDelegate, ObservableObject {
-   
-    @Published var userLocation: CLLocationCoordinate2D?
-    
-    func currentUserLocation(location: CLLocationCoordinate2D?) {
-      self.userLocation = location
-    }
-  }
-  
 }
 
 
