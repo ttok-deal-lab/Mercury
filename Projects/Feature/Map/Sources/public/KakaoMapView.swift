@@ -109,6 +109,7 @@ import KakaoMapsSDK_SPM
     }
     
     public func addViewSucceeded(_ viewName: String, viewInfoName: String) {
+      print("add view !!")
       self.isMapReady = true
       if let pendingCameraUpdate {
         pendingCameraUpdate()

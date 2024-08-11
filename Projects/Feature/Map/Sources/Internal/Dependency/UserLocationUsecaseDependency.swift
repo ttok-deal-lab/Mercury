@@ -10,8 +10,8 @@ import ComposableArchitecture
 import DomainInterface
 import Domain
 
-private enum UserLocationUsecaseKey: DependencyKey {
-  static let liveValue: UserLocationUsecase = UserLocationUsecaseImplement()
+private enum UserLocationUsecaseKey: @preconcurrency DependencyKey {
+  @MainActor static let liveValue: UserLocationUsecase = UserLocationUsecaseImplement()
 }
 
 extension DependencyValues {

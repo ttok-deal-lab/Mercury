@@ -25,19 +25,16 @@ public struct MapReducer {
     public var isShowAlert: Bool = false
     public var isMapDraw: Bool = true
     
-    
-    public init() {
-      
-    }
+    public init() { }
   }
   
   public enum Action: BindableAction {
     case binding(BindingAction<State>)
+    case setError(MercuryError)
     case setDrawMap(Bool)
     case checkUserAuthorization
     case setAuthenticationStatus(CLAuthorizationStatus)
     case locationAuthorizationChanged(CLAuthorizationStatus)
-    case setError(MercuryError)
     case requestLocationAuthentication
     case showAlert
     case setUserLocation(CLLocationCoordinate2D)
@@ -48,6 +45,7 @@ public struct MapReducer {
   // MARK: - private property
   
   @Dependency(\.userLocationUsecase) private var userLocationUsecase
+  
   
   // MARK: - life cycle
   
@@ -88,13 +86,11 @@ public struct MapReducer {
           return .send(.setError(.init(from: .ownModule(.map), .unknownLocationAuthenticationStatus)))
         }
       case .requestLocationAuthentication:
-        state.isMapDraw = false
-        return .run { send in
+        return .run { @MainActor send in
           let status = await self.userLocationUsecase.requestUserAuthorization()
-          await send(.locationAuthorizationChanged(status))
+          send(.locationAuthorizationChanged(status))
         }
       case .locationAuthorizationChanged(let status):
-        state.isMapDraw = true
         return .run { send in
           switch status {
           case .authorizedAlways, .authorizedWhenInUse:
