@@ -77,11 +77,14 @@ public struct MapReducer {
         case .denied:
           return .send(.showAlert)
         case .authorizedAlways, .authorizedWhenInUse:
-          let userLocation = self.userLocationUsecase.userCurrentLocation()
-          guard let coordinate = userLocation?.coordinate else {
-            return .send(.setError(.init(from: .ownModule(.map), .failToGetUserLocationCoordinate)))
+          return .run { send in
+            let userLocation = await self.userLocationUsecase.userCurrentLocation()
+            guard let coordinate = userLocation?.coordinate else {
+              return await send(.setError(.init(from: .ownModule(.map), .failToGetUserLocationCoordinate)))
+            }
+            return await send(.setUserLocation(coordinate))
           }
-          return .send(.setUserLocation(coordinate))
+          
         @unknown default:
           return .send(.setError(.init(from: .ownModule(.map), .unknownLocationAuthenticationStatus)))
         }

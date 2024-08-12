@@ -17,6 +17,6 @@ public protocol UserLocationUsecase {
   func userAuthorization() async -> CLAuthorizationStatus
   func requestUserAuthorization() async -> CLAuthorizationStatus
   func startUpdatingLocation() async throws -> CLLocation
-  func userCurrentLocation() -> CLLocation?
+  func userCurrentLocation() async -> CLLocation?
   
 }

@@ -10,8 +10,7 @@ import Foundation
 import CoreLocation
 import DomainInterface
 
-@MainActor
-public final class UserLocationUsecaseImplement: NSObject, @preconcurrency UserLocationUsecase {
+public final class UserLocationUsecaseImplement: NSObject, UserLocationUsecase {
   
   // MARK: - private property
 
@@ -22,12 +21,12 @@ public final class UserLocationUsecaseImplement: NSObject, @preconcurrency UserL
   // MARK: - public property
   
   @MainActor
-  public var locationManager: CLLocationManager {
+  public lazy var locationManager: CLLocationManager = {
     let manager = CLLocationManager()
     manager.delegate = self
     manager.desiredAccuracy = kCLLocationAccuracyBest
     return manager
-  }
+  }()
   
   
   // MARK: - life cycle
@@ -42,38 +41,38 @@ public final class UserLocationUsecaseImplement: NSObject, @preconcurrency UserL
   
   // MARK: - public method
 
-  public func userAuthorization() -> CLAuthorizationStatus {
-    return self.locationManager.authorizationStatus
+  public func userAuthorization() async -> CLAuthorizationStatus {
+    return await self.locationManager.authorizationStatus
   }
 
-  public func userCurrentLocation() -> CLLocation? {
-    return self.locationManager.location
+  public func userCurrentLocation() async -> CLLocation? {
+    return await self.locationManager.location
   }
   
   public func requestUserAuthorization() async -> CLAuthorizationStatus {
-    let currentStatus = locationManager.authorizationStatus
+    let currentStatus = await locationManager.authorizationStatus
     if currentStatus != .notDetermined {
       return currentStatus
     }
     return await withCheckedContinuation { continuation in
       self.authStatusContinuation = continuation
-      locationManager.requestWhenInUseAuthorization()
+      DispatchQueue.main.async {
+        self.locationManager.requestWhenInUseAuthorization()
+      }
     }
   }
 }
 
+@MainActor
 extension UserLocationUsecaseImplement: @preconcurrency CLLocationManagerDelegate {
   
   public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
     let status = manager.authorizationStatus
-    print("Authorization status changed to: \(status)")
-    
     if let continuation = self.authStatusContinuation {
       continuation.resume(returning: status)
       self.authStatusContinuation = nil
     }
   }
-  
   
   public func startUpdatingLocation() async throws -> CLLocation {
     self.locationManager.startUpdatingLocation()
