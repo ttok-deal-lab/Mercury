@@ -10,7 +10,12 @@ import SwiftUI
 
 public struct MarkerView: View {
   public var body: some View {
-    Text("Hello world!")
+    Rectangle()
+      .backgroundStyle(.red)
+      .clipShape(Capsule())
+      .overlay {
+        Text("marker")
+      }
   }
 }
 
