@@ -74,23 +74,4 @@ extension UserLocationUsecaseImplement: @preconcurrency CLLocationManagerDelegat
     }
   }
   
-  public func startUpdatingLocation() async throws -> CLLocation {
-    self.locationManager.startUpdatingLocation()
-    let location = try await withCheckedThrowingContinuation({ continuation in
-      updatedLocationContinuation = continuation
-    })
-    return location
-  }
-  
-  public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    if let location = locations.last {
-      updatedLocationContinuation?.resume(returning: location)
-      updatedLocationContinuation = nil
-    }
-  }
-  
-  @nonobjc public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-    updatedLocationContinuation?.resume(throwing: MercuryError(from: .ownModule(.map), .unknown))
-    updatedLocationContinuation = nil
-  }
 }

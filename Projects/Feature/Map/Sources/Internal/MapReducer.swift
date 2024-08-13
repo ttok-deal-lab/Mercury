@@ -22,7 +22,7 @@ public struct MapReducer {
     }
     public var error: MercuryError?
     public var userLocation: CLLocationCoordinate2D?
-    public var isShowAlert: Bool = false
+    public var isShowDeniedLocationAlert: Bool = false
     public var isMapDraw: Bool = true
     
     public init() { }
@@ -36,9 +36,8 @@ public struct MapReducer {
     case setAuthenticationStatus(CLAuthorizationStatus)
     case locationAuthorizationChanged(CLAuthorizationStatus)
     case requestLocationAuthentication
-    case showAlert
+    case showDeniedLocationAlert
     case setUserLocation(CLLocationCoordinate2D)
-    case locationUpdated(CLLocation)
     
   }
   
@@ -75,16 +74,11 @@ public struct MapReducer {
         case .notDetermined, .restricted:
           return .send(.requestLocationAuthentication)
         case .denied:
-          return .send(.showAlert)
+          return .send(.showDeniedLocationAlert)
         case .authorizedAlways, .authorizedWhenInUse:
           return .run { send in
-            let userLocation = await self.userLocationUsecase.userCurrentLocation()
-            guard let coordinate = userLocation?.coordinate else {
-              return await send(.setError(.init(from: .ownModule(.map), .failToGetUserLocationCoordinate)))
-            }
-            return await send(.setUserLocation(coordinate))
+            await updateUserLocation(send: send)
           }
-          
         @unknown default:
           return .send(.setError(.init(from: .ownModule(.map), .unknownLocationAuthenticationStatus)))
         }
@@ -97,27 +91,27 @@ public struct MapReducer {
         return .run { send in
           switch status {
           case .authorizedAlways, .authorizedWhenInUse:
-            do {
-              let location = try await self.userLocationUsecase.startUpdatingLocation()
-              await send(.locationUpdated(location))
-            } catch {
-              await send(.setError((error as? MercuryError) ?? .init(from: .ownModule(.map), .unknown)))
-            }
+            await updateUserLocation(send: send)
           default:
             break
           }
         }
-      case .showAlert:
-        state.isShowAlert = true
+      case .showDeniedLocationAlert:
+        state.isShowDeniedLocationAlert = true
         return .none
       case .setUserLocation(let location):
         state.userLocation = location
         return .none
-      case .locationUpdated(let location):
-        state.userLocation = location.coordinate
-        return .none
       }
     }
+  }
+  
+  private func updateUserLocation(send: Send<Action>) async {
+    let userLocation = await userLocationUsecase.userCurrentLocation()
+    guard let userLocationCoordinate = userLocation?.coordinate else {
+      return await send(.setError(.init(from: .ownModule(.map), .failToGetUserLocationCoordinate)))
+    }
+    await send(.setUserLocation(userLocationCoordinate))
   }
   
 }

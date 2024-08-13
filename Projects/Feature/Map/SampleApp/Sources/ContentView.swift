@@ -37,7 +37,7 @@ struct ContentView: View {
     .task {
       self.store.send(.checkUserAuthorization)
     }
-    .alert(isPresented: $store.isShowAlert) {
+    .alert(isPresented: $store.isShowDeniedLocationAlert) {
       Alert(
         title: Text("알림"),
         message: Text("설정에서 위치정보를 허용해주세요."),

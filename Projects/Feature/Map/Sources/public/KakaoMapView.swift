@@ -45,7 +45,6 @@ import KakaoMapsSDK_SPM
   }
   
   private func onMapFullyLoaded(context: Self.Context) {
-    print("user location ~> \(String(describing: userLocation))")
     if let userLocation {
       context.coordinator.setLocationForCamera(location: userLocation)
     }
