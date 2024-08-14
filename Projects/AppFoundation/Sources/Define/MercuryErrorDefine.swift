@@ -8,6 +8,9 @@
 import Foundation
 
 public enum MercuryErrorDefine: Int {
+  
+  // MARK: - Common
+  
   /// 알 수 없는 에러
   case unknown
   /// 온라인이 아님
@@ -16,5 +19,13 @@ public enum MercuryErrorDefine: Int {
   case failToStatusCodes
   /// Data를 JSON으로 파싱하지 못함
   case failToDeserializedDataToJSON
+  
+  
+  // MARK: - Map
+  
+  /// 알 수 없는 위치권한 상태
+  case unknownLocationAuthenticationStatus
+  /// 사용자 위치정보 없음
+  case failToGetUserLocationCoordinate
 }
 

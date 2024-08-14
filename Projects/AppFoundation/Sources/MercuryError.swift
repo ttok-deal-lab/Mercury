@@ -7,7 +7,10 @@
 
 import Foundation
 
-public class MercuryError: Error {
+public class MercuryError: Error, Equatable {
+  public static func == (lhs: MercuryError, rhs: MercuryError) -> Bool {
+    return lhs.code == rhs.code
+  }
   
   public enum ErrorFrom {
     case server
@@ -15,6 +18,7 @@ public class MercuryError: Error {
     
     public enum ModuleFrom {
       case data
+      case map
       case uiComponent
       case doamin
       case analysis

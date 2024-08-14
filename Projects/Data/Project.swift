@@ -16,7 +16,9 @@ let project = Project.dynamicFramework(
     .moya,
     .combineMoya,
     .composableArchitecture,
-    .swiftyJSON
+    .swiftyJSON,
+    .domain,
+    .domainInterface
   ],
   frameworkTestDependencies: [
     

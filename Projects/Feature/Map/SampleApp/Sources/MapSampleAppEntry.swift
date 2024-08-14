@@ -9,6 +9,8 @@ import Map
 import SwiftUI
 import KakaoMapsSDK
 import AppFoundation
+import CoreLocation
+import ComposableArchitecture
 
 @main
 struct MapSampleAppEntry: App {
@@ -16,7 +18,9 @@ struct MapSampleAppEntry: App {
   
   var body: some Scene {
     WindowGroup {
-      ContentView()
+      ContentView(store: Store(initialState: MapReducer.State(), reducer: {
+        MapReducer()
+      }))
     }
   }
 }
@@ -25,7 +29,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
     
     if let sdkAppKey = CommonDefine.mapKey {
-      print("sdk app key -> \(sdkAppKey)")
       SDKInitializer.InitSDK(appKey: sdkAppKey)
     }
     return true
