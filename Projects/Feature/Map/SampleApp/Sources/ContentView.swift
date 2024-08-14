@@ -21,12 +21,10 @@ struct ContentView: View {
   var body: some View {
     KakaoMapView(
       draw: $store.isMapDraw,
-      userLocation: Binding(
-        get: { store.userLocation },
-        set: { newValue in
-          store.send(.setUserLocation(newValue.map { CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude) }!))
-        }
-      )
+      userLocation: store.userLocation,
+      cameraCenterLocation: Binding(
+        get: { store.cameraCenterLocation },
+        set: { store.send(.setCameraCenterLocation($0)) })
     )
     .onAppear(perform: {
       self.store.send(.setDrawMap(true))

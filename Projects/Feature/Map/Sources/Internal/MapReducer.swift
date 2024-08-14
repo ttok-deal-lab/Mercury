@@ -21,9 +21,10 @@ public struct MapReducer {
       lhs.userLocation?.longitude == rhs.userLocation?.longitude
     }
     public var error: MercuryError?
-    public var userLocation: CLLocationCoordinate2D?
-    public var isShowDeniedLocationAlert: Bool = false
     public var isMapDraw: Bool = true
+    public var isShowDeniedLocationAlert: Bool = false
+    public var userLocation: CLLocationCoordinate2D?
+    public var cameraCenterLocation: CLLocationCoordinate2D?
     
     public init() { }
   }
@@ -38,7 +39,7 @@ public struct MapReducer {
     case requestLocationAuthentication
     case showDeniedLocationAlert
     case setUserLocation(CLLocationCoordinate2D)
-    
+    case setCameraCenterLocation(CLLocationCoordinate2D?)
   }
   
   // MARK: - private property
@@ -92,6 +93,8 @@ public struct MapReducer {
           switch status {
           case .authorizedAlways, .authorizedWhenInUse:
             await updateUserLocation(send: send)
+          case .denied:
+            await send(.showDeniedLocationAlert)
           default:
             break
           }
@@ -102,16 +105,19 @@ public struct MapReducer {
       case .setUserLocation(let location):
         state.userLocation = location
         return .none
+      case .setCameraCenterLocation(let location):
+        state.cameraCenterLocation = location
+        return .none
       }
     }
   }
   
   private func updateUserLocation(send: Send<Action>) async {
     let userLocation = await userLocationUsecase.userCurrentLocation()
-    guard let userLocationCoordinate = userLocation?.coordinate else {
+    guard let userLocation = userLocation?.coordinate else {
       return await send(.setError(.init(from: .ownModule(.map), .failToGetUserLocationCoordinate)))
     }
-    await send(.setUserLocation(userLocationCoordinate))
+    await send(.setUserLocation(userLocation))
   }
   
 }

@@ -20,14 +20,16 @@ import KakaoMapsSDK_SPM
   // MARK: - public property
   
   @Binding public var draw: Bool
-  @Binding public var userLocation: CLLocationCoordinate2D?
+  public var userLocation: CLLocationCoordinate2D?
+  @Binding public var cameraCenterLocation: CLLocationCoordinate2D?
   
   
   // MARK: - life cycle
 
-  public init(draw: Binding<Bool>, userLocation: Binding<CLLocationCoordinate2D?>) {
+  public init(draw: Binding<Bool>, userLocation: CLLocationCoordinate2D?, cameraCenterLocation: Binding<CLLocationCoordinate2D?>) {
     self._draw = draw
-    self._userLocation = userLocation
+    self.userLocation = userLocation
+    self._cameraCenterLocation = cameraCenterLocation
   }
   
   
@@ -54,22 +56,24 @@ import KakaoMapsSDK_SPM
   
   private func onMapFullyLoaded(context: Self.Context) {
     if let userLocation {
-      context.coordinator.setLocationForCamera(location: userLocation)
+      context.coordinator.setCameraFirst(location: userLocation)
     }
   }
   
   public func makeCoordinator() -> KakaoMapCoordinator {
-    return KakaoMapCoordinator()
+    return KakaoMapCoordinator(parent: self)
   }
 
   
   // MARK: - Coordinator
   
-  public class KakaoMapCoordinator: NSObject, MapControllerDelegate, KakaoMapEventDelegate {
+  public class KakaoMapCoordinator: NSObject, MapControllerDelegate, @preconcurrency KakaoMapEventDelegate {
     
     // MARK: - private property
     
-    private var isFirstEntry: Bool
+    private let parent: KakaoMapView
+    
+    private var isFirstEntry: Bool = true
     private var isMapReady: Bool = false
     private var pendingCameraUpdate: (() -> Void)?
     private var kakaoMap: KakaoMap?
@@ -81,8 +85,8 @@ import KakaoMapsSDK_SPM
     
     // MARK: - life cycle
     
-    public override init() {
-      self.isFirstEntry = true
+    public init(parent: KakaoMapView) {
+      self.parent = parent
       super.init()
     }
     
@@ -94,12 +98,14 @@ import KakaoMapsSDK_SPM
         pendingCameraUpdate()
         self.pendingCameraUpdate = nil
       }
+      self.kakaoMap?.eventDelegate = self
     }
     
     
     // MARK: - public method
     
-    public func setLocationForCamera(location: CLLocationCoordinate2D) {
+    public func setCameraFirst(location: CLLocationCoordinate2D) {
+      guard isFirstEntry else { return }
       let updateCamera = {
         guard let kakaoMap = self.kakaoMap else { return }
         let firstMapPoint = MapPoint(longitude: location.longitude, latitude: location.latitude)
@@ -108,6 +114,7 @@ import KakaoMapsSDK_SPM
       }
       if isMapReady {
         updateCamera()
+        self.isFirstEntry = false
       } else {
         self.pendingCameraUpdate = updateCamera
       }
@@ -131,6 +138,15 @@ import KakaoMapsSDK_SPM
       self.setup()
     }
     
+    @MainActor
+    @objc public func cameraDidStopped(kakaoMap: KakaoMap, by: MoveBy) {
+      let position = kakaoMap.getPosition(.init(x: 0.5, y: 0.5))
+      let centerCoord = CLLocationCoordinate2D(
+        latitude: position.wgsCoord.latitude,
+        longitude: position.wgsCoord.longitude
+      )
+      self.parent.cameraCenterLocation = centerCoord
+    }
   }
   
   
