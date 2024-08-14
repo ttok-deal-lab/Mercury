@@ -25,7 +25,7 @@ public struct MapReducer {
     public var isShowDeniedLocationAlert: Bool = false
     public var userLocation: CLLocationCoordinate2D?
     public var cameraCenterLocation: CLLocationCoordinate2D?
-    
+    public var auctionItems: [AuctionItem]?
     public init() { }
   }
   
@@ -40,11 +40,14 @@ public struct MapReducer {
     case showDeniedLocationAlert
     case setUserLocation(CLLocationCoordinate2D)
     case setCameraCenterLocation(CLLocationCoordinate2D?)
+    case loadAuctionItems(criteriaCoord: CLLocationCoordinate2D?)
+    case setAuctionItems(auctionItems: [AuctionItem])
   }
   
   // MARK: - private property
   
   @Dependency(\.userLocationUsecase) private var userLocationUsecase
+  @Dependency(\.auctionItemUsecase) private var auctionItemUsecase
   
   
   // MARK: - life cycle
@@ -107,6 +110,21 @@ public struct MapReducer {
         return .none
       case .setCameraCenterLocation(let location):
         state.cameraCenterLocation = location
+        return .run { send in
+          await send(.loadAuctionItems(criteriaCoord: location))
+        }
+      case .loadAuctionItems(let criteria):
+        return .run { send in
+          let result = await self.auctionItemUsecase.loadAuctionItems()
+          switch result {
+          case .success(let auctionItems):
+            await send(.setAuctionItems(auctionItems: auctionItems))
+          case .failure(let error):
+            await send(.setError(error))
+          }
+        }
+      case .setAuctionItems(let auctionItems):
+        state.auctionItems = auctionItems
         return .none
       }
     }

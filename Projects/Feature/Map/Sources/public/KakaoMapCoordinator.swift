@@ -5,6 +5,7 @@
 //  Created by 송하민 on 8/14/24.
 //
 
+import AppFoundation
 import Foundation
 import KakaoMapsSDK
 import CoreLocation
@@ -59,6 +60,20 @@ public class KakaoMapCoordinator: NSObject, MapControllerDelegate {
       self.pendingCameraUpdate = nil
     }
     self.kakaoMap?.eventDelegate = self
+    self.createLabelLayer()
+  }
+  
+  private func createLabelLayer() {
+    guard let kakaoMap else { return }
+    let manager = kakaoMap.getLabelManager()
+    let layerOption = LabelLayerOptions(
+      layerID: "PoiLayer",
+      competitionType: .none,
+      competitionUnit: .symbolFirst,
+      orderType: .rank,
+      zOrder: 1
+    )
+    let _ = manager.addLabelLayer(option: layerOption)
   }
   
   
@@ -78,6 +93,28 @@ public class KakaoMapCoordinator: NSObject, MapControllerDelegate {
     } else {
       self.pendingCameraUpdate = updateCamera
     }
+  }
+  
+  public func drawItemMarker(item: [AuctionItem]) {
+    guard let kakaoMap else { return }
+    let manager = kakaoMap.getLabelManager()
+    let layer = manager.getLabelLayer(layerID: "PoiLayer")
+    let poiOption = PoiOptions(styleID: "PerLevelStyle")
+    poiOption.rank = 1
+    
+    // FIXME: Poi는 기술 및 기획검토 필요
+    let iconStyle1 = PoiIconStyle(
+      symbol: UIImage(systemName: "paperplane.fill"),
+      anchorPoint: CGPoint(x: 0.5, y: 0.5),
+      badges: []
+    )
+    let poiStyle = PoiStyle(styleID: "PerLevelStyle", styles: [
+      PerLevelPoiStyle(iconStyle: iconStyle1, level: 999),
+    ])
+    manager.addPoiStyle(poiStyle)
+    
+    let poi1 = layer?.addPoi(option:poiOption, at: MapPoint(longitude: 37.3583237, latitude: 126.932912))
+    poi1?.show()
   }
 
  

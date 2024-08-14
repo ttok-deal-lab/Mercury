@@ -1,5 +1,5 @@
 //
-//  MapMarker.swift
+//  MapAuctionItem.swift
 //  AppFoundation
 //
 //  Created by 송하민 on 8/10/24.

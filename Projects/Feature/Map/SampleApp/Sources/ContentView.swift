@@ -24,7 +24,9 @@ struct ContentView: View {
       userLocation: store.userLocation,
       cameraCenterLocation: Binding(
         get: { store.cameraCenterLocation },
-        set: { store.send(.setCameraCenterLocation($0)) })
+        set: { store.send(.setCameraCenterLocation($0)) }
+      ),
+      auctionItems: store.auctionItems
     )
     .onAppear(perform: {
       self.store.send(.setDrawMap(true))
