@@ -62,7 +62,8 @@ extension Project {
       infoPlist: .default,
       sources: ["Tests/**"],
       resources: [],
-      dependencies: [.target(name: name)] + testDependencies
+      dependencies: [.target(name: name)] + testDependencies,
+      settings: .settings(configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases))
     )
     
     return [sources, tests, sampleApp]

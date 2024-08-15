@@ -15,6 +15,6 @@ let project = Project.dynamicFramework(
     .appFoundation
   ],
   frameworkTestDependencies: [
-    .swiftTesting
+//    .swiftTesting
   ]
 )

@@ -75,7 +75,7 @@ extension Project {
       sources: ["Tests/**"],
       resources: [],
       scripts: scripts,
-      dependencies: testDependencies,
+      dependencies: [.target(name: name)] + testDependencies,
       settings: .settings(configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases))
     )
     
