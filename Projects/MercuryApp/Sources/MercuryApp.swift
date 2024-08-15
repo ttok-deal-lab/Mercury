@@ -8,6 +8,8 @@
 import SwiftUI
 import AppFoundation
 import KakaoMapsSDK
+import Map
+import ComposableArchitecture
 
 @main
 struct MercuryApp: App {
@@ -15,8 +17,10 @@ struct MercuryApp: App {
   
   var body: some Scene {
     WindowGroup {
-      ContentView()
-        .ignoresSafeArea()
+      ContentView(store: Store(initialState: MapReducer.State(), reducer: {
+        MapReducer()
+      }))
+      .ignoresSafeArea()
     }
   }
 }
