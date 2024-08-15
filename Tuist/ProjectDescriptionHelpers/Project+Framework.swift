@@ -43,7 +43,7 @@ extension Project {
       name: "\(name)SampleApp",
       destinations: destinations,
       product: .app,
-      bundleId: "\(Project.bundleId).SampleApp",
+      bundleId: "\(Project.bundleId).\(name)SampleApp",
       deploymentTargets: Project.deploymentTarget,
       infoPlist: .file(path: Path.infoPlistPath("FrameworkSampleApp-Info")),
       sources: ["SampleApp/Sources/**"],
@@ -57,12 +57,13 @@ extension Project {
       name: "\(name)Tests",
       destinations: destinations,
       product: .unitTests,
-      bundleId: "\(Project.bundleId).Tests",
+      bundleId: "\(Project.bundleId).\(name)Tests",
       deploymentTargets: Project.deploymentTarget,
       infoPlist: .default,
       sources: ["Tests/**"],
       resources: [],
-      dependencies: [.target(name: name)] + testDependencies
+      dependencies: [.target(name: name)] + testDependencies,
+      settings: .settings(configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases))
     )
     
     return [sources, tests, sampleApp]

@@ -18,10 +18,10 @@ public extension TargetDependency {
   static let combineMoya: TargetDependency = .external(name: "CombineMoya")
   static let swiftyJSON: TargetDependency = .external(name: "SwiftyJSON")
   static let swiftAlgorithm: TargetDependency = .external(name: "Algorithms")
+  static let swiftTesting: TargetDependency = .external(name: "Testing")
   
   
-  
-  // MARK: - own module
+  // MARK: - own modules
 
   static let appFoundation: TargetDependency = .project(target: "AppFoundation", path: .relativeToRoot("Projects/AppFoundation"))
   static let data: TargetDependency = .project(target: "Data", path: .relativeToRoot("Projects/Data"))
