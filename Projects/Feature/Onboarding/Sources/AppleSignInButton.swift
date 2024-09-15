@@ -31,6 +31,7 @@ public struct AppleSignInButton: View {
     }
   }
   
+  // TODO: 리듀서로 옮길것
   private func handleSuccessfulLogin(with authorization: ASAuthorization) {
     if let userCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
       print("user: \(userCredential.user)")
@@ -47,6 +48,7 @@ public struct AppleSignInButton: View {
     }
   }
   
+  // TODO: 리듀서로 옮길것
   private func handleLoginError(with error: Error) {
     print("Could not authenticate: \\(error.localizedDescription)")
   }

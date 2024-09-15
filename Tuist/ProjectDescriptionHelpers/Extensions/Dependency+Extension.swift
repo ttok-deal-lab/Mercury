@@ -41,7 +41,6 @@ public extension TargetDependency {
   private enum FeatureDependency: FeatureName {
     case analysis = "Analysis"
     case appleSignIn = "AppleSignIn"
-    case googleSignIn = "GoogleSignIn"
     case auction = "Auction"
     case comment = "Comment"
     case mainTabbar = "MainTabbar"
