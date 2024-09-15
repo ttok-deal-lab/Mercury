@@ -17,7 +17,6 @@ let project = Project.staticFramework(
     .swiftAlgorithm,
     .uiComponent,
     .kakaoMap,
-    .domainInterface,
     .domain
   ],
   frameworkTestDependencies: []

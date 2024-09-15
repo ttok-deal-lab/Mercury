@@ -9,7 +9,7 @@ import Combine
 import Foundation
 import CoreLocation
 import AppFoundation
-import DomainInterface
+import Domain
 import ComposableArchitecture
 
 @Reducer

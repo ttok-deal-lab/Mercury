@@ -10,7 +10,6 @@ let project = Project.app(
     .appFoundation,
     .data,
     .domain,
-    .domainInterface,
     .uiComponent,
     .analysis,
     .appleSignIn,
