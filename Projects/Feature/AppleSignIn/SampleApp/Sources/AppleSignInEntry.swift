@@ -5,7 +5,7 @@ struct AppleSignInEntry: App {
   
   var body: some Scene {
     WindowGroup {
-      
+      ContentView()
     }
   }
 }
