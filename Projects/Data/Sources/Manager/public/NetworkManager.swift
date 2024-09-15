@@ -14,7 +14,7 @@ import AppFoundation
 
 protocol Networkable {
   associatedtype Target
-  func request(target: Target) async -> AnyPublisher<Result<Data, MercuryError>, Never>
+  func request(target: Target) async -> Result<Data, MercuryError>
 }
 
 public class NetworkManager<Target: TargetType> {
@@ -56,8 +56,8 @@ public class NetworkManager<Target: TargetType> {
 
 extension NetworkManager: Networkable {
   
-  public func request(target: Target) async -> AnyPublisher<Result<Data, MercuryError>, Never> {
-    return reachabilityManager.isOnline()
+  public func request(target: Target) async -> Result<Data, MercuryError> {
+    return await reachabilityManager.isOnline()
       .flatMap { [weak self] isOnline -> Future<Result<Data, MercuryError>, Never> in
         Future<Result<Data, MercuryError>, Never> { promise in
           guard isOnline else {
@@ -79,10 +79,23 @@ extension NetworkManager: Networkable {
               }
             }
           }
+        }
       }
-    }
-    .eraseToAnyPublisher()
+      .eraseToAnyPublisher()
+      .async()
+    
   }
 }
 
+extension Publisher where Failure == Never {
+  func async() async -> Output {
+    await withCheckedContinuation { continuation in
+      var cancellable: AnyCancellable?
+      cancellable = self.sink { value in
+        cancellable?.cancel()
+        continuation.resume(returning: value)
+      }
+    }
+  }
+}
 

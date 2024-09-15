@@ -26,7 +26,6 @@ public extension TargetDependency {
   static let appFoundation: TargetDependency = .project(target: "AppFoundation", path: .relativeToRoot("Projects/AppFoundation"))
   static let data: TargetDependency = .project(target: "Data", path: .relativeToRoot("Projects/Data"))
   static let domain: TargetDependency = .project(target: "Domain", path: .relativeToRoot("Projects/Domain"))
-  static let domainInterface: TargetDependency = .project(target: "DomainInterface", path: .relativeToRoot("Projects/DomainInterface"))
   static let uiComponent: TargetDependency = .project(target: "UIComponent", path: .relativeToRoot("Projects/UIComponent"))
   static let analysis = FeatureDependency.analysis.framework
   static let appleSignIn = FeatureDependency.appleSignIn.framework

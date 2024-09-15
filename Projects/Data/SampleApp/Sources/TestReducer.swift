@@ -38,17 +38,17 @@ struct TestReducer {
       case .testAPI:
         let networkManager = NetworkManager<MockAPI>()
         return .run { send in
-          for try await result in await networkManager.request(target: .mockingAPI).values {
-            switch result {
-            case .success(let data):
-              if let setupString = JSON(data)["setup"].string {
-                await send(.testAPIResponse(setupString))
-              }
-            case .failure(let error):
-              await send(.error(error))
+          let result = await networkManager.request(target: .mockingAPI)
+          switch result {
+          case .success(let data):
+            if let setupString = JSON(data)["setup"].string {
+              await send(.testAPIResponse(setupString))
             }
+          case .failure(let error):
+            await send(.error(error))
           }
         }
+        
       case .testAPIResponse(let resultString):
         state.apiResult = resultString
         return .none

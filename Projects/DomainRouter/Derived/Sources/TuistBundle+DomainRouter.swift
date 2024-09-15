@@ -4,11 +4,11 @@
 import Foundation// MARK: - Swift Bundle Accessor for Frameworks
 private class BundleFinder {}
 extension Foundation.Bundle {
-/// Since DomainInterfaceSampleApp is a application, the bundle for classes within this module can be used directly.
+/// Since DomainRouter is a dynamic framework, the bundle for classes within this module can be used directly.
 static let module = Bundle(for: BundleFinder.self)
 }// MARK: - Objective-C Bundle Accessor
 @objc
-public class DomainInterfaceSampleAppResources: NSObject {
+public class DomainRouterResources: NSObject {
 @objc public class var bundle: Bundle {
     return .module
 }

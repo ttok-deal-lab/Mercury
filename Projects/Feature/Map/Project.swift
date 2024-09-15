@@ -15,7 +15,6 @@ let project = Project.staticFramework(
     .appFoundation,
     .composableArchitecture,
     .swiftAlgorithm,
-    .domainInterface,
     .uiComponent,
     .kakaoMap,
     .domain
