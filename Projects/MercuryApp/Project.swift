@@ -11,7 +11,6 @@ let project = Project.app(
     .data,
     .domain,
     .domainInterface,
-    .domainRouter,
     .uiComponent,
     .analysis,
     .appleSignIn,

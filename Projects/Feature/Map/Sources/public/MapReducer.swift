@@ -9,7 +9,7 @@ import Combine
 import Foundation
 import CoreLocation
 import AppFoundation
-import DomainRouter
+import DomainInterface
 import ComposableArchitecture
 
 @Reducer
@@ -43,14 +43,11 @@ public struct MapReducer {
     case showDeniedLocationAlert
     case setUserLocation(CLLocationCoordinate2D)
     case setCameraCenterLocation(CLLocationCoordinate2D?)
-    case loadAuctionItems(criteriaCoord: CLLocationCoordinate2D?)
-    case setAuctionItems(auctionItems: [AuctionItem])
   }
   
   // MARK: - private property
   
-  @Dependency(\.userLocationUsecase) private var userLocationUsecase
-  @Dependency(\.auctionItemUsecase) private var auctionItemUsecase
+  @Dependency(\.userLocationClient) private var userLocationClient
   
   
   // MARK: - life cycle
@@ -73,7 +70,7 @@ public struct MapReducer {
         return .none
       case .checkUserAuthorization:
         return .run { send in
-          let status = await self.userLocationUsecase.userAuthorization()
+          let status = self.userLocationClient.userAuthorization()
           await send(.setAuthenticationStatus(status))
         }
       case .setAuthenticationStatus(let status):
@@ -91,8 +88,9 @@ public struct MapReducer {
         }
       case .requestLocationAuthentication:
         return .run { @MainActor send in
-          let status = await self.userLocationUsecase.requestUserAuthorization()
-          send(.locationAuthorizationChanged(status))
+          for await status in self.userLocationClient.requestUserAuthorization() {
+            send(.locationAuthorizationChanged(status))
+          }
         }
       case .locationAuthorizationChanged(let status):
         return .run { send in
@@ -113,28 +111,13 @@ public struct MapReducer {
         return .none
       case .setCameraCenterLocation(let location):
         state.cameraCenterLocation = location
-        return .run { send in
-          await send(.loadAuctionItems(criteriaCoord: location))
-        }
-      case .loadAuctionItems(let criteria):
-        return .run { send in
-          let result = await self.auctionItemUsecase.loadAuctionItems()
-          switch result {
-          case .success(let auctionItems):
-            await send(.setAuctionItems(auctionItems: auctionItems))
-          case .failure(let error):
-            await send(.setError(error))
-          }
-        }
-      case .setAuctionItems(let auctionItems):
-        state.auctionItems = auctionItems
         return .none
       }
     }
   }
   
   private func updateUserLocation(send: Send<Action>) async {
-    let userLocation = await userLocationUsecase.userCurrentLocation()
+    let userLocation = userLocationClient.userCurrentLocation()
     guard let userLocation = userLocation?.coordinate else {
       return await send(.setError(.init(from: .ownModule(.map), .failToGetUserLocationCoordinate)))
     }
