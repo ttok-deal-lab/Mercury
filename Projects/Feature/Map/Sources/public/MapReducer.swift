@@ -9,6 +9,7 @@ import Combine
 import Foundation
 import CoreLocation
 import AppFoundation
+import DomainRouter
 import ComposableArchitecture
 
 @Reducer
@@ -17,8 +18,10 @@ public struct MapReducer {
   @ObservableState
   public struct State: Equatable {
     public static func == (lhs: MapReducer.State, rhs: MapReducer.State) -> Bool {
-      return lhs.userLocation?.latitude == rhs.userLocation?.latitude &&
-      lhs.userLocation?.longitude == rhs.userLocation?.longitude
+      guard let lhsLocation = lhs.userLocation, let rhsLocation = rhs.userLocation else {
+        return false
+      }
+      return lhsLocation.latitude == rhsLocation.latitude && lhsLocation.longitude == rhsLocation.longitude
     }
     public var error: MercuryError?
     public var isMapDraw: Bool = true

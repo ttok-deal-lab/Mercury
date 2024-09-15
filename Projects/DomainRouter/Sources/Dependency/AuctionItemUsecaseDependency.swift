@@ -7,16 +7,15 @@
 
 import Foundation
 import ComposableArchitecture
-import DomainInterface
 import Domain
+import DomainInterface
 
-private enum AuctionItemUsecaseKey: DependencyKey {
-  static let liveValue: AuctionItemUsecase = AuctionItemUsecaseImplement()
-//  static let testValue: AuctionItemUsecase = StubAuctionItemUsecaseImplement()
+public enum AuctionItemUsecaseKey: DependencyKey {
+  public static let liveValue: AuctionItemUsecase = AuctionItemUsecaseImplement()
 }
 
 extension DependencyValues {
-  var auctionItemUsecase: AuctionItemUsecase {
+  public var auctionItemUsecase: AuctionItemUsecase {
     get { self[AuctionItemUsecaseKey.self] }
     set { self[AuctionItemUsecaseKey.self] = newValue }
   }

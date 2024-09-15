@@ -17,10 +17,10 @@ struct MercuryApp: App {
   
   var body: some Scene {
     WindowGroup {
-      ContentView(store: Store(initialState: MapReducer.State(), reducer: {
-        MapReducer()
-      }))
-      .ignoresSafeArea()
+//      ContentView(store: Store(initialState: MapReducer.State(), reducer: {
+//        MapReducer()
+//      }))
+//      .ignoresSafeArea()
     }
   }
 }

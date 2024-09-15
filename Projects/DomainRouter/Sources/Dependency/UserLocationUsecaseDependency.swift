@@ -10,12 +10,12 @@ import ComposableArchitecture
 import DomainInterface
 import Domain
 
-private enum UserLocationUsecaseKey: DependencyKey {
-  static let liveValue: UserLocationUsecase = UserLocationUsecaseImplement()
+public enum UserLocationUsecaseKey: DependencyKey {
+  public static let liveValue: UserLocationUsecase = UserLocationUsecaseImplement()
 }
 
 extension DependencyValues {
-  var userLocationUsecase: UserLocationUsecase {
+  public var userLocationUsecase: UserLocationUsecase {
     get { self[UserLocationUsecaseKey.self] }
     set { self[UserLocationUsecaseKey.self] = newValue }
   }

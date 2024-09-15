@@ -5,20 +5,27 @@
 //  Created by 송하민 on 8/7/24.
 //
 
-import Map
 import SwiftUI
 import CoreLocation
 import ComposableArchitecture
 
-struct ContentView: View {
+public struct MapContentView: View {
   
   // MARK: - private property
   
+  @Perception.Bindable private var store: StoreOf<MapReducer>
+  
+
   // MARK: - internal property
   
-  @Perception.Bindable var store: StoreOf<MapReducer>
+  // MARK: - life cycle
   
-  var body: some View {
+  public init(store: StoreOf<MapReducer>) {
+    self.store = store
+  }
+  
+  
+  public var body: some View {
     KakaoMapView(
       draw: $store.isMapDraw,
       userLocation: store.userLocation,
