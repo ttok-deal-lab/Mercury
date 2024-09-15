@@ -1,6 +1,6 @@
 //
-//  ContnetView.swift
-//  AppleSignInSampleApp
+//  AppleSignInButton.swift
+//  Onboarding
 //
 //  Created by 송하민 on 9/16/24.
 //
@@ -9,10 +9,11 @@ import Foundation
 import SwiftUI
 import AuthenticationServices
 
-struct ContentView: View {
-  var body: some View {
+public struct AppleSignInButton: View {
+  public init() { }
+  
+  public var body: some View {
     ZStack {
-      
       SignInWithAppleButton(.signUp) { request in
         request.requestedScopes = [.fullName, .email]
       } onCompletion: { result in

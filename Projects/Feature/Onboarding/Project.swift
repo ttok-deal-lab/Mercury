@@ -9,10 +9,14 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.dynamicFramework(
-  name: "GoogleSignIn",
+  name: "Onboarding",
   platform: .iOS,
   frameworkDependencies: [
-    .appFoundation
+    .appFoundation,
+    .composableArchitecture,
+    .uiComponent,
+    .googleSignIn,
+    .googleSignInSwift
   ],
   frameworkTestDependencies: []
 )

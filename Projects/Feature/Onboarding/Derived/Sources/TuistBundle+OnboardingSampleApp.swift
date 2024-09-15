@@ -4,11 +4,11 @@
 import Foundation// MARK: - Swift Bundle Accessor for Frameworks
 private class BundleFinder {}
 extension Foundation.Bundle {
-/// Since AppleSignIn is a dynamic framework, the bundle for classes within this module can be used directly.
+/// Since OnboardingSampleApp is a application, the bundle for classes within this module can be used directly.
 static let module = Bundle(for: BundleFinder.self)
 }// MARK: - Objective-C Bundle Accessor
 @objc
-public class AppleSignInResources: NSObject {
+public class OnboardingSampleAppResources: NSObject {
 @objc public class var bundle: Bundle {
     return .module
 }
