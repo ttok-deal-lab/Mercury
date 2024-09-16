@@ -19,18 +19,17 @@ public extension TargetDependency {
   static let swiftyJSON: TargetDependency = .external(name: "SwiftyJSON")
   static let swiftAlgorithm: TargetDependency = .external(name: "Algorithms")
   static let swiftTesting: TargetDependency = .external(name: "Testing")
+  static let googleSignIn: TargetDependency = .external(name: "GoogleSignIn")
+  static let googleSignInSwift: TargetDependency = .external(name: "GoogleSignInSwift")
   
   
   // MARK: - own modules
 
   static let appFoundation: TargetDependency = .project(target: "AppFoundation", path: .relativeToRoot("Projects/AppFoundation"))
-  static let data: TargetDependency = .project(target: "Data", path: .relativeToRoot("Projects/Data"))
+  static let network: TargetDependency = .project(target: "Network", path: .relativeToRoot("Projects/Network"))
   static let domain: TargetDependency = .project(target: "Domain", path: .relativeToRoot("Projects/Domain"))
-  static let domainInterface: TargetDependency = .project(target: "DomainInterface", path: .relativeToRoot("Projects/DomainInterface"))
   static let uiComponent: TargetDependency = .project(target: "UIComponent", path: .relativeToRoot("Projects/UIComponent"))
   static let analysis = FeatureDependency.analysis.framework
-  static let appleSignIn = FeatureDependency.appleSignIn.framework
-  static let googleSignIn = FeatureDependency.googleSignIn.framework
   static let auction = FeatureDependency.auction.framework
   static let comment = FeatureDependency.comment.framework
   static let mainTabbar = FeatureDependency.mainTabbar.framework
@@ -42,7 +41,6 @@ public extension TargetDependency {
   private enum FeatureDependency: FeatureName {
     case analysis = "Analysis"
     case appleSignIn = "AppleSignIn"
-    case googleSignIn = "GoogleSignIn"
     case auction = "Auction"
     case comment = "Comment"
     case mainTabbar = "MainTabbar"

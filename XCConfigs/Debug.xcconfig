@@ -1,3 +1,4 @@
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG
 #include "Mercury.xcconfig"
 
+APS_ENVIRONMENT = development

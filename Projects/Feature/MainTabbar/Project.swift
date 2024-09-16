@@ -14,7 +14,6 @@ let project = Project.dynamicFramework(
   frameworkDependencies: [
     .appFoundation,
     .composableArchitecture,
-    .domainInterface,
     .uiComponent,
     .auction,
     .analysis,

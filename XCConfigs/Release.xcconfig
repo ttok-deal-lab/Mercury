@@ -1,1 +1,3 @@
 #include "Mercury.xcconfig"
+
+APS_ENVIRONMENT = production

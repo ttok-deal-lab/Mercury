@@ -58,7 +58,6 @@ extension Project {
       dependencies: dependencies,
       settings: .settings(
         base: [
-          "CODE_SIGN_ENTITLEMENTS": "${WORKSPACE_DIR}/Entitlements/App.entitlements",
           "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon"
         ],
         configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases)
