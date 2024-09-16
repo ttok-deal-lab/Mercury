@@ -10,7 +10,7 @@ import AppFoundation
 import SwiftUI
 import GoogleSignIn
 
-public struct GoogleSignInButton: View {
+public struct GoogleSignInButtonView: View {
   @StateObject private var signInManager = GoogleSignInManager()
 
   public init() {

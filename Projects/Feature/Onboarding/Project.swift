@@ -16,7 +16,8 @@ let project = Project.dynamicFramework(
     .composableArchitecture,
     .uiComponent,
     .googleSignIn,
-    .googleSignInSwift
+    .googleSignInSwift,
+    .domain
   ],
   frameworkTestDependencies: []
 )

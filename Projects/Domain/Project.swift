@@ -12,7 +12,8 @@ let project = Project.dynamicFramework(
   name: "Domain",
   platform: .iOS,
   frameworkDependencies: [
-    .appFoundation
+    .appFoundation,
+    .composableArchitecture
   ],
   frameworkTestDependencies: []
 )

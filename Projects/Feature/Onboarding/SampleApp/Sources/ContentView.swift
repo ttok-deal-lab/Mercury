@@ -8,12 +8,15 @@
 import Foundation
 import SwiftUI
 import Onboarding
+import ComposableArchitecture
 
 struct ContentView: View {
   var body: some View {
     VStack {
-      AppleSignInButton()
-      GoogleSignInButton()
+      AppleSignInButtonView(store: Store(initialState: OnboardingReducer.State(), reducer: {
+        OnboardingReducer()
+      }))
+      GoogleSignInButtonView()
     }
   }
 }
