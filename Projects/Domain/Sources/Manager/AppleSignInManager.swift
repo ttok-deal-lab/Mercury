@@ -10,10 +10,15 @@ import AppFoundation
 import AuthenticationServices
 
 class AppleSignInManager: SignInable {
+  
+  // MARK: - private property
+  
   private var delegate: AppleSignInDelegate?
   
-  func signIn() async throws -> SignInToken {
-    try await withCheckedThrowingContinuation { continuation in
+  // MARK: - internal method
+  
+  func signIn() async -> Result<SignInToken, MercuryError> {
+    await withCheckedContinuation { continuation in
       let provider = ASAuthorizationAppleIDProvider()
       let request = provider.createRequest()
       request.requestedScopes = [.fullName, .email]
@@ -27,23 +32,30 @@ class AppleSignInManager: SignInable {
 }
 
 private class AppleSignInDelegate: NSObject, ASAuthorizationControllerDelegate {
-  let continuation: CheckedContinuation<SignInToken, Error>
   
-  init(continuation: CheckedContinuation<SignInToken, Error>) {
+  // MARK: - private property
+  
+  private let continuation: CheckedContinuation<Result<SignInToken, MercuryError>, Never>
+  
+  // MARK: - life cycle
+  
+  init(continuation: CheckedContinuation<Result<SignInToken, MercuryError>, Never>) {
     self.continuation = continuation
   }
+  
+  // MARK: - internal method
   
   func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
     if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
        let identityToken = appleIDCredential.identityToken,
        let tokenString = String(data: identityToken, encoding: .utf8) {
-      continuation.resume(returning: tokenString)
+      continuation.resume(returning: .success(tokenString))
     } else {
-      continuation.resume(throwing: MercuryError(from: .ownModule(.appleSignin), .unknown))
+      continuation.resume(returning: .failure(MercuryError(from: .ownModule(.appleSignin), .unknown)))
     }
   }
   
   func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-    continuation.resume(throwing: error)
+    continuation.resume(returning: .failure(MercuryError(code: (error as NSError).code)))
   }
 }

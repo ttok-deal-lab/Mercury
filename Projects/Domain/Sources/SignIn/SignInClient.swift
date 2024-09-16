@@ -27,20 +27,14 @@ public struct SignInClient {
 extension SignInClient: DependencyKey {
   public static let liveValue = Self(
     appleSignIn: {
-      do {
-        let signInFactory = SignInFactory()
-        let signInToken = try await signInFactory.appleSigner().signIn()
-        return .success(signInToken)
-      } catch {
-        if let error = error as? MercuryError {
-          return .failure(error)
-        } else {
-          return .failure(.init(from: .ownModule(.appleSignin), .unknown))
-        }
-      }
+      let signInFactory = SignInFactory()
+      let signInResult = await signInFactory.appleSigner().signIn()
+      return signInResult
     },
     googleSignIn: {
-      return .failure(.init(from: .server, .unknown))
+      let signInFactory = SignInFactory()
+      let signInResult = await signInFactory.googleSigner().signIn()
+      return signInResult
     }
   )
 }

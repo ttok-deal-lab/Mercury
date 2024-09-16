@@ -13,6 +13,6 @@ final class SignInFactory {
   }
   
   func googleSigner() -> any SignInable {
-    return AppleSignInManager()
+    return GoogleSignInManager()
   }
 }

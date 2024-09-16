@@ -9,12 +9,10 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.dynamicFramework(
-  name: "Onboarding",
+  name: "Data",
   platform: .iOS,
   frameworkDependencies: [
     .appFoundation,
-    .composableArchitecture,
-    .uiComponent,
     .domain
   ],
   frameworkTestDependencies: []

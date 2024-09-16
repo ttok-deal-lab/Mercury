@@ -16,7 +16,9 @@ struct ContentView: View {
       AppleSignInButtonView(store: Store(initialState: OnboardingReducer.State(), reducer: {
         OnboardingReducer()
       }))
-      GoogleSignInButtonView()
+      GoogleSignInButtonView(store: Store(initialState: OnboardingReducer.State(), reducer: {
+        OnboardingReducer()
+      }))
     }
   }
 }

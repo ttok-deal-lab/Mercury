@@ -12,7 +12,6 @@ let project = Project.app(
     .domain,
     .uiComponent,
     .analysis,
-    .googleSignIn,
     .auction,
     .comment,
     .mainTabbar,

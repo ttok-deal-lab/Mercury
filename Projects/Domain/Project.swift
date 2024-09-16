@@ -13,7 +13,9 @@ let project = Project.dynamicFramework(
   platform: .iOS,
   frameworkDependencies: [
     .appFoundation,
-    .composableArchitecture
+    .composableArchitecture,
+    .googleSignIn,
+    .googleSignInSwift,
   ],
   frameworkTestDependencies: []
 )

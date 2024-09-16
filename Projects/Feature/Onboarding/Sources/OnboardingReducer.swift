@@ -60,9 +60,15 @@ public struct OnboardingReducer {
           }
         case .google:
           return .run { send in
-            
+            let result = await signInClient.googleSignIn()
+            switch result {
+            case .success(let signInToken):
+              print(signInToken)
+              await send(.trySignIn(signInToken))
+            case .failure(let error):
+              await send(.setError(error))
+            }
           }
-          
         }
       case .setError(let error):
         state.error = error

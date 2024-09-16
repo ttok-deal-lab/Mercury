@@ -6,7 +6,8 @@
 //
 
 import Foundation
+import AppFoundation
 
 public protocol SignInable {
-  func signIn() async throws -> SignInToken
+  func signIn() async -> Result<SignInToken, MercuryError>
 }
