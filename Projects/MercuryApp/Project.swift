@@ -8,7 +8,7 @@ let project = Project.app(
   dependencies: [
     .composableArchitecture,
     .appFoundation,
-    .data,
+    .network,
     .domain,
     .uiComponent,
     .analysis,

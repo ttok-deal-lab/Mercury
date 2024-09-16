@@ -26,7 +26,7 @@ public extension TargetDependency {
   // MARK: - own modules
 
   static let appFoundation: TargetDependency = .project(target: "AppFoundation", path: .relativeToRoot("Projects/AppFoundation"))
-  static let data: TargetDependency = .project(target: "Data", path: .relativeToRoot("Projects/Data"))
+  static let network: TargetDependency = .project(target: "Network", path: .relativeToRoot("Projects/Network"))
   static let domain: TargetDependency = .project(target: "Domain", path: .relativeToRoot("Projects/Domain"))
   static let uiComponent: TargetDependency = .project(target: "UIComponent", path: .relativeToRoot("Projects/UIComponent"))
   static let analysis = FeatureDependency.analysis.framework

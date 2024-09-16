@@ -12,32 +12,35 @@ import ComposableArchitecture
 public typealias SignInToken = String
 
 public struct SignInClient {
-  public var appleSignIn: () -> AsyncStream<Result<SignInToken, MercuryError>>
-//  public var googleSignIn: () async throws -> SignInToken
+  public var appleSignIn: () async -> Result<SignInToken, MercuryError>
+  public var googleSignIn: () async -> Result<SignInToken, MercuryError>
   
-  public init(appleSignIn: @escaping () -> AsyncStream<Result<SignInToken, MercuryError>>) {
+  public init(
+    appleSignIn: @escaping () async -> Result<SignInToken, MercuryError>,
+    googleSignIn: @escaping () async -> Result<SignInToken, MercuryError>
+  ) {
     self.appleSignIn = appleSignIn
+    self.googleSignIn = googleSignIn
   }
 }
 
 extension SignInClient: DependencyKey {
-  public static let liveValue: SignInClient = Self(
+  public static let liveValue = Self(
     appleSignIn: {
-      AsyncStream { continuation in
-        Task {
-          do {
-            let signInToken = try await AppleSignInManager().signIn()
-            continuation.yield(.success(signInToken))
-          } catch {
-            if let error = error as? MercuryError {
-              continuation.yield(.failure(error))
-            } else {
-              continuation.yield(.failure(.init(from: .ownModule(.appleSignin), .unknown)))
-            }
-          }
-          continuation.finish()
+      do {
+        let signInFactory = SignInFactory()
+        let signInToken = try await signInFactory.appleSigner().signIn()
+        return .success(signInToken)
+      } catch {
+        if let error = error as? MercuryError {
+          return .failure(error)
+        } else {
+          return .failure(.init(from: .ownModule(.appleSignin), .unknown))
         }
       }
+    },
+    googleSignIn: {
+      return .failure(.init(from: .server, .unknown))
     }
   )
 }

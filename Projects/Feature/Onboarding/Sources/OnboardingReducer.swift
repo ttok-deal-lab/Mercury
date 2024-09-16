@@ -49,14 +49,13 @@ public struct OnboardingReducer {
         switch signInType {
         case .apple:
           return .run { send in
-            for await result in signInClient.appleSignIn() {
-              switch result {
-              case .success(let signInToken):
-                print(signInToken)
-                await send(.trySignIn(signInToken))
-              case .failure(let error):
-                await send(.setError(error))
-              }
+            let result = await signInClient.appleSignIn()
+            switch result {
+            case .success(let signInToken):
+              print(signInToken)
+              await send(.trySignIn(signInToken))
+            case .failure(let error):
+              await send(.setError(error))
             }
           }
         case .google:

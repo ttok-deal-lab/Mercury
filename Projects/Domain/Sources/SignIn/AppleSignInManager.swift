@@ -9,7 +9,7 @@ import Foundation
 import AppFoundation
 import AuthenticationServices
 
-class AppleSignInManager {
+class AppleSignInManager: SignInable {
   private var delegate: AppleSignInDelegate?
   
   func signIn() async throws -> SignInToken {
