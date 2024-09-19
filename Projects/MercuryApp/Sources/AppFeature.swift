@@ -10,7 +10,7 @@ import Foundation
 import ComposableArchitecture
 
 @Reducer
-struct AppCoordinatorReducer {
+struct AppFeature {
   
   @ObservableState
   struct State: Equatable {
@@ -19,6 +19,7 @@ struct AppCoordinatorReducer {
   
   enum Action {
     case path(StackAction<Path.State, Path.Action>)
+    case navigateToMap
   }
   
   var body: some ReducerOf<Self> {
@@ -26,34 +27,40 @@ struct AppCoordinatorReducer {
       switch action {
       case let .path(stackAction):
         switch stackAction {
-        case .element(id: _, action: .mapAction(.setDrawMap(true))):
-          state.path.append(.mapState())
+        case .element(id: _, action: _):
+          state.path.append(.map())
           return .none
         default:
           return .none
         }
+      case .navigateToMap:
+        state.path.append(.map())
+        return .none
       }
+    }
+    .forEach(\.path, action: \.path) {
+      Path()
     }
   }
   
 }
 
-extension AppCoordinatorReducer {
+extension AppFeature {
   
   @Reducer
   struct Path {
     
     @ObservableState
     enum State: Equatable {
-      case mapState(MapReducer.State = .init())
+      case map(MapReducer.State = .init())
     }
     
     enum Action {
-      case mapAction(MapReducer.Action)
+      case map(MapReducer.Action)
     }
     
     var body: some ReducerOf<Self> {
-      Scope(state: \.mapState, action: \.mapAction) {
+      Scope(state: \.map, action: \.map) {
         MapReducer()
       }
     }

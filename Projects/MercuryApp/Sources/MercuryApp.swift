@@ -17,10 +17,9 @@ struct MercuryApp: App {
   
   var body: some Scene {
     WindowGroup {
-//      ContentView(store: Store(initialState: MapReducer.State(), reducer: {
-//        MapReducer()
-//      }))
-//      .ignoresSafeArea()
+      AppFeatureView(store: Store(initialState: AppFeature.State(), reducer: {
+        AppFeature()
+      }))
     }
   }
 }
@@ -30,7 +29,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
     
     if let sdkAppKey = CommonDefine.mapKey {
-      print("sdk app key -> \(sdkAppKey)")
+      print(sdkAppKey)
       SDKInitializer.InitSDK(appKey: sdkAppKey)
     }
     return true

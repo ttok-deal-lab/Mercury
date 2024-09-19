@@ -44,7 +44,6 @@ import KakaoMapsSDK
     let view: KMViewContainer = KMViewContainer()
     view.sizeToFit()
     context.coordinator.createController(view)
-    context.coordinator.controller?.prepareEngine()
     return view
   }
   

@@ -8,15 +8,16 @@ let project = Project.app(
   dependencies: [
     .composableArchitecture,
     .appFoundation,
+    .uiComponent,
     .network,
     .domain,
-    .uiComponent,
     .analysis,
     .auction,
     .comment,
-    .mainTabbar,
     .profile,
-    .map
+    .map,
+    .kakaoMap,
+    .swiftAlgorithm
   ],
   testDependencies: []
 )

@@ -9,7 +9,6 @@ import Map
 import SwiftUI
 import KakaoMapsSDK
 import AppFoundation
-import CoreLocation
 import ComposableArchitecture
 
 @main

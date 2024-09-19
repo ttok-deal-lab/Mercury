@@ -14,10 +14,10 @@ let project = Project.staticFramework(
   frameworkDependencies: [
     .appFoundation,
     .composableArchitecture,
+    .domain,
     .swiftAlgorithm,
     .uiComponent,
-    .kakaoMap,
-    .domain
+    .kakaoMap
   ],
   frameworkTestDependencies: []
 )
