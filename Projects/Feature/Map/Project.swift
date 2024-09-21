@@ -8,10 +8,10 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.dynamicFramework(
+let project = Project.feature(
   name: "Map",
   platform: .iOS,
-  frameworkDependencies: [
+  dependencies: [
     .appFoundation,
     .composableArchitecture,
     .domain,
@@ -19,5 +19,5 @@ let project = Project.dynamicFramework(
     .uiComponent,
     .kakaoMap
   ],
-  frameworkTestDependencies: []
+  testDependencies: []
 )

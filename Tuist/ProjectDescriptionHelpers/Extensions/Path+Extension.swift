@@ -25,8 +25,8 @@ extension Path {
     return .relativeToRoot("Tools/\(scriptName)")
   }
   
-  public static func featurePath(_ name: String) -> Path {
-    return .relativeToRoot("Projects/Feature/\(name)")
+  public static func featurePath(_ target: String) -> Path {
+    return .relativeToRoot("Projects/Feature/\(target)")
   }
   
   

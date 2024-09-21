@@ -69,10 +69,7 @@ extension Project {
     return [sources, tests, sampleApp]
   }
   
-  
-  // MARK: - method
-  
-  static func framework(
+  fileprivate static func framework(
     name: String,
     destinations: Destinations,
     bundleId: String,
@@ -92,5 +89,52 @@ extension Project {
     )
     
     return Project(name: name, targets: targets)
+  }
+  
+  
+  // MARK: - method
+  
+  public static func staticFramework(
+    name: String,
+    destinations: Destinations = .iOS,
+    bundleId: String = bundleId,
+    product: Product = .staticFramework,
+    platform: Platform,
+    scripts: [TargetScript] = [],
+    frameworkDependencies: [TargetDependency],
+    frameworkTestDependencies: [TargetDependency]
+  ) -> Project {
+    return framework(
+      name: name,
+      destinations: destinations,
+      bundleId: bundleId,
+      product: product,
+      platform: platform,
+      scripts: scripts,
+      frameworkDependencies: frameworkDependencies,
+      frameworkTestDependencies: frameworkTestDependencies
+    )
+  }
+  
+  public static func dynamicFramework(
+    name: String,
+    destinations: Destinations = .iOS,
+    bundleId: String = bundleId,
+    product: Product = .framework,
+    platform: Platform,
+    scripts: [TargetScript] = [],
+    frameworkDependencies: [TargetDependency],
+    frameworkTestDependencies: [TargetDependency]
+  ) -> Project {
+    return framework(
+      name: name,
+      destinations: destinations,
+      bundleId: bundleId,
+      product: product,
+      platform: platform,
+      scripts: scripts,
+      frameworkDependencies: frameworkDependencies,
+      frameworkTestDependencies: frameworkTestDependencies
+    )
   }
 }
