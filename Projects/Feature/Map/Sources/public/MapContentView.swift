@@ -5,6 +5,7 @@
 //  Created by 송하민 on 8/7/24.
 //
 
+import AppFoundation
 import SwiftUI
 import CoreLocation
 import ComposableArchitecture
@@ -31,18 +32,26 @@ public struct MapContentView: View {
       userLocation: store.userLocation,
       cameraCenterLocation: Binding(
         get: { store.cameraCenterLocation },
-        set: { store.send(.setCameraCenterLocation($0)) }
+        set: { newValue in
+          if newValue != store.cameraCenterLocation {
+            store.send(.setCameraCenterLocation(newValue))
+          }
+        }
       ),
       auctionItems: store.auctionItems
     )
-    .onAppear(perform: {
-      self.store.send(.setDrawMap(true))
-    })
-    .onDisappear(perform: {
-      self.store.send(.setDrawMap(false))
-    })
+    .onAppear {
+      if !store.isMapDraw {
+        store.send(.setDrawMap(true))
+      }
+    }
+    .onDisappear {
+      if store.isMapDraw {
+        store.send(.setDrawMap(false))
+      }
+    }
     .task {
-      self.store.send(.checkUserAuthorization)
+      await store.send(.checkUserAuthorization).finish()
     }
     .alert(isPresented: $store.isShowDeniedLocationAlert) {
       Alert(
