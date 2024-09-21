@@ -44,7 +44,6 @@ import KakaoMapsSDK
     let view: KMViewContainer = KMViewContainer()
     view.sizeToFit()
     context.coordinator.createController(view)
-    context.coordinator.controller?.prepareEngine()
     return view
   }
   
@@ -58,6 +57,14 @@ import KakaoMapsSDK
       }
     })
   }
+  
+  public static func dismantleUIView(_ uiView: KMViewContainer, coordinator: KakaoMapCoordinator) {
+    coordinator.controller?.pauseEngine()
+    coordinator.controller?.resetEngine()
+  }
+  
+  
+  // MARK: - private method
   
   private func onMapFullyLoaded(context: Self.Context) {
     if let userLocation {

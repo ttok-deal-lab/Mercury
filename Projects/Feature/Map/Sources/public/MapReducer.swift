@@ -19,7 +19,7 @@ public struct MapReducer {
   public struct State: Equatable {
     public static func == (lhs: MapReducer.State, rhs: MapReducer.State) -> Bool {
       guard let lhsLocation = lhs.userLocation, let rhsLocation = rhs.userLocation else {
-        return false
+        return true
       }
       return lhsLocation.latitude == rhsLocation.latitude && lhsLocation.longitude == rhsLocation.longitude
     }

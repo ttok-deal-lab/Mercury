@@ -32,7 +32,6 @@ public extension TargetDependency {
   static let analysis = FeatureDependency.analysis.framework
   static let auction = FeatureDependency.auction.framework
   static let comment = FeatureDependency.comment.framework
-  static let mainTabbar = FeatureDependency.mainTabbar.framework
   static let profile = FeatureDependency.profile.framework
   static let map = FeatureDependency.map.framework
   
@@ -43,7 +42,6 @@ public extension TargetDependency {
     case appleSignIn = "AppleSignIn"
     case auction = "Auction"
     case comment = "Comment"
-    case mainTabbar = "MainTabbar"
     case profile = "Profile"
     case map = "Map"
     

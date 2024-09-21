@@ -31,27 +31,3 @@ public struct GoogleSignInButtonView: View {
     }
   }
 }
-
-//class GoogleSignInManager: ObservableObject {
-//
-//  init() { }
-//  
-//  func signIn() {
-//    guard let presentingViewController = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else {
-//      return
-//    }
-//    
-//    GIDSignIn.sharedInstance.signIn(withPresenting: presentingViewController) { result, error in
-//      guard let result = result else {
-//        print("Error: \(error?.localizedDescription ?? "Unknown error")")
-//        return
-//      }
-//      print(result.user.accessToken.tokenString)
-//    }
-//  }
-//  
-//  func signOut() {
-//    GIDSignIn.sharedInstance.signOut()
-//  }
-//}
-
