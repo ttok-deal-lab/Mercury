@@ -13,7 +13,8 @@ let project = Project.staticFramework(
   platform: .iOS,
   frameworkDependencies: [
     .appFoundation,
-    .domain
+    .domain,
+    .composableArchitecture
   ],
   frameworkTestDependencies: []
 )

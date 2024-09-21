@@ -16,19 +16,18 @@ struct AppFeatureView: View {
   @Perception.Bindable var store: StoreOf<AppFeature>
   
   var body: some View {
-    WithPerceptionTracking {
-      NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-        Button {
-          store.send(.navigateToMap)
-        } label: {
-          Text("goto map")
-        }
-      } destination: { store in
-        switch store.state {
-        case .map:
-          if let store = store.scope(state: \.map, action: \.map) {
-            MapContentView(store: store)
-          }
+    NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
+      // TODO: 초기화면 구성
+      Button {
+        store.send(.navigateToMap)
+      } label: {
+        Text("goto map")
+      }
+    } destination: { store in
+      switch store.state {
+      case .map:
+        if let store = store.scope(state: \.map, action: \.map) {
+          MapContentView(store: store)
         }
       }
     }

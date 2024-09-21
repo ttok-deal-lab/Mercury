@@ -4,11 +4,11 @@
 import Foundation// MARK: - Swift Bundle Accessor for Frameworks
 private class BundleFinder {}
 extension Foundation.Bundle {
-/// Since Data is a dynamic framework, the bundle for classes within this module can be used directly.
+/// Since SignUp is a dynamic framework, the bundle for classes within this module can be used directly.
 static let module = Bundle(for: BundleFinder.self)
 }// MARK: - Objective-C Bundle Accessor
 @objc
-public class DataResources: NSObject {
+public class SignUpResources: NSObject {
 @objc public class var bundle: Bundle {
     return .module
 }
