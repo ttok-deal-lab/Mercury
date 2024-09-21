@@ -1,5 +1,5 @@
 //
-//  OnboardingReducer.swift
+//  OnboardingFeature.swift
 //  Onboarding
 //
 //  Created by 송하민 on 9/16/24.
@@ -17,7 +17,7 @@ public enum SignInType {
 }
 
 @Reducer
-public struct OnboardingReducer {
+public struct OnboardingFeature {
   
   @ObservableState
   public struct State: Equatable {
@@ -49,24 +49,25 @@ public struct OnboardingReducer {
         switch signInType {
         case .apple:
           return .run { send in
-            let result = await signInClient.appleSignIn()
-            switch result {
-            case .success(let signInToken):
-              print(signInToken)
-              await send(.trySignIn(signInToken))
-            case .failure(let error):
-              await send(.setError(error))
+            if let result = await signInClient.appleSignIn() {
+              switch result {
+              case .success(let signInToken):
+                await send(.trySignIn(signInToken))
+              case .failure(let error):
+                await send(.setError(error))
+              }
             }
           }
         case .google:
           return .run { send in
-            let result = await signInClient.googleSignIn()
-            switch result {
-            case .success(let signInToken):
-              print(signInToken)
-              await send(.trySignIn(signInToken))
-            case .failure(let error):
-              await send(.setError(error))
+            if let result = await signInClient.googleSignIn() {
+              switch result {
+              case .success(let signInToken):
+                print(signInToken)
+                await send(.trySignIn(signInToken))
+              case .failure(let error):
+                await send(.setError(error))
+              }
             }
           }
         }

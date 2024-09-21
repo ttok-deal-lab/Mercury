@@ -15,11 +15,11 @@ public struct GoogleSignInButtonView: View {
   
   // MARK: - private property
   
-  @Perception.Bindable private var store: StoreOf<OnboardingReducer>
+  @Perception.Bindable private var store: StoreOf<OnboardingFeature>
 
   // MARK: - life cycle
   
-  public init(store: StoreOf<OnboardingReducer>) {
+  public init(store: StoreOf<OnboardingFeature>) {
     self.store = store
   }
   
