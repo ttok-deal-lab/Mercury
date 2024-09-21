@@ -5,11 +5,11 @@
 //  Created by 송하민 on 8/4/24.
 //
 
-import Data
 import Foundation
 import ComposableArchitecture
 import Combine
 import SwiftyJSON
+import Network
 
 @Reducer
 struct TestReducer {

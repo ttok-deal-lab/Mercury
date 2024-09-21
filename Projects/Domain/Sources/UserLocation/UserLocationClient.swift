@@ -14,7 +14,7 @@ import ComposableArchitecture
 @DependencyClient
 public struct UserLocationClient {
   public var userAuthorization: @Sendable () -> CLAuthorizationStatus?
-  public var userCurrentLocation: @Sendable () -> CLLocation?
+  public var userCurrentLocation: @Sendable () -> CLLocationCoordinate2D?
   public var requestUserAuthorization: @Sendable () async -> CLAuthorizationStatus?
 }
 
@@ -31,7 +31,7 @@ extension UserLocationClient: DependencyKey {
         manager.authorizationStatus
       },
       userCurrentLocation: {
-        manager.location
+        manager.location?.coordinate
       },
       requestUserAuthorization: {
         await delegate.requestAuthorization(manager: manager)
@@ -47,7 +47,7 @@ extension UserLocationClient: TestDependencyKey {
       .notDetermined
     },
     userCurrentLocation: {
-      CLLocation(latitude: 111.1111, longitude: 111.1111)
+      CLLocationCoordinate2D(latitude: 111.1111, longitude: 111.1111)
     },
     requestUserAuthorization: {
       return .notDetermined

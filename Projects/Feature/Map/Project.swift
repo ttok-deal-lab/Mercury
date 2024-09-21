@@ -8,10 +8,10 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.feature(
+let project = Project.staticFramework(
   name: "Map",
   platform: .iOS,
-  dependencies: [
+  frameworkDependencies: [
     .appFoundation,
     .composableArchitecture,
     .domain,
@@ -19,5 +19,5 @@ let project = Project.feature(
     .uiComponent,
     .kakaoMap
   ],
-  testDependencies: []
+  frameworkTestDependencies: []
 )

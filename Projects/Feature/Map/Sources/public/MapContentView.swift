@@ -50,7 +50,7 @@ public struct MapContentView: View {
         store.send(.setDrawMap(false))
       }
     }
-    .task {
+    .task(priority: .background) {
       await store.send(.checkUserAuthorization).finish()
     }
     .alert(isPresented: $store.isShowDeniedLocationAlert) {

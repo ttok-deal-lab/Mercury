@@ -18,20 +18,31 @@ public struct MapFeature {
   @ObservableState
   public struct State: Equatable {
     public var error: MercuryError?
-    public var isMapDraw: Bool = true
-    public var isShowDeniedLocationAlert: Bool = false
+    public var isMapDraw: Bool
+    public var isShowDeniedLocationAlert: Bool
     public var userLocation: CLLocationCoordinate2D?
     public var cameraCenterLocation: CLLocationCoordinate2D?
-    public init() { }
+    
+    public init(
+      error: MercuryError? = nil,
+      isMapDraw: Bool = true,
+      isShowDeniedLocationAlert: Bool = false,
+      userLocation: CLLocationCoordinate2D? = nil,
+      cameraCenterLocation: CLLocationCoordinate2D? = nil
+    ) {
+      self.error = error
+      self.isMapDraw = isMapDraw
+      self.isShowDeniedLocationAlert = isShowDeniedLocationAlert
+      self.userLocation = userLocation
+      self.cameraCenterLocation = cameraCenterLocation
+    }
   }
   
-  public enum Action: BindableAction {
+  public enum Action: BindableAction, Equatable {
     case binding(BindingAction<State>)
     case setError(MercuryError)
     case setDrawMap(Bool)
     case checkUserAuthorization
-    case setAuthenticationStatus(CLAuthorizationStatus)
-    case locationAuthorizationChanged(CLAuthorizationStatus)
     case requestLocationAuthentication
     case setIsShowDeniedLocationAlert(Bool)
     case updateUserLocation
@@ -65,37 +76,29 @@ public struct MapFeature {
       case .checkUserAuthorization:
         return .run { send in
           if let status = self.userLocationClient.userAuthorization() {
-            await send(.setAuthenticationStatus(status))
+            switch status {
+            case .notDetermined, .restricted:
+              await send(.requestLocationAuthentication)
+            case .denied:
+              await send(.setIsShowDeniedLocationAlert(true))
+            case .authorizedAlways, .authorizedWhenInUse:
+              await send(.updateUserLocation)
+            @unknown default:
+              await send(.setError(.init(from: .ownModule(.map), .unknownLocationAuthenticationStatus)))
+            }
           }
-        }
-      case .setAuthenticationStatus(let status):
-        switch status {
-        case .notDetermined, .restricted:
-          return .send(.requestLocationAuthentication)
-        case .denied:
-          return .send(.setIsShowDeniedLocationAlert(true))
-        case .authorizedAlways, .authorizedWhenInUse:
-          return .run { send in
-            await send(.updateUserLocation)
-          }
-        @unknown default:
-          return .send(.setError(.init(from: .ownModule(.map), .unknownLocationAuthenticationStatus)))
         }
       case .requestLocationAuthentication:
-        return .run { @MainActor send in
-          if let status = await self.userLocationClient.requestUserAuthorization() {
-            send(.locationAuthorizationChanged(status))
-          }
-        }
-      case .locationAuthorizationChanged(let status):
         return .run { send in
-          switch status {
-          case .authorizedAlways, .authorizedWhenInUse:
-            await send(.updateUserLocation)
-          case .denied:
-            await send(.setIsShowDeniedLocationAlert(true))
-          default:
-            break
+          if let status = await self.userLocationClient.requestUserAuthorization() {
+            switch status {
+            case .authorizedAlways, .authorizedWhenInUse:
+              await send(.updateUserLocation)
+            case .denied:
+              await send(.setIsShowDeniedLocationAlert(true))
+            default:
+              break
+            }
           }
         }
       case .setIsShowDeniedLocationAlert(let isShow):
@@ -103,7 +106,7 @@ public struct MapFeature {
         return .none
       case .updateUserLocation:
         return .run { send in
-          if let location = self.userLocationClient.userCurrentLocation()?.coordinate {
+          if let location = self.userLocationClient.userCurrentLocation() {
             await send(.setUserLocation(location))
           } else {
             await send(.setError(.init(from: .ownModule(.map), .failToGetUserLocationCoordinate)))
