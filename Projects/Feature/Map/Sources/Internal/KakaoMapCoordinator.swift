@@ -36,6 +36,7 @@ public class KakaoMapCoordinator: NSObject, MapControllerDelegate {
   public func createController(_ view: KMViewContainer) {
     controller = KMController(viewContainer: view)
     controller?.delegate = self
+    controller?.prepareEngine()
   }
   
   @objc public func addViews() {

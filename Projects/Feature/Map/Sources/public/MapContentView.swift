@@ -5,6 +5,7 @@
 //  Created by 송하민 on 8/7/24.
 //
 
+import AppFoundation
 import SwiftUI
 import CoreLocation
 import ComposableArchitecture
@@ -33,9 +34,9 @@ public struct MapContentView: View {
         cameraCenterLocation: Binding(
           get: { store.cameraCenterLocation },
           set: { newValue in
-            if newValue != store.cameraCenterLocation {
-              store.send(.setCameraCenterLocation(newValue))
-            }
+//            if newValue != store.cameraCenterLocation {
+//              store.send(.setCameraCenterLocation(newValue))
+//            }
           }
         ),
         auctionItems: store.auctionItems

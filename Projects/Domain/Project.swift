@@ -8,7 +8,7 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.dynamicFramework(
+let project = Project.staticFramework(
   name: "Domain",
   platform: .iOS,
   frameworkDependencies: [
