@@ -43,6 +43,7 @@ playground.xcworkspace
 Packages/
 Package.pins
 Package.resolved
+Tuist/Package.resolved
 *.xcodeproj
 
 
