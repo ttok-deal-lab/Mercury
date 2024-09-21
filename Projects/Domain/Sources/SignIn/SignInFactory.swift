@@ -7,12 +7,25 @@
 
 import Foundation
 
-final class SignInFactory {
-  func appleSigner() -> any SignInable {
+public final class SignInFactory {
+  
+  // MARK: - private property
+  
+  // MARK: - public property
+  
+  // MARK: - life cycle
+  
+  public init() { }
+  
+  // MARK: - private method
+  
+  // MARK: - public method
+  
+  public func appleSigner() -> any SignInable {
     return AppleSignInManager()
   }
   
-  func googleSigner() -> any SignInable {
+  public func googleSigner() -> any SignInable {
     return GoogleSignInManager()
   }
 }

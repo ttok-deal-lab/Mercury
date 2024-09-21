@@ -11,17 +11,10 @@ import ComposableArchitecture
 
 public typealias SignInToken = String
 
+@DependencyClient
 public struct SignInClient {
-  public var appleSignIn: () async -> Result<SignInToken, MercuryError>
-  public var googleSignIn: () async -> Result<SignInToken, MercuryError>
-  
-  public init(
-    appleSignIn: @escaping () async -> Result<SignInToken, MercuryError>,
-    googleSignIn: @escaping () async -> Result<SignInToken, MercuryError>
-  ) {
-    self.appleSignIn = appleSignIn
-    self.googleSignIn = googleSignIn
-  }
+  public var appleSignIn: @Sendable () async -> Result<SignInToken, MercuryError>?
+  public var googleSignIn: @Sendable () async -> Result<SignInToken, MercuryError>?
 }
 
 extension SignInClient: DependencyKey {
@@ -38,6 +31,8 @@ extension SignInClient: DependencyKey {
     }
   )
 }
+
+extension SignInClient: TestDependencyKey {}
 
 extension DependencyValues {
   public var signInClient: SignInClient {

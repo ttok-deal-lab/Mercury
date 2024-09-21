@@ -12,6 +12,7 @@ let project = Project.app(
     .uiComponent,
     .network,
     .domain,
+    .data,
     .kakaoMap,
     .swiftAlgorithm,
     .feature(target: "Analysis"),

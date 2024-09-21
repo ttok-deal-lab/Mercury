@@ -71,8 +71,9 @@ public struct MapReducer {
         return .none
       case .checkUserAuthorization:
         return .run { send in
-          let status = self.userLocationClient.userAuthorization()
-          await send(.setAuthenticationStatus(status))
+          if let status = self.userLocationClient.userAuthorization() {
+            await send(.setAuthenticationStatus(status))
+          }
         }
       case .setAuthenticationStatus(let status):
         switch status {
@@ -89,7 +90,7 @@ public struct MapReducer {
         }
       case .requestLocationAuthentication:
         return .run { @MainActor send in
-          for await status in self.userLocationClient.requestUserAuthorization() {
+          if let status = await self.userLocationClient.requestUserAuthorization() {
             send(.locationAuthorizationChanged(status))
           }
         }
