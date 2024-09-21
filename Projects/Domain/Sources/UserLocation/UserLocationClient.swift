@@ -40,7 +40,20 @@ extension UserLocationClient: DependencyKey {
   }()
 }
 
-extension UserLocationClient: TestDependencyKey {}
+extension UserLocationClient: TestDependencyKey {
+  
+  public static let testValue: UserLocationClient = Self(
+    userAuthorization: {
+      .notDetermined
+    },
+    userCurrentLocation: {
+      CLLocation(latitude: 111.1111, longitude: 111.1111)
+    },
+    requestUserAuthorization: {
+      return .notDetermined
+    }
+  )
+}
 
 extension DependencyValues {
   public var userLocationClient: UserLocationClient {
