@@ -54,16 +54,16 @@ extension AppFeature {
     
     @ObservableState
     enum State: Equatable {
-      case map(MapReducer.State = .init())
+      case map(MapFeature.State = .init())
     }
     
     enum Action {
-      case map(MapReducer.Action)
+      case map(MapFeature.Action)
     }
     
     var body: some ReducerOf<Self> {
       Scope(state: \.map, action: \.map) {
-        MapReducer()
+        MapFeature()
       }
     }
   }

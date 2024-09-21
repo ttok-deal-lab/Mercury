@@ -1,5 +1,5 @@
 //
-//  MapReducer.swift
+//  MapFeature.swift
 //  Map
 //
 //  Created by 송하민 on 8/10/24.
@@ -13,22 +13,15 @@ import Domain
 import ComposableArchitecture
 
 @Reducer
-public struct MapReducer {
+public struct MapFeature {
   
   @ObservableState
   public struct State: Equatable {
-    public static func == (lhs: MapReducer.State, rhs: MapReducer.State) -> Bool {
-      guard let lhsLocation = lhs.userLocation, let rhsLocation = rhs.userLocation else {
-        return true
-      }
-      return lhsLocation.latitude == rhsLocation.latitude && lhsLocation.longitude == rhsLocation.longitude
-    }
     public var error: MercuryError?
     public var isMapDraw: Bool = true
     public var isShowDeniedLocationAlert: Bool = false
     public var userLocation: CLLocationCoordinate2D?
     public var cameraCenterLocation: CLLocationCoordinate2D?
-    public var auctionItems: [AuctionItem]?
     public init() { }
   }
   
