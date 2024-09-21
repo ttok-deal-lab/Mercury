@@ -24,17 +24,14 @@ struct AppFeatureView: View {
           Text("goto map")
         }
       } destination: { store in
-        SwitchStore(store) { state in
-          switch state {
-          case .map:
-            CaseLet(/AppFeature.Path.State.map, action: AppFeature.Path.Action.map) { store in
-              WithPerceptionTracking {
-                MapContentView(store: store)
-              }
-            }
+        switch store.state {
+        case .map:
+          if let store = store.scope(state: \.map, action: \.map) {
+            MapContentView(store: store)
           }
         }
       }
     }
   }
+  
 }

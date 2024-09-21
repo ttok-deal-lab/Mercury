@@ -58,6 +58,14 @@ import KakaoMapsSDK
     })
   }
   
+  public static func dismantleUIView(_ uiView: KMViewContainer, coordinator: KakaoMapCoordinator) {
+    coordinator.controller?.pauseEngine()
+    coordinator.controller?.resetEngine()
+  }
+  
+  
+  // MARK: - private method
+  
   private func onMapFullyLoaded(context: Self.Context) {
     if let userLocation {
       context.coordinator.setCameraFirst(location: userLocation)

@@ -25,10 +25,12 @@ struct AppFeature {
   var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
-      case let .path(stackAction):
-        switch stackAction {
-        case .element(id: _, action: _):
-          state.path.append(.map())
+      case .path(let action):
+        switch action {
+        case .popFrom:
+          if !state.path.isEmpty {
+            _ = state.path.popLast()
+          }
           return .none
         default:
           return .none
