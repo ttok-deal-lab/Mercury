@@ -1,0 +1,30 @@
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+      - develop
+
+jobs:
+  develop_merged:
+   runs-on: macos-latest
+   strategy:
+      matrix:
+        node: [ '12', '14' ]
+        ruby: [ '2.5', '2.6' ]
+   steps:
+     - uses: actions/checkout@v2
+     
+     - uses: shimataro/ssh-key-action@v2
+       with:
+         key: ${{ secrets.SSH_KEY }}
+     
+     - uses: actions/setup-node@v2
+       with:
+        node-version: ${{ matrix.node }}
+     
+     - uses: actions/setup-ruby@v1
+       with:
+        ruby-version: ${{ matrix.ruby }}
+    
+     - run: brew install fastlane
