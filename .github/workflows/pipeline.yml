@@ -27,6 +27,6 @@ jobs:
      
      - uses: actions/setup-ruby@v1
        with:
-        ruby-version: 'stable'
+        ruby-version: '3.0'
     
      - run: brew install fastlane
