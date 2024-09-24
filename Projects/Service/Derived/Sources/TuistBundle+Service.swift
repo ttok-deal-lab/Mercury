@@ -4,9 +4,9 @@
 import Foundation// MARK: - Swift Bundle Accessor - for SPM
 private class BundleFinder {}
 extension Foundation.Bundle {
-/// Since Data is a static framework, the bundle containing the resources is copied into the final product.
+/// Since Service is a static framework, the bundle containing the resources is copied into the final product.
 static let module: Bundle = {
-    let bundleName = "Data_Data"
+    let bundleName = "Service_Service"
     var candidates = [
         Bundle.main.resourceURL,
         Bundle(for: BundleFinder.self).resourceURL,
@@ -34,11 +34,11 @@ static let module: Bundle = {
             return bundle
         }
     }
-    fatalError("unable to find bundle named Data_Data")
+    fatalError("unable to find bundle named Service_Service")
 }()
 }// MARK: - Objective-C Bundle Accessor
 @objc
-public class DataResources: NSObject {
+public class ServiceResources: NSObject {
 @objc public class var bundle: Bundle {
     return .module
 }
