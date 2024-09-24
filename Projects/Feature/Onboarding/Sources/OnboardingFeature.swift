@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import ComposableArchitecture
 import AppFoundation
-import Domain
+import Service
 
 public enum SignInType {
   case apple

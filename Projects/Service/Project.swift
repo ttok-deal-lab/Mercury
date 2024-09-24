@@ -9,12 +9,13 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.staticFramework(
-  name: "Data",
+  name: "Service",
   platform: .iOS,
   frameworkDependencies: [
     .appFoundation,
-    .domain,
-    .composableArchitecture
+    .composableArchitecture,
+    .googleSignIn,
+    .googleSignInSwift,
   ],
   frameworkTestDependencies: []
 )

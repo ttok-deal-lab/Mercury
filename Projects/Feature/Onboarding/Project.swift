@@ -15,7 +15,7 @@ let project = Project.feature(
     .appFoundation,
     .composableArchitecture,
     .uiComponent,
-    .domain
+    .service
   ],
   testDependencies: []
 )
