@@ -29,12 +29,13 @@ jobs:
       with: 
         repository: naldal/Mercury-ignored
         token: ${{ secrets.GIT_PRIVATE_KEY }}
+        path: .ignored-files
 
     - name: Copy files to appropriate locations
       run: |
-        cp Mercury-ignored/Sensitive.xcconfig ./XCConfigs/
-        cp Mercury-ignored/.env.default ./fastlane/
-        cp Mercury-ignored/portal.json ./fastlane/
+        cp .ignored-files/Sensitive.xcconfig Mercury/XCConfigs/
+        cp .ignored-files/.env.default Mercury/fastlane/
+        cp .ignored-files/portal.json Mercury/fastlane/
 
     - name: Setup xcode version
       uses: maxim-lobanov/setup-xcode@v1
