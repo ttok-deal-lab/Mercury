@@ -3,6 +3,7 @@ on:
     branches:
       - main
       - develop
+      - feature/*
   pull_request:
     types: [closed]
     branches:
@@ -23,11 +24,21 @@ jobs:
       with:
         ruby-version: '3.3'
 
-    - name: setup xcode version
+    - name: Fetch Ignore Files
+      env:
+        PAT: ${{secrets.GIT_PRIVATE_KEY}}
+      run: |
+        git clone https://${PAT}@github.com/naldal/Mercury-ignored
+        cp Sensitive.xcconfig ./XCConfigs
+        cp .env.default ./fastlane
+        cp portal.json ./fastlane
+
+    - name: Setup xcode version
       uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: '16.0'
-  
+    
+    - name: Install Fastlane
     - run: brew install fastlane
             
     - name: Install mise
