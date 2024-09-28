@@ -90,21 +90,3 @@ public struct TutorialFeature {
    
   }
 }
-
-extension TutorialFeature {
-  
-  @Reducer
-  public struct Path {
-    @ObservableState
-    public enum State {
-      case step1
-      case step2
-      case step3
-    }
-    
-    public enum Action: Equatable {
-      
-    }
-   
-  }
-}

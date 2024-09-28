@@ -8,6 +8,7 @@
 import Map
 import Tutorial
 import Foundation
+import AppFoundation
 import ComposableArchitecture
 
 @Reducer
@@ -15,7 +16,7 @@ struct AppFeature {
   
   @ObservableState
   struct State: Equatable {
-    @Shared(.appStorage("isAppFirst")) var isAppFirst = true
+    @Shared(.appStorage(UserDefaultsKeyDefine.isAppFirst.rawValue)) var isAppFirst = true
     @Presents var tutorial: TutorialFeature.State?
     var path = StackState<Path.State>()
   }
@@ -47,7 +48,7 @@ struct AppFeature {
         case .present(let target):
           switch target {
           case .tutorial:
-//            state.isAppFirst = false
+            state.isAppFirst = false
             state.tutorial = .init()
             return .none
           case .map:
@@ -76,31 +77,4 @@ struct AppFeature {
     }
   }
   
-}
-
-extension AppFeature {
-  
-  @Reducer
-  struct Path {
-    
-    @ObservableState
-    enum State: Equatable {
-      case tutorial(TutorialFeature.State)
-      case map(MapFeature.State = .init())
-    }
-    
-    enum Action {
-      case tutorial(TutorialFeature.Action)
-      case map(MapFeature.Action)
-    }
-    
-    var body: some ReducerOf<Self> {
-      Scope(state: \.tutorial, action: \.tutorial) {
-        TutorialFeature()
-      }
-      Scope(state: \.map, action: \.map) {
-        MapFeature()
-      }
-    }
-  }
 }
