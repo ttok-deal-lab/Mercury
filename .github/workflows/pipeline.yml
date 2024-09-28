@@ -33,9 +33,9 @@ jobs:
 
     - name: Copy files to appropriate locations
       run: |
-        cp .ignored-files/Sensitive.xcconfig Mercury/XCConfigs/
-        cp .ignored-files/.env.default Mercury/fastlane/
-        cp .ignored-files/portal.json Mercury/fastlane/
+        cp .ignored-files/Sensitive.xcconfig XCConfigs/
+        cp .ignored-files/.env.default fastlane/
+        cp .ignored-files/portal.json fastlane/
 
     - name: Setup xcode version
       uses: maxim-lobanov/setup-xcode@v1
