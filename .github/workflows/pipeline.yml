@@ -25,10 +25,13 @@ jobs:
         ruby-version: '3.3'
 
     - name: Fetch Ignore Files
-      env:
-        PAT: ${{ secrets.GIT_PRIVATE_KEY }}
+      uses: action/checkout@v3
+      with: 
+        repository: naldal/Mercury-ignored
+        token: ${{ secrets.GIT_PRIVATE_KEY }}
+
+    - name: Copy files to appropriate locations
       run: |
-        git clone https://${PAT}@github.com/naldal/Mercury-ignored
         cp Mercury-ignored/Sensitive.xcconfig ./XCConfigs/
         cp Mercury-ignored/.env.default ./fastlane/
         cp Mercury-ignored/portal.json ./fastlane/
@@ -50,7 +53,7 @@ jobs:
     - name: Install Tuist
       run: tuist install -u
 
-    - name : Verify build success
+    - name: Verify build success
       run: |
         tuist generate --no-open
         tuist test
