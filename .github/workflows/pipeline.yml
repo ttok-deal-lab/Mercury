@@ -26,12 +26,12 @@ jobs:
 
     - name: Fetch Ignore Files
       env:
-        PAT: ${{secrets.GIT_PRIVATE_KEY}}
+        PAT: ${{ secrets.GIT_PRIVATE_KEY }}
       run: |
         git clone https://${PAT}@github.com/naldal/Mercury-ignored
-        cp Sensitive.xcconfig ./XCConfigs
-        cp .env.default ./fastlane
-        cp portal.json ./fastlane
+        cp Mercury-ignored/Sensitive.xcconfig ./XCConfigs/
+        cp Mercury-ignored/.env.default ./fastlane/
+        cp Mercury-ignored/portal.json ./fastlane/
 
     - name: Setup xcode version
       uses: maxim-lobanov/setup-xcode@v1
