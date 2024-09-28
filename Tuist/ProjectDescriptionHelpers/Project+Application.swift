@@ -11,6 +11,7 @@ extension Project {
   
   public static func app(
     name: String,
+    destinations: Destinations,
     platform: Platform,
     dependencies: [TargetDependency],
     testDependencies: [TargetDependency]
@@ -18,6 +19,7 @@ extension Project {
     
     let targets = makeAppTargets(
       name: name,
+      destinations: destinations,
       scripts: [
         .prebuildScript(utility: .swiftGen, name: "Gen"),
         .prebuildScript(utility: .swiftLint, name: "Lint")
@@ -33,7 +35,7 @@ extension Project {
   
   private static func makeAppTargets(
     name: String,
-    destinations: Destinations = .iOS,
+    destinations: Destinations,
     productName: String? = productName,
     bundleId: String = bundleId,
     deploymentTargets: DeploymentTargets? = deployTarget,

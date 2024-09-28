@@ -1,3 +1,15 @@
 platform :ios do
 
+  lane :register_new_device do |options|
+    device_name = prompt(text: "Enter the device name: ")
+    device_udid = prompt(text: "Enter the device UDID: ")
+    
+    register_device(
+      name: device_name,
+      udid: device_udid
+    )
+    match(type: "development", force_for_new_devices: true)
+    
+  end
+
 end

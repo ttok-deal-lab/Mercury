@@ -9,9 +9,6 @@ import ProjectDescription
 
 public extension TargetDependency {
   
-  
-  // MARK: - swift package manager
-  
   static let composableArchitecture: TargetDependency = .external(name: "ComposableArchitecture")
   static let kakaoMap: TargetDependency = .external(name: "KakaoMapsSDK-SPM")
   static let moya: TargetDependency = .external(name: "Moya")
@@ -22,37 +19,13 @@ public extension TargetDependency {
   static let googleSignIn: TargetDependency = .external(name: "GoogleSignIn")
   static let googleSignInSwift: TargetDependency = .external(name: "GoogleSignInSwift")
   
-  
-  // MARK: - own modules
-
   static let appFoundation: TargetDependency = .project(target: "AppFoundation", path: .relativeToRoot("Projects/AppFoundation"))
   static let network: TargetDependency = .project(target: "Network", path: .relativeToRoot("Projects/Network"))
-  static let domain: TargetDependency = .project(target: "Domain", path: .relativeToRoot("Projects/Domain"))
+  static let service: TargetDependency = .project(target: "Service", path: .relativeToRoot("Projects/Service"))
   static let uiComponent: TargetDependency = .project(target: "UIComponent", path: .relativeToRoot("Projects/UIComponent"))
-  static let analysis = FeatureDependency.analysis.framework
-  static let auction = FeatureDependency.auction.framework
-  static let comment = FeatureDependency.comment.framework
-  static let profile = FeatureDependency.profile.framework
-  static let map = FeatureDependency.map.framework
   
-  typealias FeatureName = String
-  
-  private enum FeatureDependency: FeatureName {
-    case analysis = "Analysis"
-    case appleSignIn = "AppleSignIn"
-    case auction = "Auction"
-    case comment = "Comment"
-    case profile = "Profile"
-    case map = "Map"
-    
-    var framework: TargetDependency {
-      makeFeature(self.rawValue)
-    }
-    
-    private func makeFeature(_ featureName: String) -> TargetDependency {
-      return .project(target: featureName, path: .relativeToRoot("Projects/Feature/\(featureName)"))
-    }
-    
+  static func feature(target: String) -> TargetDependency {
+    return .project(target: target, path: .featurePath(target))
   }
   
 }

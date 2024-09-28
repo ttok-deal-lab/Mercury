@@ -8,12 +8,13 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.dynamicFramework(
+let project = Project.feature(
   name: "Profile",
   platform: .iOS,
-  frameworkDependencies: [
+  dependencies: [
     .composableArchitecture,
     .uiComponent,
+    .service
   ],
-  frameworkTestDependencies: []
+  testDependencies: []
 )

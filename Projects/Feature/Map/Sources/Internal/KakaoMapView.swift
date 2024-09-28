@@ -20,7 +20,7 @@ import KakaoMapsSDK
   @Binding public var draw: Bool
   public var userLocation: CLLocationCoordinate2D?
   @Binding public var cameraCenterLocation: CLLocationCoordinate2D?
-  public var auctionItems: [AuctionItem]?
+//  public var auctionItems: [AuctionItem]?
   
   
   // MARK: - life cycle
@@ -28,13 +28,13 @@ import KakaoMapsSDK
   public init(
     draw: Binding<Bool>,
     userLocation: CLLocationCoordinate2D?,
-    cameraCenterLocation: Binding<CLLocationCoordinate2D?>,
-    auctionItems: [AuctionItem]?
+    cameraCenterLocation: Binding<CLLocationCoordinate2D?>
+//    auctionItems: [AuctionItem]?
   ) {
     self._draw = draw
     self.userLocation = userLocation
     self._cameraCenterLocation = cameraCenterLocation
-    self.auctionItems = auctionItems
+//    self.auctionItems = auctionItems
   }
   
   
@@ -70,9 +70,9 @@ import KakaoMapsSDK
     if let userLocation {
       context.coordinator.setCameraFirst(location: userLocation)
     }
-    if let auctionItems {
-      context.coordinator.drawItemMarker(item: auctionItems)
-    }
+//    if let auctionItems {
+//      context.coordinator.drawItemMarker(item: auctionItems)
+//    }
   }
   
   public func makeCoordinator() -> KakaoMapCoordinator {

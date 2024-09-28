@@ -17,8 +17,8 @@ struct MapSampleAppEntry: App {
   
   var body: some Scene {
     WindowGroup {
-      MapContentView(store: Store(initialState: MapReducer.State(), reducer: {
-        MapReducer()
+      MapContentView(store: Store(initialState: MapFeature.State(), reducer: {
+        MapFeature()
       }))
     }
   }

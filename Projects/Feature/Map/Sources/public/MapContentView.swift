@@ -14,14 +14,14 @@ public struct MapContentView: View {
   
   // MARK: - private property
   
-  @Perception.Bindable private var store: StoreOf<MapReducer>
+  @Perception.Bindable private var store: StoreOf<MapFeature>
   
 
   // MARK: - internal property
   
   // MARK: - life cycle
   
-  public init(store: StoreOf<MapReducer>) {
+  public init(store: StoreOf<MapFeature>) {
     self.store = store
   }
   
@@ -37,8 +37,8 @@ public struct MapContentView: View {
             store.send(.setCameraCenterLocation(newValue))
           }
         }
-      ),
-      auctionItems: store.auctionItems
+      )
+//      auctionItems: store.auctionItems
     )
     .onAppear {
       if !store.isMapDraw {
@@ -50,7 +50,7 @@ public struct MapContentView: View {
         store.send(.setDrawMap(false))
       }
     }
-    .task {
+    .task(priority: .background) {
       await store.send(.checkUserAuthorization).finish()
     }
     .alert(isPresented: $store.isShowDeniedLocationAlert) {

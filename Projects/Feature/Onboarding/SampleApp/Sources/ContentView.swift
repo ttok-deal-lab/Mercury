@@ -13,11 +13,11 @@ import ComposableArchitecture
 struct ContentView: View {
   var body: some View {
     VStack {
-      AppleSignInButtonView(store: Store(initialState: OnboardingReducer.State(), reducer: {
-        OnboardingReducer()
+      AppleSignInButtonView(store: Store(initialState: OnboardingFeature.State(), reducer: {
+        OnboardingFeature()
       }))
-      GoogleSignInButtonView(store: Store(initialState: OnboardingReducer.State(), reducer: {
-        OnboardingReducer()
+      GoogleSignInButtonView(store: Store(initialState: OnboardingFeature.State(), reducer: {
+        OnboardingFeature()
       }))
     }
   }
