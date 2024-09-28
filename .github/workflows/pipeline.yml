@@ -42,7 +42,7 @@ jobs:
         xcode-version: '16.0'
     
     - name: Install Fastlane
-    - run: brew install fastlane
+      run: brew install fastlane
             
     - name: Install mise
       run: |
