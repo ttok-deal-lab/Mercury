@@ -14,35 +14,30 @@ jobs:
    runs-on: macos-latest
    
    steps:
-    - uses: actions/checkout@v2
-    
-    - uses: shimataro/ssh-key-action@v2
-      with:
-        key: ${{ secrets.SSH_KEY }}
-        known_hosts: 'unnecessary'
-    
-    - uses: actions/setup-node@v2
-      with:
-      node-version: 'lts/*'
-    
+    - uses: actions/checkout@v3
+    - uses: jdx/mise-action@v2.1.0
     - uses: ruby/setup-ruby@v1
       with:
       ruby-version: '3.3'
+
+    - name: setup xcode version
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+      xcode-version: '16.0'
   
     - run: brew install fastlane
 
-    - uses: jdx/mise-action@v2
-      with:
-        install: true
-    
-    - uses: mise install tuist@4.20.0
+    - name: mise action
+      uses: jdx/mise-action@v2.1.0
+            
+    - name: Install mise
+      uses: mise install tuist@4.20.0
+      uses: mise use tuist@4.20.0
+      uses: mise exec -- tuist version
 
-    - uses: mise use tuist@4.20.0
+    - name: install Tuist
+      uses: tuist install -u
 
-    - uses: mise exec -- tuist version
-
-    - uses: tuist install -u
-
-    - uses: tuist generate --no-open
-
-    - uses: tuist test
+    - name : verify build success
+      uses: tuist generate --no-open
+      uses: tuist test
