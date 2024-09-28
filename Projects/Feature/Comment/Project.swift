@@ -12,7 +12,9 @@ let project = Project.feature(
   name: "Comment",
   platform: .iOS,
   dependencies: [
-    .appFoundation
+    .appFoundation,
+    .composableArchitecture,
+    .service
   ],
   testDependencies: []
 )

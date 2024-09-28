@@ -4,9 +4,9 @@
 import Foundation// MARK: - Swift Bundle Accessor - for SPM
 private class BundleFinder {}
 extension Foundation.Bundle {
-/// Since Profile is a static framework, the bundle containing the resources is copied into the final product.
+/// Since Tutorial is a static framework, the bundle containing the resources is copied into the final product.
 static let module: Bundle = {
-    let bundleName = "Profile_Profile"
+    let bundleName = "Tutorial_Tutorial"
     var candidates = [
         Bundle.main.resourceURL,
         Bundle(for: BundleFinder.self).resourceURL,
@@ -34,11 +34,11 @@ static let module: Bundle = {
             return bundle
         }
     }
-    fatalError("unable to find bundle named Profile_Profile")
+    fatalError("unable to find bundle named Tutorial_Tutorial")
 }()
 }// MARK: - Objective-C Bundle Accessor
 @objc
-public class ProfileResources: NSObject {
+public class TutorialResources: NSObject {
 @objc public class var bundle: Bundle {
     return .module
 }

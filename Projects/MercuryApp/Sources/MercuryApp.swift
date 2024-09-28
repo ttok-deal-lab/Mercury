@@ -17,7 +17,7 @@ struct MercuryApp: App {
   
   var body: some Scene {
     WindowGroup {
-      AppFeatureView(store: Store(initialState: AppFeature.State(), reducer: {
+      AppView(store: Store(initialState: AppFeature.State(), reducer: {
         AppFeature()
       }))
     }

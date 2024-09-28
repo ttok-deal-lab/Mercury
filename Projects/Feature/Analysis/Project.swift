@@ -14,7 +14,8 @@ let project = Project.feature(
   dependencies: [
     .appFoundation,
     .composableArchitecture,
-    .uiComponent
+    .uiComponent,
+    .service
   ],
   testDependencies: []
 )
