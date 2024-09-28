@@ -16,32 +16,60 @@ struct AppFeature {
   @ObservableState
   struct State: Equatable {
     @Shared(.appStorage("isAppFirst")) var isAppFirst = true
+    @Presents var tutorial: TutorialFeature.State?
     var path = StackState<Path.State>()
   }
   
   enum Action {
     case path(StackAction<Path.State, Path.Action>)
-    case navigateToTutorial
-    case navigateToMap
+    case tutorial(PresentationAction<TutorialFeature.Action>)
+    case destination(DestinationType)
+  }
+  
+  enum DestinationType {
+    case present(DestinationTarget)
+    case push(DestinationTarget)
+  }
+  
+  enum DestinationTarget {
+    case tutorial
+    case map
   }
   
   var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
-      case .path(.element(id: _, action: .tutorial(.delegate(.tutorialCompleted)))):
-        state.path.removeAll()
+      case .tutorial(.presented(.delegate(.tutorialCompleted))):
+        state.tutorial = nil
+        return .none
+      case let .destination(destinationType):
+        switch destinationType {
+        case .present(let target):
+          switch target {
+          case .tutorial:
+//            state.isAppFirst = false
+            state.tutorial = .init()
+            return .none
+          case .map:
+            return .none
+          }
+        case .push(let target):
+          switch target {
+          case .tutorial:
+            return .none
+          case .map:
+            state.path.append(.map())
+            return .none
+          }
+        }
+      case .tutorial(_):
         return .none
       case .path:
         return .none
-      
-      case .navigateToTutorial:
-//        state.isAppFirst = false
-        state.path.append(.tutorial(TutorialFeature.State(currentStep: 1)))
-        return .none
-      case .navigateToMap:
-        state.path.append(.map())
-        return .none
       }
+    }
+    .ifLet(\.$tutorial, action: \.tutorial) {
+      TutorialFeature()
     }
     .forEach(\.path, action: \.path) {
       Path()

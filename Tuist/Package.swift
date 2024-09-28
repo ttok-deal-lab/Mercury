@@ -7,12 +7,12 @@
 
 let packageSettings = PackageSettings(
   productTypes: [
-    "ComposableArchitecture": .framework,
+    "ComposableArchitecture": .staticFramework,
     "KakaoMapsSDK-SPM": .staticLibrary,
-    "Algorithms": .framework,
-    "Moya": .framework,
-    "SwiftyJSON": .framework,
-    "Testing": .framework
+    "Algorithms": .staticFramework,
+    "Moya": .staticFramework,
+    "SwiftyJSON": .staticFramework,
+    "Testing": .staticFramework
   ]
 )
 #endif

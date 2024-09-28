@@ -18,16 +18,16 @@ public struct TutorialView: View {
   }
   
   public var body: some View {
-    Group {
-      switch store.currentStep {
-      case 1:
-        TutorialStep1(store: store)
-      case 2:
-        TutorialStep2(store: store)
-      case 3:
-        TutorialStep3(store: store)
-      default:
-        EmptyView()
+    NavigationStackStore(self.store.scope(state: \.path, action: \.path)) {
+      TutorialStep1(store: self.store)
+    } destination: { stepStore in
+      switch stepStore.state {
+      case .step1:
+        TutorialStep1(store: self.store)
+      case .step2:
+        TutorialStep2(store: self.store)
+      case .step3:
+        TutorialStep3(store: self.store)
       }
     }
   }

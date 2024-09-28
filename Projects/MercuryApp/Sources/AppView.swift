@@ -25,14 +25,17 @@ struct AppView: View {
     ) {
       ZStack {
         Button {
-          store.send(.navigateToMap)
+          store.send(.destination(.push(.map)))
         } label: {
           Text("goto map")
         }
       }
+      .fullScreenCover(store: store.scope(state: \.$tutorial, action: \.tutorial), content: { store in
+        TutorialView(store: store)
+      })
       .onAppear {
         if store.isAppFirst {
-          store.send(.navigateToTutorial)
+          store.send(.destination(.present(.tutorial)))
         }
       }
     } destination: { store in

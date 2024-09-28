@@ -15,16 +15,17 @@ public struct TutorialFeature {
   
   @ObservableState
   public struct State: Equatable {
-    public var currentStep: Int = 1
     public var error: MercuryError?
+    var path = StackState<Path.State>()
     
-    public init(currentStep: Int, error: MercuryError? = nil) {
-      self.currentStep = currentStep
+    public init(error: MercuryError? = nil) {
       self.error = error
     }
+    
   }
   
   public enum Action: BindableAction, Equatable {
+    case path(StackAction<Path.State, Path.Action>)
     case binding(BindingAction<State>)
     case setError(MercuryError)
     case nextButtonTapped
@@ -56,14 +57,22 @@ public struct TutorialFeature {
         state.error = error
         return .none
       case .nextButtonTapped:
-        if state.currentStep < 3 {
-          state.currentStep += 1
+        guard let lastStep = state.path.last else {
+          state.path.append(.step2)
+          return .none
+        }
+        switch lastStep {
+        case .step1:
+          state.path.append(.step2)
+        case .step2:
+          state.path.append(.step3)
+        default:
+          return .none
         }
         return .none
       case .previousButtonTapped:
-        if state.currentStep > 1 {
-          state.currentStep -= 1
-        }
+        guard !state.path.isEmpty else { return .none }
+        _ = state.path.popLast()
         return .none
       case .completeTutorial:
         return .run { send in
@@ -71,10 +80,31 @@ public struct TutorialFeature {
         }
       case .delegate(_):
         return .none
+      case .path(_):
+        return .none
       }
+    }
+    .forEach(\.path, action: \.path) {
+      Path()
+    }
+   
+  }
+}
+
+extension TutorialFeature {
+  
+  @Reducer
+  public struct Path {
+    @ObservableState
+    public enum State {
+      case step1
+      case step2
+      case step3
+    }
+    
+    public enum Action: Equatable {
       
     }
+   
   }
-  
-  
 }
