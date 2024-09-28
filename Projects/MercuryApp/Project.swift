@@ -18,7 +18,8 @@ let project = Project.app(
     .feature(target: "Auction"),
     .feature(target: "Comment"),
     .feature(target: "Profile"),
-    .feature(target: "Map")
+    .feature(target: "Map"),
+    .feature(target: "Tutorial")
   ],
   testDependencies: []
 )

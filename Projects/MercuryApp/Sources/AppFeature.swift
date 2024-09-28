@@ -6,6 +6,7 @@
 //
 
 import Map
+import Tutorial
 import Foundation
 import ComposableArchitecture
 
@@ -14,27 +15,29 @@ struct AppFeature {
   
   @ObservableState
   struct State: Equatable {
+    @Shared(.appStorage("isAppFirst")) var isAppFirst = true
     var path = StackState<Path.State>()
   }
   
   enum Action {
     case path(StackAction<Path.State, Path.Action>)
+    case navigateToTutorial
     case navigateToMap
   }
   
   var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
-      case .path(let action):
-        switch action {
-        case .popFrom:
-          if !state.path.isEmpty {
-            _ = state.path.popLast()
-          }
-          return .none
-        default:
-          return .none
-        }
+      case .path(.element(id: _, action: .tutorial(.delegate(.tutorialCompleted)))):
+        state.path.removeAll()
+        return .none
+      case .path:
+        return .none
+      
+      case .navigateToTutorial:
+//        state.isAppFirst = false
+        state.path.append(.tutorial(TutorialFeature.State(currentStep: 1)))
+        return .none
       case .navigateToMap:
         state.path.append(.map())
         return .none
@@ -54,14 +57,19 @@ extension AppFeature {
     
     @ObservableState
     enum State: Equatable {
+      case tutorial(TutorialFeature.State)
       case map(MapFeature.State = .init())
     }
     
     enum Action {
+      case tutorial(TutorialFeature.Action)
       case map(MapFeature.Action)
     }
     
     var body: some ReducerOf<Self> {
+      Scope(state: \.tutorial, action: \.tutorial) {
+        TutorialFeature()
+      }
       Scope(state: \.map, action: \.map) {
         MapFeature()
       }
