@@ -1,3 +1,14 @@
+
+APPLE_ID = ENV["APPLE_ID"]
+TEAM_ID = ENV["TEAM_ID"]
+APP_IDENTIFIER = ENV["APP_IDENTIFIER"]
+APP_STORE_CONNECT_ISSUER_ID = ENV["APP_STORE_CONNECT_ISSUER_ID"]
+APP_STORE_CONNECT_KEY_ID = ENV["APP_STORE_CONNECT_KEY_ID"]
+APP_STORE_CONNECT_KEY = ENV["APP_STORE_CONNECT_KEY"]
+KEYCHAIN_NAME = ENV["KEYCHAIN_NAME"]
+KEYCHAIN_PASSWORD = ENV["KEYCHAIN_PASSWORD"]
+GIT_PRIVATE_KEY = ENV["GIT_PRIVATE_KEY"]
+
 platform :ios do
 
   lane :register_new_device do |options|
@@ -9,7 +20,26 @@ platform :ios do
       udid: device_udid
     )
     match(type: "development", force_for_new_devices: true)
-    
+  end
+
+  lane :match_appstore do
+    match(
+      storage_mode: "git",
+      type: "appstore",
+      app_identifier: ["com.auction.mercury"],
+      readonly: true,
+      keychain_name: "#{KEYCHAIN_NAME}",
+      keychain_password: "#{KEYCHAIN_PASSWORD}",
+      skip_docs: true,
+      generate_apple_certs: false,
+      app_identifier: "#{APP_IDENTIFIER}"
+      api_key: "fastlane/portal.json"
+    )
+  end
+
+  lane: update_to_testflight do
+
+
   end
 
 end
