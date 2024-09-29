@@ -85,6 +85,11 @@ jobs:
       - name: Setup Keychain
         run: fastlane ios make_keychain_for_CI
 
+      - name: Increment Build Number
+        run: |
+          chmod +x ./XCConfigs/BuildVersion.xcconfig
+          ./XCConfigs/BuildVersion.xcconfig
+
       - name: Upload Testflight
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}

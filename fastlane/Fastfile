@@ -65,13 +65,6 @@ platform :ios do
       is_key_content_base64: true
     )
 
-    increment_build_number(
-      build_number: latest_testflight_build_number(
-        app_identifier: "#{APP_IDENTIFIER}",
-        api_key: api_key
-      ) + 1
-    )
-
     gym(
       clean: true,
       verbose: true,
