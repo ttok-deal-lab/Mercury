@@ -28,10 +28,17 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
-      - uses: shimataro/ssh-key-action@v2
+      
+      - name: Setup SSH
+        uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_KEY }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          known_hosts: github.com
+          config: |
+            Host github.com
+              HostName github.com
+              IdentityFile ~/.ssh/id_rsa
+              StrictHostKeyChecking yes
 
       - name: Fetch Ignore Files
         uses: actions/checkout@v3
@@ -60,6 +67,9 @@ jobs:
           mise use tuist@4.20.0
           mise exec -- tuist version
 
+      - name: Test SSH Access
+        run: git ls-remote git@github.com:naldal/MercuryMatch.git
+
       - name: Install Tuist
         run: tuist install -u
 
@@ -68,16 +78,13 @@ jobs:
           brew install libsodium
           yes | fastlane add_plugin discord_notifier
 
-      - name: Increments BuildVersion
-        run: |
-          chmod +x ./XCConfigs/BuildVersion.xcconfig
-          ./XCConfigs/BuildVersion.xcconfig
-
       - name: Verify build success
         run: |
           tuist generate --no-open
 
       - name: Upload Testflight
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
         run: fastlane ios upload_stage_to_testflight
 
       - name: Notify

@@ -4,5 +4,6 @@ type("development")
 
 username(ENV['APPLE_ID'])
 app_identifier(ENV['APP_IDENTIFIER'])
+git_basic_authorization(ENV['GIT_PRIVATE_KEY'])
 git_private_key(ENV['GIT_PRIVATE_KEY'])
 
