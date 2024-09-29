@@ -59,7 +59,10 @@ platform :ios do
     match_appstore
 
     increment_build_number(
-      build_number: latest_testflight_build_number(app_identifier: "#{APP_IDENTIFIER}") + 1
+      build_number: latest_testflight_build_number(
+        app_identifier: "#{APP_IDENTIFIER}",
+        api_key_path: "fastlane/portal.json"
+      ) + 1
     )
 
     gym(
