@@ -11,6 +11,8 @@ GIT_PRIVATE_KEY = ENV["GIT_PRIVATE_KEY"]
 DISCORD_WEBHOOK = ENV["DISCORD_WEBHOOK"]
 MATCH_GIT_URL = ENV["MATCH_GIT_URL"]
 MATCH_GIT_BRANCH = ENV["MATCH_GIT_BRANCH"]
+MATCH_KEYCHAIN_NAME = ENV["MATCH_KEYCHAIN_NAME"]
+MATCH_KEYCHAIN_PASSWORD = ENV["MATCH_KEYCHAIN_PASSWORD"]
 
 platform :ios do
 
@@ -23,6 +25,16 @@ platform :ios do
       udid: device_udid
     )
     match(type: "development", force_for_new_devices: true)
+  end
+
+  lane :make_keychain_for_CI do
+    create_keychain(
+      name: "#{MATCH_KEYCHAIN_NAME}",
+      password: "#{MATCH_KEYCHAIN_PASSWORD}",
+      timeout: 3600,
+      unlock: true,
+      lock_when_sleeps: false
+    )
   end
 
   lane :match_appstore do
