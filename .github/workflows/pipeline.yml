@@ -96,7 +96,7 @@ jobs:
         run: fastlane ios upload_stage_to_testflight
 
       - name: Notify
-        run: fastlane ios discord_alert("Develop")
+        run: fastlane ios discord_alert branch:"Develop"
   
   stage_merged:
     runs-on: macos-latest
