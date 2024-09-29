@@ -65,6 +65,15 @@ platform :ios do
       is_key_content_base64: true
     )
 
+    latest_build = latest_testflight_build_number(
+      app_identifier: "#{APP_IDENTIFIER}",
+      api_key: api_key
+    )
+
+    increment_build_number(
+      build_number: latest_build + 1
+    )
+
     gym(
       clean: true,
       verbose: true,
