@@ -48,7 +48,9 @@ platform :ios do
       api_key_path: "fastlane/portal.json",
       git_private_key: "#{GIT_PRIVATE_KEY}",
       git_url: "#{MATCH_GIT_URL}",
-      git_branch: "#{MATCH_GIT_BRANCH}"
+      git_branch: "#{MATCH_GIT_BRANCH}",
+      keychain_name: "#{MATCH_KEYCHAIN_NAME}",
+      keychain_password: "#{MATCH_KEYCHAIN_PASSWORD}"
     )
   end
 
