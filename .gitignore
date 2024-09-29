@@ -68,5 +68,5 @@ Sensitive.xcconfig
 fastlane/portal.json
 fastlane/.env.default
 
-Gemfile
+
 Gemfile.lock
