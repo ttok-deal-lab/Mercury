@@ -195,8 +195,7 @@ jobs:
       - name: Verify build success
         run: |
           tuist generate --no-open
-          chmod +x ./Tools/TestAllScheme.sh
-          ./Tools/TestAllScheme.sh
+          tuist test
 
       - name: Notify
         run: fastlane ios discord_alert("Main")
