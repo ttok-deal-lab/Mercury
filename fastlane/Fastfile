@@ -9,6 +9,8 @@ KEYCHAIN_NAME = ENV["KEYCHAIN_NAME"]
 KEYCHAIN_PASSWORD = ENV["KEYCHAIN_PASSWORD"]
 GIT_PRIVATE_KEY = ENV["GIT_PRIVATE_KEY"]
 DISCORD_WEBHOOK = ENV["DISCORD_WEBHOOK"]
+MATCH_GIT_URL = ENV["MATCH_GIT_URL"]
+MATCH_GIT_BRANCH = ENV["MATCH_GIT_BRANCH"]
 
 platform :ios do
 
@@ -31,7 +33,10 @@ platform :ios do
       skip_docs: true,
       generate_apple_certs: false,
       app_identifier: "#{APP_IDENTIFIER}",
-      api_key_path: "fastlane/portal.json"
+      api_key_path: "fastlane/portal.json",
+      git_private_key: "#{GIT_PRIVATE_KEY}",
+      git_url: "#{MATCH_GIT_URL}",
+      git_branch: "#{MATCH_GIT_BRANCH}"
     )
   end
 

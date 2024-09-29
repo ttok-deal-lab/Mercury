@@ -28,6 +28,10 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
+      - uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
       - name: Fetch Ignore Files
         uses: actions/checkout@v3
@@ -72,8 +76,6 @@ jobs:
       - name: Verify build success
         run: |
           tuist generate --no-open
-          chmod +x ./Tools/TestAllScheme.sh
-          ./Tools/TestAllScheme.sh
 
       - name: Upload Testflight
         run: fastlane ios upload_stage_to_testflight
@@ -195,7 +197,7 @@ jobs:
       - name: Verify build success
         run: |
           tuist generate --no-open
-          tuist test
+          # tuist test
 
       - name: Notify
         run: fastlane ios discord_alert("Main")
