@@ -36,7 +36,7 @@ extension Project {
       resources: resources,
       scripts: targetScripts,
       dependencies: frameworkDependencies,
-      settings: .settings(configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases))
+      settings: .settings(configurations: Configuration.configure())
     )
     
     let sampleApp = Target.target(
@@ -48,9 +48,8 @@ extension Project {
       infoPlist: .file(path: Path.infoPlistPath("FrameworkSampleApp-Info")),
       sources: ["SampleApp/Sources/**"],
       resources: sampleAppResources,
-      entitlements: Project.commonEntitlement,
       dependencies: [.target(name: name)],
-      settings: .settings(configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases))
+      settings: .settings(configurations: Configuration.configure())
     )
     
     let tests = Target.target(
@@ -63,7 +62,7 @@ extension Project {
       sources: ["Tests/**"],
       resources: [],
       dependencies: [.target(name: name)] + testDependencies,
-      settings: .settings(configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases))
+      settings: .settings(configurations: Configuration.configure())
     )
     
     return [sources, tests, sampleApp]
@@ -88,7 +87,13 @@ extension Project {
       product: product
     )
     
-    return Project(name: name, targets: targets)
+    return Project(
+      name: name,
+      settings: .settings(
+        configurations: Configuration.configure()
+      ),
+      targets: targets
+    )
   }
   
   

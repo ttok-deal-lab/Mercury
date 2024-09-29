@@ -1,12 +1,8 @@
 git_url("https://github.com/naldal/MercuryMatch")
-
 storage_mode("git")
-
 type("development")
 
-app_identifier(["com.auction.mercury"])
-
-username("cec7777@naver.com")
-
-git_private_key("./gitPAT.txt")
+username(ENV['APPLE_ID'])
+app_identifier(ENV['APP_IDENTIFIER'])
+git_private_key(ENV['GIT_PRIVATE_KEY'])
 

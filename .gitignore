@@ -65,4 +65,8 @@ fastlane/test_output
 iOSInjectionProject/
 
 Sensitive.xcconfig
+fastlane/portal.json
 fastlane/.env.default
+
+Gemfile
+Gemfile.lock
