@@ -4,16 +4,18 @@
 
 #if TUIST
 @preconcurrency import ProjectDescription
+import ProjectDescriptionHelpers
 
 let packageSettings = PackageSettings(
   productTypes: [
-    "ComposableArchitecture": .staticFramework,
-    "KakaoMapsSDK-SPM": .staticLibrary,
-    "Algorithms": .staticFramework,
-    "Moya": .staticFramework,
-    "SwiftyJSON": .staticFramework,
-    "Testing": .staticFramework
-  ]
+    "ComposableArchitecture": .framework,
+    "KakaoMapsSDK-SPM": .framework,
+    "Algorithms": .framework,
+    "Moya": .framework,
+    "SwiftyJSON": .framework,
+    "Testing": .framework
+  ],
+  baseSettings: .settings(configurations: Configuration.configure())
 )
 #endif
 

@@ -1,12 +1,16 @@
-#include "./Versioning.xcconfig"
+#include "./MarketingVersion.xcconfig"
+#include "./BuildVersion.xcconfig"
 #include "./Sensitive.xcconfig"
 
-CODE_SIGN_IDENTITY=iPhone Developer
-IPHONEOS_DEPLOYMENT_TARGET=16.0
-MARKETING_VERSION=1.0.0
+CODE_SIGN_IDENTITY = iPhone Development
+PROVISIONING_PROFILE_SPECIFIER=match Development com.auction.mercury
+IPHONEOS_DEPLOYMENT_TARGET = 16.0
 PRODUCT_NAME=$(TARGET_NAME)
 SUPPORTS_MACCATALYST=NO
-SWIFT_VERSION=5.9
-TARGETED_DEVICE_FAMILY=1
-OTHER_LDFLAGS = $(inherited) -ObjC -all_load
+SWIFT_VERSION = 5.9
+TARGETED_DEVICE_FAMILY = 1
+OTHER_LDFLAGS=$(inherited) -ObjC -all_load
 CODE_SIGN_STYLE = Manual
+DEVELOPMENT_TEAM = M3U22RZ325
+CODE_SIGNING_REQUIRED = YES
+CODE_SIGNING_ALLOWED = YES

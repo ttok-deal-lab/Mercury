@@ -28,7 +28,14 @@ extension Project {
       testDependencies: testDependencies
     )
     
-    return .init(name: name, targets: targets, resourceSynthesizers: [])
+    return Project(
+      name: name,
+      settings: .settings(
+        configurations: Configuration.configure(isOwn: true)
+      ),
+      targets: targets,
+      resourceSynthesizers: []
+    )
   }
   
   // MARK: - Targets
@@ -62,7 +69,7 @@ extension Project {
         base: [
           "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon"
         ],
-        configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases)
+        configurations: Configuration.configure(isOwn: true)
       ),
       coreDataModels: coreDataModels
     )
@@ -77,7 +84,7 @@ extension Project {
       resources: [],
       scripts: scripts,
       dependencies: [.target(name: name)] + testDependencies,
-      settings: .settings(configurations: Configuration.configure(configurations: Configuration.ConfigScheme.allCases))
+      settings: .settings(configurations: Configuration.configure(isOwn: true))
     )
     
     return [mainTarget, testTarget]

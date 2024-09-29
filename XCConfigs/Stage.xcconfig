@@ -1,0 +1,4 @@
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = STAGE
+#include "Mercury.xcconfig"
+
+APS_ENVIRONMENT = development
