@@ -101,6 +101,52 @@ platform :ios do
     )
   end
 
+  lane :upload_release_to_testflight do
+    match_appstore
+
+    api_key = app_store_connect_api_key(
+      key_id: "#{APP_STORE_CONNECT_KEY_ID}",
+      issuer_id: "#{APP_STORE_CONNECT_ISSUER_ID}",
+      key_content: "#{APP_STORE_CONNECT_KEY_BASE64}",
+      is_key_content_base64: true
+    )
+
+    latest_build = latest_testflight_build_number(
+      app_identifier: "#{APP_IDENTIFIER}",
+      api_key: api_key
+    )
+
+    increment_build_number(
+      xcodeproj: "Projects/MercuryApp/MercuryApp.xcodeproj",
+      build_number: latest_build + 1
+    )
+
+    gym(
+      clean: true,
+      verbose: true,
+      workspace: "Mercury.xcworkspace",
+      scheme: "MercuryApp",
+      configuration: "Release",
+      export_method: "app-store",
+      xcargs: "CODE_SIGN_IDENTITY='iPhone Distribution' PROVISIONING_PROFILE_SPECIFIER='match AppStore com.auction.mercury'",
+      output_directory: "./output",
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: {
+          "com.auction.mercury" => "match AppStore com.auction.mercury"
+        }
+      }
+    )
+
+    pilot(
+      skip_waiting_for_build_processing: true,
+      app_identifier: "#{APP_IDENTIFIER}",
+      team_id: "#{TEAM_ID}",
+      ipa: "./output/AuctionGod.ipa",
+      api_key: api_key
+    )
+  end
+
   lane :discord_alert do |options|
     branch = options[:branch] || "배포 성공!"
 
