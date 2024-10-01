@@ -11,13 +11,22 @@ public extension Configuration {
   
   enum ConfigScheme: ConfigurationName, CaseIterable {
     case debug = "Debug"
+    case stage = "Stage"
     case release = "Release"
   }
   
-  static func configure(configurations: [ConfigScheme]) -> [Configuration] {
+  static func configure(configurations: [ConfigScheme] = ConfigScheme.allCases, isOwn: Bool = false) -> [Configuration] {
     return configurations.map { $0.rawValue }.map { configName -> Configuration in
-      guard configName != .release else { return .release(name: configName, xcconfig: .xcconfigPath(configName.rawValue))}
-      return .debug(name: configName, xcconfig: .xcconfigPath(configName.rawValue))
+      if configName == .release {
+        return .release(
+          name: configName,
+          xcconfig: isOwn ? .xcconfigPath(configName.rawValue) : .xcconfigPath("Module")
+        )
+      }
+      return .debug(
+        name: configName,
+        xcconfig: isOwn ? .xcconfigPath(configName.rawValue) : .xcconfigPath("Module")
+      )
     }
   }
   

@@ -3,30 +3,222 @@ on:
     branches:
       - main
       - develop
+      - stage
+      - feature/*
   pull_request:
     types: [closed]
     branches:
       - main
+      - stage
       - develop
 
 jobs:
   develop_merged:
-   runs-on: macos-latest
-   
-   steps:
-     - uses: actions/checkout@v2
-     
-     - uses: shimataro/ssh-key-action@v2
-       with:
-         key: ${{ secrets.SSH_KEY }}
-         known_hosts: 'unnecessary'
-     
-     - uses: actions/setup-node@v2
-       with:
-        node-version: 'lts/*'
-     
-     - uses: ruby/setup-ruby@v1
-       with:
-        ruby-version: '3.3'
+    runs-on: macos-latest
+    if: |
+      github.event_name == 'push' && github.ref == 'refs/heads/develop' ||
+      github.event_name == 'pull_request' && github.base_ref == 'develop'
+    strategy:
+      matrix:
+        xcodebuild-scheme: ['MercuryApp']
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: jdx/mise-action@v2.1.0
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+
+      - name: Setup xcode version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.0'
     
-     - run: brew install fastlane
+      - name: Install Fastlane
+        run: brew install fastlane
+            
+      - name: Install mise
+        run: |
+          mise install tuist@4.20.0
+          mise use tuist@4.20.0
+          mise exec -- tuist version
+
+      - name: Install Tuist
+        run: tuist install -u
+
+      - name: Install Notice Essensial
+        run: |
+          brew install libsodium
+          yes | fastlane add_plugin discord_notifier
+
+      - name: Generate Project
+        run: tuist generate --no-open
+
+      - name: Test Mercury
+        run: xcodebuild -workspace Mercury.xcworkspace -scheme MercuryApp -destination 'platform=iOS Simulator,name=iPhone 16 Pro' build test 
+
+      - name: Notify
+        run: fastlane ios discord_alert branch:"Develop"
+  
+  stage_merged:
+    runs-on: macos-latest
+    if: |
+      github.event_name == 'push' && github.ref == 'refs/heads/stage' ||
+      github.event_name == 'pull_request' && github.base_ref == 'stage'
+    strategy:
+      matrix:
+        xcodebuild-scheme: ['MercuryApp']
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: jdx/mise-action@v2.1.0
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+      
+      - name: Setup SSH
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: github.com
+          config: |
+            Host github.com
+              HostName github.com
+              IdentityFile ~/.ssh/id_rsa
+              StrictHostKeyChecking yes
+
+      - name: Fetch Ignore Files
+        uses: actions/checkout@v3
+        with: 
+          repository: naldal/Mercury-ignored
+          token: ${{ secrets.GIT_PRIVATE_KEY }}
+          path: .ignored-files
+
+      - name: Copy files to appropriate locations
+        run: |
+          cp .ignored-files/Sensitive.xcconfig XCConfigs/
+          cp .ignored-files/.env.default fastlane/
+          cp .ignored-files/portal.json fastlane/
+
+      - name: Setup xcode version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.0'
+    
+      - name: Install Fastlane
+        run: brew install fastlane
+            
+      - name: Install mise
+        run: |
+          mise install tuist@4.20.0
+          mise use tuist@4.20.0
+          mise exec -- tuist version
+
+      - name: Install Tuist
+        run: tuist install -u
+
+      - name: Install Notice Essensial
+        run: |
+          brew install libsodium
+          yes | fastlane add_plugin discord_notifier
+
+      - name: Test SSH Access
+        run: git ls-remote git@github.com:naldal/MercuryMatch.git
+
+      - name: Setup Keychain
+        run: fastlane ios make_keychain_for_CI
+
+      - name: Generate Project
+        run: tuist generate --no-open
+
+      - name: Upload Testflight
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+        run: fastlane ios upload_stage_to_testflight
+
+      - name: Notify
+        run: fastlane ios discord_alert branch:"Stage"
+
+  main_merged:
+    runs-on: macos-latest
+    if: |
+      github.event_name == 'push' && github.ref == 'refs/heads/main' ||
+      github.event_name == 'pull_request' && github.base_ref == 'main'
+    strategy:
+      matrix:
+        xcodebuild-scheme: ['MercuryApp']
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: jdx/mise-action@v2.1.0
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+      
+      - name: Setup SSH
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: github.com
+          config: |
+            Host github.com
+              HostName github.com
+              IdentityFile ~/.ssh/id_rsa
+              StrictHostKeyChecking yes
+
+      - name: Fetch Ignore Files
+        uses: actions/checkout@v3
+        with: 
+          repository: naldal/Mercury-ignored
+          token: ${{ secrets.GIT_PRIVATE_KEY }}
+          path: .ignored-files
+
+      - name: Copy files to appropriate locations
+        run: |
+          cp .ignored-files/Sensitive.xcconfig XCConfigs/
+          cp .ignored-files/.env.default fastlane/
+          cp .ignored-files/portal.json fastlane/
+
+      - name: Setup xcode version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.0'
+    
+      - name: Install Fastlane
+        run: brew install fastlane
+            
+      - name: Install mise
+        run: |
+          mise install tuist@4.20.0
+          mise use tuist@4.20.0
+          mise exec -- tuist version
+
+      - name: Install Tuist
+        run: tuist install -u
+
+      - name: Install Notice Essensial
+        run: |
+          brew install libsodium
+          yes | fastlane add_plugin discord_notifier
+
+      - name: Test SSH Access
+        run: git ls-remote git@github.com:naldal/MercuryMatch.git
+
+      - name: Setup Keychain
+        run: fastlane ios make_keychain_for_CI
+
+      - name: Generate Project
+        run: tuist generate --no-open
+
+      - name: Upload Testflight
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+        run: fastlane ios upload_release_to_testflight
+
+      - name: Notify
+        run: fastlane ios discord_alert branch:"Release"
+      
+
+
+
+    

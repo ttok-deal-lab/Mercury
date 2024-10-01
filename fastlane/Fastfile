@@ -1,3 +1,20 @@
+
+APPLE_ID = ENV["APPLE_ID"]
+TEAM_ID = ENV["TEAM_ID"]
+APP_IDENTIFIER = ENV["APP_IDENTIFIER"]
+APP_STORE_CONNECT_ISSUER_ID = ENV["APP_STORE_CONNECT_ISSUER_ID"]
+APP_STORE_CONNECT_KEY_ID = ENV["APP_STORE_CONNECT_KEY_ID"]
+APP_STORE_CONNECT_KEY = ENV["APP_STORE_CONNECT_KEY"]
+APP_STORE_CONNECT_KEY_BASE64 = ENV["APP_STORE_CONNECT_KEY_BASE64"]
+KEYCHAIN_NAME = ENV["KEYCHAIN_NAME"]
+KEYCHAIN_PASSWORD = ENV["KEYCHAIN_PASSWORD"]
+GIT_PRIVATE_KEY = ENV["GIT_PRIVATE_KEY"]
+DISCORD_WEBHOOK = ENV["DISCORD_WEBHOOK"]
+MATCH_GIT_URL = ENV["MATCH_GIT_URL"]
+MATCH_GIT_BRANCH = ENV["MATCH_GIT_BRANCH"]
+MATCH_KEYCHAIN_NAME = ENV["MATCH_KEYCHAIN_NAME"]
+MATCH_KEYCHAIN_PASSWORD = ENV["MATCH_KEYCHAIN_PASSWORD"]
+
 platform :ios do
 
   lane :register_new_device do |options|
@@ -9,6 +26,141 @@ platform :ios do
       udid: device_udid
     )
     match(type: "development", force_for_new_devices: true)
+  end
+
+  lane :make_keychain_for_CI do
+    create_keychain(
+      name: "#{MATCH_KEYCHAIN_NAME}",
+      password: "#{MATCH_KEYCHAIN_PASSWORD}",
+      timeout: 3600,
+      unlock: true,
+      lock_when_sleeps: false
+    )
+  end
+
+  lane :match_appstore do
+    match(
+      storage_mode: "git",
+      type: "appstore",
+      readonly: true,
+      skip_docs: true,
+      generate_apple_certs: false,
+      app_identifier: "#{APP_IDENTIFIER}",
+      api_key_path: "fastlane/portal.json",
+      git_private_key: "#{GIT_PRIVATE_KEY}",
+      git_url: "#{MATCH_GIT_URL}",
+      git_branch: "#{MATCH_GIT_BRANCH}",
+      keychain_name: "#{MATCH_KEYCHAIN_NAME}",
+      keychain_password: "#{MATCH_KEYCHAIN_PASSWORD}"
+    )
+  end
+
+  lane :upload_stage_to_testflight do
+    match_appstore
+
+    api_key = app_store_connect_api_key(
+      key_id: "#{APP_STORE_CONNECT_KEY_ID}",
+      issuer_id: "#{APP_STORE_CONNECT_ISSUER_ID}",
+      key_content: "#{APP_STORE_CONNECT_KEY_BASE64}",
+      is_key_content_base64: true
+    )
+
+    latest_build = latest_testflight_build_number(
+      app_identifier: "#{APP_IDENTIFIER}",
+      api_key: api_key
+    )
+
+    increment_build_number(
+      xcodeproj: "Projects/MercuryApp/MercuryApp.xcodeproj",
+      build_number: latest_build + 1
+    )
+
+    gym(
+      clean: true,
+      verbose: true,
+      workspace: "Mercury.xcworkspace",
+      scheme: "MercuryApp",
+      configuration: "Stage",
+      export_method: "app-store",
+      xcargs: "CODE_SIGN_IDENTITY='iPhone Distribution' PROVISIONING_PROFILE_SPECIFIER='match AppStore com.auction.mercury'",
+      output_directory: "./output",
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: {
+          "com.auction.mercury" => "match AppStore com.auction.mercury"
+        }
+      }
+    )
+
+    pilot(
+      skip_waiting_for_build_processing: true,
+      app_identifier: "#{APP_IDENTIFIER}",
+      team_id: "#{TEAM_ID}",
+      ipa: "./output/AuctionGod.ipa",
+      api_key: api_key
+    )
+  end
+
+  lane :upload_release_to_testflight do
+    match_appstore
+
+    api_key = app_store_connect_api_key(
+      key_id: "#{APP_STORE_CONNECT_KEY_ID}",
+      issuer_id: "#{APP_STORE_CONNECT_ISSUER_ID}",
+      key_content: "#{APP_STORE_CONNECT_KEY_BASE64}",
+      is_key_content_base64: true
+    )
+
+    latest_build = latest_testflight_build_number(
+      app_identifier: "#{APP_IDENTIFIER}",
+      api_key: api_key
+    )
+
+    increment_build_number(
+      xcodeproj: "Projects/MercuryApp/MercuryApp.xcodeproj",
+      build_number: latest_build + 1
+    )
+
+    gym(
+      clean: true,
+      verbose: true,
+      workspace: "Mercury.xcworkspace",
+      scheme: "MercuryApp",
+      configuration: "Release",
+      export_method: "app-store",
+      xcargs: "CODE_SIGN_IDENTITY='iPhone Distribution' PROVISIONING_PROFILE_SPECIFIER='match AppStore com.auction.mercury'",
+      output_directory: "./output",
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: {
+          "com.auction.mercury" => "match AppStore com.auction.mercury"
+        }
+      }
+    )
+
+    pilot(
+      skip_waiting_for_build_processing: true,
+      app_identifier: "#{APP_IDENTIFIER}",
+      team_id: "#{TEAM_ID}",
+      ipa: "./output/AuctionGod.ipa",
+      api_key: api_key
+    )
+  end
+
+  lane :discord_alert do |options|
+    branch = options[:branch] || "배포 성공!"
+
+    description = if branch == "Develop"
+      "develop 브랜치가 정상적으로 작동합니다."
+    else
+      "Testflight에 정상 배포되었습니다."
+    end
+
+    discord_notifier(
+      webhook_url: "#{DISCORD_WEBHOOK}",
+      title: "#{branch} 브랜치 병합 성공.",
+      description: "#{description}"
+    )
     
   end
 
