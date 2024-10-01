@@ -139,11 +139,11 @@ jobs:
       - name: Notify
         run: fastlane ios discord_alert branch:"Stage"
 
-  master_merged:
+  main_merged:
     runs-on: macos-latest
     if: |
-      github.event_name == 'push' && github.ref == 'refs/heads/stage' ||
-      github.event_name == 'pull_request' && github.base_ref == 'stage'
+      github.event_name == 'push' && github.ref == 'refs/heads/main' ||
+      github.event_name == 'pull_request' && github.base_ref == 'main'
     strategy:
       matrix:
         xcodebuild-scheme: ['MercuryApp']
