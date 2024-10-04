@@ -12,9 +12,7 @@ let project = Project.feature(
   name: "SignUp",
   platform: .iOS,
   dependencies: [
-    .appFoundation,
-    .service,
-    .composableArchitecture
+    .appFoundation
   ],
   testDependencies: []
 )

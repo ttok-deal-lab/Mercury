@@ -12,8 +12,6 @@ import ComposableArchitecture
 
 struct ContentView: View {
   var body: some View {
-    TutorialView(store: Store(initialState: TutorialFeature.State(), reducer: {
-      TutorialFeature()
-    }))
+    TutorialIntroView()
   }
 }

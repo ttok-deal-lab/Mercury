@@ -7,11 +7,9 @@ let project = Project.app(
   destinations: [.iPhone],
   platform: .iOS,
   dependencies: [
-    .composableArchitecture,
     .appFoundation,
     .uiComponent,
     .network,
-    .service,
     .kakaoMap,
     .swiftAlgorithm,
     .feature(target: "Analysis"),
