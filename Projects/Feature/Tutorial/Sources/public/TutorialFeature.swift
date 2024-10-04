@@ -8,7 +8,6 @@
 import Foundation
 import AppFoundation
 import ComposableArchitecture
-import Service
 
 @Reducer
 public struct TutorialFeature {

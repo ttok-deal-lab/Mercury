@@ -17,9 +17,7 @@ struct MapSampleAppEntry: App {
   
   var body: some Scene {
     WindowGroup {
-      MapContentView(store: Store(initialState: MapFeature.State(), reducer: {
-        MapFeature()
-      }))
+      MapContentView()
     }
   }
 }
@@ -35,3 +33,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   }
 }
 
+#Preview {
+  MapContentView()
+}

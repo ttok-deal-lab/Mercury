@@ -13,7 +13,6 @@ let project = Project.staticFramework(
   platform: .iOS,
   frameworkDependencies: [
     .appFoundation,
-    .composableArchitecture,
     .googleSignIn,
     .googleSignInSwift,
   ],

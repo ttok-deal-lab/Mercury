@@ -9,13 +9,13 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.feature(
-  name: "Onboarding",
+  name: "SignIn",
   platform: .iOS,
   dependencies: [
     .appFoundation,
-    .composableArchitecture,
     .uiComponent,
-    .service
+    .googleSignIn,
+    .googleSignInSwift
   ],
   testDependencies: []
 )

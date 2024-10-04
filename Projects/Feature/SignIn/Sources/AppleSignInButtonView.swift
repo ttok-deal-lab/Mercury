@@ -7,24 +7,25 @@
 
 import Foundation
 import SwiftUI
-import ComposableArchitecture
-
+import AppFoundation
 
 public struct AppleSignInButtonView: View {
   
   // MARK: - private property
   
-  @Perception.Bindable private var store: StoreOf<OnboardingFeature>
+  @StateObject private var store = SignInStore(signInClient: SignInClientLive())
   
   // MARK: - life cycle
   
-  public init(store: StoreOf<OnboardingFeature>) {
-    self.store = store
+  public init() {
+    
   }
   
   public var body: some View {
     Button {
-      store.send(.signIn(.apple))
+      Task {
+        await store.signIn(for: .apple)
+      }
     } label: {
       HStack {
         Image(systemName: "applelogo")
