@@ -21,7 +21,6 @@ public extension TargetDependency {
   
   static let appFoundation: TargetDependency = .project(target: "AppFoundation", path: .relativeToRoot("Projects/AppFoundation"))
   static let network: TargetDependency = .project(target: "Network", path: .relativeToRoot("Projects/Network"))
-  static let service: TargetDependency = .project(target: "Service", path: .relativeToRoot("Projects/Service"))
   static let uiComponent: TargetDependency = .project(target: "UIComponent", path: .relativeToRoot("Projects/UIComponent"))
   
   static func feature(target: String) -> TargetDependency {

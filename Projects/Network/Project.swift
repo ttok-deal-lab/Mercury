@@ -15,9 +15,7 @@ let project = Project.staticFramework(
     .appFoundation,
     .moya,
     .combineMoya,
-    .composableArchitecture,
-    .swiftyJSON,
-    .service
+    .swiftyJSON
   ],
   frameworkTestDependencies: [
     

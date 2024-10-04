@@ -27,5 +27,13 @@ public enum MercuryErrorDefine: Int {
   case unknownLocationAuthenticationStatus
   /// 사용자 위치정보 없음
   case failToGetUserLocationCoordinate
+  
+  
+  // MARK: - SignIn
+  
+  /// 로그인 시도했으나 리턴값 nil
+  case nilFromSignIn
+  /// 로그인 취소
+  case cancelUserLogin
 }
 

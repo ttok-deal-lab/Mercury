@@ -7,11 +7,13 @@
 
 import Foundation
 import SwiftUI
-import Tutorial
-import ComposableArchitecture
+import SignIn
 
 struct ContentView: View {
   var body: some View {
-    TutorialIntroView()
+    VStack {
+      AppleSignInButtonView()
+      GoogleSignInButtonView()
+    }
   }
 }

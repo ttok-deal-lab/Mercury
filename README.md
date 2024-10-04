@@ -5,7 +5,7 @@
 
 
 ### 프로젝트 구성
-> Micro Feature Architecture, Clean Architecture, MVVM, TCA, SwiftUI...
+> Micro Feature Architecture, SwiftUI
 
 
 ### 코드 컨벤션 관리
