@@ -9,7 +9,6 @@ import SwiftUI
 import AppFoundation
 import KakaoMapsSDK
 import Map
-import ComposableArchitecture
 
 @main
 struct MercuryApp: App {
@@ -17,9 +16,9 @@ struct MercuryApp: App {
   
   var body: some Scene {
     WindowGroup {
-      AppView(store: Store(initialState: AppFeature.State(), reducer: {
-        AppFeature()
-      }))
+//      AppView(store: Store(initialState: AppFeature.State(), reducer: {
+//        AppFeature()
+//      }))
     }
   }
 }

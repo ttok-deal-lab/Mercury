@@ -13,6 +13,9 @@ import UIComponent
 
 public struct TutorialIntroView: View {
   
+  public init() {
+    
+  }
   public var body: some View {
     VStack {
       
