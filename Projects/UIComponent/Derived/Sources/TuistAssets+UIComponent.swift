@@ -27,6 +27,9 @@ public enum UIComponentAsset {
   public enum Images {
   public static let launchScreenMap = UIComponentImages(name: "launchScreenMap")
     public static let logo = UIComponentImages(name: "logo")
+    public static let smililingKiss = UIComponentImages(name: "smililingKiss")
+    public static let sunglasses = UIComponentImages(name: "sunglasses")
+    public static let thinking = UIComponentImages(name: "thinking")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

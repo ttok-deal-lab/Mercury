@@ -11,13 +11,18 @@ let project = Project.app(
     .uiComponent,
     .network,
     .kakaoMap,
+    .googleSignIn,
+    .googleSignInSwift,
     .swiftAlgorithm,
+    .coordinator,
     .feature(target: "Analysis"),
     .feature(target: "Auction"),
     .feature(target: "Comment"),
     .feature(target: "Profile"),
     .feature(target: "Map"),
-    .feature(target: "Tutorial")
+    .feature(target: "Tutorial"),
+    .feature(target: "SignIn"),
+    .feature(target: "SignUp")
   ],
   testDependencies: []
 )

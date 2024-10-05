@@ -7,18 +7,25 @@
 
 import SwiftUI
 import AppFoundation
+
 import KakaoMapsSDK
+import Coordinator
+import GoogleSignIn
+import GoogleSignInSwift
 import Map
 
 @main
 struct MercuryApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+  @StateObject private var coordinator = CoordinatorManager()
   
   var body: some Scene {
     WindowGroup {
-//      AppView(store: Store(initialState: AppFeature.State(), reducer: {
-//        AppFeature()
-//      }))
+      AppView()
+        .onOpenURL { url in
+          GIDSignIn.sharedInstance.handle(url)
+        }
+        .environmentObject(coordinator)
     }
   }
 }

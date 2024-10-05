@@ -31,6 +31,9 @@ internal enum Gen {
   internal enum Images {
     internal static let launchScreenMap = ImageAsset(name: "launchScreenMap")
     internal static let logo = ImageAsset(name: "logo")
+    internal static let smililingKiss = ImageAsset(name: "smililingKiss")
+    internal static let sunglasses = ImageAsset(name: "sunglasses")
+    internal static let thinking = ImageAsset(name: "thinking")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

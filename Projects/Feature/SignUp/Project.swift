@@ -12,7 +12,8 @@ let project = Project.feature(
   name: "SignUp",
   platform: .iOS,
   dependencies: [
-    .appFoundation
+    .appFoundation,
+    .coordinator
   ],
   testDependencies: []
 )
