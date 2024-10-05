@@ -56,7 +56,9 @@ public struct TutorialIntroView: View {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
 //            coordinator.push(page: .map)
-            coordinator.presentFullScreenCover(.map)
+//            coordinator.presentFullScreenCover(.map)
+            coordinator.changeBaseView(page: .map)
+            coordinator.push(page: .tutorialIntro)
           } label: {
             Text(currentPageType == .done ? "다음에 할게요" : "")
               .foregroundStyle(.black)

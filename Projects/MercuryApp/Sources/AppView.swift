@@ -22,7 +22,7 @@ struct AppView: View {
   var body: some View {
     
     NavigationStack(path: $coordinator.path) {
-      CoordinatorFactory.build(page: isAppFirst ? .tutorialIntro : .map, coordinator: coordinator)
+      CoordinatorFactory.build(page: rootPage(), coordinator: coordinator)
         .navigationDestination(for: AppPage.self) { page in
           CoordinatorFactory.build(page: page, coordinator: coordinator)
         }
@@ -36,10 +36,17 @@ struct AppView: View {
     .environmentObject(coordinator)
 
   }
+  
+  private func rootPage() -> AppPage {
+    guard let root = coordinator.rootPage else {
+      return isAppFirst ? .tutorialIntro : .map
+    }
+    return root
+  }
 }
 
-//#Preview {
-//  AppView()
-//    .environmentObject(CoordinatorManager())
-//}
+#Preview {
+  AppView()
+    .environmentObject(CoordinatorManager())
+}
 

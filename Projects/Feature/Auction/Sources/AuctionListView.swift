@@ -7,8 +7,10 @@
 
 import SwiftUI
 
-public struct AuctionView: View {
-    
+public struct AuctionListView: View {
+
+  @StateObject private var store = AuctionStore()
+  
   public var body: some View {
     Text("Auction")
   }

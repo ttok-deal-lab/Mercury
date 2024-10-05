@@ -8,11 +8,13 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 public class CoordinatorManager: ObservableObject {
   
   @Published public var path: NavigationPath = NavigationPath()
   @Published public var sheet: AppPage?
   @Published public var fullScreenCover: AppPage?
+  @Published public var rootPage: AppPage?
   
   public init() { }
   
@@ -42,6 +44,10 @@ public class CoordinatorManager: ObservableObject {
   
   public func dismissCover() {
     self.fullScreenCover = nil
+  }
+  
+  public func changeBaseView(page: AppPage) {
+    self.rootPage = page
   }
   
 }
