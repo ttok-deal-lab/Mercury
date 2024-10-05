@@ -5,9 +5,13 @@
 //  Created by 송하민 on 8/7/24.
 //
 
-import AppFoundation
+
 import SwiftUI
 import CoreLocation
+
+import AppFoundation
+import Coordinator
+import UIComponent
 
 public struct MapContentView: View {
   
@@ -15,15 +19,14 @@ public struct MapContentView: View {
   
   @StateObject private var store = MapStore(userLocationClient: UserLocationClientLive())
   
-  
-  // MARK: - internal property
-  
-  public init() {
-    
-  }
+  @ObservedObject private var coordinator: CoordinatorManager
   
   
   // MARK: - life cycle
+  
+  public init(coordinator: CoordinatorManager) {
+    self.coordinator = coordinator
+  }
   
   public var body: some View {
     KakaoMapView(

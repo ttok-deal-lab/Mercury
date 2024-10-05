@@ -13,19 +13,19 @@ import Coordinator
 import Map
 import Tutorial
 
-enum CoordinatorViewFactory {
+struct CoordinatorFactory {
   
   @ViewBuilder
-  static func build(page: AppPage) -> some View {
+  static func build(page: AppPage, coordinator: CoordinatorManager) -> some View {
     switch page {
     case .tutorialIntro:
-      TutorialIntroView()
+      TutorialIntroView(coordinator: coordinator)
     case .tutorialSelectionCategory:
-      TutorialSelectionCategoryView()
+      TutorialSelectionCategoryView(coordinator: coordinator)
     case .tutorialSelectionRegion:
-      TutorialSelectionRegionView()
+      TutorialSelectionRegionView(coordinator: coordinator)
     case .map:
-      MapContentView()
+      MapContentView(coordinator: coordinator)
     }
   }
 }

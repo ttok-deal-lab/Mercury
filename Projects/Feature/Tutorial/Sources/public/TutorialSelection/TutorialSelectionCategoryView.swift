@@ -8,10 +8,14 @@
 import SwiftUI
 import Foundation
 
+import Coordinator
+
 public struct TutorialSelectionCategoryView: View {
   
-  public init() {
-    
+  @ObservedObject private var coordinator: CoordinatorManager
+  
+  public init(coordinator: CoordinatorManager) {
+    self.coordinator = coordinator
   }
   
   public var body: some View {

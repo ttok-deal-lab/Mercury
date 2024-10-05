@@ -21,9 +21,11 @@ public struct TutorialIntroView: View {
   }
   
   @State private var currentPageType: TutorialPageType = .welcome
-  @EnvironmentObject private var coordinator: CoordinatorManager
+  @ObservedObject private var coordinator: CoordinatorManager
   
-  public init() { }
+  public init(coordinator: CoordinatorManager) {
+    self.coordinator = coordinator
+  }
   
   public var body: some View {
     VStack(spacing: 0) {
@@ -53,7 +55,8 @@ public struct TutorialIntroView: View {
       .toolbar {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-            // 버튼 액션
+//            coordinator.push(page: .map)
+            coordinator.presentFullScreenCover(.map)
           } label: {
             Text(currentPageType == .done ? "다음에 할게요" : "")
               .foregroundStyle(.black)
@@ -62,7 +65,6 @@ public struct TutorialIntroView: View {
           .animation(.easeInOut(duration: 0.5), value: currentPageType)
         }
       }
-      
       
       MQButton(
         title: self.currentPageType != .done ? "다음" : "관심물건 설정하러 가기",
@@ -78,10 +80,7 @@ public struct TutorialIntroView: View {
         })
       .padding(.top, 20)
     }
-    
   }
-  
-  
   
   @ViewBuilder
   private func tutorialPage(image: Image, description: String) -> some View {
@@ -99,7 +98,6 @@ public struct TutorialIntroView: View {
     }
     
   }
-  
 }
 
 //#Preview {

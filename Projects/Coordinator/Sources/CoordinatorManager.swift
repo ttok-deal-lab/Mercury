@@ -10,7 +10,7 @@ import SwiftUI
 
 public class CoordinatorManager: ObservableObject {
   
-  @Published public var path: [AppPage] = []
+  @Published public var path: NavigationPath = NavigationPath()
   @Published public var sheet: AppPage?
   @Published public var fullScreenCover: AppPage?
   

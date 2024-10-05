@@ -17,7 +17,6 @@ import Map
 @main
 struct MercuryApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-  @StateObject private var coordinator = CoordinatorManager()
   
   var body: some Scene {
     WindowGroup {
@@ -25,7 +24,6 @@ struct MercuryApp: App {
         .onOpenURL { url in
           GIDSignIn.sharedInstance.handle(url)
         }
-        .environmentObject(coordinator)
     }
   }
 }

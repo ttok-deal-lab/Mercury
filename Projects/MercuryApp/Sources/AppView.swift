@@ -16,28 +16,30 @@ import Coordinator
 
 struct AppView: View {
   
-  @EnvironmentObject private var coordinator: CoordinatorManager
   @AppStorage(UserDefaultsKeyDefine.isAppFirst.rawValue) var isAppFirst: Bool = true
+  @StateObject private var coordinator = CoordinatorManager()
   
   var body: some View {
     
-    NavigationStack(path: $coordinator.path, root: {
-      CoordinatorViewFactory.build(page: isAppFirst ? .tutorialIntro : .map)
+    NavigationStack(path: $coordinator.path) {
+      CoordinatorFactory.build(page: isAppFirst ? .tutorialIntro : .map, coordinator: coordinator)
         .navigationDestination(for: AppPage.self) { page in
-          CoordinatorViewFactory.build(page: page)
+          CoordinatorFactory.build(page: page, coordinator: coordinator)
         }
         .sheet(item: $coordinator.sheet) { page in
-          CoordinatorViewFactory.build(page: page)
+          CoordinatorFactory.build(page: page, coordinator: coordinator)
         }
         .fullScreenCover(item: $coordinator.fullScreenCover) { page in
-          CoordinatorViewFactory.build(page: page)
+          CoordinatorFactory.build(page: page, coordinator: coordinator)
         }
-    })
+    }
+    .environmentObject(coordinator)
+
   }
 }
 
-#Preview {
-  AppView()
-    .environmentObject(CoordinatorManager())
-}
+//#Preview {
+//  AppView()
+//    .environmentObject(CoordinatorManager())
+//}
 
