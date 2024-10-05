@@ -11,6 +11,10 @@ public struct AuctionDetailView: View {
 
   @StateObject private var store = AuctionStore()
   
+  public init() {
+    
+  }
+  
   public var body: some View {
     Text("Auction")
   }

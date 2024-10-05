@@ -39,7 +39,7 @@ struct AppView: View {
   
   private func rootPage() -> AppPage {
     guard let root = coordinator.rootPage else {
-      return isAppFirst ? .tutorialIntro : .map
+      return isAppFirst ? .tutorial(.tutorialIntro) : .map
     }
     return root
   }

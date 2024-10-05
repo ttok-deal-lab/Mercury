@@ -21,6 +21,7 @@ public struct TutorialIntroView: View {
   }
   
   @State private var currentPageType: TutorialPageType = .welcome
+  @State private var isShowAlertForRecommend: Bool = false
   @ObservedObject private var coordinator: CoordinatorManager
   
   public init(coordinator: CoordinatorManager) {
@@ -34,7 +35,6 @@ public struct TutorialIntroView: View {
           image: UIComponentAsset.Images.smililingKiss.swiftUIImage,
           description: "안녕하세요! 쉬운 경매 똑션입니다. 무슨말을 적어야할지 모르겠어요"
         )
-        .background(.gray)
         .tag(TutorialPageType.welcome)
         
         tutorialPage(
@@ -55,10 +55,8 @@ public struct TutorialIntroView: View {
       .toolbar {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-//            coordinator.push(page: .map)
-//            coordinator.presentFullScreenCover(.map)
-            coordinator.changeBaseView(page: .map)
-            coordinator.push(page: .tutorialIntro)
+
+            self.isShowAlertForRecommend = true
           } label: {
             Text(currentPageType == .done ? "다음에 할게요" : "")
               .foregroundStyle(.black)
@@ -67,6 +65,18 @@ public struct TutorialIntroView: View {
           .animation(.easeInOut(duration: 0.5), value: currentPageType)
         }
       }
+      .alert("추천매물을 가져올게요!", isPresented: $isShowAlertForRecommend) {
+        Button("됐어요") {
+          coordinator.changeBaseView(page: .map)
+        }
+        Button("좋아요!") {
+          coordinator.changeBaseView(page: .map)
+          coordinator.push(page: .auction(.recommendAuction))
+        }
+      } message: {
+        Text("그냥 넘어가면 섭섭하지이이이이이이이")
+      }
+
       
       MQButton(
         title: self.currentPageType != .done ? "다음" : "관심물건 설정하러 가기",
