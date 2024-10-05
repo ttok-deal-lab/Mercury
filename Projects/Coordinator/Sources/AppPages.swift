@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 public enum AppPage: String, Hashable, Identifiable, CaseIterable {
   

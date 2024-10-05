@@ -21,54 +21,66 @@ public struct TutorialIntroView: View {
   }
   
   @State private var currentPageType: TutorialPageType = .welcome
-  @State private var isDoneIntro: Bool = false
+  @EnvironmentObject private var coordinator: CoordinatorManager
   
   public init() { }
   
   public var body: some View {
-    TabView(selection: $currentPageType) {
+    VStack(spacing: 0) {
+      TabView(selection: $currentPageType) {
+        tutorialPage(
+          image: UIComponentAsset.Images.smililingKiss.swiftUIImage,
+          description: "안녕하세요! 쉬운 경매 똑션입니다. 무슨말을 적어야할지 모르겠어요"
+        )
+        .background(.gray)
+        .tag(TutorialPageType.welcome)
+        
+        tutorialPage(
+          image: UIComponentAsset.Images.thinking.swiftUIImage,
+          description: "여기에 튜토리얼에 알맞는 문장이 있으면 좋을 것 같아요! 아님말고"
+        )
+        .tag(TutorialPageType.easyToUse)
+        
+        tutorialPage(
+          image: UIComponentAsset.Images.sunglasses.swiftUIImage,
+          description: "이제 관심물건을 설정하러갈건데 선글라스가 멋져보여요 히히!"
+        )
+        .tag(TutorialPageType.done)
+      }
+      .animation(.default, value: currentPageType)
+      .tabViewStyle(.page(indexDisplayMode: .never))
+      .disabled(true)
+      .toolbar {
+        ToolbarItem(placement: .topBarTrailing) {
+          Button {
+            // 버튼 액션
+          } label: {
+            Text(currentPageType == .done ? "다음에 할게요" : "")
+              .foregroundStyle(.black)
+          }
+          .opacity(currentPageType == .done ? 1 : 0)
+          .animation(.easeInOut(duration: 0.5), value: currentPageType)
+        }
+      }
       
-      tutorialPage(
-        image: UIComponentAsset.Images.smililingKiss.swiftUIImage,
-        description: "안녕하세요! 쉬운 경매 똑션입니다. 무슨말을 적어야할지 모르겠어요"
-      )
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .tag(TutorialPageType.welcome)
       
-      tutorialPage(
-        image: UIComponentAsset.Images.thinking.swiftUIImage,
-        description: "여기에 튜토리얼에 알맞는 문장이 있으면 좋을 것 같아요! 아님말고"
-      )
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .tag(TutorialPageType.easyToUse)
-      
-      tutorialPage(
-        image: UIComponentAsset.Images.sunglasses.swiftUIImage,
-        description: "이제 관심물건을 설정하러갈건데 선글라스가 멋져보여요 히히!"
-      )
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .tag(TutorialPageType.done)
-      
-    }
-    .tabViewStyle(.page)
-    .indexViewStyle(.page(backgroundDisplayMode: .always))
-    
-    MQButton(
-      title: self.currentPageType != .done ? "다음" : "관심물건 설정하러 가기",
-      font: .headline,
-      backgroundColor: .black,
-      foregroundColor: .white,
-      action: {
-        withAnimation {
+      MQButton(
+        title: self.currentPageType != .done ? "다음" : "관심물건 설정하러 가기",
+        font: .headline,
+        backgroundColor: .black,
+        foregroundColor: .white,
+        action: {
           if currentPageType == .welcome {
             currentPageType = .easyToUse
           } else if currentPageType == .easyToUse {
             currentPageType = .done
           }
-        }
-      })
-    .padding(.top, 20)
+        })
+      .padding(.top, 20)
+    }
+    
   }
+  
   
   
   @ViewBuilder
@@ -90,6 +102,6 @@ public struct TutorialIntroView: View {
   
 }
 
-#Preview {
-  TutorialIntroView()
-}
+//#Preview {
+//  TutorialIntroView(isTutorialSkip: .constant(false))
+//}
