@@ -15,15 +15,13 @@ import UIComponent
 
 public struct TutorialSelectionCategoryView: View {
   
-//  @Environment(\.modelContext) var modelContext
-  @StateObject var filter: Filter = Filter()
-  @ObservedObject private var coordinator: CoordinatorManager
+  @Environment(\.modelContext) var modelContext
+  @Query var filters: [Filter]
+  @EnvironmentObject private var coordinator: CoordinatorManager
+  
+  public init() { }
 
   private let colums: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
-  
-  public init(coordinator: CoordinatorManager) {
-    self.coordinator = coordinator
-  }
   
   public var body: some View {
     VStack {
@@ -31,6 +29,7 @@ public struct TutorialSelectionCategoryView: View {
         LazyVGrid(columns: colums) {
           ForEach(AuctionCategory.allCases) { category in
             TutorialSelectionCategoryToggleView(
+              isSelected: findNonSeleted(category: category),
               category: category
             )
           }
@@ -42,10 +41,13 @@ public struct TutorialSelectionCategoryView: View {
         coordinator.pushOnFullScreenCover(page: .tutorial(.tutorialSelectionRegion))
       }
     }
-//    .onAppear {
-//      self.filter = Filter.getShared(context: modelContext)
-//    }
     .navigationTitle("선호 물건을 선택하세요")
+  }
+  
+  private func findNonSeleted(category: AuctionCategory) -> Bool {
+    guard let filter = filters.first else { return false }
+    
+    return filter.favoriteCategories.contains(where: { $0 == category.rawValue })
   }
 }
 
@@ -53,7 +55,7 @@ public struct TutorialSelectionCategoryView: View {
 
 #Preview {
   NavigationStack {
-    TutorialSelectionCategoryView(coordinator: CoordinatorManager())
+    TutorialSelectionCategoryView()
       .border(.brown)
       .navigationTitle("경매 카테고리")
   }

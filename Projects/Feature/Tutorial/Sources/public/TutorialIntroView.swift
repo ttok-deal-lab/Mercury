@@ -12,6 +12,7 @@ import Coordinator
 import AppFoundation
 import UIComponent
 
+@MainActor
 public struct TutorialIntroView: View {
   
   private enum TutorialPageType {
@@ -22,12 +23,10 @@ public struct TutorialIntroView: View {
   
   @State private var currentPageType: TutorialPageType = .welcome
   @State private var isShowAlertForRecommend: Bool = false
-  @ObservedObject private var coordinator: CoordinatorManager
+  @EnvironmentObject var coordinator: CoordinatorManager
   @AppStorage(UserDefaultsKeyDefine.isAppFirst.rawValue) var isAppFirst: Bool = true
   
-  public init(coordinator: CoordinatorManager) {
-    self.coordinator = coordinator
-  }
+  public init() { }
   
   public var body: some View {
     VStack(spacing: 0) {
@@ -92,6 +91,9 @@ public struct TutorialIntroView: View {
           }
         })
       .padding(.top, 20)
+    }
+    .onAppear {
+      print("TEST ~> \(coordinator)")
     }
   }
   

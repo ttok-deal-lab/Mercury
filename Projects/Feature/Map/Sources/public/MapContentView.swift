@@ -19,13 +19,13 @@ public struct MapContentView: View {
   
   @StateObject private var store = MapStore(userLocationClient: UserLocationClientLive())
   
-  @ObservedObject private var coordinator: CoordinatorManager
+  @EnvironmentObject private var coordinator: CoordinatorManager
   
   
   // MARK: - life cycle
   
-  public init(coordinator: CoordinatorManager) {
-    self.coordinator = coordinator
+  public init() {
+    
   }
   
   public var body: some View {

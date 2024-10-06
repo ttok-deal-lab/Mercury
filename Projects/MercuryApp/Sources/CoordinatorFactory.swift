@@ -14,19 +14,30 @@ import Map
 import Tutorial
 import Auction
 
-struct CoordinatorFactory {
+struct CoordinatorFactory: View {
+  
+  @EnvironmentObject var coordinator: CoordinatorManager
+  
+  let page: AppPage
+  
+  var body: some View {
+    build(page: page)
+  }
   
   @ViewBuilder
-  static func build(page: AppPage, coordinator: CoordinatorManager) -> some View {
+  func build(page: AppPage) -> some View {
     switch page {
     case .tutorial(let tutorials):
       switch tutorials {
       case .tutorialIntro:
-        TutorialIntroView(coordinator: coordinator)
+        TutorialIntroView()
+          .environmentObject(coordinator)
       case .tutorialSelectionCategory:
-        TutorialSelectionCategoryView(coordinator: coordinator)
+        TutorialSelectionCategoryView()
+          .environmentObject(coordinator)
       case .tutorialSelectionRegion:
-        TutorialSelectionRegionView(coordinator: coordinator)
+        TutorialSelectionRegionView()
+          .environmentObject(coordinator)
       }
     case .auction(let auctions):
       switch auctions {
@@ -34,7 +45,8 @@ struct CoordinatorFactory {
         AuctionDetailView() // 추후 매물ID 박아서 진행
       }
     case .map:
-      MapContentView(coordinator: coordinator)
+      MapContentView()
+        .environmentObject(coordinator)
     }
   }
 }
