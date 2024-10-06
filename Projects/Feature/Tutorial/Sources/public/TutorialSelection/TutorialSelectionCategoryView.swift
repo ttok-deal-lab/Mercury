@@ -38,12 +38,11 @@ public struct TutorialSelectionCategoryView: View {
                 set: { newValue in
                   if newValue {
                     filter?.favoriteCategories.append(category.rawValue)
-                    print(filter?.favoriteCategories.map { $0 })
-                    do {
-                      try modelContext.save()
-                    } catch {
-                      print("wwwW?W??????")
-                    }
+//                    do {
+//                      try modelContext.save()
+//                    } catch {
+//                      print("wwwW?W??????")
+//                    }
                   } else {
                     filter?.favoriteCategories.removeAll { $0 == category.rawValue }
                   }

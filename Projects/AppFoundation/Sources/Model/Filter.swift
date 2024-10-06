@@ -27,16 +27,16 @@ public class Filter: Identifiable {
       return existing
     }
     
-    do {
-      let descriptor = FetchDescriptor<Filter>()
-      let filters = try context.fetch(descriptor)
-      if let first = filters.first {
-        shared = first
-        return first
-      }
-    } catch {
-      print("Error fetching Filter: \(error)")
-    }
+//    do {
+//      let descriptor = FetchDescriptor<Filter>()
+//      let filters = try context.fetch(descriptor)
+//      if let first = filters.first {
+//        shared = first
+//        return first
+//      }
+//    } catch {
+//      print("Error fetching Filter: \(error)")
+//    }
     
     let newFilter = Filter()
     context.insert(newFilter)
