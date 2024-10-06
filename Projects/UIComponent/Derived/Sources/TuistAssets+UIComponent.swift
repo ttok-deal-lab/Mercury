@@ -25,8 +25,17 @@ public enum UIComponentAsset {
     public static let primary = UIComponentColors(name: "primary")
   }
   public enum Images {
-  public static let launchScreenMap = UIComponentImages(name: "launchScreenMap")
+  public static let apartment = UIComponentImages(name: "apartment")
+    public static let factory = UIComponentImages(name: "factory")
+    public static let house = UIComponentImages(name: "house")
+    public static let land = UIComponentImages(name: "land")
+    public static let offictel = UIComponentImages(name: "offictel")
+    public static let store = UIComponentImages(name: "store")
+    public static let launchScreenMap = UIComponentImages(name: "launchScreenMap")
     public static let logo = UIComponentImages(name: "logo")
+    public static let smililingKiss = UIComponentImages(name: "smililingKiss")
+    public static let sunglasses = UIComponentImages(name: "sunglasses")
+    public static let thinking = UIComponentImages(name: "thinking")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

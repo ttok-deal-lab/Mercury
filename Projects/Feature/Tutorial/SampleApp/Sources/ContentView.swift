@@ -7,10 +7,12 @@
 
 import Foundation
 import SwiftUI
+
+import Coordinator
 import Tutorial
 
 struct ContentView: View {
   var body: some View {
-    TutorialIntroView()
+    TutorialIntroView(coordinator: CoordinatorManager())
   }
 }

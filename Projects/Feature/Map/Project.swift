@@ -14,7 +14,8 @@ let project = Project.staticFramework(
   frameworkDependencies: [
     .appFoundation,
     .uiComponent,
-    .kakaoMap
+    .kakaoMap,
+    .coordinator
   ],
   frameworkTestDependencies: []
 )

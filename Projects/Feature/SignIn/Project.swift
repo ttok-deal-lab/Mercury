@@ -15,7 +15,8 @@ let project = Project.feature(
     .appFoundation,
     .uiComponent,
     .googleSignIn,
-    .googleSignInSwift
+    .googleSignInSwift,
+    .coordinator
   ],
   testDependencies: []
 )

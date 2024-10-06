@@ -45,7 +45,7 @@ extension Project {
     destinations: Destinations,
     productName: String? = productName,
     bundleId: String = bundleId,
-    deploymentTargets: DeploymentTargets? = deployTarget,
+    deploymentTargets: DeploymentTargets? = deploymentTarget,
     scripts: [TargetScript],
     dependencies: [TargetDependency],
     testDependencies: [TargetDependency],

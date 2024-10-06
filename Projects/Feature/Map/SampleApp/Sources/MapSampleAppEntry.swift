@@ -5,10 +5,12 @@
 //  Created by 송하민 on 8/6/24.
 //
 
-import Map
 import SwiftUI
+
+import Map
 import KakaoMapsSDK
 import AppFoundation
+import Coordinator
 
 @main
 struct MapSampleAppEntry: App {
@@ -16,7 +18,7 @@ struct MapSampleAppEntry: App {
   
   var body: some Scene {
     WindowGroup {
-      MapContentView()
+      MapContentView(coordinator: CoordinatorManager())
     }
   }
 }
@@ -33,5 +35,5 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 }
 
 #Preview {
-  MapContentView()
+  MapContentView(coordinator: CoordinatorManager())
 }

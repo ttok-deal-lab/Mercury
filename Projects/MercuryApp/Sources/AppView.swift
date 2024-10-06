@@ -5,50 +5,53 @@
 //  Created by 송하민 on 8/30/24.
 //
 
-import Map
-import Tutorial
+
 import SwiftUI
 import Foundation
-import AppFoundation
 
-//struct AppView: View {
-//  @Perception.Bindable private var store: StoreOf<AppFeature>
-//  
-//  init(store: StoreOf<AppFeature>) {
-//    self.store = store
-//  }
-//  
-//  var body: some View {
-//    NavigationStackStore(
-//      self.store.scope(state: \.path, action: \.path)
-//    ) {
-//      ZStack {
-//        Button {
-//          store.send(.destination(.push(.map)))
-//        } label: {
-//          Text("goto map")
-//        }
-//      }
-//      .fullScreenCover(store: store.scope(state: \.$tutorial, action: \.tutorial), content: { store in
-//        TutorialView(store: store)
-//      })
-//      .onAppear {
-//        if store.isAppFirst {
-//          store.send(.destination(.present(.tutorial)))
-//        }
-//      }
-//    } destination: { store in
-//      switch store.state {
-//      case .map:
-//        if let store = store.scope(state: \.map, action: \.map) {
-//          MapContentView(store: store)
-//        }
-//      case .tutorial:
-//        if let store = store.scope(state: \.tutorial, action: \.tutorial) {
-//          TutorialView(store: store)
-//        }
-//      }
-//    }
-//  }
-//}
+import Map
+import Tutorial
+import AppFoundation
+import Coordinator
+
+struct AppView: View {
+  
+  @Environment(\.modelContext) var modelContext
+  @AppStorage(UserDefaultsKeyDefine.isAppFirst.rawValue) var isAppFirst: Bool = true
+  @StateObject private var coordinator = CoordinatorManager()
+  
+  var body: some View {
+    
+    NavigationStack(path: $coordinator.path) {
+      CoordinatorFactory.build(page: rootPage(), coordinator: coordinator)
+        .navigationDestination(for: AppPage.self) { page in
+          CoordinatorFactory.build(page: page, coordinator: coordinator)
+        }
+        .sheet(item: $coordinator.sheet) { page in
+          CoordinatorFactory.build(page: page, coordinator: coordinator)
+        }
+        .fullScreenCover(item: $coordinator.fullScreenCover) { page in
+          NavigationStack(path: $coordinator.fullScreenCoverPath) {
+            CoordinatorFactory.build(page: page, coordinator: coordinator)
+              .navigationDestination(for: AppPage.self) { page in
+                CoordinatorFactory.build(page: page, coordinator: coordinator)
+              }
+          }
+        }
+    }
+
+  }
+  
+  private func rootPage() -> AppPage {
+    guard let root = coordinator.rootPage else {
+      return isAppFirst ? .tutorial(.tutorialIntro) : .map
+    }
+    return root
+  }
+}
+
+#Preview {
+  AppView()
+    .environmentObject(CoordinatorManager())
+}
 
