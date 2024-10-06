@@ -12,11 +12,10 @@ import UIComponent
 
 public struct TutorialSelectionCategoryToggleView: View {
   
-  @Environment(\.modelContext) private var modelContext
-  @Binding var isSelected: Bool
+//  @Environment(\.modelContext) private var modelContext
+  @State var isSelected: Bool = false
   
-  let categoryImage: Image
-  let categoryName: String
+  let category: AuctionCategory
   
   public var body: some View {
     Button {
@@ -28,12 +27,12 @@ public struct TutorialSelectionCategoryToggleView: View {
             Spacer()
             MQCheckbox(type: .circle, checkColor: .black, isChecked: $isSelected)
           }
-          categoryImage
+          category.selectionImage
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 70, height: 70)
             .padding(.top, 8)
-          Text(categoryName)
+          Text(category.rawValue)
             .font(.headline)
             .foregroundStyle(.black)
             .padding(.top, 12)
@@ -47,7 +46,26 @@ public struct TutorialSelectionCategoryToggleView: View {
     )
     .clipShape(RoundedRectangle(cornerRadius: 12))
   }
-  
+
+}
+
+extension AuctionCategory {
+  var selectionImage: Image {
+    switch self {
+    case .house:
+      UIComponentAsset.Images.house.swiftUIImage
+    case .apartment:
+      UIComponentAsset.Images.apartment.swiftUIImage
+    case .officetel:
+      UIComponentAsset.Images.offictel.swiftUIImage
+    case .land:
+      UIComponentAsset.Images.land.swiftUIImage
+    case .factory:
+      UIComponentAsset.Images.factory.swiftUIImage
+    case .store:
+      UIComponentAsset.Images.store.swiftUIImage
+    }
+  }
 }
 
 //#Preview {

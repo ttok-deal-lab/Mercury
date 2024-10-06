@@ -15,7 +15,7 @@ import Coordinator
 
 public struct TutorialSelectionRegionView: View {
   
-  @Environment(\.modelContext) private var modelContext
+//  @Environment(\.modelContext) private var modelContext
   @ObservedObject private var coordinator: CoordinatorManager
   private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 1)
   
