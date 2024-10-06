@@ -13,6 +13,6 @@ import Tutorial
 
 struct ContentView: View {
   var body: some View {
-    TutorialIntroView(coordinator: CoordinatorManager())
+    TutorialIntroView()
   }
 }

@@ -18,7 +18,7 @@ struct MapSampleAppEntry: App {
   
   var body: some Scene {
     WindowGroup {
-      MapContentView(coordinator: CoordinatorManager())
+      MapContentView()
     }
   }
 }
@@ -35,5 +35,5 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 }
 
 #Preview {
-  MapContentView(coordinator: CoordinatorManager())
+  MapContentView()
 }
