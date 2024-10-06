@@ -30,7 +30,13 @@ struct AppView: View {
           CoordinatorFactory.build(page: page, coordinator: coordinator)
         }
         .fullScreenCover(item: $coordinator.fullScreenCover) { page in
-          CoordinatorFactory.build(page: page, coordinator: coordinator)
+          NavigationStack(path: $coordinator.fullScreenCoverPath) {
+            CoordinatorFactory.build(page: page, coordinator: coordinator)
+              .navigationDestination(for: AppPage.self) { page in
+                CoordinatorFactory.build(page: page, coordinator: coordinator)
+              }
+          }
+          
         }
     }
     .environmentObject(coordinator)

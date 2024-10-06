@@ -23,6 +23,7 @@ public struct TutorialIntroView: View {
   @State private var currentPageType: TutorialPageType = .welcome
   @State private var isShowAlertForRecommend: Bool = false
   @ObservedObject private var coordinator: CoordinatorManager
+  @AppStorage(UserDefaultsKeyDefine.isAppFirst.rawValue) var isAppFirst: Bool = true
   
   public init(coordinator: CoordinatorManager) {
     self.coordinator = coordinator
@@ -67,10 +68,10 @@ public struct TutorialIntroView: View {
       }
       .alert("추천매물을 가져올게요!", isPresented: $isShowAlertForRecommend) {
         Button("됐어요") {
-          coordinator.changeBaseView(page: .map)
+          isAppFirst = false
         }
         Button("좋아요!") {
-          coordinator.changeBaseView(page: .map)
+          isAppFirst = false
           coordinator.push(page: .auction(.recommendAuction))
         }
       } message: {
@@ -80,14 +81,14 @@ public struct TutorialIntroView: View {
       
       MQButton(
         title: self.currentPageType != .done ? "다음" : "관심물건 설정하러 가기",
-        font: .headline,
-        backgroundColor: .black,
-        foregroundColor: .white,
         action: {
           if currentPageType == .welcome {
             currentPageType = .easyToUse
           } else if currentPageType == .easyToUse {
             currentPageType = .done
+          } else if currentPageType == .done {
+            coordinator.presentFullScreenCover(page: .tutorial(.tutorialSelectionCategory))
+            coordinator.changeBaseView(page: .map)
           }
         })
       .padding(.top, 20)

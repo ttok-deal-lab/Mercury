@@ -11,10 +11,13 @@ import SwiftUI
 @MainActor
 public class CoordinatorManager: ObservableObject {
   
+  @Published public var rootPage: AppPage?
+  
   @Published public var path: NavigationPath = NavigationPath()
+  @Published public var fullScreenCoverPath: NavigationPath = NavigationPath()
+  
   @Published public var sheet: AppPage?
   @Published public var fullScreenCover: AppPage?
-  @Published public var rootPage: AppPage?
   
   public init() { }
   
@@ -30,12 +33,16 @@ public class CoordinatorManager: ObservableObject {
     path.removeLast(path.count)
   }
   
-  public func presentSheet(_ sheet: AppPage) {
-    self.sheet = sheet
+  public func presentSheet(page: AppPage) {
+    self.sheet = page
   }
   
-  public func presentFullScreenCover(_ cover: AppPage) {
-    self.fullScreenCover = cover
+  public func presentFullScreenCover(page: AppPage) {
+    self.fullScreenCover = page
+  }
+  
+  public func pushOnFullScreenCover(page: AppPage) {
+    self.fullScreenCoverPath.append(page)
   }
   
   public func dismissSheet() {

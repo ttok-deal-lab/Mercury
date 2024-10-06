@@ -16,7 +16,7 @@ public struct AuctionDetailView: View {
   }
   
   public var body: some View {
-    Text("Auction")
+    Text("Auction Detail View")
   }
   
 }

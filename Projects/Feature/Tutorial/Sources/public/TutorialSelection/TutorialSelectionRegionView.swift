@@ -9,6 +9,7 @@ import SwiftUI
 import Foundation
 
 import AppFoundation
+import UIComponent
 import Coordinator
 
 public struct TutorialSelectionRegionView: View {
@@ -21,7 +22,11 @@ public struct TutorialSelectionRegionView: View {
   
   public var body: some View {
     VStack {
-       
+      Color.red
+      Spacer()
+      MQButton(title: "준비됐어요!") {
+        coordinator.dismissCover()
+      }
     }
   }
 }

@@ -15,14 +15,14 @@ public struct MQButton: View {
   var backgroundColor: Color
   var foregroundColor: Color
   var action: () -> Void
-  var cornerRadius: CGFloat
+  var cornerRadius: CGFloat = 16
   var horizontalPadding: CGFloat = 20
   
   public init(
     title: String,
-    font: Font,
-    backgroundColor: Color,
-    foregroundColor: Color,
+    font: Font = .headline,
+    backgroundColor: Color = .black,
+    foregroundColor: Color = .white,
     action: @escaping () -> Void,
     cornerRadius: CGFloat = 16,
     horizontalPadding: CGFloat = 20
