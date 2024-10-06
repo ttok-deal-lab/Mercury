@@ -8,38 +8,53 @@
 
 import SwiftUI
 import Foundation
+import SwiftData
 
 import Map
 import Tutorial
+import Auction
 import AppFoundation
 import Coordinator
 
 struct AppView: View {
   
+  @EnvironmentObject var coordinator: CoordinatorManager
   @Environment(\.modelContext) var modelContext
+  @Query var filters: [Filter]
   @AppStorage(UserDefaultsKeyDefine.isAppFirst.rawValue) var isAppFirst: Bool = true
-  @StateObject private var coordinator = CoordinatorManager()
   
   var body: some View {
     
     NavigationStack(path: $coordinator.path) {
-      CoordinatorFactory.build(page: rootPage(), coordinator: coordinator)
+      CoordinatorFactory(page: rootPage())
         .navigationDestination(for: AppPage.self) { page in
-          CoordinatorFactory.build(page: page, coordinator: coordinator)
+          CoordinatorFactory(page: page)
         }
         .sheet(item: $coordinator.sheet) { page in
-          CoordinatorFactory.build(page: page, coordinator: coordinator)
+          CoordinatorFactory(page: page)
         }
         .fullScreenCover(item: $coordinator.fullScreenCover) { page in
           NavigationStack(path: $coordinator.fullScreenCoverPath) {
-            CoordinatorFactory.build(page: page, coordinator: coordinator)
+            CoordinatorFactory(page: page)
               .navigationDestination(for: AppPage.self) { page in
-                CoordinatorFactory.build(page: page, coordinator: coordinator)
+                CoordinatorFactory(page: page)
               }
           }
         }
     }
-
+    .onAppear {
+      if filters.isEmpty {
+        let newFilter = Filter()
+        modelContext.insert(newFilter)
+        
+        do {
+          try modelContext.save()
+          print("컨텍스트 생성 완료")
+        } catch {
+          print("컨텍스트 생성 실패")
+        }
+      }
+    }
   }
   
   private func rootPage() -> AppPage {
@@ -48,10 +63,11 @@ struct AppView: View {
     }
     return root
   }
+  
 }
 
 #Preview {
   AppView()
-    .environmentObject(CoordinatorManager())
+
 }
 

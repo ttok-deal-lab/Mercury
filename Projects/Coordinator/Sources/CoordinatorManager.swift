@@ -19,6 +19,7 @@ public class CoordinatorManager: ObservableObject {
   @Published public var sheet: AppPage?
   @Published public var fullScreenCover: AppPage?
   
+  @MainActor
   public init() { }
   
   public func push(page: AppPage) {

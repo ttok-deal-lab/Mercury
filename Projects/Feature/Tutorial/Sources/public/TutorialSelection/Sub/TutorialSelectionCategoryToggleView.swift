@@ -6,20 +6,27 @@
 //
 
 import SwiftUI
+import SwiftData
 
 import AppFoundation
 import UIComponent
 
-public struct TutorialSelectionCategoryToggleView: View {
+struct TutorialSelectionCategoryToggleView: View {
   
-//  @Environment(\.modelContext) private var modelContext
+  @Environment(\.modelContext) private var modelContext
+  @Query var filters: [Filter]
   @State var isSelected: Bool = false
-  
   let category: AuctionCategory
+  
+  init(isSelected: Bool, category: AuctionCategory) {
+    self.isSelected = isSelected
+    self.category = category
+  }
   
   public var body: some View {
     Button {
       isSelected.toggle()
+      updateFavoriteCategories()
     } label: {
       ZStack {
         VStack {
@@ -45,6 +52,25 @@ public struct TutorialSelectionCategoryToggleView: View {
         .stroke(isSelected ? .black : .gray, lineWidth: 1)
     )
     .clipShape(RoundedRectangle(cornerRadius: 12))
+  }
+  
+  private func updateFavoriteCategories() {
+    guard let filter = filters.first else { return }
+    
+    if isSelected {
+      if !filter.favoriteCategories.contains(category.rawValue) {
+        filter.favoriteCategories.append(category.rawValue)
+      }
+    } else {
+      filter.favoriteCategories.removeAll { $0 == category.rawValue }
+    }
+    
+    do {
+      try modelContext.save()
+      print("저장완료!")
+    } catch {
+      print("Failed to save favorite categories: \(error)")
+    }
   }
 
 }
