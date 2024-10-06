@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AppFoundation
+import SwiftData
 
 import KakaoMapsSDK
 import Coordinator
@@ -18,9 +19,21 @@ import Map
 struct MercuryApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   
+  let container: ModelContainer
+  
+  init() {
+    do {
+      let config = ModelConfiguration(isStoredInMemoryOnly: false)
+      container = try ModelContainer(for: Filter.self, configurations: config)
+    } catch {
+      fatalError("Failed to initialize ModelContainer: \(error)")
+    }
+  }
+  
   var body: some Scene {
     WindowGroup {
       AppView()
+        .modelContainer(container)
         .onOpenURL { url in
           GIDSignIn.sharedInstance.handle(url)
         }

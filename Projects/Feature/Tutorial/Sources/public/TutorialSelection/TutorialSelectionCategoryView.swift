@@ -5,17 +5,20 @@
 //  Created by 송하민 on 10/5/24.
 //
 
-import SwiftUI
 import Foundation
+import SwiftUI
+import SwiftData
 
 import AppFoundation
 import Coordinator
 import UIComponent
 
-
 public struct TutorialSelectionCategoryView: View {
   
+  @Environment(\.modelContext) var modelContext
+  @State var filter: Filter?
   @ObservedObject private var coordinator: CoordinatorManager
+
   private let colums: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
   
   public init(coordinator: CoordinatorManager) {
@@ -26,24 +29,46 @@ public struct TutorialSelectionCategoryView: View {
     VStack {
       ScrollView {
         LazyVGrid(columns: colums) {
-          ForEach(AuctionCategories.allCases) { category in
-            TutorialSelectionCategoryToggleView(categoryImage: category.selectionImage, categoryName: category.rawValue)
+          ForEach(AuctionCategory.allCases) { category in
+            TutorialSelectionCategoryToggleView(
+              isSelected: Binding(
+                get: {
+                  filter?.favoriteCategories.contains(category.rawValue) ?? false
+                },
+                set: { newValue in
+                  if newValue {
+                    filter?.favoriteCategories.append(category.rawValue)
+                    print(filter?.favoriteCategories.map { $0 })
+                    do {
+                      try modelContext.save()
+                    } catch {
+                      print("wwwW?W??????")
+                    }
+                  } else {
+                    filter?.favoriteCategories.removeAll { $0 == category.rawValue }
+                  }
+                }
+              ),
+              categoryImage: category.selectionImage,
+              categoryName: category.rawValue
+            )
           }
         }
-        
         .padding()
       }
       Spacer()
       MQButton(title: "다음") {
-//        coordinator.push(page: .tutorial(.tutorialSelectionRegion))
         coordinator.pushOnFullScreenCover(page: .tutorial(.tutorialSelectionRegion))
       }
     }
-    .navigationTitle("경매 카테고리")
+    .onAppear {
+      self.filter = Filter.getShared(context: modelContext)
+    }
+    .navigationTitle("선호 물건을 선택하세요")
   }
 }
 
-extension AuctionCategories {
+extension AuctionCategory {
   var selectionImage: Image {
     switch self {
     case .house:

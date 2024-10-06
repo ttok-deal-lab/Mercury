@@ -16,6 +16,7 @@ import Coordinator
 
 struct AppView: View {
   
+  @Environment(\.modelContext) var modelContext
   @AppStorage(UserDefaultsKeyDefine.isAppFirst.rawValue) var isAppFirst: Bool = true
   @StateObject private var coordinator = CoordinatorManager()
   
@@ -36,10 +37,8 @@ struct AppView: View {
                 CoordinatorFactory.build(page: page, coordinator: coordinator)
               }
           }
-          
         }
     }
-    .environmentObject(coordinator)
 
   }
   

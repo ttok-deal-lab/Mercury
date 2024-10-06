@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import SwiftData
 
-public enum AuctionCategories: String, CaseIterable, Identifiable {
+public enum AuctionCategory: String, CaseIterable, Identifiable {
   public var id: String {
     return self.rawValue
   }

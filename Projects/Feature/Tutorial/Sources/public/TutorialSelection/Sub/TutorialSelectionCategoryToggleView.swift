@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+
+import AppFoundation
 import UIComponent
 
 public struct TutorialSelectionCategoryToggleView: View {
   
-  @State private var isSelected: Bool = false
+  @Environment(\.modelContext) private var modelContext
+  @Binding var isSelected: Bool
+  
   let categoryImage: Image
   let categoryName: String
   
@@ -39,15 +43,20 @@ public struct TutorialSelectionCategoryToggleView: View {
     .padding(8)
     .overlay(
       RoundedRectangle(cornerRadius: 12)
-        .stroke(Color.gray, lineWidth: 1)
+        .stroke(isSelected ? .black : .gray, lineWidth: 1)
     )
     .clipShape(RoundedRectangle(cornerRadius: 12))
   }
+  
 }
 
-#Preview {
-  TutorialSelectionCategoryToggleView(
-    categoryImage: UIComponentAsset.Images.apartment.swiftUIImage,
-    categoryName: "아파트"
-  )
-}
+//#Preview {
+//  TutorialSelectionCategoryToggleView(
+//    globalFilter:
+//        .constant(
+//          .init()
+//        ),
+//    categoryImage: UIComponentAsset.Images.apartment.swiftUIImage,
+//    categoryName: "아파트"
+//  )
+//}

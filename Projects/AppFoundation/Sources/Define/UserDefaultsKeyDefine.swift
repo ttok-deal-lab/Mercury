@@ -8,5 +8,8 @@
 import Foundation
 
 public enum UserDefaultsKeyDefine: String {
-  case isAppFirst = "isAppFirst"
+  case isAppFirst
+  case favoriteAuctionCategory
+  case favoriteRegion
+  
 }
