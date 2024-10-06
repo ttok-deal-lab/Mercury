@@ -13,10 +13,9 @@ let project = Project.staticFramework(
   platform: .iOS,
   frameworkDependencies: [
     .appFoundation,
-    .composableArchitecture,
-    .service,
     .uiComponent,
-    .kakaoMap
+    .kakaoMap,
+    .coordinator
   ],
   frameworkTestDependencies: []
 )

@@ -13,9 +13,9 @@ public extension Project {
   
   static let appName: String = "Mercury"
   static let productName: String = "AuctionGod" // CFBundleDisplayName에서 변경
-  static let deployTarget: DeploymentTargets = .iOS("16.0")
+  
   static let bundleId = "com.auction.mercury"
-  static let deploymentTarget: DeploymentTargets = .iOS("16.0")
+  static let deploymentTarget: DeploymentTargets = .iOS("17.0")
   
   // MARK: - read file path
   

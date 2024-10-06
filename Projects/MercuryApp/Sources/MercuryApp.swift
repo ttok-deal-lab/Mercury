@@ -7,19 +7,36 @@
 
 import SwiftUI
 import AppFoundation
+import SwiftData
+
 import KakaoMapsSDK
+import Coordinator
+import GoogleSignIn
+import GoogleSignInSwift
 import Map
-import ComposableArchitecture
 
 @main
 struct MercuryApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   
+//  let container: ModelContainer
+  
+  init() {
+//    do {
+//      let config = ModelConfiguration(isStoredInMemoryOnly: false)
+//      container = try ModelContainer(for: Filter.self, configurations: config)
+//    } catch {
+//      fatalError("Failed to initialize ModelContainer: \(error)")
+//    }
+  }
+  
   var body: some Scene {
     WindowGroup {
-      AppView(store: Store(initialState: AppFeature.State(), reducer: {
-        AppFeature()
-      }))
+      AppView()
+//        .modelContainer(container)
+        .onOpenURL { url in
+          GIDSignIn.sharedInstance.handle(url)
+        }
     }
   }
 }

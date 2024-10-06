@@ -12,9 +12,8 @@ let project = Project.feature(
   name: "Profile",
   platform: .iOS,
   dependencies: [
-    .composableArchitecture,
     .uiComponent,
-    .service
+    .coordinator
   ],
   testDependencies: []
 )

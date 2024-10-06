@@ -7,19 +7,22 @@ let project = Project.app(
   destinations: [.iPhone],
   platform: .iOS,
   dependencies: [
-    .composableArchitecture,
     .appFoundation,
     .uiComponent,
     .network,
-    .service,
     .kakaoMap,
+    .googleSignIn,
+    .googleSignInSwift,
     .swiftAlgorithm,
+    .coordinator,
     .feature(target: "Analysis"),
     .feature(target: "Auction"),
     .feature(target: "Comment"),
     .feature(target: "Profile"),
     .feature(target: "Map"),
-    .feature(target: "Tutorial")
+    .feature(target: "Tutorial"),
+    .feature(target: "SignIn"),
+    .feature(target: "SignUp")
   ],
   testDependencies: []
 )

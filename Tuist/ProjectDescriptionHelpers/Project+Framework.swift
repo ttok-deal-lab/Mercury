@@ -46,8 +46,9 @@ extension Project {
       bundleId: "\(Project.bundleId).\(name)SampleApp",
       deploymentTargets: Project.deploymentTarget,
       infoPlist: .file(path: Path.infoPlistPath("FrameworkSampleApp-Info")),
-      sources: ["SampleApp/Sources/**"],
+      sources: sampleAppSources,
       resources: sampleAppResources,
+      entitlements: Project.commonEntitlement,
       dependencies: [.target(name: name)],
       settings: .settings(configurations: Configuration.configure())
     )
