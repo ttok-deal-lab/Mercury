@@ -12,10 +12,7 @@ let project = Project.staticFramework(
   name: "Network",
   platform: .iOS,
   frameworkDependencies: [
-    .appFoundation,
-    .moya,
-    .combineMoya,
-    .swiftyJSON
+    .appFoundation
   ],
   frameworkTestDependencies: [
     

@@ -7,6 +7,8 @@
 
 import Foundation
 
+import Network
+
 public enum MockRenewalAPI: BaseAPI {
   case mockingAPI
   
