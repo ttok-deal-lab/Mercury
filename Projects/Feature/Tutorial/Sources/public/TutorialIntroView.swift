@@ -97,7 +97,6 @@ public struct TutorialIntroView: View {
     }
   }
   
-  @ViewBuilder
   private func tutorialPage(image: Image, description: String) -> some View {
     VStack {
       Spacer()

@@ -17,7 +17,6 @@ import AppFoundation
 import Coordinator
 
 struct AppView: View {
-  
   @EnvironmentObject var coordinator: CoordinatorManager
   @Environment(\.modelContext) var modelContext
   @Query var filters: [Filter]
