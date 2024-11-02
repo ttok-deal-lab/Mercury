@@ -10,6 +10,7 @@ import Foundation
 public struct JokeInfo: Decodable {
   let category: String
   let type: String
+  let joke: String?
   let setup: String?
   let delivery: String?
 }

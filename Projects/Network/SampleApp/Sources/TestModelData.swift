@@ -9,10 +9,10 @@ import SwiftUI
 
 import Network
 
-class TestModelData: ObservableObject {
+class JokeFetcher: ObservableObject {
   @Published var joke: JokeInfo?
   
-  func fetchingJoke() async throws {
+  func fetch() async throws {
     let joke = try await MockRenewalAPI.mockingAPI.request(JokeInfo.self)
     await MainActor.run { [weak self] in
       self?.joke = joke

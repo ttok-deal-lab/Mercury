@@ -8,16 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
-  @StateObject private var testModelData = TestModelData()
+  @StateObject private var jokeFetcher = JokeFetcher()
   
   var body: some View {
     VStack {
-      Text(testModelData.joke?.setup ?? "no setup")
-      Text(testModelData.joke?.delivery ?? "no delivery")
+      if let joke = jokeFetcher.joke?.joke {
+        Text(joke)
+      } else {
+        Text(jokeFetcher.joke?.setup ?? "no setup")
+        Text(jokeFetcher.joke?.delivery ?? "no delivery")
+      }
+      Button {
+        Task {
+          try await jokeFetcher.fetch()
+        }
+      } label: {
+        Text("refresh joke")
+      }
     }
     .task {
       do {
-        try await testModelData.fetchingJoke()
+        try await jokeFetcher.fetch()
       } catch {
         print(error)
       }
@@ -26,3 +37,4 @@ struct ContentView: View {
   }
 
 }
+
