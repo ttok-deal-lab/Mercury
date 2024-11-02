@@ -13,7 +13,6 @@ let project = Project.app(
     .kakaoMap,
     .googleSignIn,
     .googleSignInSwift,
-    .swiftAlgorithm,
     .coordinator,
     .feature(target: "Analysis"),
     .feature(target: "Auction"),
