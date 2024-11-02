@@ -14,7 +14,6 @@ import Coordinator
 import UIComponent
 
 public struct TutorialSelectionCategoryView: View {
-  
   @Environment(\.modelContext) var modelContext
   @Query var filters: [Filter]
   @EnvironmentObject private var coordinator: CoordinatorManager

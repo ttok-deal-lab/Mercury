@@ -12,7 +12,6 @@ import AppFoundation
 import UIComponent
 
 struct TutorialSelectionCategoryToggleView: View {
-  
   @Environment(\.modelContext) private var modelContext
   @Query var filters: [Filter]
   @State var isSelected: Bool = false
