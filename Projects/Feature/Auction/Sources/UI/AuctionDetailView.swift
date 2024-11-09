@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct AuctionDetailView: View {
 
-  @StateObject private var store = AuctionStore()
+  @StateObject private var store = AuctionModelData()
   
   public init() {
     

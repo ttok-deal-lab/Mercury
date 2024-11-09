@@ -11,8 +11,8 @@ import SwiftUI
 import Auction
 
 struct ContentView: View {
-    
-    var body: some View {
-        AuctionListView()
-    }
+  
+  var body: some View {
+    AuctionListView()
+  }
 }

@@ -8,17 +8,15 @@
 import Foundation
 import SwiftUI
 
-import Auction
-
 public struct AuctionRow: View {
-    
-    public var auctionInfo: AuctionInfo?
-    
-    public var body: some View {
-        VStack (alignment: .leading) {
-            Text("sales ID : \(auctionInfo?.id ?? "")")
-            Text("courtName : \(auctionInfo?.name ?? "")")
-            Text("saledsNumber : \(auctionInfo?.salesNum ?? 0)")
-        }
+  
+  public var auctionInfo: AuctionInfo?
+  
+  public var body: some View {
+    VStack(alignment: .leading) {
+      Text("sales ID : \(auctionInfo?.id ?? "")")
+      Text("courtName : \(auctionInfo?.name ?? "")")
+      Text("saledsNumber : \(auctionInfo?.salesNum ?? 0)")
     }
+  }
 }

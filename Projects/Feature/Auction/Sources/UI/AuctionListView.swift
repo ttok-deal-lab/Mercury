@@ -7,31 +7,30 @@
 
 import SwiftUI
 
-@MainActor
 public struct AuctionListView: View {
-    
-    @StateObject private var store = AuctionStore()
-    
-    var nums = Array(repeating: 1, count: 5)
-    public init() { }
-    public var body: some View {
-        VStack {
-            List(store.auctions ?? []) { auction in
-                AuctionRow(auctionInfo: auction)
-            }
-            .listStyle(.plain)
-            .onAppear {
-                Task {
-                    try await store.fetchAuction()
-                }
-            }
-            
-            Button("Butrton") {
-                Task {
-                    try await self.store.fetchAuction()
-                }
-            }
+  
+  @StateObject private var store = AuctionModelData()
+  
+  public var body: some View {
+    VStack {
+      List(store.auctions ?? [], id: \.id) { auction in
+        AuctionRow(auctionInfo: auction)
+      }
+      .listStyle(.plain)
+      .task {
+        do {
+          try await store.fetchAuction()
+        } catch {
+          print(error)
         }
-    } // body
-
+      }
+      
+      Button("Button") {
+        Task {
+          try await store.fetchAuction()
+        }
+      }
+    }
+  } // body
+  
 }
