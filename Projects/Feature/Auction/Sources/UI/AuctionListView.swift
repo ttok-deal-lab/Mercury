@@ -11,31 +11,27 @@ import SwiftUI
 public struct AuctionListView: View {
     
     @StateObject private var store = AuctionStore()
- 
-    public init() {
-        
-    }
+    
     var nums = Array(repeating: 1, count: 5)
+    public init() { }
     public var body: some View {
         VStack {
-            List {
-                ForEach(nums, id: \.self) { num in
-                    Text("\(num)")
+            List(store.auctions ?? []) { auction in
+                AuctionRow(auctionInfo: auction)
+            }
+            .listStyle(.plain)
+            .onAppear {
+                Task {
+                    try await store.fetchAuction()
                 }
             }
-            .background(.green)
             
             Button("Butrton") {
                 Task {
-                    try await self.fetchauction()
+                    try await self.store.fetchAuction()
                 }
             }
-        
         }
     } // body
-    
-    func fetchauction() async throws {
-        try await store.fetchAuction()
-    }
-    
+
 }

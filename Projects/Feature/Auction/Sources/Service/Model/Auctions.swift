@@ -7,11 +7,11 @@
 
 import Foundation
 
-public struct AuctionInfo: Decodable {
-    var name: String?
-    var id: String?
-    var salesNum: Int?
-    var courtInfoDetail: AuctionDetail?
+public struct AuctionInfo: Decodable, Identifiable {
+    public let id: String?
+    public let name: String?
+    public let salesNum: Int?
+    let courtInfoDetail: AuctionDetail?
     
     enum CodingKeys: String, CodingKey {
         case name = "courtName"
@@ -21,7 +21,7 @@ public struct AuctionInfo: Decodable {
     }
 }
 
-public struct AuctionDetail: Codable {
+public struct AuctionDetail: Decodable {
     var courtName: String?
     var salesId: String?
     var salesNumber: Int?
