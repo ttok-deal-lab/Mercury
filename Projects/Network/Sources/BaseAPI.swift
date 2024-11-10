@@ -14,6 +14,7 @@ public protocol BaseAPI {
   var method: HTTPMethod { get }
   var headers: [String: String]? { get }
   var requestBody: [String: Any]? { get }
+  var queryParam: [URLQueryItem]? { get }
   
   func requestData() async throws -> Data?
   func request<T: Decodable>(_ model: T.Type) async throws -> T where T: Decodable
@@ -32,6 +33,10 @@ public extension BaseAPI {
     return nil
   }
   
+  var queryParam: [URLQueryItem]? {
+    return nil
+  }
+  
   func requestData() async throws -> Data? {
     var plainURLString = ""
     if let domain = domain {
@@ -40,10 +45,16 @@ public extension BaseAPI {
       plainURLString = baseURL.appending(path)
     }
     
-    guard let url: URL = URL(string: plainURLString) else {
+    guard var urlComponents = URLComponents(string: plainURLString) else {
       throw NetworkError.failToConvertURL
     }
-    var urlRequest = URLRequest(url: url, cachePolicy: Const.cachePolicy, timeoutInterval: Const.timeout)
+    urlComponents.queryItems = queryParam
+    
+    guard let finalURL = urlComponents.url else {
+      throw NetworkError.failToConvertURL
+    }
+    
+    var urlRequest = URLRequest(url: finalURL, cachePolicy: Const.cachePolicy, timeoutInterval: Const.timeout)
     
     urlRequest.httpMethod = method.rawValue
     
@@ -57,7 +68,7 @@ public extension BaseAPI {
     }
     
     let (data, _) = try await URLSession.shared.data(for: urlRequest)
-    print("Network request: URL:: \(url.absoluteString), response: \(data)")
+    print("Network request: URL:: \(finalURL.absoluteString), response: \(data)")
     return data
   }
   
@@ -69,10 +80,16 @@ public extension BaseAPI {
       plainURLString = baseURL.appending(path)
     }
     
-    guard let url: URL = URL(string: plainURLString) else {
+    guard var urlComponents = URLComponents(string: plainURLString) else {
       throw NetworkError.failToConvertURL
     }
-    var urlRequest = URLRequest(url: url, cachePolicy: Const.cachePolicy, timeoutInterval: Const.timeout)
+    urlComponents.queryItems = queryParam
+    
+    guard let finalURL = urlComponents.url else {
+      throw NetworkError.failToConvertURL
+    }
+    
+    var urlRequest = URLRequest(url: finalURL, cachePolicy: Const.cachePolicy, timeoutInterval: Const.timeout)
     
     urlRequest.httpMethod = method.rawValue
     
@@ -87,8 +104,8 @@ public extension BaseAPI {
     
     let (data, _) = try await URLSession.shared.data(for: urlRequest)
     let decodedObj = try JSONDecoder().decode(T.self, from: data)
-    print("Network request: URL:: \(url.absoluteString), response: \(decodedObj)")
+    print("Network request: URL:: \(finalURL.absoluteString), response: \(decodedObj)")
     return decodedObj
   }
+  
 }
-
