@@ -23,7 +23,7 @@ public struct MapContentView: View {
   
   
   // MARK: - life cycle
-  
+  public init() { }
   public var body: some View {
     KakaoMapView(
       draw: $store.isMapDraw,
