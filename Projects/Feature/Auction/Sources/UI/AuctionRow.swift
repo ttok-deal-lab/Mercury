@@ -16,7 +16,7 @@ public struct AuctionRow: View {
     VStack(alignment: .leading) {
       Text("sales ID : \(auctionInfo?.id ?? "")")
       Text("courtName : \(auctionInfo?.name ?? "")")
-      Text("saledsNumber : \(auctionInfo?.salesNum ?? 0)")
+      Text("saledsNumber : \(auctionInfo?.salesNumber ?? 0)")
     }
   }
 }

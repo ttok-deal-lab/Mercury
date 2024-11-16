@@ -40,11 +40,16 @@ public enum AppPage: Hashable, Identifiable {
   public enum Auction: Hashable, Identifiable {
     public var id: String {
       switch self {
-      case .recommendAuction:
-        return "recommendAuction"
+      case .list:
+        return "auctionList"
+      case .detail:
+        return "auctionDetail"
+        
       }
     }
-    case recommendAuction
+    case list
+//    case detail(salesId: Int)
+    case  detail
   }
   
   case tutorial(Tutorial)
