@@ -10,7 +10,7 @@ import SwiftUI
 import Network
 
 public class AuctionModelData: ObservableObject {
-  @Published var auctions: [AuctionInfo]?
+  @Published var auctions: [AuctionList]?
   
   public func fetchAuction() async throws {
     let api = AuctionAPI.auctionList(
@@ -19,7 +19,7 @@ public class AuctionModelData: ObservableObject {
       page: 1
     )
     
-    let auctions = try await api.request([AuctionInfo].self)
+    let auctions = try await api.request([AuctionList].self)
     await MainActor.run { [weak self] in
       self?.auctions = auctions
     }

@@ -10,7 +10,7 @@ import SwiftUI
 
 public struct AuctionRow: View {
   
-  public var auctionInfo: AuctionInfo?
+  public var auctionInfo: AuctionList?
   
   public var body: some View {
     VStack(alignment: .leading) {

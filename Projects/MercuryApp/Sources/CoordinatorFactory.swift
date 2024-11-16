@@ -41,8 +41,12 @@ struct CoordinatorFactory: View {
       }
     case .auction(let auctions):
       switch auctions {
-      case .recommendAuction:
-        AuctionDetailView() // 추후 매물ID 박아서 진행
+      case .list:
+        AuctionListView()
+          .environmentObject(coordinator)
+      case .detail:
+        AuctionDetailView() // TODO: - 추후 매물ID 박아서 진행
+          .environmentObject(coordinator)
       }
     case .map:
       MapContentView()

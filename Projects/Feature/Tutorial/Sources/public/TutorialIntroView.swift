@@ -71,7 +71,7 @@ public struct TutorialIntroView: View {
         }
         Button("좋아요!") {
           isAppFirst = false
-          coordinator.push(page: .auction(.recommendAuction))
+          coordinator.push(page: .auction(.list))
         }
       } message: {
         Text("그냥 넘어가면 섭섭하지이이이이이이이")
