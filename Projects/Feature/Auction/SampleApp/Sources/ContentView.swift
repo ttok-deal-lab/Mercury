@@ -9,10 +9,16 @@ import Foundation
 import SwiftUI
 
 import Auction
+import Coordinator
 
 struct ContentView: View {
   
+  @StateObject var coordinator = CoordinatorManager()
+  
   var body: some View {
-    AuctionListView()
+    NavigationStack(path: $coordinator.path) {
+      AuctionListView()
+    }
+    .environmentObject(coordinator)
   }
 }

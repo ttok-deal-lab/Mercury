@@ -14,22 +14,24 @@ public struct AuctionListView: View {
   
   public init() {}
   public var body: some View {
-    VStack {
-      List(store.auctions ?? [], id: \.id) { auction in
-        AuctionRow(auctionInfo: auction)
-          .onTapGesture {
-            coordinator.push(page: .auction(.detail))
+    NavigationStack {
+      HStack {
+        List(store.auctions ?? [], id: \.id) { auction in
+          AuctionRow(auctionInfo: auction)
+            .onTapGesture {
+              coordinator.push(page: .auction(.detail))
+            }
+        }
+        .listStyle(.plain)
+        .task {
+          do {
+            try await store.fetchAuction()
+          } catch {
+            // TODO: - UI Error 처리
+            print("‼️‼️ Error: ", error)
           }
-      }
-      .listStyle(.plain)
-      .task {
-        do {
-          try await store.fetchAuction()
-        } catch {
-          // TODO: - UI Error 처리
-          print("‼️‼️ Error: ", error)
         }
       }
     }
-  }// body
+  } // body
 }

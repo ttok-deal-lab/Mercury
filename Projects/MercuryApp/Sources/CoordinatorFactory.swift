@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 
 import AppFoundation
+import Auction
 import Coordinator
 import Map
 import Tutorial
-import Auction
 
 struct CoordinatorFactory: View {
   
