@@ -14,12 +14,11 @@ public struct AuctionListView: View {
   
   public init() {}
   public var body: some View {
-    NavigationStack {
-      HStack {
         List(store.auctions ?? [], id: \.id) { auction in
-          AuctionRow(auctionInfo: auction)
+            AuctionRow(auctionInfo: auction)
             .onTapGesture {
               coordinator.push(page: .auction(.detail))
+//              coordinator.presentSheet(page: .auction(.detail))
             }
         }
         .listStyle(.plain)
@@ -31,7 +30,8 @@ public struct AuctionListView: View {
             print("‼️‼️ Error: ", error)
           }
         }
-      }
-    }
+        .navigationDestination(for: AppPage.Auction.self) { page in
+            AuctionDetailView()
+        }
   } // body
 }

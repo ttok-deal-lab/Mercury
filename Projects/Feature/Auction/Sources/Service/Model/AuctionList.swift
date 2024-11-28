@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct AuctionList: Decodable {
+public struct AuctionList: Decodable, Hashable {
   let name: String
   let id: String
   let salesNumber: Int
@@ -21,7 +21,7 @@ public struct AuctionList: Decodable {
   }
 }
 
-public struct AuctionListInfo: Decodable {
+public struct AuctionListInfo: Decodable, Hashable {
   let courtName: String
   let salesID: String
   let salesNumber: Int

@@ -12,8 +12,6 @@ public struct AuctionDetailView: View {
   @StateObject private var store = AuctionDetailModelData()
   @EnvironmentObject private var coordinator: CoordinatorManager
   
-//  private var salesId: Int = 0
-  
   public init() { }
   
   public var body: some View {
