@@ -18,7 +18,6 @@ public struct AuctionListView: View {
             AuctionRow(auctionInfo: auction)
             .onTapGesture {
               coordinator.push(page: .auction(.detail))
-//              coordinator.presentSheet(page: .auction(.detail))
             }
         }
         .listStyle(.plain)
