@@ -9,7 +9,7 @@ import SwiftUI
 
 import Network
 
-public class AuctionModelData: ObservableObject {
+public class AuctionListModelData: ObservableObject {
   @Published var auctions: [AuctionList]?
   
   public func fetchAuction() async throws {

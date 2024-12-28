@@ -8,13 +8,13 @@
 import Foundation
 
 public struct AuctionList: Decodable, Hashable {
-  let name: String
+  let courtName: String
   let id: String
   let salesNumber: Int
   let auctionListInfo: AuctionListInfo?
   
   enum CodingKeys: String, CodingKey {
-    case name = "courtName"
+    case courtName
     case id = "salesId"
     case salesNumber
     case auctionListInfo = "courtSalesInfoDetail"

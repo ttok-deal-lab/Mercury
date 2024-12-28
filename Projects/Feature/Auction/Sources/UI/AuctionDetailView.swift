@@ -9,7 +9,7 @@ import Coordinator
 import SwiftUI
 
 public struct AuctionDetailView: View {
-  @StateObject private var store = AuctionDetailModelData()
+  @StateObject private var auctionDetailModelData = AuctionDetailModelData()
   @EnvironmentObject private var coordinator: CoordinatorManager
   
   public init() { }

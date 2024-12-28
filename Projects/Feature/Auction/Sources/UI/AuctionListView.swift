@@ -9,12 +9,12 @@ import Coordinator
 import SwiftUI
 
 public struct AuctionListView: View {
-  @StateObject private var store = AuctionModelData()
+  @StateObject private var auctionListModelData = AuctionListModelData()
   @EnvironmentObject private var coordinator: CoordinatorManager
   
   public init() {}
   public var body: some View {
-        List(store.auctions ?? [], id: \.id) { auction in
+        List(auctionListModelData.auctions ?? [], id: \.id) { auction in
             AuctionRow(auctionInfo: auction)
             .onTapGesture {
               coordinator.push(page: .auction(.detail))
@@ -23,7 +23,7 @@ public struct AuctionListView: View {
         .listStyle(.plain)
         .task {
           do {
-            try await store.fetchAuction()
+            try await auctionListModelData.fetchAuction()
           } catch {
             // TODO: - UI Error 처리
             print("‼️‼️ Error: ", error)

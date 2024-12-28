@@ -8,22 +8,22 @@
 import Foundation
 
 
-struct AuctionDetail: Decodable {
-  let name: String
+struct Auction: Decodable {
+  let courtName: String
   let id: String
   let salesNumber: Int
-  let auctionDetailInfo: AuctionDetailInfo
+  let auctionDetailInfo: AuctionInfo
   
   enum CodingKeys: String, CodingKey {
-    case name = "courtName"
+    case courtName
     case id = "salesId"
     case salesNumber
     case auctionDetailInfo = "courtSalesInfoDetail"
   }
 }
 
-struct AuctionDetailInfo: Decodable {
-  let name: String
+struct AuctionInfo: Decodable {
+  let courtName: String
   let id: String
   let salesNumber: Int
   let salesType: String
@@ -35,7 +35,7 @@ struct AuctionDetailInfo: Decodable {
   let inCharge: String
   let salesSubmitDate: String
   let salesOpenDate: String
-  let dividendDemandDate: String
+  let dividenDemandDate: String
   let claimPrice: String
   let dateHistories: [String]
   let salesList: [String]
@@ -43,9 +43,9 @@ struct AuctionDetailInfo: Decodable {
   let nearbySalesList: [String]
   
   enum CodingKeys: String, CodingKey {
-    case name = "courtName"
+    case courtName
     case id = "salesId"
-    case salesNumber, salesType, assessmentPrice, lowestSalePrice, biddingMethod, salesDate, salesNote, salesLocations, inCharge, salesSubmitDate, salesOpenDate, dividendDemandDate, claimPrice, dateHistories, salesList, appraisalList, nearbySalesList
+    case salesNumber, salesType, assessmentPrice, lowestSalePrice, biddingMethod, salesDate, salesNote, salesLocations, inCharge, salesSubmitDate, salesOpenDate, dividenDemandDate, claimPrice, dateHistories, salesList, appraisalList, nearbySalesList
   }
 }
 
