@@ -14,7 +14,7 @@ import Coordinator
 import UIComponent
 
 struct TutorialSelectionCategoryView: View {
-  @EnvironmentObject var coordinator: GlobalCoordinator
+  @EnvironmentObject private var coordinator: GlobalCoordinator<GlobalRoute>
 
   private let colums: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
   

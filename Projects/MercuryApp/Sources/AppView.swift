@@ -15,7 +15,7 @@ import Tutorial
 
 
 struct AppView: View {
-  @StateObject private var coordinator = GlobalCoordinator()
+  @StateObject private var coordinator = GlobalCoordinator<GlobalRoute>()
   
   var body: some View {
     NavigationStack(path: $coordinator.routePath.navigationPath) {
@@ -25,8 +25,12 @@ struct AppView: View {
         }
         .fullScreenCover(isPresented: $coordinator.routePath.isFullScreenPresented) {
           if let route = coordinator.routePath.fullScreenRoute {
-            AppFactoryAggregator.makeView(route)
-              .environmentObject(coordinator)
+            NavigationStack(path: $coordinator.routePath.fullScreenNavigationPath) {
+              AppFactoryAggregator.makeView(route)
+                .navigationDestination(for: GlobalRoute.self) { route in
+                  AppFactoryAggregator.makeView(route)
+                }
+            }
           }
         }
     }
@@ -36,7 +40,7 @@ struct AppView: View {
 
 
 struct FakeHomeView: View {
-  @EnvironmentObject private var coordinator: GlobalCoordinator
+  @EnvironmentObject private var coordinator: GlobalCoordinator<GlobalRoute>
   
   var body: some View {
     Button {

@@ -19,7 +19,7 @@ fileprivate enum TutorialPageType {
 }
 
 struct TutorialIntroView: View {
-  @EnvironmentObject var coordinator: GlobalCoordinator
+  @EnvironmentObject private var coordinator: GlobalCoordinator<GlobalRoute>
   @State private var currentPageType: TutorialPageType = .welcome
   @State private var isShowAlertForRecommend: Bool = false
   @State private var isShowSelectionCategory: Bool = false

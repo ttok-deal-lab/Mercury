@@ -6,7 +6,7 @@ struct AppFoundationEntry: App {
   
   var body: some Scene {
     WindowGroup {
-      
+      SampleAppView()
     }
   }
 }

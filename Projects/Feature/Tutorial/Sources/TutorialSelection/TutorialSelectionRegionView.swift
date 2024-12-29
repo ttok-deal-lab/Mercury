@@ -14,7 +14,7 @@ import UIComponent
 import Coordinator
 
 struct TutorialSelectionRegionView: View {
-  @EnvironmentObject var coordinator: GlobalCoordinator
+  @EnvironmentObject private var coordinator: GlobalCoordinator<GlobalRoute>
   private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 1)
   
   var body: some View {
@@ -31,7 +31,7 @@ struct TutorialSelectionRegionView: View {
       }
       Spacer()
       MQButton(title: "준비됐어요!") {
-        coordinator.poptoRoot()
+//        coordinator.poptoRoot()
       }
     }
     .navigationTitle("선호 지역을 선택하세요")

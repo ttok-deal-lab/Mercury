@@ -1,18 +1,13 @@
-//
-//  GlobalCoordinator.swift
-//  Coordinator
-//
-//  Created by 송하민 on 12/29/24.
-//
-
 import SwiftUI
 
-public class GlobalCoordinator: ObservableObject {
-  @Published public var routePath = RoutePath()
+// MARK: - GlobalCoordinator
+
+public class GlobalCoordinator<Route: Hashable>: ObservableObject {
+  @Published public var routePath = RoutePath<Route>()
   
   public init() {}
   
-  public func push(_ route: GlobalRoute) {
+  public func push(_ route: Route) {
     routePath.push(route)
   }
   
@@ -20,15 +15,7 @@ public class GlobalCoordinator: ObservableObject {
     routePath.pop()
   }
   
-  public func popTo(_ target: GlobalRoute) {
-    routePath.popTo(target)
-  }
-  
-  public func poptoRoot() {
-    routePath.popToRoot()
-  }
-  
-  public func presentFullScreen(_ route: GlobalRoute) {
+  public func presentFullScreen(_ route: Route) {
     routePath.presentFullScreen(route)
   }
   
@@ -36,90 +23,85 @@ public class GlobalCoordinator: ObservableObject {
     routePath.dismissFullScreen()
   }
   
-  public func pushInFullScreen(_ route: GlobalRoute) {
+  public func pushInFullScreen(_ route: Route) {
     routePath.pushInFullScreen(route)
   }
   
   public func popInFullScreen() {
     routePath.popInFullScreen()
   }
+  
 }
 
-public struct RoutePath {
+// MARK: - RoutePath
+
+public struct RoutePath<Route: Hashable> {
   public var navigationPath = NavigationPath()
-  private var routeStack: [GlobalRoute] = []
   
-  public var fullScreenNavigationPath = NavigationPath()
-  private var fullScreenStack: [GlobalRoute] = []
   public var isFullScreenPresented = false
-  public private(set) var fullScreenRoute: GlobalRoute? = nil
+  public var fullScreenRoute: Route? = nil
+  public var fullScreenNavigationPath = NavigationPath()
   
-  public init() { }
+  public init() {}
 }
+
+// MARK: - Common Push/Pop
 
 extension RoutePath {
-  public mutating func push(_ route: GlobalRoute) {
+  public mutating func push(_ route: Route) {
+    if isFullScreenPresented {
+      pushInFullScreen(route)
+      return
+    }
     navigationPath.append(route)
-    routeStack.append(route)
   }
   
   public mutating func pop() {
-    guard !routeStack.isEmpty else { return }
-    routeStack.removeLast()
-    navigationPath.removeLast()
+    isFullScreenPresented ? handleFullScreenPop() : handleStandardPop()
   }
   
-  public mutating func popTo(_ target: GlobalRoute) {
-    while let last = routeStack.last, last != target {
-      routeStack.removeLast()
-      navigationPath.removeLast()
+  private mutating func handleFullScreenPop() {
+    if fullScreenNavigationPath.count == 1 {
+      dismissFullScreen()
+    } else {
+      popInFullScreen()
     }
   }
   
-  public mutating func popToRoot() {
-    routeStack.removeAll()
-    navigationPath = NavigationPath()
+  private mutating func handleStandardPop() {
+    guard !navigationPath.isEmpty else { return }
+    navigationPath.removeLast()
   }
 }
 
+// MARK: - FullScreen Present/Dismiss
+
 extension RoutePath {
-  public mutating func presentFullScreen(_ route: GlobalRoute) {
+  public mutating func presentFullScreen(_ route: Route) {
+    guard !isFullScreenPresented else { return }
     isFullScreenPresented = true
     fullScreenRoute = route
-    fullScreenNavigationPath = NavigationPath()
-    fullScreenStack.removeAll()
+    
+    fullScreenNavigationPath.append(route)
   }
   
   public mutating func dismissFullScreen() {
+    guard isFullScreenPresented else { return }
     isFullScreenPresented = false
     fullScreenRoute = nil
+    
     fullScreenNavigationPath = NavigationPath()
-    fullScreenStack.removeAll()
   }
-  
-  public mutating func pushInFullScreen(_ route: GlobalRoute) {
-    guard isFullScreenPresented else { return }
+
+  fileprivate mutating func pushInFullScreen(_ route: Route) {
     fullScreenNavigationPath.append(route)
-    fullScreenStack.append(route)
   }
   
-  public mutating func popInFullScreen() {
-    guard isFullScreenPresented, !fullScreenStack.isEmpty else { return }
-    fullScreenStack.removeLast()
-    fullScreenNavigationPath.removeLast()
-  }
-  
-  public mutating func popToInFullScreen(_ target: GlobalRoute) {
-    guard isFullScreenPresented else { return }
-    while let last = fullScreenStack.last, last != target {
-      fullScreenStack.removeLast()
-      fullScreenNavigationPath.removeLast()
+  fileprivate mutating func popInFullScreen() {
+    if fullScreenNavigationPath.isEmpty {
+      dismissFullScreen()
+      return
     }
-  }
-  
-  public mutating func popToRootInFullScreen() {
-    guard isFullScreenPresented else { return }
-    fullScreenStack.removeAll()
-    fullScreenNavigationPath = NavigationPath()
+    fullScreenNavigationPath.removeLast()
   }
 }
