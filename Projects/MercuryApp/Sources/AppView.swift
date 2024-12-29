@@ -20,19 +20,7 @@ struct AppView: View {
   var body: some View {
     NavigationStack(path: $coordinator.routePath.navigationPath) {
       FakeHomeView()
-        .navigationDestination(for: GlobalRoute.self) { route in
-          AppFactoryAggregator.makeView(route)
-        }
-        .fullScreenCover(isPresented: $coordinator.routePath.isFullScreenPresented) {
-          if let route = coordinator.routePath.fullScreenRoute {
-            NavigationStack(path: $coordinator.routePath.fullScreenNavigationPath) {
-              AppFactoryAggregator.makeView(route)
-                .navigationDestination(for: GlobalRoute.self) { route in
-                  AppFactoryAggregator.makeView(route)
-                }
-            }
-          }
-        }
+        .adjustCoordinator(factory: AppFactoryAggregator())
     }
     .environmentObject(coordinator)
   }

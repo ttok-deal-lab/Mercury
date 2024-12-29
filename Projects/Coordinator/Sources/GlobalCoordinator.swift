@@ -1,7 +1,5 @@
 import SwiftUI
 
-// MARK: - GlobalCoordinator
-
 public class GlobalCoordinator<Route: Hashable>: ObservableObject {
   @Published public var routePath = RoutePath<Route>()
   
@@ -23,14 +21,9 @@ public class GlobalCoordinator<Route: Hashable>: ObservableObject {
     routePath.dismissFullScreen()
   }
   
-  public func pushInFullScreen(_ route: Route) {
-    routePath.pushInFullScreen(route)
+  public func popToRoot() {
+    routePath.popToRoot()
   }
-  
-  public func popInFullScreen() {
-    routePath.popInFullScreen()
-  }
-  
 }
 
 // MARK: - RoutePath
@@ -90,7 +83,7 @@ extension RoutePath {
     isFullScreenPresented = false
     fullScreenRoute = nil
     
-    fullScreenNavigationPath = NavigationPath()
+    fullScreenNavigationPath = .init()
   }
 
   fileprivate mutating func pushInFullScreen(_ route: Route) {
@@ -103,5 +96,12 @@ extension RoutePath {
       return
     }
     fullScreenNavigationPath.removeLast()
+  }
+  
+  fileprivate mutating func popToRoot() {
+    if isFullScreenPresented {
+      dismissFullScreen()
+    }
+    navigationPath = .init()
   }
 }

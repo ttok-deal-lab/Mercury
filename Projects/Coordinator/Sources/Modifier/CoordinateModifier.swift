@@ -35,7 +35,7 @@ public struct CoordinateModifier<Route: Hashable, Factory: ViewFactory>: ViewMod
 }
 
 public extension View {
-  func adjuctCoordinator<Route: Hashable, Factory: ViewFactory>(factory: Factory) -> some View where Factory.RouteType == Route {
+  func adjustCoordinator<Route: Hashable, Factory: ViewFactory>(factory: Factory) -> some View where Factory.RouteType == Route {
     modifier(CoordinateModifier(factory: factory))
   }
 }

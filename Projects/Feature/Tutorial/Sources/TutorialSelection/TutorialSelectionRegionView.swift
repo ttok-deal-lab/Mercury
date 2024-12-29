@@ -31,7 +31,7 @@ struct TutorialSelectionRegionView: View {
       }
       Spacer()
       MQButton(title: "준비됐어요!") {
-//        coordinator.poptoRoot()
+        coordinator.popToRoot()
       }
     }
     .navigationTitle("선호 지역을 선택하세요")

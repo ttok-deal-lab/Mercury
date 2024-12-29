@@ -14,7 +14,7 @@ struct SampleAppView: View {
   var body: some View {
     NavigationStack(path: $coordinator.routePath.navigationPath) {
       AView()
-        .adjuctCoordinator(factory: SampleViewFactory())
+        .adjustCoordinator(factory: SampleViewFactory())
     }
     .environmentObject(coordinator)
   }

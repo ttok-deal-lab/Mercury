@@ -11,10 +11,10 @@ import Coordinator
 import Tutorial
 import Auction
 
-public struct AppFactoryAggregator {
+struct AppFactoryAggregator: ViewFactory {
   
   @ViewBuilder
-  static func makeView(_ route: GlobalRoute) -> some View {
+  func makeView(_ route: GlobalRoute) -> some View {
     switch route {
     case .tutorial(let tutorialRoute):
       TutorialFactory.makeView(tutorialRoute)
