@@ -17,8 +17,7 @@ struct TutorialSelectionCategoryToggleView: View {
   @State var isSelected: Bool = false
   let category: AuctionCategory
   
-  init(isSelected: Bool, category: AuctionCategory) {
-    self.isSelected = isSelected
+  init(category: AuctionCategory) {
     self.category = category
   }
   

@@ -12,23 +12,20 @@ import Coordinator
 import AppFoundation
 import UIComponent
 
-@MainActor
-public struct TutorialIntroView: View {
-  
-  private enum TutorialPageType {
-    case welcome
-    case easyToUse
-    case done
-  }
-  
+fileprivate enum TutorialPageType {
+  case welcome
+  case easyToUse
+  case done
+}
+
+struct TutorialIntroView: View {
+  @EnvironmentObject private var coordinator: GlobalCoordinator<GlobalRoute>
   @State private var currentPageType: TutorialPageType = .welcome
   @State private var isShowAlertForRecommend: Bool = false
-  @EnvironmentObject var coordinator: CoordinatorManager
+  @State private var isShowSelectionCategory: Bool = false
   @AppStorage(UserDefaultsKeyDefine.isAppFirst.rawValue) var isAppFirst: Bool = true
   
-  public init() { }
-  
-  public var body: some View {
+  var body: some View {
     VStack(spacing: 0) {
       TabView(selection: $currentPageType) {
         tutorialPage(
@@ -55,7 +52,6 @@ public struct TutorialIntroView: View {
       .toolbar {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-
             self.isShowAlertForRecommend = true
           } label: {
             Text(currentPageType == .done ? "다음에 할게요" : "")
@@ -71,29 +67,24 @@ public struct TutorialIntroView: View {
         }
         Button("좋아요!") {
           isAppFirst = false
-          coordinator.push(page: .auction(.recommendAuction))
+          coordinator.push(.tutorial(.init(route: .category)))
         }
       } message: {
         Text("그냥 넘어가면 섭섭하지이이이이이이이")
       }
-
       
       MQButton(
-        title: self.currentPageType != .done ? "다음" : "관심물건 설정하러 가기",
+        title: currentPageType != .done ? "다음" : "관심물건 설정하러 가기",
         action: {
           if currentPageType == .welcome {
             currentPageType = .easyToUse
           } else if currentPageType == .easyToUse {
             currentPageType = .done
           } else if currentPageType == .done {
-            coordinator.presentFullScreenCover(page: .tutorial(.tutorialSelectionCategory))
-            coordinator.changeBaseView(page: .map)
+            coordinator.presentFullScreen(.auction(.init(route: .recommendAuction(auctionId: 999)))) // FIXME: 추천매물 아이디 필요
           }
         })
       .padding(.top, 20)
-    }
-    .onAppear {
-      print("TEST ~> \(coordinator)")
     }
   }
   
@@ -110,10 +101,6 @@ public struct TutorialIntroView: View {
         .font(.title2)
       Spacer()
     }
-    
   }
+  
 }
-
-//#Preview {
-//  TutorialIntroView(isTutorialSkip: .constant(false))
-//}

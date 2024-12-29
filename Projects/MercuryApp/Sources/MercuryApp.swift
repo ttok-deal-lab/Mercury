@@ -16,9 +16,7 @@ import KakaoMapsSDK
 
 @main
 struct MercuryApp: App {
-  
   @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-  @StateObject var coordinator = CoordinatorManager()
   
   var body: some Scene {
     WindowGroup {
@@ -27,8 +25,6 @@ struct MercuryApp: App {
           GIDSignIn.sharedInstance.handle(url)
         }
     }
-    .environmentObject(coordinator)
-    .modelContainer(for: Filter.self)
   }
 }
 
