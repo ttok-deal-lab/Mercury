@@ -13,16 +13,12 @@ import AppFoundation
 import Coordinator
 import UIComponent
 
-public struct TutorialSelectionCategoryView: View {
-  @Binding var path: NavigationPath
-  
-  init(path: Binding<NavigationPath>) {
-    self._path = path
-  }
+struct TutorialSelectionCategoryView: View {
+  @EnvironmentObject var coordinator: GlobalCoordinator
 
   private let colums: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
   
-  public var body: some View {
+  var body: some View {
     VStack {
       ScrollView {
         LazyVGrid(columns: colums) {
@@ -36,7 +32,7 @@ public struct TutorialSelectionCategoryView: View {
       }
       Spacer()
       MQButton(title: "다음") {
-        path.append(TutorialRoute(route: .region))
+        coordinator.push(.tutorial(TutorialRoute(route: .region)))
       }
     }
     .navigationTitle("선호 물건을 선택하세요")
@@ -44,12 +40,3 @@ public struct TutorialSelectionCategoryView: View {
 }
 
 
-
-#Preview {
-  NavigationStack {
-    TutorialSelectionCategoryView(path: Binding(get: { NavigationPath() }, set: { _ in }))
-      .border(.brown)
-      .navigationTitle("경매 카테고리")
-  }
-  
-}

@@ -19,15 +19,11 @@ fileprivate enum TutorialPageType {
 }
 
 struct TutorialIntroView: View {
-  @Binding var path: NavigationPath
+  @EnvironmentObject var coordinator: GlobalCoordinator
   @State private var currentPageType: TutorialPageType = .welcome
   @State private var isShowAlertForRecommend: Bool = false
   @State private var isShowSelectionCategory: Bool = false
   @AppStorage(UserDefaultsKeyDefine.isAppFirst.rawValue) var isAppFirst: Bool = true
-  
-  init(path: Binding<NavigationPath>) {
-    self._path = path
-  }
   
   var body: some View {
     VStack(spacing: 0) {
@@ -71,28 +67,24 @@ struct TutorialIntroView: View {
         }
         Button("좋아요!") {
           isAppFirst = false
-//          coordinator.push(page: .auction(.recommendAuction))
+          coordinator.push(.tutorial(.init(route: .category)))
         }
       } message: {
         Text("그냥 넘어가면 섭섭하지이이이이이이이")
       }
-
       
       MQButton(
-        title: self.currentPageType != .done ? "다음" : "관심물건 설정하러 가기",
+        title: currentPageType != .done ? "다음" : "관심물건 설정하러 가기",
         action: {
           if currentPageType == .welcome {
             currentPageType = .easyToUse
           } else if currentPageType == .easyToUse {
             currentPageType = .done
           } else if currentPageType == .done {
-            isShowSelectionCategory = true
+            coordinator.presentFullScreen(.auction(.init(route: .recommendAuction(auctionId: 999)))) // FIXME: 추천매물 아이디 필요
           }
         })
       .padding(.top, 20)
-    }
-    .fullScreenCover(isPresented: $isShowSelectionCategory) {
-      TutorialSelectionCategoryView(path: $path)
     }
   }
   
@@ -109,10 +101,6 @@ struct TutorialIntroView: View {
         .font(.title2)
       Spacer()
     }
-    
   }
+  
 }
-
-//#Preview {
-//  TutorialIntroView(isTutorialSkip: .constant(false))
-//}

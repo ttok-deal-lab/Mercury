@@ -8,7 +8,7 @@
 import Foundation
 
 public struct TutorialRoute: Hashable {
-  private(set) var route: Route
+  public private(set) var route: Route
   
   public init(route: Route) {
     self.route = route

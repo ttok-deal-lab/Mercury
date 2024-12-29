@@ -13,28 +13,34 @@ import AppFoundation
 import Coordinator
 import Tutorial
 
+
 struct AppView: View {
-  @State private var path = NavigationPath()
+  @StateObject private var coordinator = GlobalCoordinator()
   
   var body: some View {
-    NavigationStack(path: $path) {
-      FakeHomeView(path: $path)
-        .tutorialDestination(path: $path)
+    NavigationStack(path: $coordinator.routePath.navigationPath) {
+      FakeHomeView()
+        .navigationDestination(for: GlobalRoute.self) { route in
+          AppFactoryAggregator.makeView(route)
+        }
+        .fullScreenCover(isPresented: $coordinator.routePath.isFullScreenPresented) {
+          if let route = coordinator.routePath.fullScreenRoute {
+            AppFactoryAggregator.makeView(route)
+              .environmentObject(coordinator)
+          }
+        }
     }
+    .environmentObject(coordinator)
   }
 }
 
 
 struct FakeHomeView: View {
-  @Binding var path: NavigationPath
-  
-  init(path: Binding<NavigationPath>) {
-    self._path = path
-  }
+  @EnvironmentObject private var coordinator: GlobalCoordinator
   
   var body: some View {
     Button {
-      path.append(TutorialRoute(route: .intro))
+      coordinator.push(.tutorial(.init(route: .intro)))
     } label: {
       Text("go tutorial")
     }
