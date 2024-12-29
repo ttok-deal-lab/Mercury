@@ -12,23 +12,24 @@ import Coordinator
 import AppFoundation
 import UIComponent
 
-@MainActor
-public struct TutorialIntroView: View {
-  
-  private enum TutorialPageType {
-    case welcome
-    case easyToUse
-    case done
-  }
-  
+fileprivate enum TutorialPageType {
+  case welcome
+  case easyToUse
+  case done
+}
+
+struct TutorialIntroView: View {
+  @Binding var path: NavigationPath
   @State private var currentPageType: TutorialPageType = .welcome
   @State private var isShowAlertForRecommend: Bool = false
-  @EnvironmentObject var coordinator: CoordinatorManager
+  @State private var isShowSelectionCategory: Bool = false
   @AppStorage(UserDefaultsKeyDefine.isAppFirst.rawValue) var isAppFirst: Bool = true
   
-  public init() { }
+  init(path: Binding<NavigationPath>) {
+    self._path = path
+  }
   
-  public var body: some View {
+  var body: some View {
     VStack(spacing: 0) {
       TabView(selection: $currentPageType) {
         tutorialPage(
@@ -55,7 +56,6 @@ public struct TutorialIntroView: View {
       .toolbar {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-
             self.isShowAlertForRecommend = true
           } label: {
             Text(currentPageType == .done ? "다음에 할게요" : "")
@@ -71,7 +71,7 @@ public struct TutorialIntroView: View {
         }
         Button("좋아요!") {
           isAppFirst = false
-          coordinator.push(page: .auction(.recommendAuction))
+//          coordinator.push(page: .auction(.recommendAuction))
         }
       } message: {
         Text("그냥 넘어가면 섭섭하지이이이이이이이")
@@ -86,14 +86,13 @@ public struct TutorialIntroView: View {
           } else if currentPageType == .easyToUse {
             currentPageType = .done
           } else if currentPageType == .done {
-            coordinator.presentFullScreenCover(page: .tutorial(.tutorialSelectionCategory))
-            coordinator.changeBaseView(page: .map)
+            isShowSelectionCategory = true
           }
         })
       .padding(.top, 20)
     }
-    .onAppear {
-      print("TEST ~> \(coordinator)")
+    .fullScreenCover(isPresented: $isShowSelectionCategory) {
+      TutorialSelectionCategoryView(path: $path)
     }
   }
   

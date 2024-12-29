@@ -14,16 +14,10 @@ import Coordinator
 import UIComponent
 
 public struct MapContentView: View {
-  
-  // MARK: - private property
-  
   @StateObject private var store = MapStore(userLocationClient: UserLocationClientLive())
   
-  @EnvironmentObject private var coordinator: CoordinatorManager
-  
-  
-  // MARK: - life cycle
   public init() { }
+  
   public var body: some View {
     KakaoMapView(
       draw: $store.isMapDraw,

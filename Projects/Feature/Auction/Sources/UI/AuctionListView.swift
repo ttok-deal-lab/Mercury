@@ -11,6 +11,9 @@ public struct AuctionListView: View {
   
   @StateObject private var store = AuctionModelData()
   
+  public init() {
+  }
+  
   public var body: some View {
     VStack {
       List(store.auctions ?? [], id: \.id) { auction in

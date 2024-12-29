@@ -8,65 +8,35 @@
 
 import SwiftUI
 import Foundation
-import SwiftData
 
-import Map
-import Tutorial
-import Auction
 import AppFoundation
 import Coordinator
+import Tutorial
 
 struct AppView: View {
-  @EnvironmentObject var coordinator: CoordinatorManager
-  @Environment(\.modelContext) var modelContext
-  @Query var filters: [Filter]
-  @AppStorage(UserDefaultsKeyDefine.isAppFirst.rawValue) var isAppFirst: Bool = true
+  @State private var path = NavigationPath()
   
   var body: some View {
-    
-    NavigationStack(path: $coordinator.path) {
-      CoordinatorFactory(page: rootPage())
-        .navigationDestination(for: AppPage.self) { page in
-          CoordinatorFactory(page: page)
-        }
-        .sheet(item: $coordinator.sheet) { page in
-          CoordinatorFactory(page: page)
-        }
-        .fullScreenCover(item: $coordinator.fullScreenCover) { page in
-          NavigationStack(path: $coordinator.fullScreenCoverPath) {
-            CoordinatorFactory(page: page)
-              .navigationDestination(for: AppPage.self) { page in
-                CoordinatorFactory(page: page)
-              }
-          }
-        }
-    }
-    .onAppear {
-      if filters.isEmpty {
-        let newFilter = Filter()
-        modelContext.insert(newFilter)
-        
-        do {
-          try modelContext.save()
-          print("컨텍스트 생성 완료")
-        } catch {
-          print("컨텍스트 생성 실패")
-        }
-      }
+    NavigationStack(path: $path) {
+      FakeHomeView(path: $path)
+        .tutorialDestination(path: $path)
     }
   }
+}
+
+
+struct FakeHomeView: View {
+  @Binding var path: NavigationPath
   
-  private func rootPage() -> AppPage {
-    guard let root = coordinator.rootPage else {
-      return isAppFirst ? .tutorial(.tutorialIntro) : .map
-    }
-    return root
+  init(path: Binding<NavigationPath>) {
+    self._path = path
   }
   
+  var body: some View {
+    Button {
+      path.append(TutorialRoute(route: .intro))
+    } label: {
+      Text("go tutorial")
+    }
+  }
 }
-
-#Preview {
-  AppView()
-
-}
-

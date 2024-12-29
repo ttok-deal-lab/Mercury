@@ -14,11 +14,11 @@ import Coordinator
 import UIComponent
 
 public struct TutorialSelectionCategoryView: View {
-  @Environment(\.modelContext) var modelContext
-  @Query var filters: [Filter]
-  @EnvironmentObject private var coordinator: CoordinatorManager
+  @Binding var path: NavigationPath
   
-  public init() { }
+  init(path: Binding<NavigationPath>) {
+    self._path = path
+  }
 
   private let colums: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
   
@@ -28,7 +28,6 @@ public struct TutorialSelectionCategoryView: View {
         LazyVGrid(columns: colums) {
           ForEach(AuctionCategory.allCases) { category in
             TutorialSelectionCategoryToggleView(
-              isSelected: findNonSeleted(category: category),
               category: category
             )
           }
@@ -37,16 +36,10 @@ public struct TutorialSelectionCategoryView: View {
       }
       Spacer()
       MQButton(title: "다음") {
-        coordinator.pushOnFullScreenCover(page: .tutorial(.tutorialSelectionRegion))
+        path.append(TutorialRoute(route: .region))
       }
     }
     .navigationTitle("선호 물건을 선택하세요")
-  }
-  
-  private func findNonSeleted(category: AuctionCategory) -> Bool {
-    guard let filter = filters.first else { return false }
-    
-    return filter.favoriteCategories.contains(where: { $0 == category.rawValue })
   }
 }
 
@@ -54,7 +47,7 @@ public struct TutorialSelectionCategoryView: View {
 
 #Preview {
   NavigationStack {
-    TutorialSelectionCategoryView()
+    TutorialSelectionCategoryView(path: Binding(get: { NavigationPath() }, set: { _ in }))
       .border(.brown)
       .navigationTitle("경매 카테고리")
   }
