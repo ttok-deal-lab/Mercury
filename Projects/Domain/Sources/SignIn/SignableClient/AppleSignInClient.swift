@@ -47,7 +47,7 @@ private class AppleSignInDelegate: NSObject, ASAuthorizationControllerDelegate {
   
   func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
     if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
-       let identityToken = appleIDCredential.authorizationCode,
+       let identityToken = appleIDCredential.identityToken,
        let tokenString = String(data: identityToken, encoding: .utf8) {
       continuation.resume(returning: .success(tokenString))
     } else {
