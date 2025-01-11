@@ -10,6 +10,7 @@ import SwiftUI
 import Coordinator
 
 struct SampleViewFactory: ViewFactory {
+  
   @ViewBuilder
   func makeView(_ route: SampleRoute) -> some View {
     switch route {

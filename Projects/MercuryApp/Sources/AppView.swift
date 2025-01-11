@@ -11,8 +11,6 @@ import Foundation
 
 import AppFoundation
 import Coordinator
-import Tutorial
-
 
 struct AppView: View {
   @StateObject private var coordinator = GlobalCoordinator<GlobalRoute>()
@@ -32,7 +30,7 @@ struct FakeHomeView: View {
   
   var body: some View {
     Button {
-      coordinator.push(.tutorial(.init(route: .intro)))
+      coordinator.presentFullScreen(.signIn(.init(route: .signIn)))
     } label: {
       Text("go tutorial")
     }

@@ -13,6 +13,8 @@ let project = Project.staticFramework(
   platform: .iOS,
   frameworkDependencies: [
     .appFoundation,
+    .googleSignIn,
+    .googleSignInSwift,
     .infrastructure
   ],
   frameworkTestDependencies: [

@@ -73,17 +73,17 @@ extension RoutePath {
   public mutating func presentFullScreen(_ route: Route) {
     guard !isFullScreenPresented else { return }
     isFullScreenPresented = true
-    fullScreenRoute = route
-    
     fullScreenNavigationPath.append(route)
+    
+    fullScreenRoute = route
   }
   
   public mutating func dismissFullScreen() {
     guard isFullScreenPresented else { return }
     isFullScreenPresented = false
-    fullScreenRoute = nil
-    
     fullScreenNavigationPath = .init()
+    
+    fullScreenRoute = nil
   }
 
   fileprivate mutating func pushInFullScreen(_ route: Route) {

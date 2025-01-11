@@ -15,6 +15,7 @@ struct FullScreenPrintView: View {
   var body: some View {
     VStack {
       Text("in full screen stack")
+      Text("is fullscreen mode ~> \(coordinator.routePath.isFullScreenPresented)")
       ScrollView(.horizontal) {
         HStack {
           Text("full count -> \(coordinator.routePath.fullScreenNavigationPath.count)")

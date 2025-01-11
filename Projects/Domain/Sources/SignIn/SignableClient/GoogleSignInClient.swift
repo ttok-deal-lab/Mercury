@@ -5,13 +5,14 @@
 //  Created by 송하민 on 9/16/24.
 //
 
+import UIKit
 import Foundation
 import AppFoundation
+
 import GoogleSignIn
 import GoogleSignInSwift
-import UIKit
 
-class GoogleSignInManager: SignInable {
+class GoogleSignInClient: SignInable {
   
   @MainActor
   func signIn() async -> Result<SignInToken, MercuryError> {

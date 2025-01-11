@@ -10,12 +10,15 @@ import Coordinator
 
 import Tutorial
 import Auction
+import SignIn
 
 struct AppFactoryAggregator: ViewFactory {
   
   @ViewBuilder
   func makeView(_ route: GlobalRoute) -> some View {
     switch route {
+    case .signIn(let signInRoute):
+      SignInFactory.makeView(signInRoute)
     case .tutorial(let tutorialRoute):
       TutorialFactory.makeView(tutorialRoute)
     case .auction(let auctionRoute):

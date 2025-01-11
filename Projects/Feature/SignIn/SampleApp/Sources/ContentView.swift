@@ -7,13 +7,14 @@
 
 import Foundation
 import SwiftUI
+
 import SignIn
+import Domain
 
 struct ContentView: View {
   var body: some View {
     VStack {
-      AppleSignInButtonView()
-      GoogleSignInButtonView()
+      SignInView(signInUsecase: SignInUsecase(factory: SignInClientFactory()))
     }
   }
 }

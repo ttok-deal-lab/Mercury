@@ -26,7 +26,9 @@ public struct CoordinateModifier<Route: Hashable, Factory: ViewFactory>: ViewMod
           NavigationStack(path: $coordinator.routePath.fullScreenNavigationPath) {
             factory.makeView(route)
               .navigationDestination(for: Route.self) { route in
-                factory.makeView(route)
+                if coordinator.routePath.fullScreenNavigationPath.count > .zero {
+                  factory.makeView(route)
+                }
               }
           }
         }

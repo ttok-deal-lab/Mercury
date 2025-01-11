@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 
 public enum GlobalRoute: Hashable {
+  case signIn(SignInRoute)
   case tutorial(TutorialRoute)
   case auction(AuctionRoute)
 }
