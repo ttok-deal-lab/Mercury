@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 import AppFoundation
 
-public class SignInStore: ObservableObject {
+public class SignInModelData: ObservableObject {
   
   @Published var error: MercuryError?
   @Published var signInToken: SignInToken?

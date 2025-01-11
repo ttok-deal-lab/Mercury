@@ -14,6 +14,8 @@ let project = Project.app(
     .googleSignIn,
     .googleSignInSwift,
     .coordinator,
+    .domain,
+    .infrastructure,
     .feature(target: "Analysis"),
     .feature(target: "Auction"),
     .feature(target: "Comment"),

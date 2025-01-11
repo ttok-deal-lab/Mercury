@@ -17,7 +17,7 @@ public struct GoogleSignInButtonView: View {
   
   // MARK: - private property
   
-  @StateObject private var store = SignInStore(signInClient: SignInClientLive())
+  @StateObject private var store = SignInModelData(signInClient: SignInClientLive())
 
   // MARK: - life cycle
   

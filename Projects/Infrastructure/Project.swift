@@ -1,6 +1,6 @@
 //
 //  Project.swift
-//  DataManifests
+//  MercuryAppManifests
 //
 //  Created by 송하민 on 8/2/24.
 //
@@ -9,14 +9,12 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.staticFramework(
-  name: "Map",
+  name: "Infrastructure",
   platform: .iOS,
   frameworkDependencies: [
-    .appFoundation,
-    .uiComponent,
-    .kakaoMap,
-    .coordinator,
-    .domain
+    .appFoundation
   ],
-  frameworkTestDependencies: []
+  frameworkTestDependencies: [
+    
+  ]
 )

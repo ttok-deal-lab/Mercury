@@ -14,7 +14,8 @@ let project = Project.feature(
   dependencies: [
     .appFoundation,
     .uiComponent,
-    .coordinator
+    .coordinator,
+    .domain
   ],
   testDependencies: []
 )
