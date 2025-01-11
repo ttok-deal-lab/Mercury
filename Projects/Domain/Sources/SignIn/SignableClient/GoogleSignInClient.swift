@@ -26,7 +26,7 @@ class GoogleSignInClient: SignInable {
           continuation.resume(returning: .failure(.init(code: (error as? NSError)?.code ?? -1)))
           return
         }
-        continuation.resume(returning: .success(result.user.accessToken.tokenString))
+        continuation.resume(returning: .success(result.user.idToken?.tokenString ?? ""))
       }
     }
   }

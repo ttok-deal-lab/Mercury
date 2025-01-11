@@ -33,7 +33,11 @@ public struct RoutePath<Route: Hashable> {
   
   public var isFullScreenPresented = false
   public var fullScreenRoute: Route? = nil
-  public var fullScreenNavigationPath = NavigationPath()
+  public var fullScreenNavigationPath = NavigationPath() {
+    didSet {
+      print("count ~> \(fullScreenNavigationPath.count)")
+    }
+  }
   
   public init() {}
 }
@@ -73,7 +77,6 @@ extension RoutePath {
   public mutating func presentFullScreen(_ route: Route) {
     guard !isFullScreenPresented else { return }
     isFullScreenPresented = true
-    fullScreenNavigationPath.append(route)
     
     fullScreenRoute = route
   }
