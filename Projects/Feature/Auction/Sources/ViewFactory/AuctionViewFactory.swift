@@ -10,7 +10,7 @@ import SwiftUI
 
 import Coordinator
 
-public struct AuctionFactory {
+public struct AuctionViewFactory {
   
   public init() {}
   

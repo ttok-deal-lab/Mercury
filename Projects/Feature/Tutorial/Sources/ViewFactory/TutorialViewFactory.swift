@@ -10,8 +10,7 @@ import SwiftUI
 
 import Coordinator
 
-public struct TutorialFactory {
-  
+public struct TutorialViewFactory {
   @ViewBuilder
   public static func makeView(_ tutorialRoute: TutorialRoute) -> some View {
     switch tutorialRoute.route {

@@ -7,15 +7,22 @@
 
 import SwiftUI
 
+import AppFoundation
 import UIComponent
 
 struct AppleSignInButton: View {
-  
   @ObservedObject var signInModelData: SignInModelData
+  @Binding var error: MercuryError?
   
   var body: some View {
     Button {
-      signInModelData.signIn(signInType: .apple)
+      Task {
+        do {
+          try await signInModelData.oauthSignIn(signInType: .apple)
+        } catch let error as MercuryError {
+          self.error = error
+        }
+      }
     } label: {
       HStack {
         Image(systemName: "applelogo")

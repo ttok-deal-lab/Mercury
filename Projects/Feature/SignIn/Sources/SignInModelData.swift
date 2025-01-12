@@ -14,7 +14,11 @@ import Domain
 
 public class SignInModelData: ObservableObject {
   @Published var error: MercuryError?
-  @Published var signInToken: SignInToken?
+  @Published var signInToken: OauthSignInToken? {
+    didSet {
+      
+    }
+  }
   
   private let signInUsecase: SignInUsecase
   
@@ -22,20 +26,9 @@ public class SignInModelData: ObservableObject {
     self.signInUsecase = signInUsecase
   }
   
-  @MainActor public func signIn(signInType: SignInType) {
-    Task {
-      guard let result = await signInUsecase.signIn(signInType) else {
-        self.error = .init(from: .ownModule(.appleSignin), .nilFromSignIn)
-        return
-      }
-      switch result {
-      case .success(let signInToken):
-        print("signInToken: \(signInToken)")
-        self.signInToken = signInToken
-      case .failure(let error):
-        self.error = error
-      }
-    }
+  public func oauthSignIn(signInType: OauthProvider) async throws {
+    let oauthSignInToken = try await signInUsecase.signIn(signInType)
+    self.signInToken = oauthSignInToken
   }
   
 }

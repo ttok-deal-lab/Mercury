@@ -12,7 +12,6 @@ import Coordinator
 import Domain
 
 public struct SignInViewFactory {
-  
   @ViewBuilder
   public static func makeView(_ signInRoute: SignInRoute) -> some View {
     switch signInRoute.route {

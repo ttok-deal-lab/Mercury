@@ -15,18 +15,25 @@ import GoogleSignInSwift
 class GoogleSignInProvider: SignInable {
   
   @MainActor
-  func signIn() async -> Result<SignInToken, MercuryError> {
+  func signIn() async throws -> OauthSignInToken {
     guard let presentingViewController = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else {
-      return .failure(.init(from: .ownModule(.googleSignin), .unknown))
+      throw MercuryError(from: .ownModule(.googleSignin), .unknown)
     }
     
-    return await withCheckedContinuation { continuation in
+    return try await withCheckedThrowingContinuation { continuation in
       GIDSignIn.sharedInstance.signIn(withPresenting: presentingViewController) { result, error in
-        guard let result = result else {
-          continuation.resume(returning: .failure(.init(code: (error as? NSError)?.code ?? -1)))
+        if let error = error {
+          let mercuryError = MercuryError(code: (error as NSError).code)
+          continuation.resume(throwing: mercuryError)
           return
         }
-        continuation.resume(returning: .success(result.user.idToken?.tokenString ?? ""))
+        
+        guard let token = result?.user.idToken?.tokenString else {
+          continuation.resume(throwing: MercuryError(from: .ownModule(.googleSignin), .unknown))
+          return
+        }
+        
+        continuation.resume(returning: token)
       }
     }
   }

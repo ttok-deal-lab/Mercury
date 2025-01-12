@@ -16,8 +16,8 @@ public struct SignInView: View {
   // MARK: - private property
   
   @StateObject private var signInModelData: SignInModelData
-  
-  private let supportSignInTypes: [SignInType] = [.apple, .google]
+  @State private var error: MercuryError?
+  private let supportSignInTypes: [OauthProvider] = [.apple, .google]
   
   // MARK: - life cycle
   
@@ -37,12 +37,12 @@ public struct SignInView: View {
   }
   
   @ViewBuilder
-  private func signInButton(type: SignInType) -> some View {
+  private func signInButton(type: OauthProvider) -> some View {
     switch type {
     case .apple:
-      AppleSignInButton(signInModelData: signInModelData)
+      AppleSignInButton(signInModelData: signInModelData, error: $error)
     case .google:
-      GoogleSignInButtonView(signInModelData: signInModelData)
+      GoogleSignInButtonView(signInModelData: signInModelData, error: $error)
     }
   }
 }

@@ -12,12 +12,18 @@ import AppFoundation
 import UIComponent
 
 struct GoogleSignInButtonView: View {
-  
   @ObservedObject var signInModelData: SignInModelData
+  @Binding var error: MercuryError?
   
   var body: some View {
     Button {
-      signInModelData.signIn(signInType: .google)
+      Task {
+        do {
+          try await signInModelData.oauthSignIn(signInType: .google)
+        } catch let error as MercuryError {
+          self.error = error
+        }
+      }
     } label: {
       Text("Sign In with Google")
     }

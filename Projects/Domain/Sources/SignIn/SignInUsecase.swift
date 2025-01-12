@@ -9,9 +9,9 @@ import Foundation
 
 import AppFoundation
 
-public typealias SignInToken = String
+public typealias OauthSignInToken = String
 
-public enum SignInType: String, Identifiable {
+public enum OauthProvider: String, Identifiable {
   
   public var id: String {
     return self.rawValue
@@ -29,9 +29,9 @@ public class SignInUsecase {
     self.factory = factory
   }
   
-  public func signIn(_ signInType: SignInType) async -> Result<SignInToken, MercuryError>? {
-    let client = factory.makeSignInManager(for: signInType)
-    return await client.signIn()
+  public func signIn(_ provider: OauthProvider) async throws -> OauthSignInToken {
+    let signInProvider = factory.makeSignInManager(provider: provider)
+    return try await signInProvider.signIn()
   }
   
 }

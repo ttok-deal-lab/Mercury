@@ -9,5 +9,5 @@ import Foundation
 import AppFoundation
 
 public protocol SignInable {
-  func signIn() async -> Result<SignInToken, MercuryError>
+  func signIn() async throws -> OauthSignInToken
 }

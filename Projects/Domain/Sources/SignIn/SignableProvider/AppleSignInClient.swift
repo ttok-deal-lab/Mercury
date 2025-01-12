@@ -17,8 +17,8 @@ final class AppleSignInProvider: SignInable {
   
   // MARK: - internal method
   
-  func signIn() async -> Result<SignInToken, MercuryError> {
-    await withCheckedContinuation { continuation in
+  func signIn() async throws -> OauthSignInToken {
+    try await withCheckedThrowingContinuation { continuation in
       let provider = ASAuthorizationAppleIDProvider()
       let request = provider.createRequest()
       request.requestedScopes = [.fullName, .email]
@@ -35,11 +35,11 @@ private class AppleSignInDelegate: NSObject, ASAuthorizationControllerDelegate {
   
   // MARK: - private property
   
-  private let continuation: CheckedContinuation<Result<SignInToken, MercuryError>, Never>
+  private let continuation: CheckedContinuation<OauthSignInToken, Error>
   
   // MARK: - life cycle
   
-  init(continuation: CheckedContinuation<Result<SignInToken, MercuryError>, Never>) {
+  init(continuation: CheckedContinuation<OauthSignInToken, Error>) {
     self.continuation = continuation
   }
   
@@ -49,13 +49,13 @@ private class AppleSignInDelegate: NSObject, ASAuthorizationControllerDelegate {
     if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
        let identityToken = appleIDCredential.identityToken,
        let tokenString = String(data: identityToken, encoding: .utf8) {
-      continuation.resume(returning: .success(tokenString))
+      continuation.resume(returning: tokenString)
     } else {
-      continuation.resume(returning: .failure(MercuryError(from: .ownModule(.appleSignin), .unknown)))
+      continuation.resume(throwing: MercuryError(from: .ownModule(.appleSignin), .unknown))
     }
   }
   
   func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-    continuation.resume(returning: .failure(MercuryError(code: (error as NSError).code)))
+    continuation.resume(throwing: MercuryError(code: (error as NSError).code))
   }
 }
