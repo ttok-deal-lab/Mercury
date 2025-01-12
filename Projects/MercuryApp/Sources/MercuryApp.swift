@@ -31,14 +31,13 @@ struct MercuryApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-    
     if let sdkAppKey = CommonDefine.mapKey {
       SDKInitializer.InitSDK(appKey: sdkAppKey)
     }
     
     let container = MercuryContainer.shared
-    container.register(SignInInformable.self, instance: SignInInformationManager.shared)
-    container.register(UserDefaultsManagable.self, instance: UserDefaultsManager.shared)
+    container.register(SignInTokenInformable.self, instance: SignInInformationManager.shared)
+    container.register(SignInUserInformable.self, instance: SignInInformationManager.shared)
     
     return true
   }

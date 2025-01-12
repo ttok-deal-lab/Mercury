@@ -13,7 +13,6 @@ import GoogleSignIn
 import GoogleSignInSwift
 
 class GoogleSignInProvider: SignInable {
-  
   @MainActor
   func signIn() async throws -> OauthSignInToken {
     guard let presentingViewController = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else {

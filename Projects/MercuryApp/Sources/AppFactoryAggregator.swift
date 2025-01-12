@@ -21,7 +21,8 @@ struct AppFactoryAggregator: ViewFactory {
     switch route {
     case .signIn(let signInRoute):
       SignInViewFactory(
-        signInClient: SignInRemoteClient()
+        signInClient: SignInRemoteClient(),
+        localStorageCLient: UserDefaultsClient.shared
       )
       .makeView(signInRoute)
     case .tutorial(let tutorialRoute):

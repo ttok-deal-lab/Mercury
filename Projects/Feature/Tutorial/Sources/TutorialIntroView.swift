@@ -23,7 +23,7 @@ struct TutorialIntroView: View {
   @State private var currentPageType: TutorialPageType = .welcome
   @State private var isShowAlertForRecommend: Bool = false
   @State private var isShowSelectionCategory: Bool = false
-  @AppStorage(UserDefaultsKey.isAppFirst.rawValue) var isAppFirst: Bool = true
+  @AppStorage(LocalStorageKey.isAppFirst.rawValue) var isAppFirst: Bool = true
   
   var body: some View {
     VStack(spacing: 0) {

@@ -12,11 +12,12 @@ import Coordinator
 import Domain
 
 public struct SignInViewFactory {
-  
   private let signInClient: SignInClient
+  private let localStorageCLient: LocalStorageClient
   
-  public init(signInClient: SignInClient) {
+  public init(signInClient: SignInClient, localStorageCLient: LocalStorageClient) {
     self.signInClient = signInClient
+    self.localStorageCLient = localStorageCLient
   }
   
   @ViewBuilder
@@ -24,9 +25,11 @@ public struct SignInViewFactory {
     switch signInRoute.route {
     case .signIn:
       SignInView(
-        signInUsecase: SignInUsecase(
-          client: signInClient,
-          factory: SignInProviderFactory()
+        signInUsecasable: SignInUsecase(
+          client: signInClient
+        ),
+        localStorageUsecasable: LocalStorageUsecase(
+          localStorageClient: localStorageCLient
         )
       )
     }

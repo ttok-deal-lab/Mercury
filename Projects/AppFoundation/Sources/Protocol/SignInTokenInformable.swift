@@ -8,6 +8,8 @@
 import Foundation
 import Combine
 
-public protocol SignInInformable {
-  var signInInformation: PassthroughSubject<SignInInformation, Never> { get }
+public protocol SignInTokenInformable {
+  var tokenInfo: PassthroughSubject<SignInTokenInfo, Never> { get }
 }
+
+

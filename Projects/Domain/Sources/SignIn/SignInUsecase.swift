@@ -9,17 +9,17 @@ import Foundation
 
 import AppFoundation
 
-public class SignInUsecase {
+public class SignInUsecase: SignInUsecasable {
   private let client: SignInClient
   private let factory: SignInProviderFactory
   
-  public init(client: SignInClient, factory: SignInProviderFactory) {
+  public init(client: SignInClient) {
     self.client = client
-    self.factory = factory
+    self.factory = SignInProviderFactory()
   }
   
   public func oauthSignIn(_ provider: OauthProvider) async throws -> OauthSignInToken {
-    let signInProvider = factory.makeSignInManager(provider: provider)
+    let signInProvider = factory.createProvider(provider: provider)
     return try await signInProvider.signIn()
   }
   

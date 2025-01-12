@@ -10,12 +10,7 @@ import AppFoundation
 import AuthenticationServices
 
 final class AppleSignInProvider: SignInable {
-  
-  // MARK: - private property
-  
   private var delegate: AppleSignInDelegate?
-  
-  // MARK: - internal method
   
   func signIn() async throws -> OauthSignInToken {
     try await withCheckedThrowingContinuation { continuation in
@@ -32,18 +27,11 @@ final class AppleSignInProvider: SignInable {
 }
 
 private class AppleSignInDelegate: NSObject, ASAuthorizationControllerDelegate {
-  
-  // MARK: - private property
-  
   private let continuation: CheckedContinuation<OauthSignInToken, Error>
-  
-  // MARK: - life cycle
   
   init(continuation: CheckedContinuation<OauthSignInToken, Error>) {
     self.continuation = continuation
   }
-  
-  // MARK: - internal method
   
   func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
     if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,

@@ -12,33 +12,29 @@ import Combine
 import AppFoundation
 import Domain
 
-public class SignInModelData: ObservableObject {
-  @Published var error: MercuryError?
-  private let signInUsecase: SignInUsecase
-  private let container: MercuryContainer
+public final class SignInModelData: ObservableObject {
+  private let signInUsecasable: SignInUsecasable
+  private let localStorageUsecasable: LocalStorageUsecasable
   
-  init(signInUsecase: SignInUsecase) {
-    self.signInUsecase = signInUsecase
-    self.container = MercuryContainer.shared
+  init(
+    signInUsecasable: SignInUsecasable,
+    localStorageUsecasable: LocalStorageUsecasable
+  ) {
+    self.signInUsecasable = signInUsecasable
+    self.localStorageUsecasable = localStorageUsecasable
   }
   
   public func oauthSignIn(_ oauthProvider: OauthProvider) async throws {
-    let oauthSignInToken = try await signInUsecase.oauthSignIn(oauthProvider)
-    print("oauth token ~> \(oauthSignInToken)")
-    
+    let oauthSignInToken = try await signInUsecasable.oauthSignIn(oauthProvider)
     try await serviceSignIn(provider: oauthProvider, oauthSignInToken: oauthSignInToken)
   }
   
   private func serviceSignIn(provider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws {
-    let signInInformation = try await signInUsecase.serviceSignIn(oauthProvider: provider, oauthSignInToken: oauthSignInToken)
-    let userDefaultsManager = container.resolve(UserDefaultsManagable.self)
-    userDefaultsManager.setModel(signInInformation, forKey: .signInInformation)
     
-    try await Task.sleep(for: .seconds(1))
+    let signInInformation = try await signInUsecasable.serviceSignIn(oauthProvider: provider, oauthSignInToken: oauthSignInToken)
+    localStorageUsecasable.setModel(signInInformation.token, forKey: .signInTokenInfo)
+    localStorageUsecasable.setModel(signInInformation.user, forKey: .signInUserInfo)
     
-    let model = userDefaultsManager.getModel(forKey: .signInInformation, as: SignInInformation.self)
-    
-    print("model ~> \(model)")
   }
   
 }

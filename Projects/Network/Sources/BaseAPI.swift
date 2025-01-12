@@ -26,7 +26,7 @@ public extension BaseAPI {
   }
   
   var headers: [String: String]? {
-    return nil
+    ["Content-Type": "application/json"]
   }
   
   var requestBody: [String: Any]? {

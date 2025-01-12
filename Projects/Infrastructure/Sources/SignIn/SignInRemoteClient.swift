@@ -15,10 +15,21 @@ public class SignInRemoteClient: SignInClient {
   public init() { }
   
   public func signIn(oauthProvider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws -> SignInInformation {
-    let signInResult = try await AuthAPI.signIn(provider: oauthProvider.rawValue, idToken: oauthSignInToken).request(SignInInformation.self)
-    print("signin result ~> \(signInResult)")
+    let signInInformation = try await AuthAPI.signIn(
+      provider: oauthProvider.rawValue,
+      idToken: oauthSignInToken
+    ).request(
+      SignInInformation.self
+    )
     
-    return signInResult
+    let container = MercuryContainer.shared
+    let tokenInfoManager = container.resolve(SignInTokenInformable.self)
+    tokenInfoManager.tokenInfo.send(signInInformation.token)
+    
+    let userInfoManager = container.resolve(SignInUserInformable.self)
+    userInfoManager.userInfo.send(signInInformation.user)
+    
+    return signInInformation
   }
   
   

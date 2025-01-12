@@ -10,11 +10,17 @@ import SwiftUI
 
 import SignIn
 import Domain
+import Infrastructure
 
 struct ContentView: View {
   var body: some View {
     VStack {
-      SignInView(signInUsecase: SignInUsecase(factory: SignInClientFactory()))
+      SignInView(
+        signInUsecasable: SignInUsecase(
+          client: SignInRemoteClient(),
+          factory: SignInProviderFactory()
+        )
+      )
     }
   }
 }

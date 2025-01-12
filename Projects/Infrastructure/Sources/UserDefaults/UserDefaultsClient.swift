@@ -7,12 +7,15 @@
 
 import Foundation
 
-public class UserDefaultsManager: UserDefaultsManagable {
-  public static let shared = UserDefaultsManager()
+import AppFoundation
+import Domain
+
+public final class UserDefaultsClient: LocalStorageClient {
+  public static let shared = UserDefaultsClient()
   private let userDefaults = UserDefaults.standard
   private init() { }
   
-  public func setModel<T: Codable>(_ value: T, forKey key: UserDefaultsKey) {
+  public func setModel<T: Codable>(_ value: T, forKey key: LocalStorageKey) {
     do {
       let encodedData = try JSONEncoder().encode(value)
       userDefaults.set(encodedData, forKey: key.rawValue)
@@ -21,7 +24,7 @@ public class UserDefaultsManager: UserDefaultsManagable {
     }
   }
 
-  public func getModel<T: Codable>(forKey key: UserDefaultsKey, as type: T.Type) -> T? {
+  public func getModel<T: Codable>(forKey key: LocalStorageKey, as type: T.Type) -> T? {
     guard let data = userDefaults.data(forKey: key.rawValue) else { return nil }
     do {
       return try JSONDecoder().decode(T.self, from: data)
@@ -31,15 +34,15 @@ public class UserDefaultsManager: UserDefaultsManagable {
     }
   }
   
-  public func set<T>(_ value: T, forKey key: UserDefaultsKey) where T: Any {
+  public func set<T>(_ value: T, forKey key: LocalStorageKey) where T: Any {
     userDefaults.set(value, forKey: key.rawValue)
   }
   
-  public func get<T>(forKey key: UserDefaultsKey) -> T? {
+  public func get<T>(forKey key: LocalStorageKey) -> T? {
     return userDefaults.value(forKey: key.rawValue) as? T
   }
   
-  public func remove(forKey key: UserDefaultsKey) {
+  public func remove(forKey key: LocalStorageKey) {
     userDefaults.removeObject(forKey: key.rawValue)
   }
 }

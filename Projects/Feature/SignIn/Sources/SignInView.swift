@@ -12,17 +12,20 @@ import AppFoundation
 import Domain
 
 public struct SignInView: View {
-  
-  // MARK: - private property
-  
   @StateObject private var signInModelData: SignInModelData
   @State private var error: MercuryError?
   private let supportSignInTypes: [OauthProvider] = [.apple, .google]
   
-  // MARK: - life cycle
-  
-  public init(signInUsecase: SignInUsecase) {
-    self._signInModelData = StateObject(wrappedValue: SignInModelData(signInUsecase: signInUsecase))
+  public init(
+    signInUsecasable: SignInUsecasable,
+    localStorageUsecasable: LocalStorageUsecasable
+  ) {
+    self._signInModelData = StateObject(
+      wrappedValue: SignInModelData(
+        signInUsecasable: signInUsecasable,
+        localStorageUsecasable: localStorageUsecasable
+      )
+    )
   }
   
   public var body: some View {
