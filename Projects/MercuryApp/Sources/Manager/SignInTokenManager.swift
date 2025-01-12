@@ -13,8 +13,8 @@ import Domain
 import Infrastructure
 
 public final class SignInInformationManager: SignInTokenInformable, SignInUserInformable {
-  public private(set) var tokenInfo: PassthroughSubject<SignInTokenInfo, Never> = .init()
-  public private(set) var userInfo: PassthroughSubject<SignInUserInfo, Never> = .init()
+  public private(set) var tokenInfo: CurrentValueSubject<SignInTokenInfo?, Never> = .init(nil)
+  public private(set) var userInfo: CurrentValueSubject<SignInUserInfo?, Never> = .init(nil)
   
   private let localStorageUsecase = LocalStorageUsecase(localStorageClient: UserDefaultsClient.shared)
   

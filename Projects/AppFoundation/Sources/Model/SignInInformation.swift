@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct SignInInformation: Codable {
+public struct SignInInformation: Codable { // UserDefaults에 저장하기 위한 Codable
   public var user: SignInUserInfo
   public var token: SignInTokenInfo
   

@@ -15,7 +15,6 @@ import Infrastructure
 import Domain
 
 struct AppFactoryAggregator: ViewFactory {
-  
   @ViewBuilder
   func makeView(_ route: GlobalRoute) -> some View {
     switch route {
