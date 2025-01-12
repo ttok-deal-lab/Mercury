@@ -9,29 +9,39 @@ import Foundation
 
 import AppFoundation
 
-public typealias OauthSignInToken = String
-
-public enum OauthProvider: String, Identifiable {
-  
-  public var id: String {
-    return self.rawValue
-  }
-  
-  case apple
-  case google
-}
-
 public class SignInUsecase {
-  
+  private let client: SignInClient
   private let factory: SignInProviderFactory
   
-  public init(factory: SignInProviderFactory) {
+  public init(client: SignInClient, factory: SignInProviderFactory) {
+    self.client = client
     self.factory = factory
   }
   
-  public func signIn(_ provider: OauthProvider) async throws -> OauthSignInToken {
+  public func oauthSignIn(_ provider: OauthProvider) async throws -> OauthSignInToken {
     let signInProvider = factory.makeSignInManager(provider: provider)
     return try await signInProvider.signIn()
   }
   
+  public func serviceSignIn(oauthProvider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws -> SignInInformation {
+    return try await client
+      .signIn(
+        oauthProvider: oauthProvider,
+        oauthSignInToken: oauthSignInToken
+      )
+  }
+  
+}
+
+
+public typealias OauthSignInToken = String
+
+public enum OauthProvider: String, Identifiable {
+  public var id: String {
+    return self.rawValue
+  }
+  case apple
+  case google
+//  case kakao
+//  case naver
 }

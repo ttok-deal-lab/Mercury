@@ -12,12 +12,20 @@ import Coordinator
 import Domain
 
 public struct SignInViewFactory {
+  
+  private let signInClient: SignInClient
+  
+  public init(signInClient: SignInClient) {
+    self.signInClient = signInClient
+  }
+  
   @ViewBuilder
-  public static func makeView(_ signInRoute: SignInRoute) -> some View {
+  public func makeView(_ signInRoute: SignInRoute) -> some View {
     switch signInRoute.route {
     case .signIn:
       SignInView(
         signInUsecase: SignInUsecase(
+          client: signInClient,
           factory: SignInProviderFactory()
         )
       )

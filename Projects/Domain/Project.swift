@@ -14,8 +14,7 @@ let project = Project.staticFramework(
   frameworkDependencies: [
     .appFoundation,
     .googleSignIn,
-    .googleSignInSwift,
-    .infrastructure
+    .googleSignInSwift
   ],
   frameworkTestDependencies: [
     

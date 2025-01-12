@@ -12,7 +12,7 @@ public struct Inject<T> {
   public var wrappedValue: T
   
   public init() {
-    self.wrappedValue = MercuryContainer.shared.resolve()
+    self.wrappedValue = MercuryContainer.shared.resolve(T.self)
   }
 }
 
@@ -27,7 +27,7 @@ public struct LazyInject<T> {
   
   public init() {
     self.initializer = {
-      MercuryContainer.shared.resolve()
+      MercuryContainer.shared.resolve(T.self)
     }
   }
   

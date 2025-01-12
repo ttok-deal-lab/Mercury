@@ -18,7 +18,7 @@ struct AppleSignInButton: View {
     Button {
       Task {
         do {
-          try await signInModelData.oauthSignIn(signInType: .apple)
+          try await signInModelData.oauthSignIn(.apple)
         } catch let error as MercuryError {
           self.error = error
         }

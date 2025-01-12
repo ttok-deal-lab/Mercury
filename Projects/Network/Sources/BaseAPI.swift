@@ -102,10 +102,23 @@ public extension BaseAPI {
       urlRequest.allHTTPHeaderFields = headers
     }
     
-    let (data, _) = try await URLSession.shared.data(for: urlRequest)
-    let decodedObj = try JSONDecoder().decode(T.self, from: data)
-    print("Network request: URL:: \(finalURL.absoluteString), response: \(decodedObj)")
-    return decodedObj
+    let data: Data
+    do {
+      let (responseData, _) = try await URLSession.shared.data(for: urlRequest)
+      data = responseData
+    } catch {
+      print("Network request failed for URL:: \(finalURL.absoluteString), error: \(error)")
+      throw error
+    }
+    
+    do {
+      let decodedModel = try JSONDecoder().decode(T.self, from: data)
+      print("Network request: URL:: \(finalURL.absoluteString), response: \(decodedModel)")
+      return decodedModel
+    } catch {
+      print("Decoding failed for URL:: \(finalURL.absoluteString), error: \(error)")
+      throw error
+    }
   }
   
 }

@@ -19,7 +19,7 @@ struct GoogleSignInButtonView: View {
     Button {
       Task {
         do {
-          try await signInModelData.oauthSignIn(signInType: .google)
+          try await signInModelData.oauthSignIn(.google)
         } catch let error as MercuryError {
           self.error = error
         }

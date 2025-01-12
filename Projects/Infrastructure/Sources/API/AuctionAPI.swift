@@ -14,7 +14,7 @@ public enum AuctionAPI: BaseAPI {
   case auctionDetail(_ salesId: String, _ largeCategory: String, mediumCategory: String, _ courtName: String, salesNumber: Int)
   
   public var baseURL: String {
-    "http://sherbet-api.dev.pursue503.com/v1/"
+    RestAPIDefine.baseURL
   }
   
   public var domain: String? {

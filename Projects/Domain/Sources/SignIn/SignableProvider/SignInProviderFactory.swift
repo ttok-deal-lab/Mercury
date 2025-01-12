@@ -13,7 +13,7 @@ public final class SignInProviderFactory {
   public init() { }
   
   public func makeSignInManager(provider: OauthProvider) -> SignInable {
-    switch type {
+    switch provider {
     case .apple:
       return AppleSignInProvider()
     case .google:

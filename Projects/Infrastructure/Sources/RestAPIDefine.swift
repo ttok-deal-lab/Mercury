@@ -12,13 +12,13 @@ enum DomainType {
 struct RestAPIDefine {
 
   #if DEBUG
-  static let baseURL = "http://sherbet-auth.dev.pursue503.com"
+  static let baseURL = "http://sherbet-auth.dev.pursue503.com/v1/"
   
   #elseif STAGE
-  static let baseURL = "http://sherbet-auth.dev.pursue503.com"
+  static let baseURL = "http://sherbet-auth.dev.pursue503.com/v1/"
   
   #else // release
-  static let baseURL = "http://sherbet-auth.dev.pursue503.com"
+  static let baseURL = "http://sherbet-auth.dev.pursue503.com/v1/"
   
   #endif
   

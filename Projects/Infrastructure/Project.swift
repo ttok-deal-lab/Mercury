@@ -12,7 +12,8 @@ let project = Project.staticFramework(
   name: "Infrastructure",
   platform: .iOS,
   frameworkDependencies: [
-    .appFoundation
+    .appFoundation,
+    .domain
   ],
   frameworkTestDependencies: [
     
