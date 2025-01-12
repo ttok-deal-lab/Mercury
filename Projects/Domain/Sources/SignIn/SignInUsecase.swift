@@ -23,9 +23,9 @@ public enum SignInType: String, Identifiable {
 
 public class SignInUsecase {
   
-  private let factory: SignInClientFactory
+  private let factory: SignInProviderFactory
   
-  public init(factory: SignInClientFactory) {
+  public init(factory: SignInProviderFactory) {
     self.factory = factory
   }
   

@@ -35,6 +35,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     if let sdkAppKey = CommonDefine.mapKey {
       SDKInitializer.InitSDK(appKey: sdkAppKey)
     }
+    
+    let container = MercuryContainer.shared
+    container.register(SignInInformable.self, instance: SignInInformationManager.shared)
+    container.register(UserDefaultsManagable.self, instance: UserDefaultsManager.shared)
+    
     return true
   }
 }

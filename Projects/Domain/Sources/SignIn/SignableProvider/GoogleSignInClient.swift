@@ -12,7 +12,7 @@ import AppFoundation
 import GoogleSignIn
 import GoogleSignInSwift
 
-class GoogleSignInClient: SignInable {
+class GoogleSignInProvider: SignInable {
   
   @MainActor
   func signIn() async -> Result<SignInToken, MercuryError> {

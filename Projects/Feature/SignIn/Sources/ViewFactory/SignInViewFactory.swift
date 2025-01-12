@@ -11,7 +11,7 @@ import SwiftUI
 import Coordinator
 import Domain
 
-public struct SignInFactory {
+public struct SignInViewFactory {
   
   @ViewBuilder
   public static func makeView(_ signInRoute: SignInRoute) -> some View {
@@ -19,7 +19,7 @@ public struct SignInFactory {
     case .signIn:
       SignInView(
         signInUsecase: SignInUsecase(
-          factory: SignInClientFactory()
+          factory: SignInProviderFactory()
         )
       )
     }

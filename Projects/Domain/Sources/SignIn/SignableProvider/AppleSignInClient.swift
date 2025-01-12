@@ -9,7 +9,7 @@ import Foundation
 import AppFoundation
 import AuthenticationServices
 
-final class AppleSignInClient: SignInable {
+final class AppleSignInProvider: SignInable {
   
   // MARK: - private property
   

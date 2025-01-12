@@ -7,9 +7,9 @@
 
 import Foundation
 
-public enum UserDefaultsKeyDefine: String {
+public enum UserDefaultsKey: String {
+  /// 앱 최초 구동 여부
   case isAppFirst
-  case favoriteAuctionCategory
-  case favoriteRegion
-  
+  /// 로그인 정보
+  case signInInformation
 }

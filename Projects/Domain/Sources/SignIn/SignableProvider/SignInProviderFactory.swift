@@ -8,16 +8,16 @@
 import Foundation
 import AppFoundation
 
-public final class SignInClientFactory {
+public final class SignInProviderFactory {
   
   public init() { }
   
   public func makeSignInManager(for type: SignInType) -> SignInable {
     switch type {
     case .apple:
-      return AppleSignInClient()
+      return AppleSignInProvider()
     case .google:
-      return GoogleSignInClient()
+      return GoogleSignInProvider()
     }
   }
   
