@@ -24,10 +24,14 @@ public struct CoordinateModifier<Route: Hashable, Factory: ViewFactory>: ViewMod
       .fullScreenCover(isPresented: $coordinator.routePath.isFullScreenPresented) {
         if let route = coordinator.routePath.fullScreenRoute {
           NavigationStack(path: $coordinator.routePath.fullScreenNavigationPath) {
-            factory.makeView(route)
-              .navigationDestination(for: Route.self) { route in
-                factory.makeView(route)
-              }
+            if coordinator.routePath.fullScreenNavigationPath.isEmpty {
+              factory.makeView(route)
+            } else {
+              factory.makeView(route)
+                .navigationDestination(for: Route.self) { route in
+                  factory.makeView(route)
+                }
+            }
           }
         }
       }

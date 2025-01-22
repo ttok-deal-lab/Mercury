@@ -13,7 +13,8 @@ let project = Project.feature(
   platform: .iOS,
   dependencies: [
     .appFoundation,
-    .coordinator
+    .coordinator,
+    .domain
   ],
   testDependencies: []
 )

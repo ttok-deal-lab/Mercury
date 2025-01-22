@@ -1,3 +1,11 @@
+//
+//  GlobalRoute.swift
+//  Coordinator
+//
+//  Created by 송하민 on 12/29/24.
+//
+
+import Foundation
 import SwiftUI
 
 public class GlobalCoordinator<Route: Hashable>: ObservableObject {
@@ -73,17 +81,16 @@ extension RoutePath {
   public mutating func presentFullScreen(_ route: Route) {
     guard !isFullScreenPresented else { return }
     isFullScreenPresented = true
-    fullScreenRoute = route
     
-    fullScreenNavigationPath.append(route)
+    fullScreenRoute = route
   }
   
   public mutating func dismissFullScreen() {
     guard isFullScreenPresented else { return }
     isFullScreenPresented = false
-    fullScreenRoute = nil
-    
     fullScreenNavigationPath = .init()
+    
+    fullScreenRoute = nil
   }
 
   fileprivate mutating func pushInFullScreen(_ route: Route) {

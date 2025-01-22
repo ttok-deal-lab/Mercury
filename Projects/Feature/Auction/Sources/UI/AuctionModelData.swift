@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+import Infrastructure
 import Network
 
 public class AuctionModelData: ObservableObject {

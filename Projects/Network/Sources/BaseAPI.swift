@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppFoundation
 
 public protocol BaseAPI {
   var baseURL: String { get }
@@ -16,7 +17,6 @@ public protocol BaseAPI {
   var requestBody: [String: Any]? { get }
   var queryParam: [URLQueryItem]? { get }
   
-  func requestData() async throws -> Data?
   func request<T: Decodable>(_ model: T.Type) async throws -> T where T: Decodable
 }
 
@@ -26,7 +26,11 @@ public extension BaseAPI {
   }
   
   var headers: [String: String]? {
-    return nil
+    var header = ["Content-Type": "application/json"]
+    if let tokenInfo = MercuryContainer.shared.resolve(SignInTokenInformable.self).tokenInfo.value {
+      header["Authorization"] = tokenInfo.accessToken
+    }
+    return header
   }
   
   var requestBody: [String: Any]? {
@@ -37,47 +41,13 @@ public extension BaseAPI {
     return nil
   }
   
-  func requestData() async throws -> Data? {
-    var plainURLString = ""
-    if let domain = domain {
-      plainURLString = baseURL.appending(domain).appending(path)
-    } else {
-      plainURLString = baseURL.appending(path)
-    }
-    
-    guard var urlComponents = URLComponents(string: plainURLString) else {
-      throw NetworkError.failToConvertURL
-    }
-    urlComponents.queryItems = queryParam
-    
-    guard let finalURL = urlComponents.url else {
-      throw NetworkError.failToConvertURL
-    }
-    
-    var urlRequest = URLRequest(url: finalURL, cachePolicy: Const.cachePolicy, timeoutInterval: Const.timeout)
-    
-    urlRequest.httpMethod = method.rawValue
-    
-    if let requestBody {
-      let bodyData = try? JSONSerialization.data(withJSONObject: requestBody, options: [])
-      urlRequest.httpBody = bodyData
-    }
-    
-    if let headers {
-      urlRequest.allHTTPHeaderFields = headers
-    }
-    
-    let (data, _) = try await URLSession.shared.data(for: urlRequest)
-    print("Network request: URL:: \(finalURL.absoluteString), response: \(data)")
-    return data
-  }
-  
   func request<T: Decodable>(_ model: T.Type) async throws -> T {
-    var plainURLString = ""
-    if let domain = domain {
-      plainURLString = baseURL.appending(domain).appending(path)
-    } else {
-      plainURLString = baseURL.appending(path)
+    var plainURLString: String {
+      if let domain = domain {
+        return baseURL.appending(domain).appending(path)
+      } else {
+        return baseURL.appending(path)
+      }
     }
     
     guard var urlComponents = URLComponents(string: plainURLString) else {
@@ -102,10 +72,23 @@ public extension BaseAPI {
       urlRequest.allHTTPHeaderFields = headers
     }
     
-    let (data, _) = try await URLSession.shared.data(for: urlRequest)
-    let decodedObj = try JSONDecoder().decode(T.self, from: data)
-    print("Network request: URL:: \(finalURL.absoluteString), response: \(decodedObj)")
-    return decodedObj
+    let responseData: Data
+    do {
+      let (data, _) = try await URLSession.shared.data(for: urlRequest)
+      responseData = data
+    } catch {
+      print("Network request failed for URL:: \(finalURL.absoluteString)\nerror: \(error)")
+      throw error
+    }
+    
+    do {
+      let decodedModel = try JSONDecoder().decode(T.self, from: responseData)
+      print("Network request: URL:: \(finalURL.absoluteString)\nresponse: \(decodedModel)")
+      return decodedModel
+    } catch {
+      print("Decoding failed for URL:: \(finalURL.absoluteString)\nerror: \(error)")
+      throw error
+    }
   }
   
 }

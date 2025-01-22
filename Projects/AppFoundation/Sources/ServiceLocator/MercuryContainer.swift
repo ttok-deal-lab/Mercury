@@ -17,7 +17,7 @@ public final class MercuryContainer {
     container[key] = instance
   }
   
-  func resolve<T>() -> T {
+  public func resolve<T>(_ type: T.Type) -> T {
     let key = ObjectIdentifier(T.self)
     if let value = container[key] as? T {
       return value
