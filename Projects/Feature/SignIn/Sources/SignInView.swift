@@ -14,7 +14,7 @@ import Domain
 public struct SignInView: View {
   @StateObject private var signInModelData: SignInModelData
   @State private var error: MercuryError?
-  private let supportSignInTypes: [OauthProvider] = [.apple, .google]
+  private let supportSignInTypes: [OauthProvider] = [.apple, .google, .naver]
   
   public init(
     signInUsecasable: SignInUsecasable,

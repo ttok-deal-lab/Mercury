@@ -9,9 +9,6 @@ class NaverSignInProvider: NSObject, UIApplicationDelegate,  SignInable {
   // MARK: - private property
   private let instance = NaverThirdPartyLoginConnection.getSharedInstance()
   // MARK: - internal method
-  func configure() {
-    
-  }
   
   // TODO: - 최초 1회만 하면 되는건가?
   public func configure(clientId: String, clientSecret: String, appName: String) {
@@ -39,6 +36,7 @@ class NaverSignInProvider: NSObject, UIApplicationDelegate,  SignInable {
     }
     
     return try await withCheckedContinuation { continuation in
+      configure(clientId: "", clientSecret: "", appName: "")
       instance?.delegate = self
       instance?.requestThirdPartyLogin()
       
@@ -46,6 +44,7 @@ class NaverSignInProvider: NSObject, UIApplicationDelegate,  SignInable {
       DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
         if let token = self.instance?.accessToken {
           continuation.resume(returning: token)
+          print("Naver Token: \(token)")
         } else {
           continuation.resume(throwing: MercuryError(from: .ownModule(.naverSignin), .unknown) as! Never)
           return
