@@ -12,6 +12,7 @@ public extension TargetDependency {
   static let swiftTesting: TargetDependency = .external(name: "Testing")
   static let googleSignIn: TargetDependency = .external(name: "GoogleSignIn")
   static let googleSignInSwift: TargetDependency = .external(name: "GoogleSignInSwift")
+  static let naverThirdPartyLogin: TargetDependency = .external(name: "NaverThirdPartyLogin")
   
   static let appFoundation: TargetDependency = .project(target: "AppFoundation", path: .relativeToRoot("Projects/AppFoundation"))
   static let network: TargetDependency = .project(target: "Network", path: .relativeToRoot("Projects/Network"))

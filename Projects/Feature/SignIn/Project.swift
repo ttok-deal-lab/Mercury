@@ -19,7 +19,8 @@ let project = Project.feature(
     .coordinator,
     .domain,
     .network,
-    .infrastructure
+    .infrastructure,
+    .naverThirdPartyLogin
   ],
   testDependencies: []
 )
