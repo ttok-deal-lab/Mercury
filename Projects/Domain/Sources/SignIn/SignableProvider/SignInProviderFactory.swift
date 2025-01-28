@@ -17,6 +17,8 @@ public final class SignInProviderFactory {
       return AppleSignInProvider()
     case .google:
       return GoogleSignInProvider()
+    case .naver:
+      return NaverSignInProvider()
     }
   }
   
