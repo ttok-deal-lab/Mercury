@@ -35,8 +35,8 @@ class NaverSignInProvider: NSObject, UIApplicationDelegate,  SignInable {
       throw MercuryError(from: .ownModule(.naverSignin), .unknown)
     }
     
-    return try await withCheckedContinuation { continuation in
-      configure(clientId: "", clientSecret: "", appName: "")
+    return try await withCheckedThrowingContinuation { continuation in
+//      configure(clientId: "", clientSecret: "", appName: "")
       instance?.delegate = self
       instance?.requestThirdPartyLogin()
       
@@ -46,7 +46,7 @@ class NaverSignInProvider: NSObject, UIApplicationDelegate,  SignInable {
           continuation.resume(returning: token)
           print("Naver Token: \(token)")
         } else {
-          continuation.resume(throwing: MercuryError(from: .ownModule(.naverSignin), .unknown) as! Never)
+          continuation.resume(throwing: MercuryError(from: .ownModule(.naverSignin), .unknown))
           return
         }
       }
@@ -75,6 +75,8 @@ extension NaverSignInProvider: NaverThirdPartyLoginConnectionDelegate {
   nonisolated func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: (any Error)!) {
     print(#function)
   }
+  
+  
   
   
   
