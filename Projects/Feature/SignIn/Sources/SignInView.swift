@@ -46,6 +46,8 @@ public struct SignInView: View {
       AppleSignInButton(signInModelData: signInModelData, error: $error)
     case .google:
       GoogleSignInButtonView(signInModelData: signInModelData, error: $error)
+    case .naver:
+      NaverSignInButtonView(signInModelData: signInModelData, error: $error)
     }
   }
 }

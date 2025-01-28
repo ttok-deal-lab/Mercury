@@ -1,39 +1,82 @@
-//
-//  NaverSignInProvider.swift
-//  Domain
-//
-//  Created by 최수훈 on 1/28/25.
-//
 
-import UIKit
+import Foundation
 import AppFoundation
-
 import NaverThirdPartyLogin
 
-class NaverSignInProvider: SignInable {
-  var instance = NaverThirdPartyLoginConnection()
-  @MainActor
+@MainActor
+class NaverSignInProvider: NSObject, UIApplicationDelegate,  SignInable {
+  
+  // MARK: - private property
+  private let instance = NaverThirdPartyLoginConnection.getSharedInstance()
+  // MARK: - internal method
+  func configure() {
+    
+  }
+  
+  // TODO: - 최초 1회만 하면 되는건가?
+  public func configure(clientId: String, clientSecret: String, appName: String) {
+    instance?.isNaverAppOauthEnable = true  // 네이버 앱으로 인증하는 방식 활성화(true)
+    instance?.isInAppOauthEnable = true    // SafariViewContoller에서 인증하는 방식 활성화(true)
+    instance?.setOnlyPortraitSupportInIphone(true)  // 네이버 로그인 가로모드 고정
+    instance?.consumerKey = "_WPqt4ptaBS2GqSjS9WK"
+    instance?.consumerSecret = "S45_aD4cZS"
+    instance?.serviceUrlScheme = "com.auction.mercury.SignInSampleApp"
+    instance?.appName = "Mercury"
+  }
+  
+  public func login() {
+    
+    instance?.requestThirdPartyLogin() // 토큰 요청
+  }
+  
+  public func logout() {
+    instance?.requestDeleteToken()
+  }
+  
   func signIn() async throws -> OauthSignInToken {
-    guard let presentingViewController = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else {
-      throw MercuryError(from: .ownModule(.googleSignin), .unknown)
+    guard let instancce = instance else {
+      throw MercuryError(from: .ownModule(.naverSignin), .unknown)
     }
     
-    return try await withCheckedThrowingContinuation { continuation in
-      instance.sharedInstance.signIn(withPresenting: presentingViewController) { result, error in
-        if let error = error {
-          let mercuryError = MercuryError(code: (error as! NSError).code)
-          continuation.resume(throwing: mercuryError)
+    return try await withCheckedContinuation { continuation in
+      instance?.delegate = self
+      instance?.requestThirdPartyLogin()
+      
+      // 비동기 처리 후 결과전달
+      DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        if let token = self.instance?.accessToken {
+          continuation.resume(returning: token)
+        } else {
+          continuation.resume(throwing: MercuryError(from: .ownModule(.naverSignin), .unknown) as! Never)
           return
         }
-        
-        guard let token = result?.user.idToken?.tokenString else {
-          continuation.resume(throwing: MercuryError(from: .ownModule(.googleSignin), .unknown))
-          return
-        }
-        
-        continuation.resume(returning: token)
       }
-    }
+    } // return
   }
+}
+
+
+extension NaverSignInProvider: NaverThirdPartyLoginConnectionDelegate {
+  
+  
+  // 로그인 성공
+  nonisolated func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
+    print(#function)
+  }
+  
+  nonisolated func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
+    print(#function)
+  }
+  
+  nonisolated func oauth20ConnectionDidFinishDeleteToken() {
+    print(#function)
+  }
+  
+  // 로그인 실패
+  nonisolated func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: (any Error)!) {
+    print(#function)
+  }
+  
+  
   
 }

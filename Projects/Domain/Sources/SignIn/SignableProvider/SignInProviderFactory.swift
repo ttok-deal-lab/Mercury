@@ -11,7 +11,7 @@ import AppFoundation
 public final class SignInProviderFactory {
   public init() { }
   
-  public func createProvider(provider: OauthProvider) -> SignInable {
+  @MainActor public func createProvider(provider: OauthProvider) -> SignInable {
     switch provider {
     case .apple:
       return AppleSignInProvider()

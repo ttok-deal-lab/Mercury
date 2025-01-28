@@ -15,12 +15,8 @@ import Infrastructure
 struct ContentView: View {
   var body: some View {
     VStack {
-      SignInView(
-        signInUsecasable: SignInUsecase(
-          client: SignInRemoteClient(),
-          factory: SignInProviderFactory()
-        )
-      )
+      SignInViewFactory(signInClient: SignInRemoteClient(), localStorageCLient: UserDefaultsClient.shared)
+        .makeView(.init(route: .signIn))
     }
   }
 }

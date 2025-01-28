@@ -19,7 +19,7 @@ public class SignInUsecase: SignInUsecasable {
   }
   
   public func oauthSignIn(_ provider: OauthProvider) async throws -> OauthSignInToken {
-    let signInProvider = factory.createProvider(provider: provider)
+    let signInProvider = await factory.createProvider(provider: provider)
     return try await signInProvider.signIn()
   }
   
