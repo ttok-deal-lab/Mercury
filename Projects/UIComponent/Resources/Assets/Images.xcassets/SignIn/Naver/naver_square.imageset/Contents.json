@@ -1,0 +1,15 @@
+{
+  "images" : [
+    {
+      "filename" : "btnG_아이콘사각.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
+  }
+}
