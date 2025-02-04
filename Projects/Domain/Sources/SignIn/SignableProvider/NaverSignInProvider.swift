@@ -36,7 +36,6 @@ class NaverSignInProvider: NSObject, UIApplicationDelegate,  SignInable {
     }
     
     return try await withCheckedThrowingContinuation { continuation in
-//      configure(clientId: "", clientSecret: "", appName: "")
       instance?.delegate = self
       instance?.requestThirdPartyLogin()
       
@@ -44,7 +43,6 @@ class NaverSignInProvider: NSObject, UIApplicationDelegate,  SignInable {
       DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
         if let token = self.instance?.accessToken {
           continuation.resume(returning: token)
-          print("Naver Token: \(token)")
         } else {
           continuation.resume(throwing: MercuryError(from: .ownModule(.naverSignin), .unknown))
           return
