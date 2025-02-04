@@ -41,9 +41,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     instance?.isNaverAppOauthEnable = true  // 네이버 앱으로 인증하는 방식 활성화(true)
     instance?.isInAppOauthEnable = true    // SafariViewContoller에서 인증하는 방식 활성화(true)
     instance?.setOnlyPortraitSupportInIphone(false)  // 네이버 로그인 가로모드 고정
-    instance?.consumerKey = "_WPqt4ptaBS2GqSjS9WK"
-    instance?.consumerSecret = "S45_aD4cZS"
-    instance?.serviceUrlScheme = "com.auction.mercury.SignInSampleApp"
+    instance?.consumerKey = CommonDefine.naverClientID
+    instance?.consumerSecret = CommonDefine.naverClientSecret
+    instance?.serviceUrlScheme = Bundle.main.bundleIdentifier
     instance?.appName = "Mercury"
     
     let container = MercuryContainer.shared
