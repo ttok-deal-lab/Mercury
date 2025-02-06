@@ -16,7 +16,8 @@ let project = Project.feature(
     .uiComponent,
     .coordinator,
     .network,
-    .domain
+    .domain,
+    .infrastructure
   ],
   testDependencies: []
 )

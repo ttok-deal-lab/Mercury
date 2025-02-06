@@ -19,7 +19,7 @@
 // MARK: - Asset Catalogs
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
-public enum UIComponentAsset: Sendable {
+public enum UIComponentAsset {
   public enum Colors {
   public static let dim = UIComponentColors(name: "Dim")
     public static let primary = UIComponentColors(name: "primary")
@@ -47,8 +47,8 @@ public enum UIComponentAsset: Sendable {
 
 // MARK: - Implementation Details
 
-public final class UIComponentColors: Sendable {
-  public let name: String
+public final class UIComponentColors {
+  public fileprivate(set) var name: String
 
   #if os(macOS)
   public typealias Color = NSColor
@@ -57,17 +57,27 @@ public final class UIComponentColors: Sendable {
   #endif
 
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, visionOS 1.0, *)
-  public var color: Color {
+  public private(set) lazy var color: Color = {
     guard let color = Color(asset: self) else {
       fatalError("Unable to load color asset named \(name).")
     }
     return color
-  }
+  }()
 
   #if canImport(SwiftUI)
+  private var _swiftUIColor: Any? = nil
   @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, visionOS 1.0, *)
-  public var swiftUIColor: SwiftUI.Color {
-      return SwiftUI.Color(asset: self)
+  public private(set) var swiftUIColor: SwiftUI.Color {
+    get {
+      if self._swiftUIColor == nil {
+        self._swiftUIColor = SwiftUI.Color(asset: self)
+      }
+
+      return self._swiftUIColor as! SwiftUI.Color
+    }
+    set {
+      self._swiftUIColor = newValue
+    }
   }
   #endif
 
@@ -100,8 +110,8 @@ public extension SwiftUI.Color {
 }
 #endif
 
-public struct UIComponentImages: Sendable {
-  public let name: String
+public struct UIComponentImages {
+  public fileprivate(set) var name: String
 
   #if os(macOS)
   public typealias Image = NSImage
