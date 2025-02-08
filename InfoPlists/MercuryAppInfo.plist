@@ -2,16 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NAVER_SIGNIN_SECRET</key>
-	<string>${NAVER_CLIENT_SECRET}</string>
-	<key>NAVER_SIGNIN_ID</key>
-	<string>${NAVER_CLIENT_ID}</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>경매의신</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIconName</key>
 	<string>AppIcon</string>
-	<key>GIDClientID</key>
-	<string>747425860405-bv9e5jkt2hcqefvl4ftm7c7qgr4it6su.apps.googleusercontent.com</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -23,31 +31,31 @@
 				<string>com.googleusercontent.apps.747425860405-bv9e5jkt2hcqefvl4ftm7c7qgr4it6su</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>NaverThridPartyLogin</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.auction.mercury</string>
+			</array>
+		</dict>
 	</array>
-	<key>CFBundleDisplayName</key>
-	<string>경매의신</string>
-	<key>KAKAO_MAP_KEY</key>
-	<string>${MAP_KEY_PROD}</string>
-	<key>UIRequiresFullScreen</key>
-	<true/>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
-	<key>CFBundlePackageType</key>
-	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
-	<key>CFBundleShortVersionString</key>
-	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>GIDClientID</key>
+	<string>747425860405-bv9e5jkt2hcqefvl4ftm7c7qgr4it6su.apps.googleusercontent.com</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>KAKAO_MAP_KEY</key>
+	<string>${MAP_KEY_PROD}</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NAVER_SIGNIN_ID</key>
+	<string>${NAVER_CLIENT_ID}</string>
+	<key>NAVER_SIGNIN_SECRET</key>
+	<string>${NAVER_CLIENT_SECRET}</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -55,6 +63,12 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Our app need your permission to use your camera phone</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>내 위치 확인을 위해 권한이 필요합니다.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>내 위치 확인을 위해 권한이 필요합니다.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>내 위치 확인을 위해 권한이 필요합니다.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lato-Bold.ttf</string>
@@ -108,12 +122,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>내 위치 확인을 위해 권한이 필요합니다.</string>
-	<key>NSLocationUsageDescription</key>
-	<string>내 위치 확인을 위해 권한이 필요합니다.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>내 위치 확인을 위해 권한이 필요합니다.</string>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
