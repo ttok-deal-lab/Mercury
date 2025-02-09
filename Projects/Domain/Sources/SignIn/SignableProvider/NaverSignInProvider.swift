@@ -10,21 +10,17 @@ class NaverSignInProvider: NSObject, UIApplicationDelegate,  SignInable {
   // MARK: - private property
   private let instance = NaverThirdPartyLoginConnection.getSharedInstance()
   private var continuation: CheckedContinuation<OauthSignInToken, Error>?
-  private var sldfj = ""
+
   // MARK: - internal method
   public func logout() {
     instance?.requestDeleteToken()
   }
   
   func signIn() async throws -> OauthSignInToken {
-    guard let instance = instance else {
-      throw MercuryError(from: .ownModule(.naverSignin), .unknown)
-    }
-    
-    return try await withCheckedThrowingContinuation { continuation in
-      instance.delegate = self
-      instance.requestThirdPartyLogin()
-      self.continuation = continuation
+    return try await withCheckedThrowingContinuation { [weak self] continuation in
+      self?.instance?.delegate = self
+      self?.instance?.requestThirdPartyLogin()
+      self?.continuation = continuation
     }
   }
   
