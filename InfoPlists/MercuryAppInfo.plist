@@ -35,7 +35,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>NaverThridPartyLogin</string>
+			<string>com.auction.mercury</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.auction.mercury</string>
