@@ -1,5 +1,5 @@
 //
-//  OauthSignInToken.swift
+//  SignInInformation.swift
 //  AppFoundation
 //
 //  Created by 송하민 on 1/12/25.

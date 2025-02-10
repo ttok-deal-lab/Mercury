@@ -14,7 +14,7 @@ import Domain
 public struct SignInView: View {
   @StateObject private var signInModelData: SignInModelData
   @State private var error: MercuryError?
-  private let supportSignInTypes: [OauthProvider] = [.apple, .google]
+  private let supportSignInTypes: [OauthProvider] = [.apple, .google, .naver]
   
   public init(
     signInUsecasable: SignInUsecasable,
@@ -46,6 +46,8 @@ public struct SignInView: View {
       AppleSignInButton(signInModelData: signInModelData, error: $error)
     case .google:
       GoogleSignInButtonView(signInModelData: signInModelData, error: $error)
+    case .naver:
+      NaverSignInButtonView(signInModelData: signInModelData, error: $error)
     }
   }
 }

@@ -14,7 +14,8 @@ let project = Project.staticFramework(
   frameworkDependencies: [
     .appFoundation,
     .googleSignIn,
-    .googleSignInSwift
+    .googleSignInSwift,
+    .naverThirdPartyLogin
   ],
   frameworkTestDependencies: [
     

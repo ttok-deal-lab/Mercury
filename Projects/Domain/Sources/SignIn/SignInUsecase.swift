@@ -30,7 +30,7 @@ public class SignInUsecase: SignInUsecasable {
         oauthSignInToken: oauthSignInToken
       )
   }
-  
+
 }
 
 
@@ -43,5 +43,5 @@ public enum OauthProvider: String, Identifiable {
   case apple
   case google
 //  case kakao
-//  case naver
+  case naver
 }
