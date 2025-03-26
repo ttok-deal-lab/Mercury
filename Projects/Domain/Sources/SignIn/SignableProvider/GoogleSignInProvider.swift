@@ -10,7 +10,6 @@ import Foundation
 import AppFoundation
 
 import GoogleSignIn
-import GoogleSignInSwift
 
 class GoogleSignInProvider: SignInable {
   @MainActor

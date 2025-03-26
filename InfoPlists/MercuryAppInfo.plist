@@ -69,30 +69,6 @@
 	<string>내 위치 확인을 위해 권한이 필요합니다.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>내 위치 확인을 위해 권한이 필요합니다.</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Lato-Bold.ttf</string>
-		<string>Pretendard-SemiBold.otf</string>
-		<string>Pretendard-Bold.otf</string>
-		<string>Pretendard-Regular.otf</string>
-		<string>Pretendard-Medium.otf</string>
-		<string>Montserrat-SemiBold.ttf</string>
-		<string>Montserrat-Regular.ttf</string>
-		<string>NotoSans-Regular.ttf</string>
-		<string>NotoSans-Medium.ttf</string>
-		<string>NotoSans-Black.ttf</string>
-		<string>Roboto-Medium.ttf</string>
-		<string>Roboto-Regular.ttf</string>
-		<string>RobotoCondensed-Regular.ttf</string>
-		<string>NotoSansSC-Regular.otf</string>
-		<string>NotoSansSC-Medium.otf</string>
-		<string>NotoSansSC-Black.otf</string>
-		<string>NotoSansKR-Black.otf</string>
-		<string>NotoSansKR-Medium.otf</string>
-		<string>NotoSansKR-Regular.otf</string>
-		<string>Montserrat-Medium.ttf</string>
-		<string>Montserrat-Bold.ttf</string>
-	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

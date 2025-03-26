@@ -11,7 +11,6 @@ import SwiftData
 import AppFoundation
 import Coordinator
 
-import GoogleSignIn
 import KakaoMapsSDK
 import NaverThirdPartyLogin
 
@@ -22,9 +21,6 @@ struct MercuryApp: App {
   var body: some Scene {
     WindowGroup {
       AppView()
-        .onOpenURL { url in
-          GIDSignIn.sharedInstance.handle(url)
-        }
     }
   }
 }
@@ -38,9 +34,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     // naver SignIn
     let instance = NaverThirdPartyLoginConnection.getSharedInstance()
-    instance?.isNaverAppOauthEnable = true  // 네이버 앱으로 인증하는 방식 활성화(true)
-    instance?.isInAppOauthEnable = true    // SafariViewContoller에서 인증하는 방식 활성화(true)
-    instance?.setOnlyPortraitSupportInIphone(false)  // 네이버 로그인 가로모드 고정
+    instance?.isNaverAppOauthEnable = true
+    instance?.isInAppOauthEnable = true
+    instance?.setOnlyPortraitSupportInIphone(false)
     instance?.consumerKey = CommonDefine.naverClientID
     instance?.consumerSecret = CommonDefine.naverClientSecret
     instance?.serviceUrlScheme = Bundle.main.bundleIdentifier

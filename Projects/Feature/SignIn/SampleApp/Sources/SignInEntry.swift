@@ -5,8 +5,8 @@ import AppFoundation
 
 import Infrastructure
 
-import GoogleSignIn
-import GoogleSignInSwift
+//import GoogleSignIn
+//import GoogleSignInSwift
 import NaverThirdPartyLogin
 
 @main
@@ -16,7 +16,7 @@ struct SignInEntry: App {
     WindowGroup {
       ContentView()
         .onOpenURL { url in
-          GIDSignIn.sharedInstance.handle(url)
+//          GIDSignIn.sharedInstance.handle(url)
         }
     }
   }

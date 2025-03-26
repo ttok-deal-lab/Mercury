@@ -8,8 +8,10 @@ import ProjectDescriptionHelpers
 
 let packageSettings = PackageSettings(
   productTypes: [
-    "KakaoMapsSDK-SPM": .staticFramework,
-    "Testing": .framework
+    "KakaoMapsSDK-SPM": .framework,
+    "Testing": .framework,
+    "GoogleSignIn": .framework,
+    "GoogleSignInSwift": .framework
   ],
   baseSettings: .settings(configurations: Configuration.configure())
 )

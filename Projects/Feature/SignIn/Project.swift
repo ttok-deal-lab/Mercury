@@ -14,8 +14,6 @@ let project = Project.feature(
   dependencies: [
     .appFoundation,
     .uiComponent,
-    .googleSignIn,
-    .googleSignInSwift,
     .coordinator,
     .domain,
     .network,
