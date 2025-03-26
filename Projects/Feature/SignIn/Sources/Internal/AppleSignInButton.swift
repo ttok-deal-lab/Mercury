@@ -11,17 +11,12 @@ import AppFoundation
 import UIComponent
 
 struct AppleSignInButton: View {
-  @ObservedObject var signInModelData: SignInModelData
-  @Binding var error: MercuryError?
+  var completion: () throws -> Void
   
   var body: some View {
     Button {
       Task {
-        do {
-          try await signInModelData.oauthSignIn(.apple)
-        } catch let error as MercuryError {
-          self.error = error
-        }
+        try completion()
       }
     } label: {
       HStack {

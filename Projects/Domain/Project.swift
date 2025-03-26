@@ -8,15 +8,13 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.dynamicFramework(
+let project = Project.framework(
   name: "Domain",
   platform: .iOS,
-  frameworkDependencies: [
-    .appFoundation,
-    .googleSignIn,
-    .naverThirdPartyLogin
+  dependencies: [
+    .appFoundation
   ],
-  frameworkTestDependencies: [
+  testDependencies: [
     
   ]
 )

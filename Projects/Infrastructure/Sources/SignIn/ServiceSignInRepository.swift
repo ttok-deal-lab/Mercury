@@ -11,22 +11,19 @@ import AppFoundation
 import Domain
 import Network
 
-public class SignInRemoteClient: SignInClient {
+public class ServiceSignInRepository: ServiceSignInRepositorable {
   public init() { }
   
   public func signIn(oauthProvider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws -> SignInInformation {
     let signInInformation = try await AuthAPI.signIn(
       provider: oauthProvider.rawValue,
       idToken: oauthSignInToken
-    ).request(
-      SignInInformation.self
-    )
+    ).request(SignInInformation.self)
     
-    let container = MercuryContainer.shared
-    let tokenInfoManager = container.resolve(SignInTokenInformable.self)
+    let tokenInfoManager = MercuryContainer.shared.resolve(SignInTokenInformable.self)
     tokenInfoManager.tokenInfo.send(signInInformation.token)
     
-    let userInfoManager = container.resolve(SignInUserInformable.self)
+    let userInfoManager = MercuryContainer.shared.resolve(SignInUserInformable.self)
     userInfoManager.userInfo.send(signInInformation.user)
     
     return signInInformation

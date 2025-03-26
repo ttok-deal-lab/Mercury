@@ -8,13 +8,13 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.dynamicFramework(
+let project = Project.framework(
   name: "Network",
   platform: .iOS,
-  frameworkDependencies: [
+  dependencies: [
     .appFoundation
   ],
-  frameworkTestDependencies: [
+  testDependencies: [
     
   ]
 )

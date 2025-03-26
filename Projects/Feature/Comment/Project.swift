@@ -8,7 +8,7 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.feature(
+let project = Project.framework(
   name: "Comment",
   platform: .iOS,
   dependencies: [

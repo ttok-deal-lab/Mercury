@@ -2,12 +2,14 @@
 import Foundation
 
 import AppFoundation
+import Domain
 
 import NaverThirdPartyLogin
 
-class NaverSignInProvider: NSObject, UIApplicationDelegate,  SignInable {
+class NaverSignInProvider: NSObject, UIApplicationDelegate, OauthSignInable {
   
   // MARK: - private property
+  
   private let instance = NaverThirdPartyLoginConnection.getSharedInstance()
   private var continuation: CheckedContinuation<OauthSignInToken, Error>?
 

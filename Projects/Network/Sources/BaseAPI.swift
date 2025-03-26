@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 import AppFoundation
 
 public protocol BaseAPI {
@@ -72,17 +73,9 @@ public extension BaseAPI {
       urlRequest.allHTTPHeaderFields = headers
     }
     
-    let responseData: Data
     do {
       let (data, _) = try await URLSession.shared.data(for: urlRequest)
-      responseData = data
-    } catch {
-      print("Network request failed for URL:: \(finalURL.absoluteString)\nerror: \(error)")
-      throw error
-    }
-    
-    do {
-      let decodedModel = try JSONDecoder().decode(T.self, from: responseData)
+      let decodedModel = try JSONDecoder().decode(T.self, from: data)
       print("Network request: URL:: \(finalURL.absoluteString)\nresponse: \(decodedModel)")
       return decodedModel
     } catch {

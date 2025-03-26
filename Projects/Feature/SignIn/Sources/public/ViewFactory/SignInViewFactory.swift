@@ -11,12 +11,12 @@ import SwiftUI
 import Coordinator
 import Domain
 
-public struct SignInViewFactory {
-  private let signInClient: SignInClient
+public struct SignInViewFactory: ViewFactory {
+  private let serviceSignInUsecasable: ServiceSignInUsecasable
   private let localStorageCLient: LocalStorageClient
   
-  public init(signInClient: SignInClient, localStorageCLient: LocalStorageClient) {
-    self.signInClient = signInClient
+  public init(serviceSignInUsecasable: ServiceSignInUsecasable, localStorageCLient: LocalStorageClient) {
+    self.serviceSignInUsecasable = serviceSignInUsecasable
     self.localStorageCLient = localStorageCLient
   }
   
@@ -25,9 +25,7 @@ public struct SignInViewFactory {
     switch signInRoute.route {
     case .signIn:
       SignInView(
-        signInUsecasable: SignInUsecase(
-          client: signInClient
-        ),
+        serviceSignInUsecasable: serviceSignInUsecasable,
         localStorageUsecasable: LocalStorageUsecase(
           localStorageClient: localStorageCLient
         )

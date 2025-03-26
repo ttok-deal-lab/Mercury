@@ -7,11 +7,13 @@
 
 import UIKit
 import Foundation
+
 import AppFoundation
+import Domain
 
 import GoogleSignIn
 
-class GoogleSignInProvider: SignInable {
+class GoogleSignInProvider: OauthSignInable {
   @MainActor
   func signIn() async throws -> OauthSignInToken {
     guard let presentingViewController = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else {

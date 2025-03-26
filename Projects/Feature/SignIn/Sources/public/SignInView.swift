@@ -17,12 +17,12 @@ public struct SignInView: View {
   private let supportSignInTypes: [OauthProvider] = [.apple, .google, .naver]
   
   public init(
-    signInUsecasable: SignInUsecasable,
+    serviceSignInUsecasable: ServiceSignInUsecasable,
     localStorageUsecasable: LocalStorageUsecasable
   ) {
     self._signInModelData = StateObject(
       wrappedValue: SignInModelData(
-        signInUsecasable: signInUsecasable,
+        serviceSignInUsecasable: serviceSignInUsecasable,
         localStorageUsecasable: localStorageUsecasable
       )
     )
@@ -30,7 +30,6 @@ public struct SignInView: View {
   
   public var body: some View {
     ZStack {
-   
       VStack(spacing: 8) {
         ForEach(supportSignInTypes) { type in
           signInButton(type: type)
@@ -43,11 +42,29 @@ public struct SignInView: View {
   private func signInButton(type: OauthProvider) -> some View {
     switch type {
     case .apple:
-      AppleSignInButton(signInModelData: signInModelData, error: $error)
+      AppleSignInButton {
+        do {
+          try signInModelData.oauthSignIn(.apple)
+        } catch let error as MercuryError {
+          self.error = error
+        }
+      }
     case .google:
-      GoogleSignInButtonView(signInModelData: signInModelData, error: $error)
+      GoogleSignInButtonView {
+        do {
+          try signInModelData.oauthSignIn(.google)
+        } catch let error as MercuryError {
+          self.error = error
+        }
+      }
     case .naver:
-      NaverSignInButtonView(signInModelData: signInModelData, error: $error)
+      NaverSignInButtonView {
+        do {
+          try signInModelData.oauthSignIn(.naver)
+        } catch let error as MercuryError {
+          self.error = error
+        }
+      }
     }
   }
 }

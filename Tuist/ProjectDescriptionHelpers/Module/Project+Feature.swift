@@ -13,8 +13,8 @@ extension Project {
   
   // MARK: - method
   
-  public static func feature(name: String, platform: Platform, dependencies: [TargetDependency], testDependencies: [TargetDependency]) -> Project {
-    return Project.dynamicFramework(
+  public static func framework(name: String, platform: Platform, dependencies: [TargetDependency], testDependencies: [TargetDependency]) -> Project {
+    return Project.staticFramework(
       name: name,
       platform: platform,
       frameworkDependencies: dependencies,

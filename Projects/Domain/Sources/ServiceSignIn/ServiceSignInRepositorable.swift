@@ -10,6 +10,6 @@ import Foundation
 
 import AppFoundation
 
-public protocol SignInClient {
+public protocol ServiceSignInRepositorable {
   func signIn(oauthProvider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws -> SignInInformation
 }

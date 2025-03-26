@@ -18,7 +18,7 @@ public final class SignInInformationManager: SignInTokenInformable, SignInUserIn
   
   private let localStorageUsecase = LocalStorageUsecase(localStorageClient: UserDefaultsClient.shared)
   
-  public static var shared = SignInInformationManager()
+  @MainActor public static let shared = SignInInformationManager()
   private init() {
     initializeSignInInfo()
   }

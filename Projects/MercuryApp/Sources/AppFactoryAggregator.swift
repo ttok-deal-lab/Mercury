@@ -20,14 +20,15 @@ struct AppFactoryAggregator: ViewFactory {
     switch route {
     case .signIn(let signInRoute):
       SignInViewFactory(
-        signInClient: SignInRemoteClient(),
+        serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
         localStorageCLient: UserDefaultsClient.shared
-      )
-      .makeView(signInRoute)
+      ).makeView(signInRoute)
     case .tutorial(let tutorialRoute):
       TutorialViewFactory.makeView(tutorialRoute)
     case .auction(let auctionRoute):
       AuctionViewFactory.makeView(auctionRoute)
+    @unknown default:
+      fatalError()
     }
   }
 }

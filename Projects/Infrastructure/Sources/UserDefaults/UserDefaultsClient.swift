@@ -11,7 +11,7 @@ import AppFoundation
 import Domain
 
 public final class UserDefaultsClient: LocalStorageClient {
-  public static let shared = UserDefaultsClient()
+  public static var shared = UserDefaultsClient()
   private let userDefaults = UserDefaults.standard
   private init() { }
   

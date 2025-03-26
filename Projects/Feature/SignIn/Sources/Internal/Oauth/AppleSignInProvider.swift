@@ -6,10 +6,12 @@
 //
 
 import Foundation
+
+import Domain
 import AppFoundation
 import AuthenticationServices
 
-final class AppleSignInProvider: SignInable {
+final class AppleSignInProvider: OauthSignInable {
   private var delegate: AppleSignInDelegate?
   
   func signIn() async throws -> OauthSignInToken {

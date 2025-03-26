@@ -6,8 +6,10 @@
 //
 
 import Foundation
-import AppFoundation
 
-public protocol SignInable {
+import AppFoundation
+import Domain
+
+public protocol OauthSignInable {
   func signIn() async throws -> OauthSignInToken
 }

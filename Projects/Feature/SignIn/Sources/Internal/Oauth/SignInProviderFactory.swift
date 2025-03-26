@@ -6,12 +6,14 @@
 //
 
 import Foundation
+
 import AppFoundation
+import Domain
 
 public final class SignInProviderFactory {
   public init() { }
   
-  public func createProvider(provider: OauthProvider) -> SignInable {
+  public func createProvider(provider: OauthProvider) -> OauthSignInable {
     switch provider {
     case .apple:
       return AppleSignInProvider()
