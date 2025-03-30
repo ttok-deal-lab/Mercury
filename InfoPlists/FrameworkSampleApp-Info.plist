@@ -2,29 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>naversearchapp</string>
-		<string>naversearchthirdlogin</string>
-	</array>
-	<key>NAVER_SIGNIN_SECRET</key>
-	<string>${NAVER_CLIENT_SECRET}</string>
-	<key>NAVER_SIGNIN_ID</key>
-	<string>${NAVER_CLIENT_ID}</string>
-	<key>GIDClientID</key>
-	<string>747425860405-bv9e5jkt2hcqefvl4ftm7c7qgr4it6su.apps.googleusercontent.com</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.auction.mercury.*</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>*.mercury.auction.com</string>
-				<string>com.googleusercontent.apps.747425860405-bv9e5jkt2hcqefvl4ftm7c7qgr4it6su</string>
-			</array>
-		</dict>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -39,12 +16,39 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.auction.mercury.*</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>*.mercury.auction.com</string>
+				<string>com.googleusercontent.apps.747425860405-bv9e5jkt2hcqefvl4ftm7c7qgr4it6su</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>GIDClientID</key>
+	<string>747425860405-bv9e5jkt2hcqefvl4ftm7c7qgr4it6su.apps.googleusercontent.com</string>
 	<key>KAKAO_MAP_KEY</key>
 	<string>${MAP_KEY_DEBUG}</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakaokompassauth</string>
+		<string>kakaoplus</string>
+		<string>kakaolink</string>
+		<string>kakaotalk</string>
+		<string>naversearchapp</string>
+		<string>naversearchthirdlogin</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NAVER_SIGNIN_ID</key>
+	<string>${NAVER_CLIENT_ID}</string>
+	<key>NAVER_SIGNIN_SECRET</key>
+	<string>${NAVER_CLIENT_SECRET}</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
