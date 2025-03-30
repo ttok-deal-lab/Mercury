@@ -14,7 +14,7 @@ extension Project {
   private static func frameworkTarget(
     name: String,
     destinations: Destinations,
-    infoPlist: InfoPlist = .default,
+    infoPlist: InfoPlist,
     frameworkDependencies: [TargetDependency],
     testDependencies: [TargetDependency],
     targetScripts: [TargetScript],
@@ -72,6 +72,7 @@ extension Project {
   fileprivate static func framework(
     name: String,
     destinations: Destinations,
+    infoPlist: InfoPlist,
     bundleId: String,
     product: Product,
     platform: Platform,
@@ -83,6 +84,7 @@ extension Project {
     let targets = frameworkTarget(
       name: name,
       destinations: destinations,
+      infoPlist: infoPlist,
       frameworkDependencies: frameworkDependencies,
       testDependencies: frameworkTestDependencies,
       targetScripts: scripts,
@@ -105,6 +107,7 @@ extension Project {
   public static func staticFramework(
     name: String,
     destinations: Destinations = .iOS,
+    infoPlist: InfoPlist,
     bundleId: String = bundleId,
     product: Product = .staticFramework,
     platform: Platform,
@@ -116,6 +119,7 @@ extension Project {
     return framework(
       name: name,
       destinations: destinations,
+      infoPlist: infoPlist,
       bundleId: bundleId,
       product: product,
       platform: platform,
@@ -129,6 +133,7 @@ extension Project {
   public static func dynamicFramework(
     name: String,
     destinations: Destinations = .iOS,
+    infoPlist: InfoPlist,
     bundleId: String = bundleId,
     product: Product = .framework,
     platform: Platform,
@@ -140,6 +145,7 @@ extension Project {
     return framework(
       name: name,
       destinations: destinations,
+      infoPlist: infoPlist,
       bundleId: bundleId,
       product: product,
       platform: platform,

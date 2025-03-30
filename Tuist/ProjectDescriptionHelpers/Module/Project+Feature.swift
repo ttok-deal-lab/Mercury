@@ -15,6 +15,7 @@ extension Project {
   
   public static func framework(
     name: String,
+    infoPlist: InfoPlist = .default,
     platform: Platform,
     dependencies: [TargetDependency],
     testDependencies: [TargetDependency],
@@ -22,6 +23,7 @@ extension Project {
   ) -> Project {
     return Project.staticFramework(
       name: name,
+      infoPlist: infoPlist,
       platform: platform,
       frameworkDependencies: dependencies,
       frameworkTestDependencies: testDependencies,
