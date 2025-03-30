@@ -11,7 +11,7 @@ import Foundation
 public struct MQButton: View {
   
   var title: String
-  var font: Font
+  var font: MercuryFont
   var backgroundColor: Color
   var foregroundColor: Color
   var action: () -> Void
@@ -20,7 +20,7 @@ public struct MQButton: View {
   
   public init(
     title: String,
-    font: Font = .headline,
+    font: MercuryFont = .bodyMediumMedium,
     backgroundColor: Color = .black,
     foregroundColor: Color = .white,
     action: @escaping () -> Void,
@@ -41,7 +41,7 @@ public struct MQButton: View {
       action()
     } label: {
       Text(title)
-        .font(font)
+        .fonts(font)
         .padding()
         .frame(maxWidth: .infinity)
         .background(backgroundColor)
@@ -51,17 +51,4 @@ public struct MQButton: View {
     .padding(.horizontal, horizontalPadding)
 
   }
-}
-
-#Preview {
-  MQButton(
-    title: "Hellowww",
-    font: .headline,
-    backgroundColor: .black,
-    foregroundColor: .white,
-    action: {
-      print("ya")
-    },
-    cornerRadius: 24
-  )
 }

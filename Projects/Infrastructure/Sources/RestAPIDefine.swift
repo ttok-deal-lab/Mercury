@@ -27,7 +27,7 @@ struct RestAPIDefine {
 }
 
 extension RestAPIDefine {
-  static func domain(_ type: DomainType) -> String {
+  static func base(_ type: DomainType) -> String {
     switch type {
     case .common:
       return RestAPIDefine.commonURL
