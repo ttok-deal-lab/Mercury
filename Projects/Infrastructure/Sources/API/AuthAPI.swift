@@ -15,7 +15,7 @@ public enum AuthAPI {
 
 extension AuthAPI: BaseAPI {
   public var baseURL: String {
-    RestAPIDefine.domain(.auth)
+    RestAPIDefine.base(.auth)
   }
   
   public var domain: String? {

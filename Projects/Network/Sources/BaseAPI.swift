@@ -16,7 +16,7 @@ public protocol BaseAPI {
   var method: HTTPMethod { get }
   var headers: [String: String]? { get }
   var requestBody: [String: Any]? { get }
-  var queryParam: [URLQueryItem]? { get }
+  var queryParam: [String: Any]? { get }
   
   func request<T: Decodable>(_ model: T.Type) async throws -> T where T: Decodable
 }
@@ -38,7 +38,7 @@ public extension BaseAPI {
     return nil
   }
   
-  var queryParam: [URLQueryItem]? {
+  var queryParam: [String : Any]? {
     return nil
   }
   
@@ -54,7 +54,14 @@ public extension BaseAPI {
     guard var urlComponents = URLComponents(string: plainURLString) else {
       throw NetworkError.failToConvertURL
     }
-    urlComponents.queryItems = queryParam
+    
+    if let queryParam {
+      var queryItems: [URLQueryItem] = []
+      queryItems = queryParam.compactMap { key, value in
+        convertToQueryItem(key: key, value: value)
+      }
+      urlComponents.queryItems = queryItems.isEmpty ? nil : queryItems
+    }
     
     guard let finalURL = urlComponents.url else {
       throw NetworkError.failToConvertURL
@@ -81,6 +88,35 @@ public extension BaseAPI {
     } catch {
       print("Decoding failed for URL:: \(finalURL.absoluteString)\nerror: \(error)")
       throw error
+    }
+  }
+}
+
+/// queryItem converting
+private extension BaseAPI {
+  func convertToQueryItem(key: String, value: Any?) -> URLQueryItem? {
+    guard let unwrapped = value else { return nil }
+    
+    switch unwrapped {
+    case let v as String:
+      return URLQueryItem(name: key, value: v)
+    case let v as Bool:
+      return URLQueryItem(name: key, value: v ? "true" : "false")
+    case let v as CustomStringConvertible where isPrimitiveNumeric(v):
+      return URLQueryItem(name: key, value: v.description)
+    default:
+      return nil
+    }
+  }
+  
+  private func isPrimitiveNumeric(_ value: CustomStringConvertible) -> Bool {
+    switch value {
+    case is Int, is Int8, is Int16, is Int32, is Int64,
+      is UInt, is UInt8, is UInt16, is UInt32, is UInt64,
+      is Float, is Double:
+      return true
+    default:
+      return false
     }
   }
   
