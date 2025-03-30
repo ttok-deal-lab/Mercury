@@ -24,5 +24,5 @@ let project = Project.framework(
     .appFoundation
   ],
   testDependencies: [],
-  resourceSynthesizers: [.assets()]
+  resourceSynthesizers: [.assets(), .fonts()]
 )

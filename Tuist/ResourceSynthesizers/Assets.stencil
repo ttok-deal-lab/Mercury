@@ -189,7 +189,7 @@
   #if os(macOS)
   {{accessModifier}} typealias Color = NSColor
   #elseif os(iOS) || os(tvOS) || os(watchOS)
-  {{accessModifier}} typealias Color = UIColor
+  {{accessModifier}} typealias Color = SwiftUI.Color
   #endif
 
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
@@ -207,10 +207,10 @@
 
 {{accessModifier}} extension {{colorType}}.Color {
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
-  convenience init?(asset: {{colorType}}) {
+  init?(asset: {{colorType}}) {
     let bundle = {{param.bundle|default:"BundleToken.bundle"}}
     #if os(iOS) || os(tvOS)
-    self.init(named: asset.name, in: bundle, compatibleWith: nil)
+    self.init(asset.name, bundle: bundle)
     #elseif os(macOS)
     self.init(named: NSColor.Name(asset.name), bundle: bundle)
     #elseif os(watchOS)

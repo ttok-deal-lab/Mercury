@@ -220,7 +220,7 @@ public final class ColorAsset {
   #if os(macOS)
   public typealias Color = NSColor
   #elseif os(iOS) || os(tvOS) || os(watchOS)
-  public typealias Color = UIColor
+  public typealias Color = SwiftUI.Color
   #endif
 
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
@@ -238,10 +238,10 @@ public final class ColorAsset {
 
 public extension ColorAsset.Color {
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
-  convenience init?(asset: ColorAsset) {
+  init?(asset: ColorAsset) {
     let bundle = Bundle.module
     #if os(iOS) || os(tvOS)
-    self.init(named: asset.name, in: bundle, compatibleWith: nil)
+    self.init(asset.name, bundle: bundle)
     #elseif os(macOS)
     self.init(named: NSColor.Name(asset.name), bundle: bundle)
     #elseif os(watchOS)

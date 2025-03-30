@@ -12,6 +12,7 @@ import Combine
 
 import AppFoundation
 import Coordinator
+import UIComponent
 
 struct AppView: View {
   @StateObject private var coordinator = GlobalCoordinator<GlobalRoute>()
@@ -34,6 +35,7 @@ struct FakeHomeView: View {
       coordinator.presentFullScreen(.signIn(.init(route: .signIn)))
     } label: {
       Text("go tutorial")
+        .fonts(.bodyLargeBold)
     }
   }
 }

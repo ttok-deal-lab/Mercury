@@ -6,7 +6,8 @@ struct UIComponentEntry: App {
   
   var body: some Scene {
     WindowGroup {
-      
+      FontTestView()
     }
+    
   }
 }
