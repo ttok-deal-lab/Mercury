@@ -77,17 +77,17 @@ extension AuctionCategory {
   var selectionImage: Image {
     switch self {
     case .house:
-      UIComponentAsset.Images.house.swiftUIImage
+      Asset.Images.house.image
     case .apartment:
-      UIComponentAsset.Images.apartment.swiftUIImage
+      Asset.Images.apartment.image
     case .officetel:
-      UIComponentAsset.Images.offictel.swiftUIImage
+      Asset.Images.offictel.image
     case .land:
-      UIComponentAsset.Images.land.swiftUIImage
+      Asset.Images.land.image
     case .factory:
-      UIComponentAsset.Images.factory.swiftUIImage
+      Asset.Images.factory.image
     case .store:
-      UIComponentAsset.Images.store.swiftUIImage
+      Asset.Images.store.image
     }
   }
 }
@@ -98,7 +98,7 @@ extension AuctionCategory {
 //        .constant(
 //          .init()
 //        ),
-//    categoryImage: UIComponentAsset.Images.apartment.swiftUIImage,
+//    categoryImage: UIComponentAsset.Images.apartment.image,
 //    categoryName: "아파트"
 //  )
 //}

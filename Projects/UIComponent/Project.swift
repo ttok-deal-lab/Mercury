@@ -14,5 +14,6 @@ let project = Project.framework(
   dependencies: [
     .appFoundation
   ],
-  testDependencies: []
+  testDependencies: [],
+  resourceSynthesizers: [.assets()]
 )

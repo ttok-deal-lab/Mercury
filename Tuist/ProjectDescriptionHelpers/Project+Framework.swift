@@ -77,7 +77,8 @@ extension Project {
     platform: Platform,
     scripts: [TargetScript],
     frameworkDependencies: [TargetDependency],
-    frameworkTestDependencies: [TargetDependency]
+    frameworkTestDependencies: [TargetDependency],
+    resourceSynthesizers: [ResourceSynthesizer]
   ) -> Project {
     let targets = frameworkTarget(
       name: name,
@@ -93,7 +94,8 @@ extension Project {
       settings: .settings(
         configurations: Configuration.configure()
       ),
-      targets: targets
+      targets: targets,
+      resourceSynthesizers: resourceSynthesizers
     )
   }
   
@@ -108,7 +110,8 @@ extension Project {
     platform: Platform,
     scripts: [TargetScript] = [],
     frameworkDependencies: [TargetDependency],
-    frameworkTestDependencies: [TargetDependency]
+    frameworkTestDependencies: [TargetDependency],
+    resourceSynthesizers: [ResourceSynthesizer]
   ) -> Project {
     return framework(
       name: name,
@@ -118,7 +121,8 @@ extension Project {
       platform: platform,
       scripts: scripts,
       frameworkDependencies: frameworkDependencies,
-      frameworkTestDependencies: frameworkTestDependencies
+      frameworkTestDependencies: frameworkTestDependencies,
+      resourceSynthesizers: resourceSynthesizers
     )
   }
   
@@ -130,7 +134,8 @@ extension Project {
     platform: Platform,
     scripts: [TargetScript] = [],
     frameworkDependencies: [TargetDependency],
-    frameworkTestDependencies: [TargetDependency]
+    frameworkTestDependencies: [TargetDependency],
+    resourceSynthesizers: [ResourceSynthesizer]
   ) -> Project {
     return framework(
       name: name,
@@ -140,7 +145,8 @@ extension Project {
       platform: platform,
       scripts: scripts,
       frameworkDependencies: frameworkDependencies,
-      frameworkTestDependencies: frameworkTestDependencies
+      frameworkTestDependencies: frameworkTestDependencies,
+      resourceSynthesizers: resourceSynthesizers
     )
   }
 }
