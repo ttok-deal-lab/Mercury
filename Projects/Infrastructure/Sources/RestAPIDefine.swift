@@ -6,26 +6,33 @@
 //
 
 enum DomainType {
-  case commonBaseURL
+  case common
+  case auth
 }
 
 struct RestAPIDefine {
-
   #if DEBUG
-  static let baseURL = "https://sherbet-auth.dev.pursue503.com/v1/"
+  static let commonURL = "https://sherbet-api-gateway.dev.pursue503.com/api/sherbet-api/"
+  static let authURL = "https://sherbet-api-gateway.dev.pursue503.com/api/sherbet-auth/"
   
   #elseif STAGE
-  static let baseURL = "http://sherbet-auth.dev.pursue503.com/v1/"
+  static let commonURL = "https://sherbet-api-gateway.dev.pursue503.com/api/sherbet-api/"
+  static let authURL = "https://sherbet-api-gateway.dev.pursue503.com/api/sherbet-auth/"
   
-  #else // release
-  static let baseURL = "http://sherbet-auth.dev.pursue503.com/v1/"
+  #else // release // TODO: production server 나오면 변경
+  static let commonURL = "https://sherbet-api-gateway.dev.pursue503.com/api/sherbet-api/"
+  static let authURL = "https://sherbet-api-gateway.dev.pursue503.com/api/sherbet-auth/"
   
   #endif
-  
-  func domain(_ type: DomainType) -> String {
+}
+
+extension RestAPIDefine {
+  static func domain(_ type: DomainType) -> String {
     switch type {
-    case .commonBaseURL:
-      return RestAPIDefine.baseURL
+    case .common:
+      return RestAPIDefine.commonURL
+    case .auth:
+      return RestAPIDefine.authURL
     }
   }
 }

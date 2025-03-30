@@ -10,31 +10,30 @@ import Foundation
 import AppFoundation
 
 public final class LocalStorageUsecase: LocalStorageUsecasable {
-  private let localStorageClient: LocalStorageClient
+  private let localStorageRepositorable: LocalStorageRepositorable
   
-  public init(localStorageClient: LocalStorageClient) {
-    self.localStorageClient = localStorageClient
+  public init(localStorageRepositorable: LocalStorageRepositorable) {
+    self.localStorageRepositorable = localStorageRepositorable
   }
   
-  public func setModel<T>(_ value: T, forKey key: LocalStorageKey) where T : Decodable, T : Encodable {
-    localStorageClient.setModel(value, forKey: key)
+  public func setModel<T>(_ value: T, forKey key: LocalStorageKey) async where T : Decodable, T : Encodable {
+    await localStorageRepositorable.setModel(value, forKey: key)
   }
   
-  public func getModel<T>(forKey key: LocalStorageKey, as type: T.Type) -> T? where T : Decodable, T : Encodable {
-    localStorageClient.getModel(forKey: key, as: type)
+  public func getModel<T>(forKey key: LocalStorageKey, as type: T.Type) async -> T? where T : Decodable, T : Encodable {
+    await localStorageRepositorable.getModel(forKey: key, as: type)
   }
   
-  public func set<T>(_ value: T, forKey key: LocalStorageKey) {
-    localStorageClient.set(value, forKey: key)
+  public func set<T>(_ value: T, forKey key: LocalStorageKey) async {
+    await localStorageRepositorable.set(value, forKey: key)
   }
   
-  public func get<T>(forKey key: LocalStorageKey) -> T? {
-    localStorageClient.get(forKey: key)
+  public func get<T>(forKey key: LocalStorageKey) async -> T? {
+    await localStorageRepositorable.get(forKey: key)
   }
   
-  public func remove(forKey key: LocalStorageKey) {
-    localStorageClient.remove(forKey: key)
+  public func remove(forKey key: LocalStorageKey) async {
+    await localStorageRepositorable.remove(forKey: key)
   }
-  
   
 }

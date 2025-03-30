@@ -21,7 +21,7 @@ struct AppFactoryAggregator: ViewFactory {
     case .signIn(let signInRoute):
       SignInViewFactory(
         serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
-        localStorageCLient: UserDefaultsClient.shared
+        localStorageUsecasable: LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
       ).makeView(signInRoute)
     case .tutorial(let tutorialRoute):
       TutorialViewFactory.makeView(tutorialRoute)

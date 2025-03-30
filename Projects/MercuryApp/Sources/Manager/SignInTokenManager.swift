@@ -16,7 +16,7 @@ public final class SignInInformationManager: SignInTokenInformable, SignInUserIn
   public private(set) var tokenInfo: CurrentValueSubject<SignInTokenInfo?, Never> = .init(nil)
   public private(set) var userInfo: CurrentValueSubject<SignInUserInfo?, Never> = .init(nil)
   
-  private let localStorageUsecase = LocalStorageUsecase(localStorageClient: UserDefaultsClient.shared)
+  private let localStorageUsecase = LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
   
   @MainActor public static let shared = SignInInformationManager()
   private init() {
@@ -24,11 +24,13 @@ public final class SignInInformationManager: SignInTokenInformable, SignInUserIn
   }
   
   private func initializeSignInInfo() {
-    if let signInTokenInfo = localStorageUsecase.getModel(forKey: .signInTokenInfo, as: SignInTokenInfo.self) {
-      tokenInfo.send(signInTokenInfo)
-    }
-    if let signInUserInfo = localStorageUsecase.getModel(forKey: .signInUserInfo, as: SignInUserInfo.self) {
-      userInfo.send(signInUserInfo)
+    Task {
+      if let signInTokenInfo = await localStorageUsecase.getModel(forKey: .signInTokenInfo, as: SignInTokenInfo.self) {
+        tokenInfo.send(signInTokenInfo)
+      }
+      if let signInUserInfo = await localStorageUsecase.getModel(forKey: .signInUserInfo, as: SignInUserInfo.self) {
+        userInfo.send(signInUserInfo)
+      }
     }
   }
 }
