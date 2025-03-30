@@ -14,7 +14,7 @@ public enum AuctionAPI: BaseAPI {
   case auctionDetail(_ salesId: String, _ largeCategory: String, mediumCategory: String, _ courtName: String, salesNumber: Int)
   
   public var baseURL: String {
-    RestAPIDefine.baseURL
+    RestAPIDefine.domain(.common)
   }
   
   public var domain: String? {

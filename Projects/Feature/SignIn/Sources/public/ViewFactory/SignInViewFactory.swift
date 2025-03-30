@@ -13,11 +13,11 @@ import Domain
 
 public struct SignInViewFactory: ViewFactory {
   private let serviceSignInUsecasable: ServiceSignInUsecasable
-  private let localStorageCLient: LocalStorageClient
+  private let localStorageUsecasable: LocalStorageUsecasable
   
-  public init(serviceSignInUsecasable: ServiceSignInUsecasable, localStorageCLient: LocalStorageClient) {
+  public init(serviceSignInUsecasable: ServiceSignInUsecasable, localStorageUsecasable: LocalStorageUsecasable) {
     self.serviceSignInUsecasable = serviceSignInUsecasable
-    self.localStorageCLient = localStorageCLient
+    self.localStorageUsecasable = localStorageUsecasable
   }
   
   @ViewBuilder
@@ -26,9 +26,7 @@ public struct SignInViewFactory: ViewFactory {
     case .signIn:
       SignInView(
         serviceSignInUsecasable: serviceSignInUsecasable,
-        localStorageUsecasable: LocalStorageUsecase(
-          localStorageClient: localStorageCLient
-        )
+        localStorageUsecasable: localStorageUsecasable
       )
     }
   }

@@ -27,7 +27,7 @@ public final class SignInModelData: ObservableObject {
   
   private func serviceSignIn(provider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws {
     let signInInformation = try await serviceSignInUsecasable.serviceSignIn(oauthProvider: provider, oauthSignInToken: oauthSignInToken)
-    localStorageUsecasable.setModel(signInInformation, forKey: .signInTokenInfo)
+    await localStorageUsecasable.setModel(signInInformation, forKey: .signInTokenInfo)
   }
   
   public func oauthSignIn(_ oauthProvider: OauthProvider) throws {

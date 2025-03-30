@@ -29,5 +29,4 @@ public class ServiceSignInRepository: ServiceSignInRepositorable {
     return signInInformation
   }
   
-  
 }
