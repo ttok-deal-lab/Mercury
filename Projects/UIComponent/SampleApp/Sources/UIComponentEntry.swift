@@ -6,7 +6,12 @@ struct UIComponentEntry: App {
   
   var body: some Scene {
     WindowGroup {
-      FontTestView()
+      ScrollView(.vertical) {
+        FontTestView()
+        Divider()
+          .padding(.vertical, 16)
+        ColorTestView()
+      }
     }
     
   }
