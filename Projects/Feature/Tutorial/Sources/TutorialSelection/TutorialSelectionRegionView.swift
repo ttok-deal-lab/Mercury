@@ -11,7 +11,7 @@ import SwiftData
 
 import AppFoundation
 import UIComponent
-import Coordinator
+import Router
 
 struct TutorialSelectionRegionView: View {
   @EnvironmentObject private var coordinator: GlobalCoordinator<GlobalRoute>

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-import Coordinator
+import Router
 
 struct SampleViewFactory: ViewFactory {
   

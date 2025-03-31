@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-import Coordinator
+import Router
 
 struct PushPrintView: View {
   @EnvironmentObject var coordinator: GlobalCoordinator<SampleRoute>

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-import Coordinator
+import Router
 
 struct AuctionDetailView: View {
   @EnvironmentObject private var coordinator: GlobalCoordinator<GlobalRoute>

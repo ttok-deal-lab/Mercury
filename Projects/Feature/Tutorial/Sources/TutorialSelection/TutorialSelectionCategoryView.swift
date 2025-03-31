@@ -10,7 +10,7 @@ import SwiftUI
 import SwiftData
 
 import AppFoundation
-import Coordinator
+import Router
 import UIComponent
 
 struct TutorialSelectionCategoryView: View {

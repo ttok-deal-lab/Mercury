@@ -8,7 +8,7 @@
 import SwiftUI
 import Foundation
 
-import Coordinator
+import Router
 import AppFoundation
 import UIComponent
 

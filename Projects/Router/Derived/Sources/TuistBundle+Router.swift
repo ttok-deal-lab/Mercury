@@ -4,9 +4,9 @@
 import Foundation// MARK: - Swift Bundle Accessor - for SPM
 private class BundleFinder {}
 extension Foundation.Bundle {
-/// Since Coordinator is a static framework, the bundle containing the resources is copied into the final product.
+/// Since Router is a static framework, the bundle containing the resources is copied into the final product.
 static let module: Bundle = {
-    let bundleName = "Coordinator_Coordinator"
+    let bundleName = "Router_Router"
     var candidates = [
         Bundle.main.resourceURL,
         Bundle(for: BundleFinder.self).resourceURL,
@@ -34,11 +34,11 @@ static let module: Bundle = {
             return bundle
         }
     }
-    fatalError("unable to find bundle named Coordinator_Coordinator")
+    fatalError("unable to find bundle named Router_Router")
 }()
 }// MARK: - Objective-C Bundle Accessor
 @objc
-public class CoordinatorResources: NSObject {
+public class RouterResources: NSObject {
 @objc public class var bundle: Bundle {
     return .module
 }

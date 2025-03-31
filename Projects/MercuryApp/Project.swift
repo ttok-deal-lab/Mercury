@@ -10,7 +10,7 @@ let project = Project.app(
     .appFoundation,
     .uiComponent,
     .network,
-    .coordinator,
+    .router,
     .domain,
     .infrastructure,
     .feature(target: "Analysis"),

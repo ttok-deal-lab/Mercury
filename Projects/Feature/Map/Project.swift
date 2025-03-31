@@ -15,7 +15,7 @@ let project = Project.framework(
     .appFoundation,
     .uiComponent,
     .kakaoMap,
-    .coordinator,
+    .router,
     .domain
   ],
   testDependencies: []

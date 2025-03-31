@@ -11,7 +11,7 @@ import Foundation
 import Combine
 
 import AppFoundation
-import Coordinator
+import Router
 import UIComponent
 
 struct AppView: View {

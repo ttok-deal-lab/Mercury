@@ -14,7 +14,7 @@ let project = Project.framework(
   dependencies: [
     .appFoundation,
     .uiComponent,
-    .coordinator,
+    .router,
     .network,
     .domain,
     .infrastructure

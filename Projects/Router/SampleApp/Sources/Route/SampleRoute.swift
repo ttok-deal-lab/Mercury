@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-import Coordinator
+import Router
 
 enum SampleRoute: String, Hashable, Identifiable, CaseIterable {
   var id: String {

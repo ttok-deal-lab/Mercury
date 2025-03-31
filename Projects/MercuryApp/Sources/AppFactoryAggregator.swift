@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Coordinator
+import Router
 
 import Tutorial
 import Auction

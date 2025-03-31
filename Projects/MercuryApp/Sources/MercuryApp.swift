@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 import AppFoundation
-import Coordinator
+import Router
 
 import KakaoMapsSDK
 import NaverThirdPartyLogin

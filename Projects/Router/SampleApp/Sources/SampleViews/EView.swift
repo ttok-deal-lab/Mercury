@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-import Coordinator
+import Router
 
-struct BView: View {
+struct EView: View {
   @EnvironmentObject var coordinator: GlobalCoordinator<SampleRoute>
   
   var body: some View {
     ZStack {
-      Color(.red).opacity(0.3)
+      Color(.cyan).opacity(0.3)
       
       VStack {
-        Text("B")
+        Text("E")
           .font(.title)
         RouterView()
       }

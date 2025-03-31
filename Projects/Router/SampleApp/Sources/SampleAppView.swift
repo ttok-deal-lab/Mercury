@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Coordinator
+import Router
 
 struct SampleAppView: View {
   @StateObject private var coordinator = GlobalCoordinator<SampleRoute>()
