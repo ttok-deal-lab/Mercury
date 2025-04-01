@@ -18,7 +18,6 @@ let project = Project.app(
     .feature(target: "Comment"),
     .feature(target: "Profile"),
     .feature(target: "Map"),
-    .feature(target: "Tutorial"),
     .feature(target: "SignIn"),
     .feature(target: "SignUp")
   ],

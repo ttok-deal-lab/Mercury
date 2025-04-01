@@ -6,29 +6,30 @@
 //
 
 import SwiftUI
-import Router
+import Combine
 
-import Tutorial
+import Router
 import Auction
 import SignIn
-import Infrastructure
 import Domain
+import Infrastructure
 
-struct AppFactoryAggregator: ViewFactory {
+struct RootViewFactory<ScreenRoute: Hashable>: ViewFactory {
+  
   @ViewBuilder
-  func makeView(_ route: GlobalRoute) -> some View {
+  func makeView(
+    _ route: GlobalRoute,
+    eventSubject: PassthroughSubject<NavigationEvent<ScreenRoute>, Never>
+  ) -> some View {
     switch route {
     case .signIn(let signInRoute):
-      SignInViewFactory(
+      SignInViewFactory<ScreenRoute>(
         serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
         localStorageUsecasable: LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
-      ).makeView(signInRoute)
-    case .tutorial(let tutorialRoute):
-      TutorialViewFactory.makeView(tutorialRoute)
+      )
+      .makeView(signInRoute, eventSubject: eventSubject)
     case .auction(let auctionRoute):
-      AuctionViewFactory.makeView(auctionRoute)
-    @unknown default:
-      fatalError()
+      VStack { }
     }
   }
 }

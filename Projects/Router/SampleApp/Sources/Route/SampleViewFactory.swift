@@ -6,28 +6,28 @@
 //
 
 import SwiftUI
+import Combine
 
 import Router
 
 struct SampleViewFactory: ViewFactory {
   
-  @ViewBuilder
-  func makeView(_ route: SampleRoute) -> some View {
+  func makeView(_ route: SampleRoute, eventSubject: PassthroughSubject<NavigationEvent<SampleRoute>, Never>) -> some View {
     switch route {
     case .a:
-      AView()
+      AView(coordinator: eventSubject)
     case .b:
-      BView()
+      BView(coordinator: eventSubject)
     case .c:
-      CView()
+      CView(coordinator: eventSubject)
     case .d:
-      DView()
+      DView(coordinator: eventSubject)
     case .e:
-      EView()
+      EView(coordinator: eventSubject)
     case .f:
-      FView()
+      FView(coordinator: eventSubject)
     case .g:
-      GView()
+      GView(coordinator: eventSubject)
     }
   }
 }

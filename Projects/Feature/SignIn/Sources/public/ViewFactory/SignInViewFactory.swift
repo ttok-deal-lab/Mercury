@@ -7,11 +7,12 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 import Router
 import Domain
 
-public struct SignInViewFactory: ViewFactory {
+public struct SignInViewFactory<ScreenRoute: Hashable>: ViewFactory {
   private let serviceSignInUsecasable: ServiceSignInUsecasable
   private let localStorageUsecasable: LocalStorageUsecasable
   
@@ -20,9 +21,11 @@ public struct SignInViewFactory: ViewFactory {
     self.localStorageUsecasable = localStorageUsecasable
   }
   
-  @ViewBuilder
-  public func makeView(_ signInRoute: SignInRoute) -> some View {
-    switch signInRoute.route {
+  public func makeView(
+    _ route: SignInRoute,
+    eventSubject: PassthroughSubject<NavigationEvent<ScreenRoute>, Never>
+  ) -> some View {
+    switch route.route {
     case .signIn:
       SignInView(
         serviceSignInUsecasable: serviceSignInUsecasable,

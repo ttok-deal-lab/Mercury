@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import Combine
 
 import Router
 
 struct GView: View {
-  @EnvironmentObject var coordinator: GlobalCoordinator<SampleRoute>
+  var coordinator: PassthroughSubject<NavigationEvent<SampleRoute>, Never>
   
   var body: some View {
     ZStack {
@@ -18,7 +19,7 @@ struct GView: View {
       VStack {
         Text("G")
           .font(.title)
-        RouterView()
+        RouterView(coordinator: coordinator)
       }
     }
   }

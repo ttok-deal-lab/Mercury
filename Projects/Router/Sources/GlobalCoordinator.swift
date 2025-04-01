@@ -4,111 +4,62 @@
 //
 //  Created by 송하민 on 12/29/24.
 //
-
-import Foundation
 import SwiftUI
+import Combine
 
-public class GlobalCoordinator<Route: Hashable>: ObservableObject {
-  @Published public var routePath = RoutePath<Route>()
-  
-  public init() {}
-  
-  public func push(_ route: Route) {
-    routePath.push(route)
-  }
-  
-  public func pop() {
-    routePath.pop()
-  }
-  
-  public func presentFullScreen(_ route: Route) {
-    routePath.presentFullScreen(route)
-  }
-  
-  public func dismissFullScreen() {
-    routePath.dismissFullScreen()
-  }
-  
-  public func popToRoot() {
-    routePath.popToRoot()
-  }
-}
-
-// MARK: - RoutePath
-
-public struct RoutePath<Route: Hashable> {
-  public var navigationPath = NavigationPath()
-  
-  public var isFullScreenPresented = false
+public final class NavigationCoordinator<Route: Hashable>: ObservableObject {
+  @Published public var navigationPath = NavigationPath()
+  @Published public var isFullScreenPresented = false
+  @Published public var fullScreenPath = NavigationPath()
   public var fullScreenRoute: Route? = nil
-  public var fullScreenNavigationPath = NavigationPath()
   
-  public init() {}
-}
-
-// MARK: - Common Push/Pop
-
-extension RoutePath {
-  public mutating func push(_ route: Route) {
-    if isFullScreenPresented {
-      pushInFullScreen(route)
-      return
+  public var eventSubject = PassthroughSubject<NavigationEvent<Route>, Never>()
+  
+  private var cancellables = Set<AnyCancellable>()
+  
+  public init() {
+    eventSubject
+      .sink { [weak self] event in
+        self?.handle(event: event)
+      }
+      .store(in: &cancellables)
+  }
+  
+  private func handle(event: NavigationEvent<Route>) {
+    switch event {
+    case .push(let route):
+      if isFullScreenPresented {
+        fullScreenPath.append(route)
+      } else {
+        navigationPath.append(route)
+      }
+    case .pop:
+      if isFullScreenPresented {
+        if fullScreenPath.isEmpty {
+          isFullScreenPresented = false
+          fullScreenRoute = nil
+        } else {
+          fullScreenPath.removeLast()
+        }
+      } else if !navigationPath.isEmpty {
+        navigationPath.removeLast()
+      }
+    case .popToRoot:
+      if isFullScreenPresented {
+        isFullScreenPresented = false
+        fullScreenRoute = nil
+        fullScreenPath = NavigationPath()
+      }
+      navigationPath = NavigationPath()
+    case .presentFullScreen(let route):
+      guard !isFullScreenPresented else { return }
+      isFullScreenPresented = true
+      fullScreenRoute = route
+    case .dismissFullScreen:
+      guard isFullScreenPresented else { return }
+      isFullScreenPresented = false
+      fullScreenRoute = nil
+      fullScreenPath = NavigationPath()
     }
-    navigationPath.append(route)
-  }
-  
-  public mutating func pop() {
-    isFullScreenPresented ? handleFullScreenPop() : handleStandardPop()
-  }
-  
-  private mutating func handleFullScreenPop() {
-    if fullScreenNavigationPath.count == 1 {
-      dismissFullScreen()
-    } else {
-      popInFullScreen()
-    }
-  }
-  
-  private mutating func handleStandardPop() {
-    guard !navigationPath.isEmpty else { return }
-    navigationPath.removeLast()
-  }
-}
-
-// MARK: - FullScreen Present/Dismiss
-
-extension RoutePath {
-  public mutating func presentFullScreen(_ route: Route) {
-    guard !isFullScreenPresented else { return }
-    isFullScreenPresented = true
-    
-    fullScreenRoute = route
-  }
-  
-  public mutating func dismissFullScreen() {
-    guard isFullScreenPresented else { return }
-    isFullScreenPresented = false
-    fullScreenNavigationPath = .init()
-    
-    fullScreenRoute = nil
-  }
-
-  fileprivate mutating func pushInFullScreen(_ route: Route) {
-    fullScreenNavigationPath.append(route)
-  }
-  
-  fileprivate mutating func popInFullScreen() {
-    if fullScreenNavigationPath.isEmpty {
-      dismissFullScreen()
-      return
-    }
-    fullScreenNavigationPath.removeLast()
-  }
-  
-  fileprivate mutating func popToRoot() {
-    if isFullScreenPresented {
-      dismissFullScreen()
-    }
-    navigationPath = .init()
   }
 }

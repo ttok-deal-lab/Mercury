@@ -6,18 +6,19 @@
 //
 
 import SwiftUI
+import Combine
 
 import Router
 
 struct RouterView: View {
-  @EnvironmentObject var coordinator: GlobalCoordinator<SampleRoute>
+  var coordinator: PassthroughSubject<NavigationEvent<SampleRoute>, Never>
   
   var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 4) {
         ForEach(SampleRoute.allCases) { route in
           Button {
-            coordinator.push(route)
+            coordinator.send(.push(route))
           } label: {
             Text("push goto \(route.rawValue)")
               .foregroundStyle(.black)
@@ -26,7 +27,7 @@ struct RouterView: View {
         
         ForEach(SampleRoute.allCases) { route in
           Button {
-            coordinator.presentFullScreen(route)
+            coordinator.send(.presentFullScreen(route))
           } label: {
             Text("full screen present \(route.rawValue)")
               .foregroundStyle(.black)
@@ -34,14 +35,14 @@ struct RouterView: View {
         }
         
         Button {
-          coordinator.pop()
+          coordinator.send(.pop)
         } label: {
           Text("pop")
         }
         
         
         Button {
-          coordinator.dismissFullScreen()
+          coordinator.send(.dismissFullScreen)
         } label: {
           Text("dismiss fullScreen")
         }
@@ -50,8 +51,5 @@ struct RouterView: View {
     }
     .frame(maxWidth: .infinity)
     .padding(.top, 20)
-    
-    PushPrintView()
-    FullScreenPrintView()
   }
 }

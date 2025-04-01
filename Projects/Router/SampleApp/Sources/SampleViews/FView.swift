@@ -6,15 +6,16 @@
 //
 
 import SwiftUI
+import Combine
 
 import Router
 
 struct FView: View {
-  @EnvironmentObject var coordinator: GlobalCoordinator<SampleRoute>
+  var coordinator: PassthroughSubject<NavigationEvent<SampleRoute>, Never>
   
   var body: some View {
     Text("F")
       .font(.title)
-    RouterView()
+    RouterView(coordinator: coordinator)
   }
 }

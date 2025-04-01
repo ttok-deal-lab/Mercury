@@ -10,7 +10,6 @@ import SwiftUI
 import Router
 
 struct AuctionDetailView: View {
-  @EnvironmentObject private var coordinator: GlobalCoordinator<GlobalRoute>
   @StateObject private var store = AuctionModelData()
   
   var auctionId: Int
@@ -19,13 +18,9 @@ struct AuctionDetailView: View {
     Text("Auction Detail. Id: \(auctionId)")
     
     Button {
-      // 이런식으로도 가능
-      coordinator.dismissFullScreen()
-      coordinator.pop()
+    
     } label: {
       Text("close")
     }
-
   }
-  
 }
