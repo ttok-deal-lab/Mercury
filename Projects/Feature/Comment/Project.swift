@@ -13,7 +13,7 @@ let project = Project.framework(
   platform: .iOS,
   dependencies: [
     .appFoundation,
-    .coordinator,
+    .router,
     .domain
   ],
   testDependencies: []

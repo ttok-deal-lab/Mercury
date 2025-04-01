@@ -1,20 +1,20 @@
 //
 //  Project.swift
-//  DataManifests
+//  Manifests
 //
-//  Created by 송하민 on 8/2/24.
+//  Created by 송하민 on 10/5/24.
 //
 
 import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.framework(
-  name: "Profile",
+  name: "Router",
   platform: .iOS,
   dependencies: [
-    .uiComponent,
-    .router,
-    .domain
+    
   ],
-  testDependencies: []
+  testDependencies: [
+    
+  ]
 )

@@ -10,7 +10,7 @@ import SwiftUI
 import Map
 import KakaoMapsSDK
 import AppFoundation
-import Coordinator
+import Router
 
 @main
 struct MapSampleAppEntry: App {

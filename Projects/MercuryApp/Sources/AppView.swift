@@ -11,28 +11,46 @@ import Foundation
 import Combine
 
 import AppFoundation
-import Coordinator
+import Router
 import UIComponent
 
 struct AppView: View {
-  @StateObject private var coordinator = GlobalCoordinator<GlobalRoute>()
+  @StateObject private var coordinator = NavigationCoordinator<GlobalRoute>()
   
   var body: some View {
-    NavigationStack(path: $coordinator.routePath.navigationPath) {
-      FakeHomeView()
-        .adjustCoordinator(factory: AppFactoryAggregator())
+    NavigationStack(path: $coordinator.navigationPath) {
+      FakeHomeView(eventSubject: coordinator.eventSubject)
+        .navigationDestination(for: GlobalRoute.self) { route in
+          RootViewFactory().makeView(
+            route,
+            eventSubject: coordinator.eventSubject
+          )
+        }
     }
-    .environmentObject(coordinator)
+    .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
+      if let route = coordinator.fullScreenRoute {
+        NavigationStack(path: $coordinator.fullScreenPath) {
+          RootViewFactory().makeView(route, eventSubject: coordinator.eventSubject)
+            .navigationDestination(for: GlobalRoute.self) { route in
+              RootViewFactory().makeView(route, eventSubject: coordinator.eventSubject)
+            }
+        }
+      }
+    }
   }
 }
 
 
 struct FakeHomeView: View {
-  @EnvironmentObject private var coordinator: GlobalCoordinator<GlobalRoute>
+  let eventSubject: PassthroughSubject<NavigationEvent<GlobalRoute>, Never>
+  
+  public init(eventSubject: PassthroughSubject<NavigationEvent<GlobalRoute>, Never>) {
+    self.eventSubject = eventSubject
+  }
   
   var body: some View {
     Button {
-      coordinator.presentFullScreen(.signIn(.init(route: .signIn)))
+      eventSubject.send(.push(.signIn(.init(route: .signIn))))
     } label: {
       Text("go tutorial")
         .fonts(.bodyLargeBold)
