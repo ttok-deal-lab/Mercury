@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "manage-card.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

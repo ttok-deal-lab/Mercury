@@ -10,9 +10,11 @@ struct UIComponentEntry: App {
         FontTestView()
         Divider()
           .padding(.vertical, 16)
+        ImageTestView()
+        Divider()
+          .padding(.vertical, 16)
         ColorTestView()
       }
     }
-    
   }
 }
