@@ -22,7 +22,7 @@ struct NaverSignInButtonView: View {
       }
     } label: {
       HStack {
-        Asset.Images.naverStandard.image
+        Asset.Images.naver.image
           .resizable()
           .aspectRatio(contentMode: .fit)
       }
