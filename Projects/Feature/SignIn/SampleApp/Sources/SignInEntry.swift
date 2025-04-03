@@ -8,6 +8,8 @@ import Infrastructure
 import GoogleSignIn
 import GoogleSignInSwift
 import NaverThirdPartyLogin
+import KakaoSDKCommon
+import KakaoSDKAuth
 
 @main
 struct SignInEntry: App {
@@ -17,6 +19,9 @@ struct SignInEntry: App {
       ContentView()
         .onOpenURL { url in
           GIDSignIn.sharedInstance.handle(url)
+          if (AuthApi.isKakaoTalkLoginUrl(url)) {
+            _ = AuthController.handleOpenUrl(url: url)
+          }
         }
     }
   }
@@ -35,6 +40,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     instance?.serviceUrlScheme = Bundle.main.bundleIdentifier
     instance?.appName = "Mercury"
     
+    // KakaoAuth
+//    KakaoSDK.initSDK(appKey: CommonDefine.kakaoAuthKey ?? "")
     return true
   }
 }

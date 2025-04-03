@@ -37,6 +37,8 @@ public enum Gen {
     public static let store = ImageAsset(name: "store")
     public static let launchScreenMap = ImageAsset(name: "launchScreenMap")
     public static let logo = ImageAsset(name: "logo")
+    public static let kakaoLogo = ImageAsset(name: "kakaoLogo")
+    public static let naverLogo = ImageAsset(name: "naverLogo")
     public static let naverCircle = ImageAsset(name: "naver_circle")
     public static let naverLogout = ImageAsset(name: "naver_logout")
     public static let naverSimple = ImageAsset(name: "naver_simple")

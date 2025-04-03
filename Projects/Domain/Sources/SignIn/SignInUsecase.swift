@@ -42,6 +42,6 @@ public enum OauthProvider: String, Identifiable {
   }
   case apple
   case google
-//  case kakao
+  case kakao
   case naver
 }

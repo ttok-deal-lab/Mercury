@@ -16,6 +16,9 @@ let project = Project.staticFramework(
     .googleSignIn,
     .googleSignInSwift,
     .naverThirdPartyLogin,
+    .kakaoCommon,
+    .kakaoUser,
+    .kakaoLogin
   ],
   frameworkTestDependencies: [
     

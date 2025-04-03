@@ -24,14 +24,23 @@ struct AppleSignInButton: View {
         }
       }
     } label: {
-      HStack {
-        Image(systemName: "applelogo")
-        Text("Continue with Apple")
+      ZStack {
+        Text("Apple로 로그인")
+          .foregroundStyle(.white)
+        HStack {
+          Image(systemName: "applelogo")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 20, height: 20)
+            .foregroundStyle(.white)
+            .padding(.leading, 5)
+          Spacer()
+        }
       }
       .padding()
+      .frame(width: 335, height: 52)
       .background(.black)
-      .foregroundStyle(.white)
-      .clipShape(RoundedRectangle(cornerRadius: 8))
+      .clipShape(Capsule())
     }
   }
 }

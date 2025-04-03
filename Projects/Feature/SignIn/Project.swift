@@ -21,7 +21,9 @@ let project = Project.feature(
     .network,
     .infrastructure,
     .naverThirdPartyLogin,
-    .kakaoLogin
+    .kakaoCommon,
+    .kakaoLogin,
+    .kakaoUser
   ],
   testDependencies: []
 )

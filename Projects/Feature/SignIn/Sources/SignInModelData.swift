@@ -34,7 +34,6 @@ public final class SignInModelData: ObservableObject {
     let signInInformation = try await signInUsecasable.serviceSignIn(oauthProvider: provider, oauthSignInToken: oauthSignInToken)
     localStorageUsecasable.setModel(signInInformation.token, forKey: .signInTokenInfo)
     localStorageUsecasable.setModel(signInInformation.user, forKey: .signInUserInfo)
-    
   }
   
 }

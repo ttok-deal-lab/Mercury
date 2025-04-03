@@ -12,6 +12,7 @@ public class CommonDefine {
   public static let mapKey: String? = Bundle.main.object(forInfoDictionaryKey: "KAKAO_MAP_KEY") as? String
   public static let naverClientID = Bundle.main.object(forInfoDictionaryKey: "NAVER_SIGNIN_ID") as? String
   public static let naverClientSecret = Bundle.main.object(forInfoDictionaryKey: "NAVER_SIGNIN_SECRET") as? String
+  public static let kakaoAuthKey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_AUTH_KEY") as? String
 }
 
 

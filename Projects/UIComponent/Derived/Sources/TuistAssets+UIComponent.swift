@@ -33,6 +33,8 @@ public enum UIComponentAsset {
     public static let store = UIComponentImages(name: "store")
     public static let launchScreenMap = UIComponentImages(name: "launchScreenMap")
     public static let logo = UIComponentImages(name: "logo")
+    public static let kakaoLogo = UIComponentImages(name: "kakaoLogo")
+    public static let naverLogo = UIComponentImages(name: "naverLogo")
     public static let naverCircle = UIComponentImages(name: "naver_circle")
     public static let naverLogout = UIComponentImages(name: "naver_logout")
     public static let naverSimple = UIComponentImages(name: "naver_simple")
