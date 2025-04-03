@@ -41,7 +41,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     instance?.appName = "Mercury"
     
     // KakaoAuth
-//    KakaoSDK.initSDK(appKey: CommonDefine.kakaoAuthKey ?? "")
+    var kakaoAuthKey = CommonDefine.kakaoAuthKey
+    debugPrint("kakaoAuthKey: \(kakaoAuthKey)")
+    KakaoSDK.initSDK(appKey: CommonDefine.kakaoAuthKey ?? "")
     return true
   }
 }

@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>KAKAO_AUTH_KEY</key>
+	<string>5947e5d260596332917f0d15b87aded7</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -25,6 +27,14 @@
 			<array>
 				<string>*.mercury.auction.com</string>
 				<string>com.googleusercontent.apps.747425860405-bv9e5jkt2hcqefvl4ftm7c7qgr4it6su</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kakao5947e5d260596332917f0d15b87aded7</string>
 			</array>
 		</dict>
 	</array>

@@ -27,6 +27,7 @@ public class MercuryError: Error, Equatable {
       case appleSignin
       case googleSignin
       case naverSignin
+      case kakaoSignin
     }
   }
   
