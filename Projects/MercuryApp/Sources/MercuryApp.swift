@@ -14,6 +14,8 @@ import Coordinator
 import GoogleSignIn
 import KakaoMapsSDK
 import NaverThirdPartyLogin
+import KakaoSDKCommon
+import KakaoSDKAuth
 
 @main
 struct MercuryApp: App {
@@ -49,6 +51,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     let container = MercuryContainer.shared
     container.register(SignInTokenInformable.self, instance: SignInInformationManager.shared)
     container.register(SignInUserInformable.self, instance: SignInInformationManager.shared)
+    
+    // Kakao SignIn
+    var kakaoAuthKey = CommonDefine.kakaoAuthKey
+    debugPrint("kakaoAuthKey: \(kakaoAuthKey)")
+    KakaoSDK.initSDK(appKey: CommonDefine.kakaoAuthKey ?? "")
     
     return true
   }

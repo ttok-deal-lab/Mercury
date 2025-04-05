@@ -29,7 +29,7 @@ struct NaverSignInButtonView: View {
       }
     } label: {
       ZStack {
-        Text("카카오로 로그인")
+        Text("네이버로 로그인")
           .foregroundStyle(.black)
         HStack {
           Image(asset: UIComponentAsset.Images.naverLogo)
