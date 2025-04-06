@@ -8,13 +8,13 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.staticFramework(
+let project = Project.framework(
   name: "AppFoundation",
   platform: .iOS,
-  frameworkDependencies: [
-
+  dependencies: [
+    
   ],
-  frameworkTestDependencies: [
+  testDependencies: [
     
   ]
 )

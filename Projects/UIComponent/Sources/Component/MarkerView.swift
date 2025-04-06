@@ -18,7 +18,3 @@ public struct AuctionItemView: View {
       }
   }
 }
-
-//#Preview {
-//  AuctionItemView()
-//}

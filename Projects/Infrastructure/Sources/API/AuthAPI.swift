@@ -15,11 +15,11 @@ public enum AuthAPI {
 
 extension AuthAPI: BaseAPI {
   public var baseURL: String {
-    RestAPIDefine.baseURL
+    RestAPIDefine.base(.auth)
   }
   
   public var domain: String? {
-    return "auth/"
+    return "v1/auth/"
   }
   
   public var path: String {

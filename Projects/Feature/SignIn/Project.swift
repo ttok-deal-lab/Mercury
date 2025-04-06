@@ -8,22 +8,21 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.feature(
+let project = Project.framework(
   name: "SignIn",
   platform: .iOS,
   dependencies: [
     .appFoundation,
     .uiComponent,
-    .googleSignIn,
-    .googleSignInSwift,
-    .coordinator,
+    .router,
     .domain,
     .network,
     .infrastructure,
-    .naverThirdPartyLogin,
     .kakaoCommon,
     .kakaoLogin,
-    .kakaoUser
+    .kakaoUser,
+    .googleSignIn,
+    .naverThirdPartyLogin,
   ],
   testDependencies: []
 )

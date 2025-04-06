@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "Kakao.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

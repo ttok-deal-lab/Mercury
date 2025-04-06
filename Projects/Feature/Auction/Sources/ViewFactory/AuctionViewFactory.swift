@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-import Coordinator
+import Router
 
 public struct AuctionViewFactory {
   

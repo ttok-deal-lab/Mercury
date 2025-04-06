@@ -14,7 +14,7 @@ public enum AuctionAPI: BaseAPI {
   case auctionDetail(_ salesId: String, _ largeCategory: String, mediumCategory: String, _ courtName: String, salesNumber: Int)
   
   public var baseURL: String {
-    RestAPIDefine.baseURL
+    RestAPIDefine.base(.common)
   }
   
   public var domain: String? {
@@ -37,20 +37,20 @@ public enum AuctionAPI: BaseAPI {
     }
   }
   
-  public var queryParam: [URLQueryItem]? {
+  public var queryParam: [String : Any]? {
     switch self {
     case let .auctionList(largeCategory, mediumCategory, page):
       return [
-        .init(name: "largeCategory", value: largeCategory),
-        .init(name: "mediumCategory", value: mediumCategory),
-        .init(name: "page", value: "\(page)")
+        "largeCategory": largeCategory,
+        "mediumCategory": mediumCategory,
+        "page": "\(page)"
       ]
     case .auctionDetail(_, let largeCategory, let mediumCategory, let courtName, let salesNumber):
       return [
-        .init(name: "largeCategory", value: largeCategory),
-        .init(name: "mediumCategory", value: mediumCategory),
-        .init(name: "courtName", value: courtName),
-        .init(name: "salesNumber", value: "\(salesNumber)")
+        "largeCategory": "\(largeCategory)",
+        "mediumCategory": "\(mediumCategory)",
+        "courtName": "\(courtName)",
+        "salesNumber": "\(salesNumber)"
       ]
     }
   }

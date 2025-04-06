@@ -8,10 +8,10 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.staticFramework(
+let project = Project.framework(
   name: "Domain",
   platform: .iOS,
-  frameworkDependencies: [
+  dependencies: [
     .appFoundation,
     .googleSignIn,
     .googleSignInSwift,
@@ -20,7 +20,7 @@ let project = Project.staticFramework(
     .kakaoUser,
     .kakaoLogin
   ],
-  frameworkTestDependencies: [
+  testDependencies: [
     
   ]
 )

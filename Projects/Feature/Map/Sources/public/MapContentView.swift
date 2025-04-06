@@ -10,7 +10,7 @@ import SwiftUI
 import CoreLocation
 
 import AppFoundation
-import Coordinator
+import Router
 import UIComponent
 
 public struct MapContentView: View {

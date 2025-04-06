@@ -13,12 +13,21 @@ extension Project {
   
   // MARK: - method
   
-  public static func feature(name: String, platform: Platform, dependencies: [TargetDependency], testDependencies: [TargetDependency]) -> Project {
+  public static func framework(
+    name: String,
+    infoPlist: InfoPlist = .default,
+    platform: Platform,
+    dependencies: [TargetDependency],
+    testDependencies: [TargetDependency],
+    resourceSynthesizers: [ResourceSynthesizer] = []
+  ) -> Project {
     return Project.staticFramework(
       name: name,
+      infoPlist: infoPlist,
       platform: platform,
       frameworkDependencies: dependencies,
-      frameworkTestDependencies: testDependencies
+      frameworkTestDependencies: testDependencies,
+      resourceSynthesizers: resourceSynthesizers
     )
   }
 }
