@@ -21,14 +21,23 @@ struct NaverSignInButtonView: View {
         try completion()
       }
     } label: {
-      HStack {
-        Asset.Images.naver.image
-          .resizable()
-          .aspectRatio(contentMode: .fit)
+      ZStack {
+        Text("네이버로 로그인")
+          .foregroundStyle(.black)
+        HStack {
+          Asset.Images.naver.image
+            .resizable()
+            .scaledToFit()
+            .frame(width: 20, height: 20)
+            .foregroundStyle(.white)
+            .padding(.leading, 5)
+          Spacer()
+        }
       }
-      .frame(width: 200, height: 50)
-      .clipShape(RoundedRectangle(cornerRadius: 8))
       .padding()
+      .frame(width: 335,height: 52)
+      .background(.green)
+      .clipShape(Capsule())
     }
   }
 }
