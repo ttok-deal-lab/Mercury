@@ -20,6 +20,7 @@ public struct SignInInformation: Codable { // UserDefaults에 저장하기 위�
 }
 
 public struct SignInUserInfo: Codable {
+  
   public let id: Int
   public let email: String
   public let name: String

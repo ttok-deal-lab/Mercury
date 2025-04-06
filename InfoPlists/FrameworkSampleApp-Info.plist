@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>KAKAO_AUTH_KEY</key>
-	<string>5947e5d260596332917f0d15b87aded7</string>
+	<string>${KAKAO_AUTH_KEY}</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
