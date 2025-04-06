@@ -26,9 +26,8 @@ struct KakaoSignInButtonView: View {
           .foregroundStyle(.black)
         HStack {
           Asset.Images.kakao.image
-            .resizable()
             .scaledToFit()
-            .frame(width: 20, height: 20)
+            .frame(width: 24, height: 24)
             .padding(.leading, 5)
           Spacer()
         }

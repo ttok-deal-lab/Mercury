@@ -49,8 +49,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     container.register(SignInUserInformable.self, instance: SignInInformationManager.shared)
     
     // Kakao SignIn
-    var kakaoAuthKey = CommonDefine.kakaoAuthKey
-    debugPrint("kakaoAuthKey: \(kakaoAuthKey)")
     KakaoSDK.initSDK(appKey: CommonDefine.kakaoAuthKey ?? "")
     
     return true

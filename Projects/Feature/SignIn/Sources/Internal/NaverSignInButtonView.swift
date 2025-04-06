@@ -23,12 +23,12 @@ struct NaverSignInButtonView: View {
     } label: {
       ZStack {
         Text("네이버로 로그인")
-          .foregroundStyle(.black)
+          .foregroundStyle(.white)
+
         HStack {
-          Asset.Images.naver.image
-            .resizable()
+          Asset.Images.Naver.image
             .scaledToFit()
-            .frame(width: 20, height: 20)
+            .frame(width: 24, height: 24)
             .foregroundStyle(.white)
             .padding(.leading, 5)
           Spacer()

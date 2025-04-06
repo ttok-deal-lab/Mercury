@@ -144,8 +144,6 @@ public enum Asset {
     public static let naverPay1 = ImageAsset(name: "NaverPay-1")
     public static let naverPay2 = ImageAsset(name: "NaverPay-2")
     public static let payco = ImageAsset(name: "Payco")
-    public static let kakaoLogo = ImageAsset(name: "kakaoLogo")
-    public static let naverLogo = ImageAsset(name: "naverLogo")
     public static let apple = ImageAsset(name: "Apple")
     public static let google = ImageAsset(name: "Google")
     public static let kakao = ImageAsset(name: "Kakao")
