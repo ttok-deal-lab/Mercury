@@ -21,9 +21,6 @@ class KakaoSignInProvider: NSObject, OauthSignInable {
   private var continuation: CheckedContinuation<OauthSignInToken, Error>?
   
   // MARK: - internal method
-  public func logout() {
-    // doSomeThing()
-  }
   
   func signIn() async throws -> OauthSignInToken {
     

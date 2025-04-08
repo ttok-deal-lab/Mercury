@@ -26,7 +26,7 @@ struct NaverSignInButtonView: View {
           .foregroundStyle(.white)
 
         HStack {
-          Asset.Images.Naver.image
+          Asset.Images.naver.image
             .scaledToFit()
             .frame(width: 24, height: 24)
             .foregroundStyle(.white)
