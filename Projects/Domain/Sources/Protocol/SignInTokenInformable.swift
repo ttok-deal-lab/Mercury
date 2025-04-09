@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 public protocol SignInTokenInformable {
-  var tokenInfo: CurrentValueSubject<SignInTokenInfo?, Never> { get }
+  var tokenInfo: CurrentValueSubject<UserAccessTokenInfo?, Never> { get }
 }
 
 

@@ -19,6 +19,7 @@ let project = Project.framework(
     .network,
     .infrastructure,
     .googleSignIn,
+    .googleSignInSwift,
     .naverThirdPartyLogin
   ],
   testDependencies: []

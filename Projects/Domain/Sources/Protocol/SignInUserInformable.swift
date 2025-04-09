@@ -9,5 +9,5 @@ import Foundation
 import Combine
 
 public protocol SignInUserInformable {
-  var userInfo: CurrentValueSubject<SignInUserInfo?, Never> { get }
+  var userInfo: CurrentValueSubject<ServiceSignInUserInfo?, Never> { get }
 }
