@@ -15,7 +15,7 @@ import NaverThirdPartyLogin
 
 struct NaverSignInButtonView: View {
   var completion: () throws -> Void
-  public var body: some View {
+  var body: some View {
     Button {
       Task {
         try completion()
