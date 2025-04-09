@@ -13,6 +13,11 @@ import Network
 
 public class ServiceSignInRepository: ServiceSignInRepositorable {
   
+  // MARK: - private property
+  
+  @LazyInject private var userInformable: SignInUserInformable
+  @LazyInject private var tokenInformable: SignInTokenInformable
+  
   // MARK: - life cycle
   
   public init() { }
@@ -42,8 +47,8 @@ public class ServiceSignInRepository: ServiceSignInRepositorable {
     let serviceUserInfo = parseToUserInfo(resultInfo)
     let accessTokenInfo = parseAccessToken(resultInfo)
     
-    MercuryContainer.shared.resolve(SignInUserInformable.self).userInfo.send(serviceUserInfo)
-    MercuryContainer.shared.resolve(SignInTokenInformable.self).tokenInfo.send(accessTokenInfo)
+    self.userInformable.userInfo.send(serviceUserInfo)
+    self.tokenInformable.tokenInfo.send(accessTokenInfo)
     return serviceUserInfo
   }
   
