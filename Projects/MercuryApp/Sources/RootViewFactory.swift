@@ -18,7 +18,7 @@ struct RootViewFactory<ScreenRoute: Hashable>: ViewFactory {
   
   @ViewBuilder
   func makeView(
-    _ route: GlobalRoute,
+    _ route: FeatureRoute,
     eventSubject: PassthroughSubject<NavigationEvent<ScreenRoute>, Never>
   ) -> some View {
     switch route {

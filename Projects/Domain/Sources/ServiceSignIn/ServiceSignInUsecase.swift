@@ -16,7 +16,7 @@ public class ServiceSignInUsecase: ServiceSignInUsecasable {
     self.repository = repository
   }
   
-  public func serviceSignIn(oauthProvider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws -> SignInInformation {
+  public func serviceSignIn(oauthProvider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws -> ServiceSignInUserInfo {
     return try await repository.signIn(
       oauthProvider: oauthProvider,
       oauthSignInToken: oauthSignInToken
