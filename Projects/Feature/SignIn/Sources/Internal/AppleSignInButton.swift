@@ -24,9 +24,8 @@ struct AppleSignInButton: View {
           .foregroundStyle(.white)
         HStack {
           Image(systemName: "applelogo")
-            .resizable()
             .scaledToFit()
-            .frame(width: 20, height: 20)
+            .frame(width: 24, height: 24)
             .foregroundStyle(.white)
             .padding(.leading, 5)
           Spacer()

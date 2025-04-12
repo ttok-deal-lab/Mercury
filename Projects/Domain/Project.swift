@@ -12,13 +12,7 @@ let project = Project.framework(
   name: "Domain",
   platform: .iOS,
   dependencies: [
-    .appFoundation,
-    .googleSignIn,
-    .googleSignInSwift,
-    .naverThirdPartyLogin,
-    .kakaoCommon,
-    .kakaoUser,
-    .kakaoLogin
+    .appFoundation
   ],
   testDependencies: [
     

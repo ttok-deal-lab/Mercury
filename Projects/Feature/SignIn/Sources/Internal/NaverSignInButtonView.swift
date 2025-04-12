@@ -15,20 +15,29 @@ import NaverThirdPartyLogin
 
 struct NaverSignInButtonView: View {
   var completion: () throws -> Void
-  public var body: some View {
+  var body: some View {
     Button {
       Task {
         try completion()
       }
     } label: {
-      HStack {
-        Asset.Images.naver.image
-          .resizable()
-          .aspectRatio(contentMode: .fit)
+      ZStack {
+        Text("네이버로 로그인")
+          .foregroundStyle(.white)
+
+        HStack {
+          Asset.Images.naver.image
+            .scaledToFit()
+            .frame(width: 24, height: 24)
+            .foregroundStyle(.white)
+            .padding(.leading, 5)
+          Spacer()
+        }
       }
-      .frame(width: 200, height: 50)
-      .clipShape(RoundedRectangle(cornerRadius: 8))
       .padding()
+      .frame(width: 335,height: 52)
+      .background(.green)
+      .clipShape(Capsule())
     }
   }
 }

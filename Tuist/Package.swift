@@ -12,6 +12,7 @@ let packageSettings = PackageSettings(
     "Testing": .framework,
     "GoogleSignIn": .framework,
     "GoogleSignInSwift": .framework,
+    "KakaoSDK": .framework,
     "KakaoSDKCommon": .framework,
     "KakaoSDKUser": .framework,
     "KakaoSDKAuth": .framework

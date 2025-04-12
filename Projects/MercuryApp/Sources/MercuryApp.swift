@@ -16,6 +16,7 @@ import GoogleSignIn
 import GoogleSignInSwift
 import KakaoMapsSDK
 import NaverThirdPartyLogin
+import KakaoSDKCommon
 
 @main
 struct MercuryApp: App {
@@ -37,6 +38,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     initiateKakaoMapInstance()
     configureGoogleInstance()
     configureNaverLoginInstance()
+    configureKakaoLoginInstance()
     
     let container = MercuryContainer.shared
     container.register(SignInTokenInformable.self, instance: SignInInformationManager.shared)
@@ -58,7 +60,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   }
   
   private func configureNaverLoginInstance() {
-    // naver SignIn
     let instance = NaverThirdPartyLoginConnection.getSharedInstance()
     instance?.isNaverAppOauthEnable = true
     instance?.isInAppOauthEnable = true
@@ -67,5 +68,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     instance?.consumerSecret = CommonDefine.naverClientSecret
     instance?.serviceUrlScheme = Bundle.main.bundleIdentifier
     instance?.appName = "Mercury"
+    
+    let container = MercuryContainer.shared
+    container.register(SignInTokenInformable.self, instance: SignInInformationManager.shared)
+    container.register(SignInUserInformable.self, instance: SignInInformationManager.shared)
+  }
+  
+  private func configureKakaoLoginInstance() {
+    KakaoSDK.initSDK(appKey: CommonDefine.kakaoAuthKey ?? "")
   }
 }

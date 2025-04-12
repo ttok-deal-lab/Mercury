@@ -19,6 +19,7 @@ class NaverSignInProvider: NSObject, UIApplicationDelegate, OauthSignInable {
     instance?.requestDeleteToken()
   }
   
+  @MainActor
   func signIn() async throws -> OauthSignInToken {
     return try await withCheckedThrowingContinuation { [weak self] continuation in
       self?.instance?.delegate = self
@@ -27,7 +28,7 @@ class NaverSignInProvider: NSObject, UIApplicationDelegate, OauthSignInable {
     }
   }
   
-  private func getNaverToken() {
+  private func naverToken() {
     if let token = self.instance?.accessToken {
       self.continuation?.resume(returning: token)
     } else {

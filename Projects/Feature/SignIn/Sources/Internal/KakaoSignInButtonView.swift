@@ -14,27 +14,20 @@ import UIComponent
 import KakaoSDKAuth
 
 struct KakaoSignInButtonView: View {
-  @ObservedObject var signInModelData: SignInModelData
-  @Binding var error: MercuryError?
-  
-  public var body: some View {
+  var completion: () throws -> Void
+  var body: some View {
     Button {
       Task {
-        do {
-          try await signInModelData.oauthSignIn(.kakao)
-        } catch let error as MercuryError {
-          self.error = error
-        }
+        try completion()
       }
     } label: {
       ZStack {
         Text("카카오로 로그인")
           .foregroundStyle(.black)
         HStack {
-          Image(asset: UIComponentAsset.Images.kakaoLogo)
-            .resizable()
+          Asset.Images.kakao.image
             .scaledToFit()
-            .frame(width: 20, height: 20)
+            .frame(width: 24, height: 24)
             .padding(.leading, 5)
           Spacer()
         }
