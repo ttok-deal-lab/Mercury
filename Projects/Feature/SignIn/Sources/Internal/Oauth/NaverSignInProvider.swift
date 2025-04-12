@@ -42,11 +42,11 @@ class NaverSignInProvider: NSObject, UIApplicationDelegate, OauthSignInable {
 extension NaverSignInProvider: NaverThirdPartyLoginConnectionDelegate {
   // 로그인 성공
   func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
-    getNaverToken()
+    naverToken()
   }
   
   func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
-    getNaverToken()
+    naverToken()
   }
   
   func oauth20ConnectionDidFinishDeleteToken() { }
