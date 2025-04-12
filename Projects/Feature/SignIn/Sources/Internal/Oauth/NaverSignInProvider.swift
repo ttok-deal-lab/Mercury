@@ -28,7 +28,7 @@ class NaverSignInProvider: NSObject, UIApplicationDelegate, OauthSignInable {
     }
   }
   
-  private func getNaverToken() {
+  private func naverToken() {
     if let token = self.instance?.accessToken {
       self.continuation?.resume(returning: token)
     } else {
