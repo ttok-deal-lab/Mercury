@@ -14,6 +14,9 @@ struct UIComponentEntry: App {
         Divider()
           .padding(.vertical, 16)
         ColorTestView()
+        Divider()
+          .padding(.vertical, 16)
+        ShadowTestView()
       }
     }
   }

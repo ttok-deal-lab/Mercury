@@ -15,8 +15,7 @@ import KakaoSDKCommon
 import KakaoSDKUser
 import KakaoSDKAuth
 
-
-class KakaoSignInProvider: NSObject, OauthSignInable {
+class KakaoSignInProvider: OauthSignInable {
   // MARK: - private method
   private func kakoTalkLogin(continuation: CheckedContinuation<OauthSignInToken, any Error>) {
     UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
@@ -47,7 +46,6 @@ class KakaoSignInProvider: NSObject, OauthSignInable {
       continuation.resume(returning: token)
     }
   }
-  
   
   // MARK: - internal method
   

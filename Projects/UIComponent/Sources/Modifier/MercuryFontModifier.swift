@@ -1,11 +1,10 @@
 //
-//  FontExtensinos.swift
+//  MercuryFontModifier.swift
 //  UIComponent
 //
-//  Created by 송하민 on 3/30/25.
+//  Created by 송하민 on 4/12/25.
 //
 
-import Foundation
 import SwiftUI
 import UIKit
 
@@ -19,11 +18,5 @@ public struct MercuryFontModifier: ViewModifier {
       .font(.custom(mercuryFont.font.name, size: mercuryFont.size))
       .lineSpacing(mercuryFont.lineHeight - font.lineHeight)
       .baselineOffset(baselineOffset)
-  }
-}
-
-public extension View {
-  func fonts(_ mercuryFont: MercuryFont) -> some View {
-    modifier(MercuryFontModifier(mercuryFont: mercuryFont))
   }
 }
