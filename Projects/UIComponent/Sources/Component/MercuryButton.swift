@@ -8,15 +8,43 @@
 import SwiftUI
 
 public struct MercuryButton: View {
+  public enum ButtonType {
+    case primary
+    case secondary
+    
+    var backgroundColor: Color {
+      switch self {
+      case .primary:
+        Asset.Colors.buttonPrimaryDefault.color
+      case .secondary:
+        Asset.Colors.buttonGrayDefault.color
+      }
+    }
+    
+    var textColor: Color {
+      switch self {
+      case .primary:
+        Asset.Colors.textWhite.color
+      case .secondary:
+        Asset.Colors.textBlack.color
+      }
+    }
+  }
+  
   // MARK: - private property
+  
+  private let type: ButtonType
   private let title: String
   private let completion: () -> Void
   
   // MARK: - life cycle
+  
   public init(
+    type: ButtonType = .primary,
     _ title: String,
     completion: @escaping () -> Void
   ) {
+    self.type = type
     self.title = title
     self.completion = completion
   }
@@ -27,14 +55,9 @@ public struct MercuryButton: View {
     } label: {
       Text(title)
         .fonts(.bodyLargeBold)
-        .padding(.horizontal, 24)
-        .frame(height: 56)
-        .foregroundStyle(Asset.Colors.textWhite.color)
-        .background(
-          onDisabled
-          ? Asset.Colors.buttonPrimaryDisabled.color
-          : Asset.Colors.buttonPrimaryDefault.color
-        )
+        .foregroundStyle(type.textColor)
+        .frame(maxWidth: .infinity, minHeight: 56)
+        .background(type.backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
   }
@@ -42,8 +65,13 @@ public struct MercuryButton: View {
 
 #Preview {
   MercuryButton(
-    "이것은 확인버튼입니다.",
-    onDisable: .constant(false)
+    "이것은 확인버튼입니다."
+  ) {
+  }
+  
+  MercuryButton(
+    type: .secondary,
+    "이것은 확인버튼입니다."
   ) {
   }
 }

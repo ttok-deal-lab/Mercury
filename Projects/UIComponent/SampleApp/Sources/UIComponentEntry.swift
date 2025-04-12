@@ -7,6 +7,7 @@ struct UIComponentEntry: App {
   var body: some Scene {
     WindowGroup {
       ScrollView(.vertical) {
+        AlertTestView()
         FontTestView()
         Divider()
           .padding(.vertical, 16)
@@ -17,6 +18,9 @@ struct UIComponentEntry: App {
         Divider()
           .padding(.vertical, 16)
         ShadowTestView()
+        Divider()
+          .padding(.vertical, 16)
+        
       }
     }
   }

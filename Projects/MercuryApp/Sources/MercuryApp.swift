@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 
+import UIComponent
 import AppFoundation
 import Domain
 import Router
@@ -43,11 +44,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     let container = MercuryContainer.shared
     container.register(SignInTokenInformable.self, instance: SignInInformationManager.shared)
     container.register(SignInUserInformable.self, instance: SignInInformationManager.shared)
-    
     return true
   }
   
-  // MARK: - pre onfigure instances
+  // MARK: - pre-configure instances
   
   private func initiateKakaoMapInstance() {
     if let sdkAppKey = CommonDefine.mapKey {
@@ -68,13 +68,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     instance?.consumerSecret = CommonDefine.naverClientSecret
     instance?.serviceUrlScheme = Bundle.main.bundleIdentifier
     instance?.appName = "Mercury"
-    
-    let container = MercuryContainer.shared
-    container.register(SignInTokenInformable.self, instance: SignInInformationManager.shared)
-    container.register(SignInUserInformable.self, instance: SignInInformationManager.shared)
   }
   
   private func configureKakaoLoginInstance() {
-    KakaoSDK.initSDK(appKey: CommonDefine.kakaoAuthKey ?? "")
+    KakaoSDK.initSDK(appKey: CommonDefine.kakaoAuthKey ?? "", loggingEnable: false)
   }
 }

@@ -23,7 +23,6 @@ public enum AuctionAPI: BaseAPI {
     }
   }
   
-  
   public var path: String {
     switch self {
     case .auctionList: "court"
