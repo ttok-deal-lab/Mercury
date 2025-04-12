@@ -9,12 +9,13 @@ import SwiftUI
 import SwiftData
 
 import AppFoundation
+import Domain
 import Router
 
+import GoogleSignIn
+import GoogleSignInSwift
 import KakaoMapsSDK
 import NaverThirdPartyLogin
-import KakaoSDKCommon
-import KakaoSDKAuth
 
 @main
 struct MercuryApp: App {
@@ -23,6 +24,9 @@ struct MercuryApp: App {
   var body: some Scene {
     WindowGroup {
       AppView()
+        .onOpenURL { url in
+          GIDSignIn.sharedInstance.handle(url)
+        }
     }
   }
 }
@@ -30,10 +34,30 @@ struct MercuryApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+    initiateKakaoMapInstance()
+    configureGoogleInstance()
+    configureNaverLoginInstance()
+    
+    let container = MercuryContainer.shared
+    container.register(SignInTokenInformable.self, instance: SignInInformationManager.shared)
+    container.register(SignInUserInformable.self, instance: SignInInformationManager.shared)
+    
+    return true
+  }
+  
+  // MARK: - pre onfigure instances
+  
+  private func initiateKakaoMapInstance() {
     if let sdkAppKey = CommonDefine.mapKey {
       SDKInitializer.InitSDK(appKey: sdkAppKey)
     }
-    
+  }
+  
+  private func configureGoogleInstance() {
+    GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: CommonDefine.googleSignInClientId)
+  }
+  
+  private func configureNaverLoginInstance() {
     // naver SignIn
     let instance = NaverThirdPartyLoginConnection.getSharedInstance()
     instance?.isNaverAppOauthEnable = true

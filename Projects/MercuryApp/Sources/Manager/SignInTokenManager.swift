@@ -13,24 +13,22 @@ import Domain
 import Infrastructure
 
 public final class SignInInformationManager: SignInTokenInformable, SignInUserInformable {
-  public private(set) var tokenInfo: CurrentValueSubject<SignInTokenInfo?, Never> = .init(nil)
-  public private(set) var userInfo: CurrentValueSubject<SignInUserInfo?, Never> = .init(nil)
+  public private(set) var tokenInfo: CurrentValueSubject<UserAccessTokenInfo?, Never> = .init(nil)
+  public private(set) var userInfo: CurrentValueSubject<ServiceSignInUserInfo?, Never> = .init(nil)
   
   private let localStorageUsecase = LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
   
-  @MainActor public static let shared = SignInInformationManager()
-  private init() {
-    initializeSignInInfo()
-  }
+  public static let shared = SignInInformationManager()
   
-  private func initializeSignInInfo() {
+  private init() {
     Task {
-      if let signInTokenInfo = await localStorageUsecase.getModel(forKey: .signInTokenInfo, as: SignInTokenInfo.self) {
+      if let signInTokenInfo = await localStorageUsecase.getModel(forKey: .signInTokenInfo, as: UserAccessTokenInfo.self) {
         tokenInfo.send(signInTokenInfo)
       }
-      if let signInUserInfo = await localStorageUsecase.getModel(forKey: .signInUserInfo, as: SignInUserInfo.self) {
+      if let signInUserInfo = await localStorageUsecase.getModel(forKey: .signInUserInfo, as: ServiceSignInUserInfo.self) {
         userInfo.send(signInUserInfo)
       }
     }
   }
+
 }

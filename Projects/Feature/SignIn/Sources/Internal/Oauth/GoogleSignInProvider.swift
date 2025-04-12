@@ -32,7 +32,6 @@ class GoogleSignInProvider: OauthSignInable {
           continuation.resume(throwing: MercuryError(from: .ownModule(.googleSignin), .unknown))
           return
         }
-        
         continuation.resume(returning: token)
       }
     }

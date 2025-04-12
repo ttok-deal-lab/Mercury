@@ -8,6 +8,7 @@
 import Foundation
 
 import AppFoundation
+import Domain
 
 public protocol BaseAPI {
   var baseURL: String { get }

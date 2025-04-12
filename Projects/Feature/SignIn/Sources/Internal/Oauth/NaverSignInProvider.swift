@@ -14,6 +14,7 @@ class NaverSignInProvider: NSObject, UIApplicationDelegate, OauthSignInable {
   private var continuation: CheckedContinuation<OauthSignInToken, Error>?
 
   // MARK: - internal method
+  
   public func logout() {
     instance?.requestDeleteToken()
   }

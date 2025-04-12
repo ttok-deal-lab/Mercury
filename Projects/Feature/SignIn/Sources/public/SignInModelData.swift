@@ -13,9 +13,13 @@ import AppFoundation
 import Domain
 
 public final class SignInModelData: ObservableObject {
+  // MARK: - private proprty
+  
   private let serviceSignInUsecasable: ServiceSignInUsecasable
   private let localStorageUsecasable: LocalStorageUsecasable
   private let oauthSignInProviderFactory = SignInProviderFactory()
+  
+  // MARK: - life cycle
   
   init(
     serviceSignInUsecasable: ServiceSignInUsecasable,
@@ -25,10 +29,14 @@ public final class SignInModelData: ObservableObject {
     self.localStorageUsecasable = localStorageUsecasable
   }
   
+  // MARK: - private method
+  
   private func serviceSignIn(provider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws {
     let signInInformation = try await serviceSignInUsecasable.serviceSignIn(oauthProvider: provider, oauthSignInToken: oauthSignInToken)
     await localStorageUsecasable.setModel(signInInformation, forKey: .signInTokenInfo)
   }
+  
+  // MARK: - public method
   
   public func oauthSignIn(_ oauthProvider: OauthProvider) throws {
     Task {

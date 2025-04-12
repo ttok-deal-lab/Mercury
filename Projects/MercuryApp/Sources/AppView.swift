@@ -15,12 +15,12 @@ import Router
 import UIComponent
 
 struct AppView: View {
-  @StateObject private var coordinator = NavigationCoordinator<GlobalRoute>()
+  @StateObject private var coordinator = NavigationCoordinator<FeatureRoute>()
   
   var body: some View {
     NavigationStack(path: $coordinator.navigationPath) {
       FakeHomeView(eventSubject: coordinator.eventSubject)
-        .navigationDestination(for: GlobalRoute.self) { route in
+        .navigationDestination(for: FeatureRoute.self) { route in
           RootViewFactory().makeView(
             route,
             eventSubject: coordinator.eventSubject
@@ -31,7 +31,7 @@ struct AppView: View {
       if let route = coordinator.fullScreenRoute {
         NavigationStack(path: $coordinator.fullScreenPath) {
           RootViewFactory().makeView(route, eventSubject: coordinator.eventSubject)
-            .navigationDestination(for: GlobalRoute.self) { route in
+            .navigationDestination(for: FeatureRoute.self) { route in
               RootViewFactory().makeView(route, eventSubject: coordinator.eventSubject)
             }
         }
@@ -42,9 +42,9 @@ struct AppView: View {
 
 
 struct FakeHomeView: View {
-  let eventSubject: PassthroughSubject<NavigationEvent<GlobalRoute>, Never>
+  let eventSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
-  public init(eventSubject: PassthroughSubject<NavigationEvent<GlobalRoute>, Never>) {
+  public init(eventSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
     self.eventSubject = eventSubject
   }
   

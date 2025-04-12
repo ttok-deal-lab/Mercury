@@ -18,11 +18,9 @@ let project = Project.framework(
     .domain,
     .network,
     .infrastructure,
-    .kakaoCommon,
-    .kakaoLogin,
-    .kakaoUser,
     .googleSignIn,
-    .naverThirdPartyLogin,
+    .googleSignInSwift,
+    .naverThirdPartyLogin
   ],
   testDependencies: []
 )

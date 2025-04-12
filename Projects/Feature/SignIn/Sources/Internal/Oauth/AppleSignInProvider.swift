@@ -15,15 +15,17 @@ final class AppleSignInProvider: OauthSignInable {
   private var delegate: AppleSignInDelegate?
   
   func signIn() async throws -> OauthSignInToken {
-    try await withCheckedThrowingContinuation { continuation in
-      let provider = ASAuthorizationAppleIDProvider()
-      let request = provider.createRequest()
-      request.requestedScopes = [.fullName, .email]
-      
-      let controller = ASAuthorizationController(authorizationRequests: [request])
-      self.delegate = AppleSignInDelegate(continuation: continuation)
-      controller.delegate = self.delegate
-      controller.performRequests()
+    try await withCheckedThrowingContinuation { [weak self] continuation in
+      Task { @MainActor in
+        let provider = ASAuthorizationAppleIDProvider()
+        let request = provider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        
+        let controller = ASAuthorizationController(authorizationRequests: [request])
+        self?.delegate = AppleSignInDelegate(continuation: continuation)
+        controller.delegate = self?.delegate
+        controller.performRequests()
+      }
     }
   }
 }

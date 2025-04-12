@@ -16,7 +16,7 @@ public class ServiceSignInUsecase: ServiceSignInUsecasable {
     self.repository = repository
   }
   
-  public func serviceSignIn(oauthProvider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws -> SignInInformation {
+  public func serviceSignIn(oauthProvider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws -> ServiceSignInUserInfo {
     return try await repository.signIn(
       oauthProvider: oauthProvider,
       oauthSignInToken: oauthSignInToken
@@ -33,6 +33,6 @@ public enum OauthProvider: String, Identifiable {
   }
   case apple
   case google
-  case kakao
+//  case kakao
   case naver
 }
