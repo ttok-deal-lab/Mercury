@@ -9,18 +9,15 @@ import SwiftUI
 
 public struct MercuryButton: View {
   // MARK: - private property
-  @Binding private var onDisabled: Bool
   private let title: String
   private let completion: () -> Void
   
   // MARK: - life cycle
   public init(
     _ title: String,
-    onDisable: Binding<Bool>,
     completion: @escaping () -> Void
   ) {
     self.title = title
-    self._onDisabled = onDisable
     self.completion = completion
   }
   
@@ -40,7 +37,6 @@ public struct MercuryButton: View {
         )
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
-    .disabled(onDisabled) 
   }
 }
 
