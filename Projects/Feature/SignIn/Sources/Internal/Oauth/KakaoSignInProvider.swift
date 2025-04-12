@@ -9,12 +9,14 @@
 import Foundation
 
 import AppFoundation
+import Domain
 
 import KakaoSDKCommon
 import KakaoSDKUser
 import KakaoSDKAuth
 
-class KakaoSignInProvider: NSObject, SignInable {
+
+class KakaoSignInProvider: NSObject, OauthSignInable {
   
   // MARK: - internal method
   
