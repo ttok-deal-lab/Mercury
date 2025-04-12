@@ -8,7 +8,6 @@
 import Foundation
 
 import AppFoundation
-import Domain
 
 public protocol BaseAPI {
   var baseURL: String { get }
@@ -16,6 +15,7 @@ public protocol BaseAPI {
   var path: String { get }
   var method: HTTPMethod { get }
   var headers: [String: String]? { get }
+  var additionalHeaders: [String: String]? { get }
   var requestBody: [String: Any]? { get }
   var queryParam: [String: Any]? { get }
   
@@ -28,12 +28,14 @@ public extension BaseAPI {
   }
   
   var headers: [String: String]? {
-    var header = ["Content-Type": "application/json"]
-    if let tokenInfo = MercuryContainer.shared.resolve(SignInTokenInformable.self).tokenInfo.value {
-      header["Authorization"] = tokenInfo.accessToken
+      return [
+        "Content-Type": "application/json"
+      ]
     }
-    return header
-  }
+    
+    var additionalHeaders: [String: String]? {
+      return nil
+    }
   
   var requestBody: [String: Any]? {
     return nil

@@ -12,7 +12,8 @@ let project = Project.framework(
   name: "Network",
   platform: .iOS,
   dependencies: [
-    .appFoundation
+    .appFoundation,
+  
   ],
   testDependencies: [
     
