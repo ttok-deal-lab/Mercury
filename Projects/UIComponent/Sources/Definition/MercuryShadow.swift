@@ -1,5 +1,5 @@
 //
-//  ShadowDefine.swift
+//  MercuryShadow.swift
 //  UIComponent
 //
 //  Created by 송하민 on 4/12/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ShadowDefine {
+public enum MercuryShadow {
   case shadowLow
   case shadowMediumLow
   case shadowMedium

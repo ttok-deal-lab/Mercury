@@ -20,3 +20,9 @@ struct MercuryFontModifier: ViewModifier {
       .baselineOffset(baselineOffset)
   }
 }
+
+public extension View {
+  func fonts(_ mercuryFont: MercuryFont) -> some View {
+    modifier(MercuryFontModifier(mercuryFont: mercuryFont))
+  }
+}

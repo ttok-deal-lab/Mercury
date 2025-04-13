@@ -17,7 +17,7 @@ struct AlertTestView: View {
     } label: {
       Text("show alert")
     }
-    .windowCover(isPresented: $isShowAlert) {
+    .alerts(isPresented: $isShowAlert) {
       MercuryAlert(isPresented: $isShowAlert, type: .cancallable(information: AlertCancellableInformation(title: "title", description: "description", confirmButtonTitle: "confirm", cancelButtonTitle: "cancel", onConfirm: { print("11" )}, onCancel: { print("22")})))
     }
     

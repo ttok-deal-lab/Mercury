@@ -9,6 +9,43 @@ import SwiftUI
 
 import AppFoundation
 
+public enum AlertInformType {
+  case confirmable(information: AlertConfirmInformation)
+  case cancallable(information: AlertCancellableInformation)
+}
+
+public struct AlertConfirmInformation {
+  let title: String
+  let description: String
+  let confirmButtonTitle: String
+  let onConfirm: () -> Void
+  
+  public init(title: String, description: String, confirmButtonTitle: String, onConfirm: @escaping () -> Void) {
+    self.title = title
+    self.description = description
+    self.confirmButtonTitle = confirmButtonTitle
+    self.onConfirm = onConfirm
+  }
+}
+
+public struct AlertCancellableInformation {
+  let title: String
+  let description: String
+  let confirmButtonTitle: String
+  let cancelButtonTitle: String
+  let onConfirm: () -> Void
+  let onCancel: () -> Void
+  
+  public init(title: String, description: String, confirmButtonTitle: String, cancelButtonTitle: String, onConfirm: @escaping () -> Void, onCancel: @escaping () -> Void) {
+    self.title = title
+    self.description = description
+    self.confirmButtonTitle = confirmButtonTitle
+    self.cancelButtonTitle = cancelButtonTitle
+    self.onConfirm = onConfirm
+    self.onCancel = onCancel
+  }
+}
+
 public struct MercuryAlert: View {
   @State private var animate: Bool = false
   @Binding private var isPresented: Bool
@@ -142,43 +179,6 @@ public struct MercuryAlert: View {
       }
       .padding(.horizontal, 24)
     }
-  }
-}
-
-public enum AlertInformType {
-  case confirmable(information: AlertConfirmInformation)
-  case cancallable(information: AlertCancellableInformation)
-}
-
-public struct AlertConfirmInformation {
-  let title: String
-  let description: String
-  let confirmButtonTitle: String
-  let onConfirm: () -> Void
-  
-  public init(title: String, description: String, confirmButtonTitle: String, onConfirm: @escaping () -> Void) {
-    self.title = title
-    self.description = description
-    self.confirmButtonTitle = confirmButtonTitle
-    self.onConfirm = onConfirm
-  }
-}
-
-public struct AlertCancellableInformation {
-  let title: String
-  let description: String
-  let confirmButtonTitle: String
-  let cancelButtonTitle: String
-  let onConfirm: () -> Void
-  let onCancel: () -> Void
-  
-  public init(title: String, description: String, confirmButtonTitle: String, cancelButtonTitle: String, onConfirm: @escaping () -> Void, onCancel: @escaping () -> Void) {
-    self.title = title
-    self.description = description
-    self.confirmButtonTitle = confirmButtonTitle
-    self.cancelButtonTitle = cancelButtonTitle
-    self.onConfirm = onConfirm
-    self.onCancel = onCancel
   }
 }
 

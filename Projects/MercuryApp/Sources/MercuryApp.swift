@@ -25,10 +25,12 @@ struct MercuryApp: App {
   
   var body: some Scene {
     WindowGroup {
-      AppView()
-        .onOpenURL { url in
-          GIDSignIn.sharedInstance.handle(url)
-        }
+      ToastWindowView {
+        AppView()
+          .onOpenURL { url in
+            GIDSignIn.sharedInstance.handle(url)
+          }
+      }
     }
   }
 }
@@ -44,6 +46,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     let container = MercuryContainer.shared
     container.register(SignInTokenInformable.self, instance: SignInInformationManager.shared)
     container.register(SignInUserInformable.self, instance: SignInInformationManager.shared)
+    container.register(Toastable.self, instance: MercuryToast.shared)
+    
     return true
   }
   
