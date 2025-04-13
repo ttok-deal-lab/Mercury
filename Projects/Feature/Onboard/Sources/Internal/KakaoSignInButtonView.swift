@@ -24,7 +24,7 @@ struct KakaoSignInButtonView: View {
       ZStack {
         Text("카카오로 로그인")
           .fonts(.bodyMediumMedium)
-          .foregroundStyle(Asset.Colors.textBlack.color)
+          .foregroundStyle(Asset.Colors.gray900TextBlack.color)
         HStack {
           Asset.Images.kakao.image
             .scaledToFit()

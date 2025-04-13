@@ -1,5 +1,5 @@
 //
-//  ProfileViewWrapperView.swift
+//  MyPageViewWrapperView.swift
 //  MercuryApp
 //
 //  Created by 송하민 on 4/13/25.
@@ -9,14 +9,14 @@ import SwiftUI
 import Combine
 
 import Router
-import Profile
+import MyPage
 
-public struct ProfileViewWrapperView: View, ProfileViewable {
+public struct MyPageViewWrapperView: View, MyPageViewable {
   
-  let hostView: ProfileView
+  let hostView: MyPageView
   
   public init(navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.hostView = ProfileView()
+    self.hostView = MyPageView(navigationSubject: navigationSubject)
   }
   
   public var body: some View {

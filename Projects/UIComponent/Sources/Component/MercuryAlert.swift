@@ -62,7 +62,7 @@ public struct MercuryAlert: View {
   
   public var body: some View {
     ZStack {
-      Asset.Colors.textWhite.color
+      Asset.Colors.gray10TextWhite.color
       VStack(spacing: .zero) {
         switch type {
         case .confirmable(let information):
@@ -108,14 +108,14 @@ public struct MercuryAlert: View {
         HStack(spacing: .zero) {
           Text(information.title)
             .fonts(.titleLargeBold)
-            .foregroundStyle(Asset.Colors.textDefault.color)
+            .foregroundStyle(Asset.Colors.gray700TextDefault.color)
           Spacer()
         }
         .padding(.horizontal, 24)
         
         HStack(spacing: .zero) {
           Text(information.description)
-            .foregroundStyle(Asset.Colors.textSubText.color)
+            .foregroundStyle(Asset.Colors.gray400TextSubText.color)
             .fonts(.bodyMediumMedium)
           Spacer()
         }
@@ -141,14 +141,14 @@ public struct MercuryAlert: View {
         HStack(spacing: .zero) {
           Text(information.title)
             .fonts(.titleLargeBold)
-            .foregroundStyle(Asset.Colors.textDefault.color)
+            .foregroundStyle(Asset.Colors.gray700TextDefault.color)
           Spacer()
         }
         .padding(.horizontal, 24)
         
         HStack(spacing: .zero) {
           Text(information.description)
-            .foregroundStyle(Asset.Colors.textSubText.color)
+            .foregroundStyle(Asset.Colors.gray400TextSubText.color)
             .fonts(.bodyMediumMedium)
           Spacer()
         }

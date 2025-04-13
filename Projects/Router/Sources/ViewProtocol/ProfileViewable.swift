@@ -8,6 +8,6 @@
 import SwiftUI
 import Combine
 
-public protocol ProfileViewable where Self: View {
+public protocol MyPageViewable where Self: View {
   init(navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>)
 }

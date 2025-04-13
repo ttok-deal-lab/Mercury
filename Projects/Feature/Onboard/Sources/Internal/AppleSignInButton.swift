@@ -22,7 +22,7 @@ struct AppleSignInButton: View {
       ZStack {
         Text("Apple로 로그인")
           .fonts(.bodyMediumMedium)
-          .foregroundStyle(Asset.Colors.textWhite.color)
+          .foregroundStyle(Asset.Colors.gray10TextWhite.color)
         HStack(spacing: .zero) {
           Asset.Images.apple.image
             .resizable()

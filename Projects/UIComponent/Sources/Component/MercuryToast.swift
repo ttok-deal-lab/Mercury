@@ -38,7 +38,7 @@ public class MercuryToast: Toastable {
   
   public func present(
     title: String,
-    tint: Color = Asset.Colors.textBlack.color,
+    tint: Color = Asset.Colors.gray900TextBlack.color,
     timing: ToastTime = .long
   ) {
     withAnimation(.snappy) {

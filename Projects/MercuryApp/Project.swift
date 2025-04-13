@@ -13,14 +13,16 @@ let project = Project.app(
     .router,
     .domain,
     .infrastructure,
+    .feature(target: "Tabbar"),
+    .feature(target: "Interest"),
+    .feature(target: "Report"),
+    .feature(target: "MyPage"),
     .feature(target: "Analysis"),
     .feature(target: "Auction"),
     .feature(target: "Comment"),
-    .feature(target: "Profile"),
     .feature(target: "Map"),
     .feature(target: "Onboard"),
-    .feature(target: "SignUp"),
-    .feature(target: "Tabbar")
+    .feature(target: "SignUp")
   ],
   testDependencies: []
 )

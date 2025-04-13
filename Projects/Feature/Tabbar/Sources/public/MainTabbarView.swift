@@ -13,31 +13,75 @@ import AppFoundation
 import UIComponent
 import Router
 
-enum Tab {
-  case home
-  case settings
-}
-
-public struct MainTabbarView<ProfileView: ProfileViewable>: View {
+public struct MainTabbarView<AuctionHomeView: AuctionHomeViewable, InterestView: InterestViewable, ReportView: ReportViewable, MyPageView: MyPageViewable>: View {
+  
   @State private var selection: Tab = .home
   private var navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
   public init(navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
     self.navigationSubject = navigationSubject
   }
+  
   public var body: some View {
     TabView(selection: $selection) {
-      ProfileView(navigationSubject: navigationSubject)
+      AuctionHomeView(navigationSubject: navigationSubject)
         .tabItem {
-          Label("홈", systemImage: "house")
+          Tab.home.iconView(isSelected: selection == .home)
         }
         .tag(Tab.home)
       
-      EmptyView()
+      InterestView(navigationSubject: navigationSubject)
         .tabItem {
-          Label("설정", systemImage: "gear")
+          Tab.interest.iconView(isSelected: selection == .interest)
         }
-        .tag(Tab.settings)
+        .tag(Tab.interest)
+      
+      ReportView(navigationSubject: navigationSubject)
+        .tabItem {
+          Tab.report.iconView(isSelected: selection == .report)
+        }
+        .tag(Tab.report)
+      
+      MyPageView(navigationSubject: navigationSubject)
+        .tabItem {
+          Tab.myPage.iconView(isSelected: selection == .myPage)
+        }
+        .tag(Tab.myPage)
+    }
+  }
+}
+
+enum Tab {
+  case home, interest, report, myPage
+
+  var title: String {
+    switch self {
+    case .home: return "홈"
+    case .interest: return "관심"
+    case .report: return "임장보고서"
+    case .myPage: return "설정"
+    }
+  }
+
+  func iconImage(isSelected: Bool) -> Image {
+    switch self {
+    case .home: return isSelected ? Asset.Images.gnbHome.image : Asset.Images.gnbHomeGray.image
+    case .interest: return isSelected ? Asset.Images.gnbInterest.image : Asset.Images.gnbInterestGray.image
+    case .report: return isSelected ? Asset.Images.gnbReport.image : Asset.Images.gnbReportGray.image
+    case .myPage: return isSelected ? Asset.Images.gnbMypage.image : Asset.Images.gnbMypageGray.image
+    }
+  }
+
+  func textColor(isSelected: Bool) -> Color {
+    isSelected ? Asset.Colors.primary200TextSuccess.color : Asset.Colors.gray400TextSubText.color
+  }
+
+  func iconView(isSelected: Bool) -> some View {
+    VStack(spacing: .zero) {
+      iconImage(isSelected: isSelected)
+      Text(title)
+        .fonts(.bodyMicroMedium)
+        .foregroundStyle(textColor(isSelected: isSelected))
     }
   }
 }
