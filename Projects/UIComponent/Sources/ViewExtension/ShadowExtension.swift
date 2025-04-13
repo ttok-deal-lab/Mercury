@@ -9,6 +9,6 @@ import SwiftUI
 
 public extension View {
   func shadows(_ shadowDefine: ShadowDefine) -> some View {
-    modifier(ShadowModifier(type: shadowDefine))
+    modifier(ShadowModifier(shadow: shadowDefine))
   }
 }

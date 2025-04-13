@@ -96,7 +96,6 @@ public struct MercuryAlert: View {
       )
       .padding(.horizontal, 24)
     }
-    .padding(.vertical, 24)
   }
   
   private func cancellableAlertView(information: AlertCancellableInformation) -> some View {
@@ -181,4 +180,41 @@ public struct AlertCancellableInformation {
     self.onConfirm = onConfirm
     self.onCancel = onCancel
   }
+}
+
+#Preview {
+  MercuryAlert(
+    isPresented: .constant(
+      true
+    ),
+    type: .cancallable(
+      information: AlertCancellableInformation(
+        title: "Cancellable Title",
+        description: "Cancellable Description: Some Word Needs To Be Here.",
+        confirmButtonTitle: "Confirm",
+        cancelButtonTitle: "Cancel",
+        onConfirm: {
+          
+        },
+        onCancel: {
+          
+        })
+    )
+  )
+  
+  MercuryAlert(
+    isPresented: .constant(
+      true
+    ),
+    type: .confirmable(
+      information: AlertConfirmInformation(
+        title: "Confirmable Title",
+        description: "Confirmable Description: Some Word Needs To Be Here Somehow.",
+        confirmButtonTitle: "Confirm",
+        onConfirm: {
+          
+        }
+      )
+    )
+  )
 }

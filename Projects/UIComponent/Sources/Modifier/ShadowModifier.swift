@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-public struct ShadowModifier: ViewModifier {
-  let type: ShadowDefine
+struct ShadowModifier: ViewModifier {
+  let shadow: ShadowDefine
   
-  public func body(content: Content) -> some View {
+  func body(content: Content) -> some View {
     return content
-      .shadow(color: Asset.Colors.shadow.color.opacity(type.opacity), radius: type.blur, x: type.xDirection, y: type.yDirection)
+      .shadow(color: Asset.Colors.shadow.color.opacity(shadow.opacity), radius: shadow.blur, x: shadow.xDirection, y: shadow.yDirection)
   }
 }
