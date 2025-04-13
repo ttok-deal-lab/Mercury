@@ -17,7 +17,19 @@ final class MainTabbarModelData: ObservableObject {
   private var store = Set<AnyCancellable>()
   
   init() {
-    self.isUserSignIn = signInTokenInformable.isUserLoggedIn
+    Task { @MainActor [weak self] in
+      guard let self else { return }
+      signInTokenInformable.tokenInfo
+        .map { $0?.accessToken != nil }
+        .removeDuplicates()
+        .receive(on: RunLoop.main)
+        .sink { isUserLogged in
+          self.isUserSignIn = isUserLogged
+        }
+        .store(in: &store)
+        
+    }
+    
   }
     
 }

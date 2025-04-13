@@ -26,7 +26,6 @@ public struct MainTabbarView<
   @StateObject private var modelData = MainTabbarModelData()
   @State private var selection: Tab = .home
   private var navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
-  private var store = Set<AnyCancellable>()
   
   // MARK: - life cycle
   
@@ -35,6 +34,19 @@ public struct MainTabbarView<
   }
   
   public var body: some View {
+    ZStack {
+      if modelData.isUserSignIn {
+        tabView()
+          .transition(.opacity)
+      } else {
+        SignInView(navigationSubject: navigationSubject)
+          .transition(.opacity)
+      }
+    }
+    .animation(.easeInOut(duration: 0.12), value: modelData.isUserSignIn)
+  }
+  
+  private func tabView() -> some View {
     TabView(selection: $selection) {
       AuctionHomeView(navigationSubject: navigationSubject)
         .tabItem {
@@ -59,11 +71,6 @@ public struct MainTabbarView<
           Tab.myPage.iconView(isSelected: selection == .myPage)
         }
         .tag(Tab.myPage)
-    }
-    .task {
-      if !modelData.isUserSignIn {
-        navigationSubject.send(.presentFullScreen(.onboard(.init(step: .signIn))))
-      }
     }
   }
 }

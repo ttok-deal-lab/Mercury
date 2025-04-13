@@ -19,16 +19,11 @@ public final class SignInInformationManager: SignInTokenInformable, SignInUserIn
   private let localStorageUsecase = LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
   private var store = Set<AnyCancellable>()
   
-  public var isUserLoggedIn: Bool {
-    return self.tokenInfo.value?.accessToken != nil
-  }
-  
   // MARK: - life cycle
   
   public static let shared = SignInInformationManager()
   
   private init() {
-    
     Task {
       tokenInfo
         .dropFirst()
