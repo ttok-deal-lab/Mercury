@@ -15,18 +15,18 @@ public struct MercuryButton: View {
     var backgroundColor: Color {
       switch self {
       case .primary:
-        Asset.Colors.buttonPrimaryDefault.color
+        Asset.Colors.primary200ButtonPrimaryDefault.color
       case .secondary:
-        Asset.Colors.buttonGrayDefault.color
+        Asset.Colors.gray100ButtonGrayDefault.color
       }
     }
     
     var textColor: Color {
       switch self {
       case .primary:
-        Asset.Colors.textWhite.color
+        Asset.Colors.gray10TextWhite.color
       case .secondary:
-        Asset.Colors.textBlack.color
+        Asset.Colors.gray900TextBlack.color
       }
     }
   }

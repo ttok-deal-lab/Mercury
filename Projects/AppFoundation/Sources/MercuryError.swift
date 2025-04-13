@@ -24,23 +24,20 @@ public class MercuryError: Error, Equatable {
       case analysis
       case auction
       case mainTabbar
-      case appleSignin
-      case googleSignin
-      case naverSignin
-      case kakaoSignin
+      case onboard
     }
   }
   
   // MARK: - private properties
   
-  private let errorFrom: ErrorFrom
+  private var errorFrom: ErrorFrom?
   private let code: Int
   
   
   // MARK: - public properties
   
   public var description: String {
-    return "[error code: \(self.code)\nfrom: \(errorFrom)]"
+    return "[error code: \(self.code)\nfrom: \(errorFrom ?? .server)]"
   }
   
   
@@ -53,6 +50,10 @@ public class MercuryError: Error, Equatable {
   
   public init(from: ErrorFrom, _ errorDefine: MercuryErrorDefine) {
     self.errorFrom = from
+    self.code = errorDefine.rawValue
+  }
+  
+  public init(_ errorDefine: MercuryErrorDefine) {
     self.code = errorDefine.rawValue
   }
   

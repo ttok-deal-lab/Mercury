@@ -12,7 +12,7 @@ public extension Project {
   // MARK: - project manifests
   
   static let appName: String = "Mercury"
-  static let productName: String = "민달팽이"
+  static let productName: String = "Slug"
   static let bundleId = "com.auction.mercury"
   static let deploymentTarget: DeploymentTargets = .iOS("17.0")
   

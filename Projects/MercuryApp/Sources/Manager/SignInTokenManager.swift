@@ -17,11 +17,32 @@ public final class SignInInformationManager: SignInTokenInformable, SignInUserIn
   public private(set) var userInfo: CurrentValueSubject<ServiceSignInUserInfo?, Never> = .init(nil)
   
   private let localStorageUsecase = LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
+  private var store = Set<AnyCancellable>()
+  
+  // MARK: - life cycle
   
   public static let shared = SignInInformationManager()
   
   private init() {
     Task {
+      tokenInfo
+        .dropFirst()
+        .sink { tokenInfo in
+          Task { [weak self] in
+            await self?.localStorageUsecase.setModel(tokenInfo, forKey: .signInTokenInfo)
+          }
+        }
+        .store(in: &store)
+      
+      userInfo
+        .dropFirst()
+        .sink { [weak self] userInfo in
+          Task { [weak self] in
+            await self?.localStorageUsecase.setModel(userInfo, forKey: .signInUserInfo)
+          }
+        }
+        .store(in: &store)
+      
       if let signInTokenInfo = await localStorageUsecase.getModel(forKey: .signInTokenInfo, as: UserAccessTokenInfo.self) {
         tokenInfo.send(signInTokenInfo)
       }
@@ -29,6 +50,6 @@ public final class SignInInformationManager: SignInTokenInformable, SignInUserIn
         userInfo.send(signInUserInfo)
       }
     }
+    
   }
-
 }

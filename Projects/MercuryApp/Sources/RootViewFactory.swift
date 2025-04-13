@@ -10,24 +10,24 @@ import Combine
 
 import Router
 import Auction
-import SignIn
+import Onboard
 import Domain
 import Infrastructure
 
-struct RootViewFactory<ScreenRoute: Hashable>: ViewFactory {
+struct RootViewFactory: ViewFactory {
   
   @ViewBuilder
   func makeView(
     _ route: FeatureRoute,
-    eventSubject: PassthroughSubject<NavigationEvent<ScreenRoute>, Never>
+    navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   ) -> some View {
     switch route {
-    case .signIn(let signInRoute):
-      SignInViewFactory<ScreenRoute>(
+    case .onboard(let signInRoute):
+      SignInViewFactory(
         serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
         localStorageUsecasable: LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
       )
-      .makeView(signInRoute, eventSubject: eventSubject)
+      .makeView(signInRoute, navigationSubject: navigationSubject)
     case .auction(let auctionRoute):
       VStack { }
     }

@@ -19,17 +19,17 @@ struct AppView: View {
   
   var body: some View {
     NavigationStack(path: $coordinator.navigationPath) {
-      FakeHomeView(eventSubject: coordinator.eventSubject)
+      TabbarViewWrapperView(navigationSubject: coordinator.eventSubject)
         .navigationDestination(for: FeatureRoute.self) { route in
-          RootViewFactory().makeView(route, eventSubject: coordinator.eventSubject)
+          RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
         }
     }
     .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
       if let route = coordinator.fullScreenRoute {
         NavigationStack(path: $coordinator.fullScreenPath) {
-          RootViewFactory().makeView(route, eventSubject: coordinator.eventSubject)
+          RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
             .navigationDestination(for: FeatureRoute.self) { route in
-              RootViewFactory().makeView(route, eventSubject: coordinator.eventSubject)
+              RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
             }
         }
       }
@@ -38,19 +38,19 @@ struct AppView: View {
 }
 
 
-struct FakeHomeView: View {
-  let eventSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
-  
-  public init(eventSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.eventSubject = eventSubject
-  }
-  
-  var body: some View {
-    Button {
-      eventSubject.send(.push(.signIn(.init(route: .signIn))))
-    } label: {
-      Text("go tutorial")
-        .fonts(.bodyLargeBold)
-    }
-  }
-}
+//struct FakeHomeView: View {
+//  let navigationEvent: NavigationSubject
+//  
+//  public init(navigationEvent: NavigationSubject) {
+//    self.navigationEvent = navigationEvent
+//  }
+//  
+//  var body: some View {
+//    Button {
+//      navigationEvent.send(.presentFullScreen(.onboard(SignInRoute(route: .signIn))))
+//    } label: {
+//      Text("go tutorial")
+//        .fonts(.bodyLargeBold)
+//    }
+//  }
+//}

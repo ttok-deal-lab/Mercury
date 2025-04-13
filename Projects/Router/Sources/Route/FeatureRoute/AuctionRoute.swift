@@ -8,17 +8,17 @@
 import Foundation
 
 public struct AuctionRoute: Hashable {
-  public private(set) var route: Route
+  public private(set) var step: Step
   
-  public init(route: Route) {
-    self.route = route
+  public init(step: Step) {
+    self.step = step
   }
   
-  public enum Route: Hashable {
+  public enum Step: Hashable {
     case recommendAuction(auctionId: Int)
   }
   
   public func hash(into hasher: inout Hasher) {
-    hasher.combine(route)
+    hasher.combine(step)
   }
 }

@@ -16,7 +16,7 @@ public class ServiceSignInUsecase: ServiceSignInUsecasable {
     self.repository = repository
   }
   
-  public func serviceSignIn(oauthProvider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws -> ServiceSignInUserInfo {
+  public func serviceSignIn(oauthProvider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws {
     return try await repository.signIn(
       oauthProvider: oauthProvider,
       oauthSignInToken: oauthSignInToken
@@ -27,7 +27,7 @@ public class ServiceSignInUsecase: ServiceSignInUsecasable {
 
 public typealias OauthSignInToken = String
 
-public enum OauthProvider: String, Identifiable {
+public enum OauthProvider: String, Identifiable, CaseIterable {
   public var id: String {
     return self.rawValue
   }
