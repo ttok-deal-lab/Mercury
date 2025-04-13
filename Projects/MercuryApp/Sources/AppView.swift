@@ -21,10 +21,7 @@ struct AppView: View {
     NavigationStack(path: $coordinator.navigationPath) {
       FakeHomeView(eventSubject: coordinator.eventSubject)
         .navigationDestination(for: FeatureRoute.self) { route in
-          RootViewFactory().makeView(
-            route,
-            eventSubject: coordinator.eventSubject
-          )
+          RootViewFactory().makeView(route, eventSubject: coordinator.eventSubject)
         }
     }
     .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
