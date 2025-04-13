@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 public protocol SignInTokenInformable {
+  var isUserLoggedIn: Bool { get }
   var tokenInfo: CurrentValueSubject<UserAccessTokenInfo?, Never> { get }
 }
 

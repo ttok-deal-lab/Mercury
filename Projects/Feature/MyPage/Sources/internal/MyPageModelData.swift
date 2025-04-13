@@ -17,9 +17,12 @@ final class MyPageModelData: ObservableObject {
   @Published var userInfo: ServiceSignInUserInfo?
   
   private var store = Set<AnyCancellable>()
+  
   init() {
     userInformationStream.userInfo.sink { [weak self] userInfo in
-      self?.userInfo = userInfo
+      Task { @MainActor [weak self] in
+        self?.userInfo = userInfo
+      }
     }
     .store(in: &store)
   }

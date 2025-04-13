@@ -12,7 +12,7 @@ import Combine
 import AppFoundation
 import Domain
 
-public final class SignInModelData: ObservableObject {
+final class SignInModelData: ObservableObject {
 
   // MARK: - private proprty
 
@@ -34,13 +34,13 @@ public final class SignInModelData: ObservableObject {
   // MARK: - private method
   
   private func serviceSignIn(provider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws {
-    let signInInformation = try await serviceSignInUsecasable.serviceSignIn(oauthProvider: provider, oauthSignInToken: oauthSignInToken)
-    await localStorageUsecasable.setModel(signInInformation, forKey: .signInTokenInfo)
+    try await serviceSignInUsecasable.serviceSignIn(oauthProvider: provider, oauthSignInToken: oauthSignInToken)
+//    await localStorageUsecasable.setModel(signInInformation, forKey: .signInTokenInfo)
   }
   
   // MARK: - public method
   
-  public func oauthSignIn(_ oauthProvider: OauthProvider) async throws {
+  func oauthSignIn(_ oauthProvider: OauthProvider) async throws {
     let signInProvider = oauthSignInProviderFactory.createProvider(provider: oauthProvider)
     let oauthSignInToken = try await signInProvider.signIn()
     try await serviceSignIn(provider: oauthProvider, oauthSignInToken: oauthSignInToken)

@@ -13,7 +13,7 @@ import Tabbar
 
 public struct TabbarViewWrapperView: View, TabbarViewable {
   
-  let hostView: MainTabbarView<AuctionHomeViewWrapperView, InterestViewWrapperView, ReportViewWrapperView, MyPageViewWrapperView>
+  let hostView: MainTabbarView<AuctionHomeViewWrapperView, InterestViewWrapperView, ReportViewWrapperView, MyPageViewWrapperView, SignInViewWrapperView>
   
   public init(navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
     hostView = MainTabbarView(navigationSubject: navigationSubject)

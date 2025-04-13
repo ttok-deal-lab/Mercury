@@ -13,10 +13,22 @@ import AppFoundation
 import UIComponent
 import Router
 
-public struct MainTabbarView<AuctionHomeView: AuctionHomeViewable, InterestView: InterestViewable, ReportView: ReportViewable, MyPageView: MyPageViewable>: View {
+public struct MainTabbarView<
+  AuctionHomeView: AuctionHomeViewable,
+  InterestView: InterestViewable,
+  ReportView: ReportViewable,
+  MyPageView: MyPageViewable,
+  SignInView: SignInViewable
+>: View {
   
+  // MARK: - private property
+  
+  @StateObject private var modelData = MainTabbarModelData()
   @State private var selection: Tab = .home
   private var navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+  private var store = Set<AnyCancellable>()
+  
+  // MARK: - life cycle
   
   public init(navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
     self.navigationSubject = navigationSubject
@@ -48,12 +60,17 @@ public struct MainTabbarView<AuctionHomeView: AuctionHomeViewable, InterestView:
         }
         .tag(Tab.myPage)
     }
+    .task {
+      if !modelData.isUserSignIn {
+        navigationSubject.send(.presentFullScreen(.onboard(.init(step: .signIn))))
+      }
+    }
   }
 }
 
 enum Tab {
   case home, interest, report, myPage
-
+  
   var title: String {
     switch self {
     case .home: return "홈"
@@ -62,7 +79,7 @@ enum Tab {
     case .myPage: return "설정"
     }
   }
-
+  
   func iconImage(isSelected: Bool) -> Image {
     switch self {
     case .home: return isSelected ? Asset.Images.gnbHome.image : Asset.Images.gnbHomeGray.image
@@ -71,11 +88,11 @@ enum Tab {
     case .myPage: return isSelected ? Asset.Images.gnbMypage.image : Asset.Images.gnbMypageGray.image
     }
   }
-
+  
   func textColor(isSelected: Bool) -> Color {
     isSelected ? Asset.Colors.primary200TextSuccess.color : Asset.Colors.gray400TextSubText.color
   }
-
+  
   func iconView(isSelected: Bool) -> some View {
     VStack(spacing: .zero) {
       iconImage(isSelected: isSelected)
