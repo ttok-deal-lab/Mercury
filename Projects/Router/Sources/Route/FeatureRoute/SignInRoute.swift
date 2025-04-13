@@ -8,17 +8,17 @@
 import Foundation
 
 public struct SignInRoute: Hashable {
-  public private(set) var route: Route
+  public private(set) var step: Step
   
-  public init(route: Route) {
-    self.route = route
+  public init(step: Step) {
+    self.step = step
   }
   
-  public enum Route: Hashable {
+  public enum Step: Hashable {
     case signIn
   }
   
   public func hash(into hasher: inout Hasher) {
-    hasher.combine(route)
+    hasher.combine(step)
   }
 }

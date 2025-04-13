@@ -12,7 +12,7 @@ import Combine
 import Router
 import Domain
 
-public struct SignInViewFactory<ScreenRoute: Hashable>: ViewFactory {
+public struct SignInViewFactory: ViewFactory {
   private let serviceSignInUsecasable: ServiceSignInUsecasable
   private let localStorageUsecasable: LocalStorageUsecasable
   
@@ -23,9 +23,9 @@ public struct SignInViewFactory<ScreenRoute: Hashable>: ViewFactory {
   
   public func makeView(
     _ route: SignInRoute,
-    navigationSubject: PassthroughSubject<NavigationEvent<ScreenRoute>, Never>
+    navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   ) -> some View {
-    switch route.route {
+    switch route.step {
     case .signIn:
       SignInView(
         navigationSubject: navigationSubject,

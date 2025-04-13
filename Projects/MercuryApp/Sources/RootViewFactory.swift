@@ -14,16 +14,16 @@ import Onboard
 import Domain
 import Infrastructure
 
-struct RootViewFactory<ScreenRoute: Hashable>: ViewFactory {
+struct RootViewFactory: ViewFactory {
   
   @ViewBuilder
   func makeView(
     _ route: FeatureRoute,
-    navigationSubject: PassthroughSubject<NavigationEvent<ScreenRoute>, Never>
+    navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   ) -> some View {
     switch route {
     case .onboard(let signInRoute):
-      SignInViewFactory<ScreenRoute>(
+      SignInViewFactory(
         serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
         localStorageUsecasable: LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
       )

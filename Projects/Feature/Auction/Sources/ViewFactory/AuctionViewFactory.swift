@@ -16,7 +16,7 @@ public struct AuctionViewFactory {
   
   @ViewBuilder
   public static func makeView(_ auctionRoute: AuctionRoute) -> some View {
-    switch auctionRoute.route {
+    switch auctionRoute.step {
     case let .recommendAuction(id):
       AuctionDetailView(auctionId: id)
     }

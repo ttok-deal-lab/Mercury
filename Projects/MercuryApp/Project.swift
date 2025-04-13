@@ -19,7 +19,8 @@ let project = Project.app(
     .feature(target: "Profile"),
     .feature(target: "Map"),
     .feature(target: "Onboard"),
-    .feature(target: "SignUp")
+    .feature(target: "SignUp"),
+    .feature(target: "Tabbar")
   ],
   testDependencies: []
 )

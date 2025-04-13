@@ -14,14 +14,14 @@ import AppFoundation
 import Domain
 import Router
 
-public struct SignInView<ScreenRoute: Hashable>: View {
+public struct SignInView: View {
   @StateObject private var signInModelData: SignInModelData
   @State private var error: MercuryError?
   
-  let navigationSubject: PassthroughSubject<NavigationEvent<ScreenRoute>, Never>
+  let navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
   public init(
-    navigationSubject: PassthroughSubject<NavigationEvent<ScreenRoute>, Never>,
+    navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
     serviceSignInUsecasable: ServiceSignInUsecasable,
     localStorageUsecasable: LocalStorageUsecasable
   ) {
