@@ -25,6 +25,8 @@ public struct MainTabbarView<
   
   @StateObject private var modelData = MainTabbarModelData()
   @State private var selection: Tab = .home
+  @State private var didShowSignInToast = false
+  @Inject private var toast: Toastable
   private var navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
   // MARK: - life cycle
@@ -44,6 +46,12 @@ public struct MainTabbarView<
       }
     }
     .animation(.easeInOut(duration: 0.12), value: modelData.isUserSignIn)
+    .onChange(of: modelData.isUserSignIn) { _, isSignedIn in
+       if isSignedIn && !didShowSignInToast {
+         didShowSignInToast = true
+         toast.present(title: "로그인 되었습니다.", tint: Asset.Colors.gray900TextBlack.color, timing: .short)
+       }
+     }
   }
   
   private func tabView() -> some View {
