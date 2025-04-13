@@ -16,6 +16,6 @@ public protocol ViewFactory {
   @ViewBuilder
   func makeView(
     _ route: ScreenRoute,
-    eventSubject: PassthroughSubject<NavigationEvent<NavigationContext>, Never>
+    navigationSubject: PassthroughSubject<NavigationEvent<NavigationContext>, Never>
   ) -> ViewType
 }

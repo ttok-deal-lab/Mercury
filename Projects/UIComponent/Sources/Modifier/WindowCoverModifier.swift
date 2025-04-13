@@ -26,7 +26,7 @@ struct WindowCoverModifier<Cover: View>: ViewModifier {
 }
 
 public extension View {
-  func alerts<Content: View>(isPresented: Binding<Bool>, @ViewBuilder cover: @escaping () -> Content) -> some View {
+  func windowCover<Content: View>(isPresented: Binding<Bool>, @ViewBuilder cover: @escaping () -> Content) -> some View {
     self.modifier(WindowCoverModifier(isPresented: isPresented, cover: cover))
   }
 }

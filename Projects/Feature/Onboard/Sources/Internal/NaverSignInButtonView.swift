@@ -14,17 +14,17 @@ import UIComponent
 import NaverThirdPartyLogin
 
 struct NaverSignInButtonView: View {
-  var completion: () throws -> Void
+  var completion: () async  throws -> Void
   var body: some View {
     Button {
       Task {
-        try completion()
+        try await completion()
       }
     } label: {
       ZStack {
         Text("네이버로 로그인")
-          .foregroundStyle(.white)
-
+          .fonts(.bodyMediumMedium)
+          .foregroundStyle(Asset.Colors.textWhite.color)
         HStack {
           Asset.Images.naver.image
             .renderingMode(.template)
@@ -35,8 +35,8 @@ struct NaverSignInButtonView: View {
           Spacer()
         }
       }
-      .padding()
-      .frame(width: 335,height: 52)
+      .frame(height: 52)
+      .padding(.horizontal, 20)
       .background(.green)
       .clipShape(Capsule())
     }

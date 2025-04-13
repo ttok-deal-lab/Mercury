@@ -43,7 +43,7 @@ private class AppleSignInDelegate: NSObject, ASAuthorizationControllerDelegate {
        let tokenString = String(data: identityToken, encoding: .utf8) {
       continuation.resume(returning: tokenString)
     } else {
-      continuation.resume(throwing: MercuryError(from: .ownModule(.appleSignin), .unknown))
+      continuation.resume(throwing: MercuryError(.noOauthToken))
     }
   }
   

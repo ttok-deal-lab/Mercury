@@ -9,7 +9,7 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.framework(
-  name: "SignIn",
+  name: "Onboard",
   platform: .iOS,
   dependencies: [
     .appFoundation,

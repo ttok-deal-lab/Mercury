@@ -23,11 +23,12 @@ public struct SignInViewFactory<ScreenRoute: Hashable>: ViewFactory {
   
   public func makeView(
     _ route: SignInRoute,
-    eventSubject: PassthroughSubject<NavigationEvent<ScreenRoute>, Never>
+    navigationSubject: PassthroughSubject<NavigationEvent<ScreenRoute>, Never>
   ) -> some View {
     switch route.route {
     case .signIn:
       SignInView(
+        navigationSubject: navigationSubject,
         serviceSignInUsecasable: serviceSignInUsecasable,
         localStorageUsecasable: localStorageUsecasable
       )

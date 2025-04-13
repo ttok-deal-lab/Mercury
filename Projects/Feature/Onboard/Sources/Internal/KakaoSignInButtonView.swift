@@ -14,16 +14,17 @@ import UIComponent
 import KakaoSDKAuth
 
 struct KakaoSignInButtonView: View {
-  var completion: () throws -> Void
+  var completion: () async throws -> Void
   var body: some View {
     Button {
       Task {
-        try completion()
+        try await completion()
       }
     } label: {
       ZStack {
         Text("카카오로 로그인")
-          .foregroundStyle(.black)
+          .fonts(.bodyMediumMedium)
+          .foregroundStyle(Asset.Colors.textBlack.color)
         HStack {
           Asset.Images.kakao.image
             .scaledToFit()
@@ -32,8 +33,8 @@ struct KakaoSignInButtonView: View {
           Spacer()
         }
       }
-      .padding()
-      .frame(width: 335,height: 52)
+      .frame(height: 52)
+      .padding(.horizontal, 20)
       .background(.yellow)
       .clipShape(Capsule())
     }

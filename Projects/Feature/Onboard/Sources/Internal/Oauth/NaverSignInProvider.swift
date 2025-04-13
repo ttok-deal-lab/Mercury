@@ -32,7 +32,7 @@ class NaverSignInProvider: NSObject, OauthSignInable {
     if let token = self.instance?.accessToken {
       self.continuation?.resume(returning: token)
     } else {
-      self.continuation?.resume(throwing: MercuryError(from: .ownModule(.naverSignin), .unknown))
+      self.continuation?.resume(throwing: MercuryError(.noOauthToken))
     }
     self.continuation = nil
   }

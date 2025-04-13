@@ -11,28 +11,31 @@ import AppFoundation
 import UIComponent
 
 struct AppleSignInButton: View {
-  var completion: () throws -> Void
+  var completion: () async throws -> Void
   
   var body: some View {
     Button {
       Task {
-        try completion()
+        try await completion()
       }
     } label: {
       ZStack {
         Text("Apple로 로그인")
-          .foregroundStyle(.white)
-        HStack {
-          Image(systemName: "applelogo")
+          .fonts(.bodyMediumMedium)
+          .foregroundStyle(Asset.Colors.textWhite.color)
+        HStack(spacing: .zero) {
+          Asset.Images.apple.image
+            .resizable()
+            .renderingMode(.template)
+            .foregroundStyle(.white)
             .scaledToFit()
             .frame(width: 24, height: 24)
             .foregroundStyle(.white)
-            .padding(.leading, 5)
           Spacer()
         }
       }
-      .padding()
-      .frame(width: 335, height: 52)
+      .frame(height: 52)
+      .padding(.horizontal, 20)
       .background(.black)
       .clipShape(Capsule())
     }

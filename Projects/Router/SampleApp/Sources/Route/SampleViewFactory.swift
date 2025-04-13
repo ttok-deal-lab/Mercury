@@ -12,22 +12,22 @@ import Router
 
 struct SampleViewFactory: ViewFactory {
   
-  func makeView(_ route: SampleRoute, eventSubject: PassthroughSubject<NavigationEvent<SampleRoute>, Never>) -> some View {
+  func makeView(_ route: SampleRoute, navigationSubject: PassthroughSubject<NavigationEvent<SampleRoute>, Never>) -> some View {
     switch route {
     case .a:
-      AView(coordinator: eventSubject)
+      AView(coordinator: navigationSubject)
     case .b:
-      BView(coordinator: eventSubject)
+      BView(coordinator: navigationSubject)
     case .c:
-      CView(coordinator: eventSubject)
+      CView(coordinator: navigationSubject)
     case .d:
-      DView(coordinator: eventSubject)
+      DView(coordinator: navigationSubject)
     case .e:
-      EView(coordinator: eventSubject)
+      EView(coordinator: navigationSubject)
     case .f:
-      FView(coordinator: eventSubject)
+      FView(coordinator: navigationSubject)
     case .g:
-      GView(coordinator: eventSubject)
+      GView(coordinator: navigationSubject)
     }
   }
 }

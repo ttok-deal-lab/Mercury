@@ -4,9 +4,9 @@
 import Foundation// MARK: - Swift Bundle Accessor - for SPM
 private class BundleFinder {}
 extension Foundation.Bundle {
-/// Since SignIn is a static framework, the bundle containing the resources is copied into the final product.
+/// Since Onboard is a static framework, the bundle containing the resources is copied into the final product.
 static let module: Bundle = {
-    let bundleName = "SignIn_SignIn"
+    let bundleName = "Onboard_Onboard"
     var candidates = [
         Bundle.main.resourceURL,
         Bundle(for: BundleFinder.self).resourceURL,
@@ -34,11 +34,11 @@ static let module: Bundle = {
             return bundle
         }
     }
-    fatalError("unable to find bundle named SignIn_SignIn")
+    fatalError("unable to find bundle named Onboard_Onboard")
 }()
 }// MARK: - Objective-C Bundle Accessor
 @objc
-public class SignInResources: NSObject {
+public class OnboardResources: NSObject {
 @objc public class var bundle: Bundle {
     return .module
 }

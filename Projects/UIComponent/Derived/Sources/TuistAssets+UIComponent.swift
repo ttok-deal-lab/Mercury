@@ -129,6 +129,7 @@ public enum Asset {
     public static let undo = ImageAsset(name: "Undo")
     public static let listThreeLine = ImageAsset(name: "list_three_line")
     public static let listTwoLine = ImageAsset(name: "list_two_line")
+    public static let slugWithTitle = ImageAsset(name: "SlugWithTitle")
     public static let qnA1 = ImageAsset(name: "QnA-1")
     public static let qnA2 = ImageAsset(name: "QnA-2")
     public static let card = ImageAsset(name: "card")

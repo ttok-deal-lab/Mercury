@@ -17,7 +17,7 @@ class GoogleSignInProvider: OauthSignInable {
   @MainActor
   func signIn() async throws -> OauthSignInToken {
     guard let presentingViewController = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else {
-      throw MercuryError(from: .ownModule(.googleSignin), .unknown)
+      throw MercuryError(.failToLoadTopWindow)
     }
     
     return try await withCheckedThrowingContinuation { continuation in
@@ -29,7 +29,7 @@ class GoogleSignInProvider: OauthSignInable {
         }
         
         guard let token = result?.user.idToken?.tokenString else {
-          continuation.resume(throwing: MercuryError(from: .ownModule(.googleSignin), .unknown))
+          continuation.resume(throwing: MercuryError(.noOauthToken))
           return
         }
         continuation.resume(returning: token)
