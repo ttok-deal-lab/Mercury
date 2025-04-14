@@ -11,7 +11,9 @@ import SwiftUI
 public enum NavigationEvent<Route: Hashable> {
   case push(Route)
   case pop
+  case popTo(Route)
   case popToRoot
   case presentFullScreen(Route)
   case dismissFullScreen
+  
 }

@@ -40,11 +40,16 @@ struct RouterView: View {
           Text("pop")
         }
         
-        
         Button {
           coordinator.send(.dismissFullScreen)
         } label: {
           Text("dismiss fullScreen")
+        }
+        
+        Button {
+          coordinator.send(.popTo(SampleRoute.b))
+        } label: {
+          Text("pop to B if it's stacked")
         }
         
       }
