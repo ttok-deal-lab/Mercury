@@ -69,7 +69,7 @@ struct ToastGroup: View {
         }
       }
       .padding(.bottom, safeArea.top == .zero ? 15 : 10)
-      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
   }
   
@@ -102,12 +102,12 @@ fileprivate struct ToastView: View {
     .padding(.vertical, 8)
     .background(
       .background
-        .shadow(.drop(color: .primary.opacity(0.18), radius: 15, x: 0, y: 5)),
+        .shadow(.drop(color: .primary.opacity(0.1), radius: 11, x: 0, y: 3)),
       in: .capsule
     )
     .contentShape(.capsule)
-    .offset(y: animateIn ? 0 : 150)
-    .offset(y: !animateOut ? 0 : 150)
+    .offset(y: animateIn ? 10 : -150)
+    .offset(y: !animateOut ? 10 : -150)
     .task {
       guard !animateIn else { return }
       withAnimation(.snappy) {

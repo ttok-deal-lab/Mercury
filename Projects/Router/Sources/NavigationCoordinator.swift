@@ -36,7 +36,6 @@ public final class NavigationCoordinator<Route: Hashable>: ObservableObject {
         navigationStack.append(route)
         navigationPath.append(route)
       }
-      
     case .pop:
       if isFullScreenPresented {
         if fullScreenStack.isEmpty {
@@ -50,7 +49,6 @@ public final class NavigationCoordinator<Route: Hashable>: ObservableObject {
         navigationStack.removeLast()
         navigationPath = NavigationPath(navigationStack)
       }
-      
     case .popToRoot:
       if isFullScreenPresented {
         fullScreenStack = []
