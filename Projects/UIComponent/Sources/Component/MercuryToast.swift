@@ -32,7 +32,7 @@ public enum ToastTime: CGFloat {
 }
 
 @Observable
-public class MercuryToast: Toastable {
+public final class MercuryToast: Toastable {
   public static let shared = MercuryToast()
   fileprivate var toasts: [ToastInformation] = []
   

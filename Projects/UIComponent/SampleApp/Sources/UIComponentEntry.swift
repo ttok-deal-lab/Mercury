@@ -7,7 +7,7 @@ struct UIComponentEntry: App {
   
   var body: some Scene {
     WindowGroup {
-      ToastWindowView {
+      OverlayWindowView {
         ToastTestView()
         AlertTestView()
         ScrollView(.vertical) {

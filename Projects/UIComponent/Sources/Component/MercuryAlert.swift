@@ -9,6 +9,10 @@ import SwiftUI
 
 import AppFoundation
 
+public protocol Alertable {
+  func present(type: AlertInformType)
+}
+
 public enum AlertInformType {
   case confirmable(information: AlertConfirmInformation)
   case cancallable(information: AlertCancellableInformation)
@@ -46,46 +50,55 @@ public struct AlertCancellableInformation {
   }
 }
 
-public struct MercuryAlert: View {
-  @State private var animate: Bool = false
-  @Binding private var isPresented: Bool
-  private let type: AlertInformType
-   
-  // MARK: - life cycle
+@Observable
+public final class MercuryAlert: Alertable {
+  public static let shared = MercuryAlert()
+  public var type: AlertInformType?
   
-  public init(isPresented: Binding<Bool>, type: AlertInformType) {
-    self._isPresented = isPresented
+  public init() { }
+  
+  public func present(type: AlertInformType) {
     self.type = type
   }
+}
+
+public struct MercuryAlertView: View {
+  @State private var animate: Bool = false
+  var model = MercuryAlert.shared
   
   // MARK: - life cycle
   
   public var body: some View {
-    ZStack {
-      Asset.Colors.gray10TextWhite.color
-      VStack(spacing: .zero) {
-        switch type {
-        case .confirmable(let information):
-          confirmableAlertView(information: information)
-        case .cancallable(let information):
-          cancellableAlertView(information: information)
+    if let type = model.type {
+      ZStack {
+        Asset.Colors.gray10TextWhite.color
+        VStack(spacing: .zero) {
+          switch type {
+          case .confirmable(let information):
+            confirmableAlertView(information: information)
+          case .cancallable(let information):
+            cancellableAlertView(information: information)
+            
+          }
+        }
+        .padding(.vertical, 24)
+      }
+      .clipShape(RoundedRectangle(cornerRadius: 16))
+      .padding(.horizontal, 24)
+      .fixedSize(horizontal: false, vertical: true)
+      .ignoresSafeArea()
+      .shadows(.shadowHigh)
+      .scaleEffect(animate ? 1 : 0.8)
+      .opacity(animate ? 1 : 0)
+      .onAppear {
+        withAnimation(.easeInOut(duration: 0.1)) {
+          animate = true
         }
       }
-      .padding(.vertical, 24)
-    }
-    .clipShape(RoundedRectangle(cornerRadius: 16))
-    .padding(.horizontal, 24)
-    .fixedSize(horizontal: false, vertical: true)
-    .shadows(.shadowHigh)
-    .scaleEffect(animate ? 1 : 0.8)
-    .opacity(animate ? 1 : 0)
-    .onAppear {
-      withAnimation(.easeInOut(duration: 0.1)) {
-        animate = true
+      .onDisappear {
+        animate = false
       }
-    }
-    .onDisappear {
-      animate = false
+      .contentShape(Rectangle())
     }
   }
   
@@ -97,7 +110,7 @@ public struct MercuryAlert: View {
       animate = false
     }
     DispatchQueue.main.asyncAfter(deadline: .now() + syncTime) {
-      isPresented = false
+      model.type = nil
       action()
     }
   }
@@ -180,41 +193,4 @@ public struct MercuryAlert: View {
       .padding(.horizontal, 24)
     }
   }
-}
-
-#Preview {
-  MercuryAlert(
-    isPresented: .constant(
-      true
-    ),
-    type: .cancallable(
-      information: AlertCancellableInformation(
-        title: "Cancellable Title",
-        description: "Cancellable Description: Some Word Needs To Be Here.",
-        confirmButtonTitle: "Confirm",
-        cancelButtonTitle: "Cancel",
-        onConfirm: {
-          
-        },
-        onCancel: {
-          
-        })
-    )
-  )
-  
-  MercuryAlert(
-    isPresented: .constant(
-      true
-    ),
-    type: .confirmable(
-      information: AlertConfirmInformation(
-        title: "Confirmable Title",
-        description: "Confirmable Description: Some Word Needs To Be Here Somehow.",
-        confirmButtonTitle: "Confirm",
-        onConfirm: {
-          
-        }
-      )
-    )
-  )
 }

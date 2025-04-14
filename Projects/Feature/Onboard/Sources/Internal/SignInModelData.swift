@@ -12,7 +12,8 @@ import Combine
 import AppFoundation
 import Domain
 
-final class SignInModelData: ObservableObject {
+@Observable
+final class SignInModelData {
 
   // MARK: - private proprty
 

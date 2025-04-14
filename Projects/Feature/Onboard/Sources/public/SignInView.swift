@@ -15,7 +15,7 @@ import Domain
 import Router
 
 public struct SignInView: View {
-  @StateObject private var signInModelData: SignInModelData
+  private var signInModelData: SignInModelData
   @State private var error: MercuryError?
   
   let navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
@@ -26,11 +26,9 @@ public struct SignInView: View {
     localStorageUsecasable: LocalStorageUsecasable
   ) {
     self.navigationSubject = navigationSubject
-    self._signInModelData = StateObject(
-      wrappedValue: SignInModelData(
-        serviceSignInUsecasable: serviceSignInUsecasable,
-        localStorageUsecasable: localStorageUsecasable
-      )
+    self.signInModelData = SignInModelData(
+      serviceSignInUsecasable: serviceSignInUsecasable,
+      localStorageUsecasable: localStorageUsecasable
     )
   }
   
@@ -53,11 +51,11 @@ public struct SignInView: View {
       }
       
     }
-    .windowCover(isPresented: Binding(get: { error != nil }, set: { _ in })) {
-      MercuryAlert(
-        isPresented: Binding(get: { error != nil }, set: { _ in }),
-        type: .confirmable(information: AlertConfirmInformation(title: "문제가 발생했습니다.", description: "\(error?.description ?? "")", confirmButtonTitle: "확인", onConfirm: { error = nil })))
-    }
+//    .windowCover(isPresented: Binding(get: { error != nil }, set: { _ in })) {
+//      MercuryAlert(
+//        isPresented: Binding(get: { error != nil }, set: { _ in }),
+//        type: .confirmable(information: AlertConfirmInformation(title: "문제가 발생했습니다.", description: "\(error?.description ?? "")", confirmButtonTitle: "확인", onConfirm: { error = nil })))
+//    }
   }
   
   @MainActor
