@@ -12,10 +12,11 @@ public final class NavigationCoordinator<Route: Hashable>: ObservableObject {
   @Published public var isFullScreenPresented = false
   @Published public var fullScreenPath = NavigationPath()
   public var fullScreenRoute: Route? = nil
-  
   public var eventSubject = PassthroughSubject<NavigationEvent<Route>, Never>()
   
   private var cancellables = Set<AnyCancellable>()
+  private var navigationStack: [Route] = []
+  private var fullScreenStack: [Route] = []
   
   public init() {
     eventSubject
@@ -29,28 +30,48 @@ public final class NavigationCoordinator<Route: Hashable>: ObservableObject {
     switch event {
     case .push(let route):
       if isFullScreenPresented {
+        fullScreenStack.append(route)
         fullScreenPath.append(route)
       } else {
+        navigationStack.append(route)
         navigationPath.append(route)
       }
     case .pop:
       if isFullScreenPresented {
-        if fullScreenPath.isEmpty {
+        if fullScreenStack.isEmpty {
           isFullScreenPresented = false
           fullScreenRoute = nil
         } else {
-          fullScreenPath.removeLast()
+          fullScreenStack.removeLast()
+          fullScreenPath = NavigationPath(fullScreenStack)
         }
-      } else if !navigationPath.isEmpty {
-        navigationPath.removeLast()
+      } else if !navigationStack.isEmpty {
+        navigationStack.removeLast()
+        navigationPath = NavigationPath(navigationStack)
       }
     case .popToRoot:
       if isFullScreenPresented {
+        fullScreenStack = []
+        fullScreenPath = NavigationPath()
         isFullScreenPresented = false
         fullScreenRoute = nil
-        fullScreenPath = NavigationPath()
       }
+      navigationStack = []
       navigationPath = NavigationPath()
+    case .popTo(let route):
+      if isFullScreenPresented {
+        if let index = fullScreenStack.lastIndex(of: route) {
+          let newStack = Array(fullScreenStack[...index])
+          fullScreenStack = newStack
+          fullScreenPath = NavigationPath(newStack)
+        }
+      } else {
+        if let index = navigationStack.lastIndex(of: route) {
+          let newStack = Array(navigationStack[...index])
+          navigationStack = newStack
+          navigationPath = NavigationPath(newStack)
+        }
+      }
     case .presentFullScreen(let route):
       guard !isFullScreenPresented else { return }
       isFullScreenPresented = true

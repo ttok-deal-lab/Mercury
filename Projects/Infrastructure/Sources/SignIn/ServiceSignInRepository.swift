@@ -11,7 +11,7 @@ import AppFoundation
 import Domain
 import Network
 
-public class ServiceSignInRepository: ServiceSignInRepositorable {
+public final class ServiceSignInRepository: ServiceSignInRepositorable {
   
   // MARK: - private property
   
@@ -44,6 +44,7 @@ public class ServiceSignInRepository: ServiceSignInRepositorable {
       provider: oauthProvider.rawValue,
       idToken: oauthSignInToken
     ).request(SignInInformationDTO.self)
+    
     let serviceUserInfo = parseToUserInfo(resultInfo)
     let accessTokenInfo = parseAccessToken(resultInfo)
     
