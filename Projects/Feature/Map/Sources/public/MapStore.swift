@@ -52,7 +52,7 @@ public class MapStore: ObservableObject {
       case .authorizedAlways, .authorizedWhenInUse:
         updateUserLocation()
       @unknown default:
-        setError(.init(from: .ownModule(.map), .unknownLocationAuthenticationStatus))
+        setError(.init(.unknownLocationAuthenticationStatus))
       }
     }
   }
@@ -81,7 +81,7 @@ public class MapStore: ObservableObject {
       if let location = self.userLocationClient.userCurrentLocation() {
         setUserLocation(location)
       } else {
-        setError(.init(from: .ownModule(.map), .failToGetUserLocationCoordinate))
+        setError(.init(.failToGetUserLocationCoordinate))
       }
     }
   }

@@ -49,13 +49,8 @@ public struct SignInView: View {
         }
         .padding(.bottom, 50)
       }
-      
     }
-//    .windowCover(isPresented: Binding(get: { error != nil }, set: { _ in })) {
-//      MercuryAlert(
-//        isPresented: Binding(get: { error != nil }, set: { _ in }),
-//        type: .confirmable(information: AlertConfirmInformation(title: "문제가 발생했습니다.", description: "\(error?.description ?? "")", confirmButtonTitle: "확인", onConfirm: { error = nil })))
-//    }
+    .mercuryError(error: $error)
   }
   
   @MainActor
