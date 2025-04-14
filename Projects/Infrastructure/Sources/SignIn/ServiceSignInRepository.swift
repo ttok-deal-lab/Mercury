@@ -39,7 +39,7 @@ public class ServiceSignInRepository: ServiceSignInRepositorable {
   
   // MARK: - public method
   
-  public func signIn(oauthProvider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws -> ServiceSignInUserInfo {
+  public func signIn(oauthProvider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws {
     let resultInfo = try await AuthAPI.signIn(
       provider: oauthProvider.rawValue,
       idToken: oauthSignInToken
@@ -49,7 +49,6 @@ public class ServiceSignInRepository: ServiceSignInRepositorable {
     
     self.userInformable.userInfo.send(serviceUserInfo)
     self.tokenInformable.tokenInfo.send(accessTokenInfo)
-    return serviceUserInfo
   }
   
 }

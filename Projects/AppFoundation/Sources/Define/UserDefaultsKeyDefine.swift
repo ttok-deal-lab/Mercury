@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum LocalStorageKey: String {
+public enum LocalStorageKey: String { // 추가만 하고 수정은 절대 불가. (하위호환 이슈 고려)
   /// 앱 최초 구동 여부
   case isAppFirst
   /// 로그인 토큰 정보

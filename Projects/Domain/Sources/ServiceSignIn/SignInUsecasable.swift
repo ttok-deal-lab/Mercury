@@ -10,5 +10,5 @@ import Foundation
 import AppFoundation
 
 public protocol ServiceSignInUsecasable {
-  func serviceSignIn(oauthProvider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws -> ServiceSignInUserInfo
+  func serviceSignIn(oauthProvider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws
 }

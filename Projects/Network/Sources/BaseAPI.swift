@@ -28,14 +28,14 @@ public extension BaseAPI {
   }
   
   var headers: [String: String]? {
-      return [
-        "Content-Type": "application/json"
-      ]
-    }
-    
-    var additionalHeaders: [String: String]? {
-      return nil
-    }
+    return [
+      "Content-Type": "application/json"
+    ]
+  }
+  
+  var additionalHeaders: [String: String]? {
+    return nil
+  }
   
   var requestBody: [String: Any]? {
     return nil

@@ -8,7 +8,7 @@ extension Foundation.Bundle {
 static let module = Bundle(for: BundleFinder.self)
 }// MARK: - Objective-C Bundle Accessor
 @objc
-public class Resources: NSObject {
+public class SlugResources: NSObject {
 @objc public class var bundle: Bundle {
     return .module
 }

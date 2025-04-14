@@ -17,15 +17,15 @@ struct SampleAppView: View {
     NavigationStack(path: $coordinator.navigationPath) {
       AView(coordinator: coordinator.eventSubject)
         .navigationDestination(for: SampleRoute.self) { route in
-          SampleViewFactory().makeView(route, eventSubject: coordinator.eventSubject)
+          SampleViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
         }
     }
     .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
       if let route = coordinator.fullScreenRoute {
         NavigationStack(path: $coordinator.fullScreenPath) {
-          SampleViewFactory().makeView(route, eventSubject: coordinator.eventSubject)
+          SampleViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
             .navigationDestination(for: SampleRoute.self) { route in
-              SampleViewFactory().makeView(route, eventSubject: coordinator.eventSubject)
+              SampleViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
             }
         }
       }
