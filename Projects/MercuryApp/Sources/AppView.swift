@@ -16,9 +16,9 @@ import UIComponent
 
 struct AppView: View {
   @StateObject private var coordinator = NavigationCoordinator<FeatureRoute>()
-  @State private var isSplashDone = false
+  @State private var isSplashDone = true
   var body: some View {
-    if isSplashDone == true {
+    if isSplashDone {
       NavigationStack(path: $coordinator.navigationPath) {
         TabbarViewWrapperView(navigationSubject: coordinator.eventSubject)
           .navigationDestination(for: FeatureRoute.self) { route in
@@ -36,9 +36,7 @@ struct AppView: View {
         }
       }
     } else {
-      NavigationStack(path: $coordinator.navigationPath) {
         CustomSplashView(isSplashDone: $isSplashDone)
-      }
     }
   }
 }

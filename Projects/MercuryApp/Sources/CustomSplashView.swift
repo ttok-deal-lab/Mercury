@@ -14,7 +14,7 @@ struct CustomSplashView: View {
   var body: some View {
     ZStack {
       GeometryReader { geometry in
-        Image("splash")
+        Image(.splash)
           .resizable()
           .scaledToFill()
           .frame(width: geometry.size.width, height: geometry.size.height)
