@@ -22,7 +22,7 @@ public struct SignInViewFactory: ViewFactory {
   }
   
   public func makeView(
-    _ route: SignInRoute,
+    _ route: SignInStep,
     navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   ) -> some View {
     switch route.step {

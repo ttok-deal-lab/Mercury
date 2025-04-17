@@ -22,13 +22,13 @@ struct RootViewFactory: ViewFactory {
     navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   ) -> some View {
     switch route {
-    case .onboard(let signInRoute):
+    case .onboard(let signInStep):
       SignInViewFactory(
         serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
         localStorageUsecasable: LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
       )
-      .makeView(signInRoute, navigationSubject: navigationSubject)
-    case .auction(let auctionRoute):
+      .makeView(signInStep, navigationSubject: navigationSubject)
+    case .auction(let auctionStep):
       VStack { }
     }
   }
