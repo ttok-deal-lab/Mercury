@@ -16,7 +16,8 @@ import UIComponent
 
 struct AppView: View {
   @StateObject private var coordinator = NavigationCoordinator<FeatureRoute>()
-  @State private var isSplashDone = true
+  @State private var isSplashDone = false
+  
   var body: some View {
     if isSplashDone {
       NavigationStack(path: $coordinator.navigationPath) {
@@ -36,25 +37,7 @@ struct AppView: View {
         }
       }
     } else {
-        CustomSplashView(isSplashDone: $isSplashDone)
+      CustomSplashView(isSplashDone: $isSplashDone)
     }
   }
 }
-
-
-//struct FakeHomeView: View {
-//  let navigationEvent: NavigationSubject
-//  
-//  public init(navigationEvent: NavigationSubject) {
-//    self.navigationEvent = navigationEvent
-//  }
-//  
-//  var body: some View {
-//    Button {
-//      navigationEvent.send(.presentFullScreen(.onboard(SignInRoute(route: .signIn))))
-//    } label: {
-//      Text("go tutorial")
-//        .fonts(.bodyLargeBold)
-//    }
-//  }
-//}

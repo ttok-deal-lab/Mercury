@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CustomSplashView: View {
-  
   @Binding var isSplashDone: Bool
   
   var body: some View {
