@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct AuctionRoute: Hashable {
+public struct AuctionStep: Hashable {
   public private(set) var step: Step
   
   public init(step: Step) {

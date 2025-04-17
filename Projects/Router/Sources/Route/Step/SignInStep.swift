@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct SignInRoute: Hashable {
+public struct SignInStep: Hashable {
   public private(set) var step: Step
   
   public init(step: Step) {
