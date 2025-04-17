@@ -16,41 +16,28 @@ import UIComponent
 
 struct AppView: View {
   @StateObject private var coordinator = NavigationCoordinator<FeatureRoute>()
+  @State private var isSplashDone = false
   
   var body: some View {
-    NavigationStack(path: $coordinator.navigationPath) {
-      TabbarViewWrapperView(navigationSubject: coordinator.eventSubject)
-        .navigationDestination(for: FeatureRoute.self) { route in
-          RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
-        }
-    }
-    .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
-      if let route = coordinator.fullScreenRoute {
-        NavigationStack(path: $coordinator.fullScreenPath) {
-          RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
-            .navigationDestination(for: FeatureRoute.self) { route in
-              RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
-            }
+    if isSplashDone {
+      NavigationStack(path: $coordinator.navigationPath) {
+        TabbarViewWrapperView(navigationSubject: coordinator.eventSubject)
+          .navigationDestination(for: FeatureRoute.self) { route in
+            RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
+          }
+      }
+      .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
+        if let route = coordinator.fullScreenRoute {
+          NavigationStack(path: $coordinator.fullScreenPath) {
+            RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
+              .navigationDestination(for: FeatureRoute.self) { route in
+                RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
+              }
+          }
         }
       }
+    } else {
+      CustomSplashView(isSplashDone: $isSplashDone)
     }
   }
 }
-
-
-//struct FakeHomeView: View {
-//  let navigationEvent: NavigationSubject
-//  
-//  public init(navigationEvent: NavigationSubject) {
-//    self.navigationEvent = navigationEvent
-//  }
-//  
-//  var body: some View {
-//    Button {
-//      navigationEvent.send(.presentFullScreen(.onboard(SignInRoute(route: .signIn))))
-//    } label: {
-//      Text("go tutorial")
-//        .fonts(.bodyLargeBold)
-//    }
-//  }
-//}
