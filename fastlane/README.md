@@ -23,6 +23,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 
 
+### ios make_keychain_for_CI
+
+```sh
+[bundle exec] fastlane ios make_keychain_for_CI
+```
+
+
+
 ### ios match_appstore
 
 ```sh
@@ -35,6 +43,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ```sh
 [bundle exec] fastlane ios upload_stage_to_testflight
+```
+
+
+
+### ios upload_release_to_testflight
+
+```sh
+[bundle exec] fastlane ios upload_release_to_testflight
 ```
 
 

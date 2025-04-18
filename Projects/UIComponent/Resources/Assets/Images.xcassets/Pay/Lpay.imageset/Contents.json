@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "Lpay.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

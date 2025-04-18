@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 import CoreLocation
 import KakaoMapsSDK
+import KakaoMapsSDK_SPM
 
 @MainActor public struct KakaoMapView: UIViewRepresentable {
   

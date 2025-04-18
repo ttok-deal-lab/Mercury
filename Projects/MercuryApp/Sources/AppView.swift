@@ -5,51 +5,39 @@
 //  Created by 송하민 on 8/30/24.
 //
 
-import Map
-import Tutorial
+
 import SwiftUI
 import Foundation
+import Combine
+
 import AppFoundation
-import ComposableArchitecture
+import Router
+import UIComponent
 
 struct AppView: View {
-  @Perception.Bindable private var store: StoreOf<AppFeature>
-  
-  init(store: StoreOf<AppFeature>) {
-    self.store = store
-  }
+  @StateObject private var coordinator = NavigationCoordinator<FeatureRoute>()
+  @State private var isSplashDone = false
   
   var body: some View {
-    NavigationStackStore(
-      self.store.scope(state: \.path, action: \.path)
-    ) {
-      ZStack {
-        Button {
-          store.send(.destination(.push(.map)))
-        } label: {
-          Text("goto map")
+    if isSplashDone {
+      NavigationStack(path: $coordinator.navigationPath) {
+        TabbarViewWrapperView(navigationSubject: coordinator.eventSubject)
+          .navigationDestination(for: FeatureRoute.self) { route in
+            RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
+          }
+      }
+      .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
+        if let route = coordinator.fullScreenRoute {
+          NavigationStack(path: $coordinator.fullScreenPath) {
+            RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
+              .navigationDestination(for: FeatureRoute.self) { route in
+                RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
+              }
+          }
         }
       }
-      .fullScreenCover(store: store.scope(state: \.$tutorial, action: \.tutorial), content: { store in
-        TutorialView(store: store)
-      })
-      .onAppear {
-        if store.isAppFirst {
-          store.send(.destination(.present(.tutorial)))
-        }
-      }
-    } destination: { store in
-      switch store.state {
-      case .map:
-        if let store = store.scope(state: \.map, action: \.map) {
-          MapContentView(store: store)
-        }
-      case .tutorial:
-        if let store = store.scope(state: \.tutorial, action: \.tutorial) {
-          TutorialView(store: store)
-        }
-      }
+    } else {
+      CustomSplashView(isSplashDone: $isSplashDone)
     }
   }
 }
-

@@ -1,4 +1,3 @@
-
 APPLE_ID = ENV["APPLE_ID"]
 TEAM_ID = ENV["TEAM_ID"]
 APP_IDENTIFIER = ENV["APP_IDENTIFIER"]
@@ -11,6 +10,9 @@ KEYCHAIN_PASSWORD = ENV["KEYCHAIN_PASSWORD"]
 GIT_PRIVATE_KEY = ENV["GIT_PRIVATE_KEY"]
 DISCORD_WEBHOOK = ENV["DISCORD_WEBHOOK"]
 MATCH_GIT_URL = ENV["MATCH_GIT_URL"]
+MATCH_GIT_URL_HTTP = ENV["MATCH_GIT_URL_HTTP"]
+GIT_SSH_BASE64_PRIVATE_KEY = ENV["GIT_SSH_BASE64_PRIVATE_KEY"]
+MATCH_PASSWORD = ENV["MATCH_PASSWORD"]
 MATCH_GIT_BRANCH = ENV["MATCH_GIT_BRANCH"]
 MATCH_KEYCHAIN_NAME = ENV["MATCH_KEYCHAIN_NAME"]
 MATCH_KEYCHAIN_PASSWORD = ENV["MATCH_KEYCHAIN_PASSWORD"]
@@ -25,7 +27,18 @@ platform :ios do
       name: device_name,
       udid: device_udid
     )
-    match(type: "development", force_for_new_devices: true)
+
+    match(
+      verbose: true,
+      type: "development",
+      force_for_new_devices: true,
+      api_key_path: "fastlane/portal.json",
+      git_basic_authorization: "#{GIT_SSH_BASE64_PRIVATE_KEY}",
+      git_url: "#{MATCH_GIT_URL}",
+      git_branch: "#{MATCH_GIT_BRANCH}",
+      keychain_name: "login",
+      keychain_password: "0000"
+    )
   end
 
   lane :make_keychain_for_CI do

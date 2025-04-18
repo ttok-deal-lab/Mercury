@@ -6,25 +6,35 @@
 //
 
 import SwiftUI
-import ComposableArchitecture
 
 struct ContentView: View {
-  
-  var store: StoreOf<TestReducer>
+  @StateObject private var jokeFetcher = JokeFetcher()
   
   var body: some View {
     VStack {
-      Button {
-        store.send(.testAPI)
-      } label: {
-        Text("test")
+      if let joke = jokeFetcher.joke?.joke {
+        Text(joke)
+      } else {
+        Text(jokeFetcher.joke?.setup ?? "no setup")
+        Text(jokeFetcher.joke?.delivery ?? "no delivery")
       }
-      Text(store.apiResult)
+      Button {
+        Task {
+          try await jokeFetcher.fetch()
+        }
+      } label: {
+        Text("refresh joke")
+      }
+    }
+    .task {
+      do {
+        try await jokeFetcher.fetch()
+      } catch {
+        print(error)
+      }
     }
     
   }
-  
-  init(store: StoreOf<TestReducer>) {
-    self.store = store
-  }
+
 }
+

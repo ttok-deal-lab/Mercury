@@ -8,15 +8,15 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.staticFramework(
+let project = Project.framework(
   name: "Map",
   platform: .iOS,
-  frameworkDependencies: [
+  dependencies: [
     .appFoundation,
-    .composableArchitecture,
-    .service,
     .uiComponent,
-    .kakaoMap
+    .kakaoMap,
+    .router,
+    .domain
   ],
-  frameworkTestDependencies: []
+  testDependencies: []
 )

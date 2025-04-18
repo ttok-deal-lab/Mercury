@@ -6,17 +6,12 @@
 //
 
 import SwiftUI
-import ComposableArchitecture
 
 @main
 struct DataSampleAppEntry: App {
   var body: some Scene {
     WindowGroup {
-      ContentView(
-        store: Store(initialState: TestReducer.State(apiResult: ""), reducer: {
-          TestReducer()
-        })
-      )
+      ContentView()
     }
   }
 }

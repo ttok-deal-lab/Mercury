@@ -8,11 +8,21 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.staticFramework(
+let project = Project.framework(
   name: "UIComponent",
+  infoPlist: .extendingDefault(with: [
+    "UIAppFonts": .array([
+      .string("Pretendard-Bold.ttf"),
+      .string("Pretendard-SemiBold.ttf"),
+      .string("Pretendard-Medium.ttf"),
+      .string("Pretendard-Regular.ttf"),
+      .string("Pretendard-Light.ttf")
+    ])
+  ]),
   platform: .iOS,
-  frameworkDependencies: [
+  dependencies: [
     .appFoundation
   ],
-  frameworkTestDependencies: []
+  testDependencies: [],
+  resourceSynthesizers: [.assets(), .fonts()]
 )

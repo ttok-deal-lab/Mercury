@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "Place-location.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

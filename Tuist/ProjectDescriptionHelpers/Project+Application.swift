@@ -21,7 +21,6 @@ extension Project {
       name: name,
       destinations: destinations,
       scripts: [
-        .prebuildScript(utility: .swiftGen, name: "Gen"),
         .prebuildScript(utility: .swiftLint, name: "Lint")
       ],
       dependencies: dependencies,
@@ -45,7 +44,7 @@ extension Project {
     destinations: Destinations,
     productName: String? = productName,
     bundleId: String = bundleId,
-    deploymentTargets: DeploymentTargets? = deployTarget,
+    deploymentTargets: DeploymentTargets? = deploymentTarget,
     scripts: [TargetScript],
     dependencies: [TargetDependency],
     testDependencies: [TargetDependency],

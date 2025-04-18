@@ -19,6 +19,8 @@ public enum MercuryErrorDefine: Int {
   case failToStatusCodes
   /// Data를 JSON으로 파싱하지 못함
   case failToDeserializedDataToJSON
+  /// 최상단 뷰를 찾을 수 없음
+  case failToLoadTopWindow
   
   
   // MARK: - Map
@@ -27,5 +29,15 @@ public enum MercuryErrorDefine: Int {
   case unknownLocationAuthenticationStatus
   /// 사용자 위치정보 없음
   case failToGetUserLocationCoordinate
+  
+  
+  // MARK: - SignIn
+  
+  /// 로그인 시도했으나 리턴 nil
+  case nilFromSignIn
+  /// 로그인 취소
+  case cancelUserLogin
+  /// accessToken이 없음
+  case noOauthToken
 }
 

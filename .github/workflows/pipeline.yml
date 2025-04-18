@@ -28,11 +28,24 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
+          
+      - name: Fetch Ignore Files
+        uses: actions/checkout@v3
+        with: 
+          repository: naldal/Mercury-ignored
+          token: ${{ secrets.GIT_PRIVATE_KEY }}
+          path: .ignored-files
+
+      - name: Copy files to appropriate locations
+        run: |
+          cp .ignored-files/Sensitive.xcconfig XCConfigs/
+          cp .ignored-files/.env.default fastlane/
+          cp .ignored-files/portal.json fastlane/
 
       - name: Setup xcode version
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.0'
+          xcode-version: 'latest-stable'
     
       - name: Install Fastlane
         run: brew install fastlane
@@ -103,7 +116,7 @@ jobs:
       - name: Setup xcode version
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.0'
+          xcode-version: 'latest-stable'
     
       - name: Install Fastlane
         run: brew install fastlane
@@ -182,7 +195,7 @@ jobs:
       - name: Setup xcode version
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.0'
+          xcode-version: 'latest-stable'
     
       - name: Install Fastlane
         run: brew install fastlane
