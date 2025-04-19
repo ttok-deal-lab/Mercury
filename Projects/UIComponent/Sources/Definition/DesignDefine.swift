@@ -8,5 +8,5 @@
 import Foundation
 
 public class DesignDefine {
-  public static let transitionOpacityDuration: CGFloat = 3
+  public static let transitionOpacityDuration: CGFloat = 0.23
 }
