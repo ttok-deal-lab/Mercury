@@ -10,10 +10,10 @@ import SwiftUI
 import UIComponent
 
 public struct CustomSplashView: View {
-  @State private var modelData: CustomSplashModelData
+  @StateObject private var modelData: CustomSplashModelData
   
-  public init(onComplete: @escaping () -> Void) {
-    self.modelData = CustomSplashModelData(onComplete: onComplete)
+  public init(onComplete: @escaping (Bool) -> Void) {
+    self._modelData = StateObject(wrappedValue: CustomSplashModelData(onComplete: onComplete))
   }
   
   public var body: some View {

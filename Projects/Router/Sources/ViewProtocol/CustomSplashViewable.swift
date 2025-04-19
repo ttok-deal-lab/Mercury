@@ -8,5 +8,5 @@
 import SwiftUI
 
 public protocol CustomSplashViewable where Self: View {
-  init(onComplete: @escaping () -> Void)
+  init(onComplete: @escaping (_ isSplashDone: Bool) -> Void)
 }

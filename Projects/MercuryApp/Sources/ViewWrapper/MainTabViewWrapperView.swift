@@ -1,5 +1,5 @@
 //
-//  TabbarViewWrapperView.swift
+//  MainTabViewWrapperView.swift
 //  MercuryApp
 //
 //  Created by 송하민 on 4/13/25.
@@ -11,7 +11,7 @@ import Combine
 import Router
 import MainTab
 
-public struct TabbarViewWrapperView: View, MainTabViewable {
+public struct MainTabViewWrapperView: View, MainTabViewable {
   
   let hostView: MainTabView<AuctionHomeViewWrapperView, InterestViewWrapperView, ReportViewWrapperView, MyPageViewWrapperView, SignInViewWrapperView>
   

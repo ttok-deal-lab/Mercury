@@ -8,22 +8,22 @@
 import SwiftUI
 import Combine
 
+import AppFoundation
 import Domain
 
-@Observable
-class CustomSplashModelData {
-  private var onComplete: () -> Void
+final class CustomSplashModelData: ObservableObject {
+  @Inject private var signInTokenInformable: SignInTokenInformable
+  private var store = Set<AnyCancellable>()
   
-  init(onComplete: @escaping () -> Void) {
-    self.onComplete = onComplete
-    
-    self.asdf()
-  }
-  
-  private func asdf() {
-    Task {
-      try? await Task.sleep(for: .seconds(3))
-      onComplete()
+  init(onComplete: @escaping (Bool) -> Void) {
+    Task { @MainActor [weak self] in
+      guard let self else { return }
+      signInTokenInformable.tokenInfo
+        .map { $0?.accessToken != nil }
+        .sink { isUserLogged in
+          onComplete(isUserLogged)
+        }
+        .store(in: &store)
     }
   }
 }

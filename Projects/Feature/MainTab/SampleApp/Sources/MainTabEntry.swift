@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct AnalysisEntry: App {
+struct MainTabEntry: App {
   
   var body: some Scene {
     WindowGroup {

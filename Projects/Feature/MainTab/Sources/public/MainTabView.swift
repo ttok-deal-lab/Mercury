@@ -23,7 +23,7 @@ public struct MainTabView<
   
   // MARK: - private property
   
-  @StateObject private var modelData = MainTabbarModelData()
+  @StateObject private var modelData = MainTabModelData()
   @State private var selection: Tab = .home
   @State private var didShowSignInToast = false
   @Inject private var toast: Toastable
@@ -37,21 +37,8 @@ public struct MainTabView<
   
   public var body: some View {
     ZStack {
-      if modelData.isUserSignIn {
-        tabView()
-          .transition(.opacity)
-      } else {
-        SignInView(navigationStream: navigationStream)
-          .transition(.opacity)
-      }
+      tabView()
     }
-    .animation(.easeInOut(duration: DesignDefine.transitionOpacityDuration), value: modelData.isUserSignIn)
-    .onChange(of: modelData.isUserSignIn) { _, isSignedIn in
-       if isSignedIn && !didShowSignInToast {
-         didShowSignInToast = true
-         toast.present(title: "로그인 되었습니다.", tint: Asset.Colors.gray900TextBlack.color, timing: .short)
-       }
-     }
   }
   
   // MARK: - private method

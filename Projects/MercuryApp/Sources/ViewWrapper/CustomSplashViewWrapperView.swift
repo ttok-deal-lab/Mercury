@@ -14,7 +14,7 @@ import CustomSplash
 public struct CustomSplashViewWrapperView: View, CustomSplashViewable {
   private let hostView: CustomSplashView
   
-  public init(onComplete: @escaping () -> Void) {
+  public init(onComplete: @escaping (_ isUserLoggedIn: Bool) -> Void) {
     self.hostView = CustomSplashView(onComplete: onComplete)
   }
   
