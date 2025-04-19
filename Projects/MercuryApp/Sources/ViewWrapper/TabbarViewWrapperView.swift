@@ -9,14 +9,14 @@ import SwiftUI
 import Combine
 
 import Router
-import Tabbar
+import MainTab
 
-public struct TabbarViewWrapperView: View, TabbarViewable {
+public struct TabbarViewWrapperView: View, MainTabViewable {
   
-  let hostView: MainTabbarView<AuctionHomeViewWrapperView, InterestViewWrapperView, ReportViewWrapperView, MyPageViewWrapperView, SignInViewWrapperView>
+  let hostView: MainTabView<AuctionHomeViewWrapperView, InterestViewWrapperView, ReportViewWrapperView, MyPageViewWrapperView, SignInViewWrapperView>
   
-  public init(navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    hostView = MainTabbarView(navigationSubject: navigationSubject)
+  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
+    hostView = MainTabView(navigationStream: navigationStream)
   }
   
   public var body: some View {

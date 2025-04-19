@@ -17,9 +17,9 @@ public struct SignInViewWrapperView: View, SignInViewable {
   
   let hostView: SignInView
   
-  public init(navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
+  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
     self.hostView = SignInView(
-      navigationSubject: navigationSubject,
+      navigationStream: navigationStream,
       serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
       localStorageUsecasable: LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
     )

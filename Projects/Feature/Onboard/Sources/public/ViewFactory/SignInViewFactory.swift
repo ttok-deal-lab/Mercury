@@ -23,12 +23,12 @@ public struct SignInViewFactory: ViewFactory {
   
   public func makeView(
     _ route: SignInStep,
-    navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   ) -> some View {
     switch route.step {
     case .signIn:
       SignInView(
-        navigationSubject: navigationSubject,
+        navigationStream: navigationStream,
         serviceSignInUsecasable: serviceSignInUsecasable,
         localStorageUsecasable: localStorageUsecasable
       )

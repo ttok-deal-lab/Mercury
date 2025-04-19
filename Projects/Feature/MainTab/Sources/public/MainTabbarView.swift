@@ -1,5 +1,5 @@
 //
-//  MainTabbarView.swift
+//  MainTabView.swift
 //  Tabbar
 //
 //  Created by 송하민 on 4/13/25.
@@ -13,7 +13,7 @@ import AppFoundation
 import UIComponent
 import Router
 
-public struct MainTabbarView<
+public struct MainTabView<
   AuctionHomeView: AuctionHomeViewable,
   InterestView: InterestViewable,
   ReportView: ReportViewable,
@@ -27,12 +27,12 @@ public struct MainTabbarView<
   @State private var selection: Tab = .home
   @State private var didShowSignInToast = false
   @Inject private var toast: Toastable
-  private var navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+  private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
   // MARK: - life cycle
   
-  public init(navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.navigationSubject = navigationSubject
+  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
+    self.navigationStream = navigationStream
   }
   
   public var body: some View {
@@ -41,7 +41,7 @@ public struct MainTabbarView<
         tabView()
           .transition(.opacity)
       } else {
-        SignInView(navigationSubject: navigationSubject)
+        SignInView(navigationStream: navigationStream)
           .transition(.opacity)
       }
     }
@@ -58,25 +58,25 @@ public struct MainTabbarView<
   
   private func tabView() -> some View {
     TabView(selection: $selection) {
-      AuctionHomeView(navigationSubject: navigationSubject)
+      AuctionHomeView(navigationStream: navigationStream)
         .tabItem {
           Tab.home.iconView(isSelected: selection == .home)
         }
         .tag(Tab.home)
       
-      InterestView(navigationSubject: navigationSubject)
+      InterestView(navigationStream: navigationStream)
         .tabItem {
           Tab.interest.iconView(isSelected: selection == .interest)
         }
         .tag(Tab.interest)
       
-      ReportView(navigationSubject: navigationSubject)
+      ReportView(navigationStream: navigationStream)
         .tabItem {
           Tab.report.iconView(isSelected: selection == .report)
         }
         .tag(Tab.report)
       
-      MyPageView(navigationSubject: navigationSubject)
+      MyPageView(navigationStream: navigationStream)
         .tabItem {
           Tab.myPage.iconView(isSelected: selection == .myPage)
         }

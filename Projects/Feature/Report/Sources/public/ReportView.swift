@@ -15,10 +15,10 @@ import Router
 
 public struct ReportView: View {
   @StateObject private var modelData = ReportModelData()
-  private let navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+  private let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
-  public init(navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.navigationSubject = navigationSubject
+  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
+    self.navigationStream = navigationStream
   }
   
   public var body: some View {

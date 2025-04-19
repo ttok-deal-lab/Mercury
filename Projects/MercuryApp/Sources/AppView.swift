@@ -22,17 +22,17 @@ struct AppView: View {
     ZStack {
       if isSplashDone {
         NavigationStack(path: $coordinator.navigationPath) {
-          TabbarViewWrapperView(navigationSubject: coordinator.eventSubject)
+          TabbarViewWrapperView(navigationStream: coordinator.eventSubject)
             .navigationDestination(for: FeatureRoute.self) { route in
-              RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
+              RootViewFactory().makeView(route, navigationStream: coordinator.eventSubject)
             }
         }
         .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
           if let route = coordinator.fullScreenRoute {
             NavigationStack(path: $coordinator.fullScreenPath) {
-              RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
+              RootViewFactory().makeView(route, navigationStream: coordinator.eventSubject)
                 .navigationDestination(for: FeatureRoute.self) { route in
-                  RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
+                  RootViewFactory().makeView(route, navigationStream: coordinator.eventSubject)
                 }
             }
           }

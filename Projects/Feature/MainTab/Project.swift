@@ -9,7 +9,7 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.framework(
-  name: "Tabbar",
+  name: "MainTab",
   platform: .iOS,
   dependencies: [
     .appFoundation,

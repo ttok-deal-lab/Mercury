@@ -4,9 +4,9 @@
 import Foundation// MARK: - Swift Bundle Accessor - for SPM
 private class BundleFinder {}
 extension Foundation.Bundle {
-/// Since Tabbar is a static framework, the bundle containing the resources is copied into the final product.
+/// Since MainTab is a static framework, the bundle containing the resources is copied into the final product.
 static let module: Bundle = {
-    let bundleName = "Tabbar_Tabbar"
+    let bundleName = "MainTab_MainTab"
     var candidates = [
         Bundle.main.resourceURL,
         Bundle(for: BundleFinder.self).resourceURL,
@@ -34,11 +34,11 @@ static let module: Bundle = {
             return bundle
         }
     }
-    fatalError("unable to find bundle named Tabbar_Tabbar")
+    fatalError("unable to find bundle named MainTab_MainTab")
 }()
 }// MARK: - Objective-C Bundle Accessor
 @objc
-public class TabbarResources: NSObject {
+public class MainTabResources: NSObject {
 @objc public class var bundle: Bundle {
     return .module
 }

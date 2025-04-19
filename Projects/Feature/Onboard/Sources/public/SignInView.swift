@@ -18,14 +18,14 @@ public struct SignInView: View {
   private var signInModelData: SignInModelData
   @State private var error: MercuryError?
   
-  let navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+  let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
   public init(
-    navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
+    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
     serviceSignInUsecasable: ServiceSignInUsecasable,
     localStorageUsecasable: LocalStorageUsecasable
   ) {
-    self.navigationSubject = navigationSubject
+    self.navigationStream = navigationStream
     self.signInModelData = SignInModelData(
       serviceSignInUsecasable: serviceSignInUsecasable,
       localStorageUsecasable: localStorageUsecasable
@@ -57,7 +57,7 @@ public struct SignInView: View {
   private func handleSignIn(with provider: OauthProvider) async {
     do {
       try await signInModelData.oauthSignIn(provider)
-      navigationSubject.send(.dismissFullScreen)
+      navigationStream.send(.dismissFullScreen)
     } catch let error as MercuryError  {
       self.error = error
     } catch {

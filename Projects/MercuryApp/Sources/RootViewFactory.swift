@@ -19,7 +19,7 @@ struct RootViewFactory: ViewFactory {
   @ViewBuilder
   func makeView(
     _ route: FeatureRoute,
-    navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   ) -> some View {
     switch route {
     case .onboard(let signInStep):
@@ -27,7 +27,7 @@ struct RootViewFactory: ViewFactory {
         serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
         localStorageUsecasable: LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
       )
-      .makeView(signInStep, navigationSubject: navigationSubject)
+      .makeView(signInStep, navigationStream: navigationStream)
     case .auction:
       EmptyView()
     }
