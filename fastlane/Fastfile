@@ -109,7 +109,7 @@ platform :ios do
       skip_waiting_for_build_processing: true,
       app_identifier: "#{APP_IDENTIFIER}",
       team_id: "#{TEAM_ID}",
-      ipa: "./output/AuctionGod.ipa",
+      ipa: "./output/Slug.ipa",
       api_key: api_key
     )
   end
@@ -155,7 +155,7 @@ platform :ios do
       skip_waiting_for_build_processing: true,
       app_identifier: "#{APP_IDENTIFIER}",
       team_id: "#{TEAM_ID}",
-      ipa: "./output/AuctionGod.ipa",
+      ipa: "./output/Slug.ipa",
       api_key: api_key
     )
   end

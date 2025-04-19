@@ -9,5 +9,5 @@ import SwiftUI
 import Combine
 
 public protocol SignInViewable where Self: View {
-  init(navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>)
+  init(onComplete: @escaping () -> Void)
 }

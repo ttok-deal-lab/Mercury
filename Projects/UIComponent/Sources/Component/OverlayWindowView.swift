@@ -14,6 +14,7 @@ public struct OverlayGroup: View {
       // 전역적으로 나타나야 하는 컴포넌트가 있다면 추가
       ToastGroup()
       MercuryAlertView()
+      MercuryLoadingView() // 여기
     }
   }
 }
@@ -75,7 +76,9 @@ fileprivate class PassthroughWindow: UIWindow {
             && view.isUserInteractionEnabled
             && !view.isHidden
             && view.alpha > 0
-    else { return nil }
+    else {
+      return nil
+    }
     
     return view.subviews.reversed()
       .reduce(Optional<UIView>.none) { result, view in
