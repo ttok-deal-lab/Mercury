@@ -55,7 +55,7 @@ public final class MercuryAlert: Alertable {
   public static let shared = MercuryAlert()
   public var type: AlertInformType?
   
-  public init() { }
+  private init() { }
   
   public func present(type: AlertInformType) {
     self.type = type

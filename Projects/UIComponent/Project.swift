@@ -24,7 +24,7 @@ let project = Project.framework(
     .appFoundation,
     .lottie
   ],
-  testDependencies: [.lottie],
+  testDependencies: [],
   resourceSynthesizers: [
     .assets(),
     .fonts()

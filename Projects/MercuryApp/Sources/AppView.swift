@@ -5,7 +5,6 @@
 //  Created by 송하민 on 8/30/24.
 //
 
-
 import SwiftUI
 import Foundation
 import Combine
@@ -13,8 +12,6 @@ import Combine
 import AppFoundation
 import Router
 import UIComponent
-
-import SwiftUI
 
 private enum AppLaunchState {
   case splash

@@ -35,7 +35,7 @@ struct MercuryErrorModifier: ViewModifier {
 }
 
 public extension View {
-  func mercuryError(error: Binding<MercuryError?>, completion: (() -> Void)? = nil) -> some View {
+  func alert(error: Binding<MercuryError?>, completion: (() -> Void)? = nil) -> some View {
     self.modifier(MercuryErrorModifier(mercuryError: error, completion: completion))
   }
 }

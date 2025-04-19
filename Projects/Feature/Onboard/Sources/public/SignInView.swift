@@ -50,14 +50,14 @@ public struct SignInView: View {
         .padding(.bottom, 50)
       }
     }
-    .mercuryError(error: $error)
+    .alert(error: $error)
+    .loading(signInModelData.isLoading)
   }
   
   @MainActor
   private func handleSignIn(with provider: OauthProvider) async {
     do {
       try await signInModelData.oauthSignIn(provider)
-      navigationStream.send(.dismissFullScreen)
     } catch let error as MercuryError  {
       self.error = error
     } catch {

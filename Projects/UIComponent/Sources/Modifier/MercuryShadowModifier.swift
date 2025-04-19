@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-struct ShadowModifier: ViewModifier {
+struct MercuryShadowModifier: ViewModifier {
   let shadow: MercuryShadow
   
   func body(content: Content) -> some View {
-    return content
+    content
       .shadow(color: Asset.Colors.shadow.color.opacity(shadow.opacity), radius: shadow.blur, x: shadow.xDirection, y: shadow.yDirection)
   }
 }
 
 public extension View {
   func shadows(_ shadowDefine: MercuryShadow) -> some View {
-    modifier(ShadowModifier(shadow: shadowDefine))
+    modifier(MercuryShadowModifier(shadow: shadowDefine))
   }
 }

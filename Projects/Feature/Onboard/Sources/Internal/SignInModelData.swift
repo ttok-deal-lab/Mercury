@@ -12,18 +12,16 @@ import Combine
 import AppFoundation
 import Domain
 
-@Observable
-final class SignInModelData {
-
+final class SignInModelData: ObservableObject {
+  @Published var isLoading: Bool = false
+  
   // MARK: - private proprty
-
   private let serviceSignInUsecasable: ServiceSignInUsecasable
   private let localStorageUsecasable: LocalStorageUsecasable
   private let oauthSignInProviderFactory = SignInProviderFactory()
   
 
   // MARK: - life cycle
-  
   init(
     serviceSignInUsecasable: ServiceSignInUsecasable,
     localStorageUsecasable: LocalStorageUsecasable
@@ -33,8 +31,11 @@ final class SignInModelData {
   }
   
   // MARK: - private method
-  
   private func serviceSignIn(provider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws {
+    defer {
+      isLoading = false
+    }
+    isLoading = true
     try await serviceSignInUsecasable.serviceSignIn(oauthProvider: provider, oauthSignInToken: oauthSignInToken)
   }
   

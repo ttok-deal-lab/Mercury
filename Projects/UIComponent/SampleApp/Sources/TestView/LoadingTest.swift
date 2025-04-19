@@ -12,7 +12,16 @@ import UIComponent
 import Lottie
 
 struct LoadingTest: View {
+  @State var isLoading: Bool = false
+  
   var body: some View {
-    MercuryLoading()
+    ZStack {
+      Button {
+        self.isLoading.toggle()
+      } label: {
+        Text("Toggle loading")
+      }
+    }
+    .loading($isLoading)
   }
 }

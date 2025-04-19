@@ -7,19 +7,50 @@
 
 import SwiftUI
 
-//import Lottie
+import Lottie
 
-public struct MercuryLoading: View {
+public protocol LoadingPresentable {
+  var isLoading: Bool { get }
+  func show()
+  func hide()
+}
+
+@Observable
+public final class MercuryLoading: LoadingPresentable {
+  public static let shared = MercuryLoading()
+  public var isLoading: Bool = false
   
-  public init() { }
-  public var body: some View {
-    VStack {
-//      LottieView(animation: .named("LoadingAnimation.json"))
-      Text(":asdf")
-    }
+  private init() { }
+  
+  public func show() {
+    self.isLoading = true
+  }
+  
+  public func hide() {
+    self.isLoading = false
   }
 }
 
-#Preview {
-  MercuryLoading()
+public struct MercuryLoadingView: View {
+  private var model = MercuryLoading.shared
+  
+  private var loadingView: LottieView = LottieView(
+    animation: LottieAnimation.named(
+      "LoadingAnimation",
+      bundle: .module
+    )
+  )
+  
+  public var body: some View {
+    if model.isLoading {
+      loadingView
+        .configure { lottieAnimationView in
+          lottieAnimationView.contentMode = .scaleAspectFit
+          lottieAnimationView.shouldRasterizeWhenIdle = true
+          lottieAnimationView.animationSpeed = 6
+        }
+        .playing(loopMode: .loop)
+        .frame(width: 88, height: 88)
+    }
+  }
 }
