@@ -9,6 +9,6 @@ import Foundation
 import SwiftUI
 
 public enum FeatureRoute: Hashable {
-  case onboard(SignInStep)
-  case auction(AuctionStep)
+  case onboard(OnboardRoute)
+  case auction(AuctionRoute)
 }

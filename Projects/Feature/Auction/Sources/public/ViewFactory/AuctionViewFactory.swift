@@ -17,7 +17,7 @@ public struct AuctionViewFactory: ViewFactory {
   
   public init() {}
   
-  public func makeView(_ route: AuctionStep, navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) -> some View {
+  public func makeView(_ route: AuctionRoute, navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) -> some View {
     EmptyView()
   }
 }

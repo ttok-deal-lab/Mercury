@@ -7,13 +7,19 @@
 
 import SwiftUI
 
-struct CustomSplashView: View {
-  @Binding var isSplashDone: Bool
+import UIComponent
+
+public struct CustomSplashView: View {
+  @State private var modelData: CustomSplashModelData
   
-  var body: some View {
+  public init(onComplete: @escaping () -> Void) {
+    self.modelData = CustomSplashModelData(onComplete: onComplete)
+  }
+  
+  public var body: some View {
     ZStack {
       GeometryReader { geometry in
-        Image(.splash)
+        Asset.splash.image
           .resizable()
           .scaledToFill()
           .frame(width: geometry.size.width, height: geometry.size.height)

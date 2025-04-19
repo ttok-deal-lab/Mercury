@@ -22,10 +22,10 @@ public struct SignInViewFactory: ViewFactory {
   }
   
   public func makeView(
-    _ route: SignInStep,
+    _ onboardRouter: OnboardRoute,
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   ) -> some View {
-    switch route.step {
+    switch onboardRouter.route {
     case .signIn:
       SignInView(
         navigationStream: navigationStream,

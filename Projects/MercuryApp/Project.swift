@@ -13,6 +13,7 @@ let project = Project.app(
     .router,
     .domain,
     .infrastructure,
+    .feature(target: "CustomSplash"),
     .feature(target: "MainTab"),
     .feature(target: "Interest"),
     .feature(target: "Report"),

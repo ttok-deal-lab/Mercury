@@ -38,7 +38,7 @@ struct AppView: View {
           }
         }
       } else {
-        CustomSplashView(isSplashDone: $isSplashDone)
+        CustomSplashViewWrapperView(onComplete: { isSplashDone = true })
           .transition(.opacity)
       }
     }
