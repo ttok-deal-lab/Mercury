@@ -19,25 +19,29 @@ struct AppView: View {
   @State private var isSplashDone = false
   
   var body: some View {
-    if isSplashDone {
-      NavigationStack(path: $coordinator.navigationPath) {
-        TabbarViewWrapperView(navigationSubject: coordinator.eventSubject)
-          .navigationDestination(for: FeatureRoute.self) { route in
-            RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
-          }
-      }
-      .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
-        if let route = coordinator.fullScreenRoute {
-          NavigationStack(path: $coordinator.fullScreenPath) {
-            RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
-              .navigationDestination(for: FeatureRoute.self) { route in
-                RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
-              }
+    ZStack {
+      if isSplashDone {
+        NavigationStack(path: $coordinator.navigationPath) {
+          TabbarViewWrapperView(navigationSubject: coordinator.eventSubject)
+            .navigationDestination(for: FeatureRoute.self) { route in
+              RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
+            }
+        }
+        .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
+          if let route = coordinator.fullScreenRoute {
+            NavigationStack(path: $coordinator.fullScreenPath) {
+              RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
+                .navigationDestination(for: FeatureRoute.self) { route in
+                  RootViewFactory().makeView(route, navigationSubject: coordinator.eventSubject)
+                }
+            }
           }
         }
+      } else {
+        CustomSplashView(isSplashDone: $isSplashDone)
+          .transition(.opacity)
       }
-    } else {
-      CustomSplashView(isSplashDone: $isSplashDone)
     }
+    .animation(.easeInOut(duration: DesignDefine.transitionOpacityDuration), value: isSplashDone)
   }
 }

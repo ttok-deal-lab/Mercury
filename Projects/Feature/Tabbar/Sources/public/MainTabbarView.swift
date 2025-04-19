@@ -45,7 +45,7 @@ public struct MainTabbarView<
           .transition(.opacity)
       }
     }
-    .animation(.easeInOut(duration: 0.12), value: modelData.isUserSignIn)
+    .animation(.easeInOut(duration: DesignDefine.transitionOpacityDuration), value: modelData.isUserSignIn)
     .onChange(of: modelData.isUserSignIn) { _, isSignedIn in
        if isSignedIn && !didShowSignInToast {
          didShowSignInToast = true
@@ -53,6 +53,8 @@ public struct MainTabbarView<
        }
      }
   }
+  
+  // MARK: - private method
   
   private func tabView() -> some View {
     TabView(selection: $selection) {

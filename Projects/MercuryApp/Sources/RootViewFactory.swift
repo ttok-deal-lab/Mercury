@@ -28,8 +28,8 @@ struct RootViewFactory: ViewFactory {
         localStorageUsecasable: LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
       )
       .makeView(signInStep, navigationSubject: navigationSubject)
-    case .auction(let auctionStep):
-      VStack { }
+    case .auction:
+      EmptyView()
     }
   }
 }

@@ -8,7 +8,6 @@
 import Foundation
 
 public class CommonDefine {
-  
   public static let googleSignInClientId: String = "231639587392-4p1jbrhn6r16io5hspc05oulfvepi3mp.apps.googleusercontent.com"
 
   // MARK: - plist value

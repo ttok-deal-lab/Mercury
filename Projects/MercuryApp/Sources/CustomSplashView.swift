@@ -21,13 +21,5 @@ struct CustomSplashView: View {
       }
     }
     .ignoresSafeArea()
-    .task {
-      await versionCheck()
-      isSplashDone = true
-    }
-  }
-  
-  private func versionCheck() async {
-    try? await Task.sleep(nanoseconds: 3_000_000_000)
   }
 }
