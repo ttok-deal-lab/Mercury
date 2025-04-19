@@ -15,7 +15,8 @@ let packageSettings = PackageSettings(
     "KakaoSDK": .framework,
     "KakaoSDKCommon": .framework,
     "KakaoSDKUser": .framework,
-    "KakaoSDKAuth": .framework
+    "KakaoSDKAuth": .framework,
+    "Lottie": .framework
   ],
   baseSettings: .settings(configurations: Configuration.configure())
 )
@@ -28,6 +29,7 @@ let package = Package(
     .package(url: "https://github.com/swiftlang/swift-testing.git", branch: "0.9.0"),
     .package(url: "https://github.com/google/GoogleSignIn-iOS.git", branch: "7.0.0"),
     .package(url: "https://github.com/naver/naveridlogin-sdk-ios", branch: "master"),
-    .package(url: "https://github.com/kakao/kakao-ios-sdk", branch: "master")
+    .package(url: "https://github.com/kakao/kakao-ios-sdk", branch: "master"),
+    .package(url: "https://github.com/airbnb/lottie-ios", branch: "master")
   ]
 )

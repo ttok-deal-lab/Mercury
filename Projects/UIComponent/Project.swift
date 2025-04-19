@@ -21,8 +21,12 @@ let project = Project.framework(
   ]),
   platform: .iOS,
   dependencies: [
-    .appFoundation
+    .appFoundation,
+    .lottie
   ],
-  testDependencies: [],
-  resourceSynthesizers: [.assets(), .fonts()]
+  testDependencies: [.lottie],
+  resourceSynthesizers: [
+    .assets(),
+    .fonts()
+  ]
 )
