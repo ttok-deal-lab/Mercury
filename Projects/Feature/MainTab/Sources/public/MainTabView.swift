@@ -20,12 +20,11 @@ public struct MainTabView<
   MyPageView: MyPageViewable,
   SignInView: SignInViewable
 >: View {
-  
-  // MARK: - private property
-  
   @StateObject private var modelData = MainTabModelData()
   @State private var selection: Tab = .home
   @State private var didShowSignInToast = false
+  @State private var isUserLoggedIn = false
+  
   @Inject private var toast: Toastable
   private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   

@@ -15,11 +15,11 @@ import Infrastructure
 
 public struct SignInViewWrapperView: View, SignInViewable {
   
-  let hostView: SignInView
+  private let hostView: SignInView
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
+  public init(onComplete: @escaping () -> Void) {
     self.hostView = SignInView(
-      navigationStream: navigationStream,
+      onComplete: onComplete,
       serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
       localStorageUsecasable: LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
     )

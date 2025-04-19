@@ -23,7 +23,7 @@ struct RootViewFactory: ViewFactory {
   ) -> some View {
     switch route {
     case .onboard(let signInStep):
-      SignInViewFactory(
+      OnboardingFactory(
         serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
         localStorageUsecasable: LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
       )

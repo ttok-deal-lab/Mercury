@@ -12,7 +12,7 @@ import Combine
 import AppFoundation
 import Domain
 
-final class SignInModelData: ObservableObject {
+final class OnboardingModelData: ObservableObject {
   @Published var isLoading: Bool = false
   
   // MARK: - private proprty
@@ -31,12 +31,24 @@ final class SignInModelData: ObservableObject {
   }
   
   // MARK: - private method
+  
+  @MainActor
+  private func setLoading(_ value: Bool) {
+    self.isLoading = value
+  }
+  
   private func serviceSignIn(provider: OauthProvider, oauthSignInToken: OauthSignInToken) async throws {
-    defer {
-      isLoading = false
+    await setLoading(true)
+    do {
+      try await serviceSignInUsecasable.serviceSignIn(
+        oauthProvider: provider,
+        oauthSignInToken: oauthSignInToken
+      )
+    } catch {
+      await setLoading(false)
+      throw error
     }
-    isLoading = true
-    try await serviceSignInUsecasable.serviceSignIn(oauthProvider: provider, oauthSignInToken: oauthSignInToken)
+    await setLoading(false)
   }
   
   // MARK: - public method

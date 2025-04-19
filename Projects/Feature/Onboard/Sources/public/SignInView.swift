@@ -15,21 +15,21 @@ import Domain
 import Router
 
 public struct SignInView: View {
-  private var signInModelData: SignInModelData
+  @StateObject private var modelData: OnboardingModelData
   @State private var error: MercuryError?
   
-  let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+  private var onComplete: (() -> Void)?
   
   public init(
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
+    onComplete: (() -> Void)? = nil,
     serviceSignInUsecasable: ServiceSignInUsecasable,
     localStorageUsecasable: LocalStorageUsecasable
   ) {
-    self.navigationStream = navigationStream
-    self.signInModelData = SignInModelData(
+    self.onComplete = onComplete
+    self._modelData = StateObject(wrappedValue: OnboardingModelData(
       serviceSignInUsecasable: serviceSignInUsecasable,
       localStorageUsecasable: localStorageUsecasable
-    )
+    ))
   }
   
   public var body: some View {
@@ -51,13 +51,14 @@ public struct SignInView: View {
       }
     }
     .alert(error: $error)
-    .loading(signInModelData.isLoading)
+    .loading(modelData.isLoading) // 여기
   }
   
   @MainActor
   private func handleSignIn(with provider: OauthProvider) async {
     do {
-      try await signInModelData.oauthSignIn(provider)
+      try await modelData.oauthSignIn(provider)
+      onComplete?()
     } catch let error as MercuryError  {
       self.error = error
     } catch {

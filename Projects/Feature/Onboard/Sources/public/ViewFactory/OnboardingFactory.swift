@@ -12,7 +12,7 @@ import Combine
 import Router
 import Domain
 
-public struct SignInViewFactory: ViewFactory {
+public struct OnboardingFactory: ViewFactory {
   private let serviceSignInUsecasable: ServiceSignInUsecasable
   private let localStorageUsecasable: LocalStorageUsecasable
   
@@ -28,7 +28,7 @@ public struct SignInViewFactory: ViewFactory {
     switch onboardRouter.route {
     case .signIn:
       SignInView(
-        navigationStream: navigationStream,
+        onComplete: onboardRouter.onComplete,
         serviceSignInUsecasable: serviceSignInUsecasable,
         localStorageUsecasable: localStorageUsecasable
       )

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 import AppFoundation
 
@@ -15,16 +16,17 @@ struct MercuryErrorModifier: ViewModifier {
   
   func body(content: Content) -> some View {
     content
-      .onChange(of: mercuryError) { oldValue, newValue in
-        guard oldValue != newValue else { return }
+      .onReceive(Just(mercuryError)) { newValue in
+        guard let error = newValue else { return }
         MercuryAlert.shared
           .present(
             type: .confirmable(
               information: AlertConfirmInformation(
                 title: "에러",
-                description: newValue?.description ?? "",
+                description: error.description,
                 confirmButtonTitle: "확인",
                 onConfirm: {
+                  self.mercuryError = nil
                   completion?()
                 }
               )
