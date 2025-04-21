@@ -19,6 +19,7 @@ import KakaoMapsSDK
 import NaverThirdPartyLogin
 import KakaoSDKCommon
 import FirebaseCore
+import FirebaseAnalytics
 
 @main
 struct MercuryApp: App {
