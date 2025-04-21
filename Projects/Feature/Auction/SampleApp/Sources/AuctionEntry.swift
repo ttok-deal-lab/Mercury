@@ -5,7 +5,7 @@ struct AuctionEntry: App {
   
   var body: some Scene {
     WindowGroup {
-      
+        ContentView()
     }
   }
 }

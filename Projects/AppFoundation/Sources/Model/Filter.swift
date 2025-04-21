@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-//@Model
+@Model
 public class Filter: Identifiable, ObservableObject {
   public var id: UUID
   public var favoriteCategories: [String]
@@ -21,26 +21,4 @@ public class Filter: Identifiable, ObservableObject {
     self.favoriteCategories = favoriteCategories.map { $0.rawValue }
     self.favoriteRegions = favoriteRegions.map { $0.rawValue }
   }
-  
-//  public static func getShared(context: ModelContext) -> Filter {
-//    if let existing = shared {
-//      return existing
-//    }
-    
-//    do {
-//      let descriptor = FetchDescriptor<Filter>()
-//      let filters = try context.fetch(descriptor)
-//      if let first = filters.first {
-//        shared = first
-//        return first
-//      }
-//    } catch {
-//      print("Error fetching Filter: \(error)")
-//    }
-    
-//    let newFilter = Filter()
-//    context.insert(newFilter)
-//    shared = newFilter
-//    return newFilter
-//  }
 }

@@ -8,16 +8,13 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.staticFramework(
+let project = Project.framework(
   name: "Network",
   platform: .iOS,
-  frameworkDependencies: [
-    .appFoundation,
-    .moya,
-    .combineMoya,
-    .swiftyJSON
+  dependencies: [
+    .appFoundation
   ],
-  frameworkTestDependencies: [
+  testDependencies: [
     
   ]
 )

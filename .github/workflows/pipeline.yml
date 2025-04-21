@@ -45,7 +45,7 @@ jobs:
       - name: Setup xcode version
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.0'
+          xcode-version: 'latest-stable'
     
       - name: Install Fastlane
         run: brew install fastlane
@@ -116,7 +116,7 @@ jobs:
       - name: Setup xcode version
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.0'
+          xcode-version: 'latest-stable'
     
       - name: Install Fastlane
         run: brew install fastlane
@@ -195,7 +195,7 @@ jobs:
       - name: Setup xcode version
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.0'
+          xcode-version: 'latest-stable'
     
       - name: Install Fastlane
         run: brew install fastlane

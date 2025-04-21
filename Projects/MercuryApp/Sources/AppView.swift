@@ -5,53 +5,60 @@
 //  Created by 송하민 on 8/30/24.
 //
 
-
 import SwiftUI
 import Foundation
+import Combine
 
-import Map
-import Tutorial
 import AppFoundation
-import Coordinator
+import Router
+import UIComponent
 
 struct AppView: View {
-  
-  @Environment(\.modelContext) var modelContext
-  @AppStorage(UserDefaultsKeyDefine.isAppFirst.rawValue) var isAppFirst: Bool = true
-  @StateObject private var coordinator = CoordinatorManager()
-  
+  @StateObject private var coordinator = NavigationCoordinator<FeatureRoute>()
+  @State private var isSplashDone  = false
+  @State private var isUserLoggedIn = false
+
   var body: some View {
-    
-    NavigationStack(path: $coordinator.path) {
-      CoordinatorFactory.build(page: rootPage(), coordinator: coordinator)
-        .navigationDestination(for: AppPage.self) { page in
-          CoordinatorFactory.build(page: page, coordinator: coordinator)
-        }
-        .sheet(item: $coordinator.sheet) { page in
-          CoordinatorFactory.build(page: page, coordinator: coordinator)
-        }
-        .fullScreenCover(item: $coordinator.fullScreenCover) { page in
-          NavigationStack(path: $coordinator.fullScreenCoverPath) {
-            CoordinatorFactory.build(page: page, coordinator: coordinator)
-              .navigationDestination(for: AppPage.self) { page in
-                CoordinatorFactory.build(page: page, coordinator: coordinator)
-              }
+    ZStack {
+      currentView()
+    }
+    .animation(.easeInOut(duration: DesignDefine.transitionOpacityDuration), value: isSplashDone)
+  }
+
+  @ViewBuilder
+  private func currentView() -> some View {
+    if !isSplashDone {
+      CustomSplashViewWrapperView { loggedIn in
+        isSplashDone = true
+        isUserLoggedIn = loggedIn
+      }
+    } else if !isUserLoggedIn {
+      SignInViewWrapperView {
+        isUserLoggedIn = true
+      }
+    } else {
+      NavigationStack(path: $coordinator.navigationPath) {
+        MainTabViewWrapperView(navigationStream: coordinator.eventSubject)
+          .navigationDestination(for: FeatureRoute.self) { route in
+            RootViewFactory().makeView(route, navigationStream: coordinator.eventSubject)
           }
-        }
+      }
+      .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
+        fullScreenCoverContent()
+      }
+      .toast(isPresented: isUserLoggedIn, text: "로그인 되었습니다!")
     }
-
   }
-  
-  private func rootPage() -> AppPage {
-    guard let root = coordinator.rootPage else {
-      return isAppFirst ? .tutorial(.tutorialIntro) : .map
+
+  @ViewBuilder
+  private func fullScreenCoverContent() -> some View {
+    if let route = coordinator.fullScreenRoute {
+      NavigationStack(path: $coordinator.fullScreenPath) {
+        RootViewFactory().makeView(route, navigationStream: coordinator.eventSubject)
+          .navigationDestination(for: FeatureRoute.self) { route in
+            RootViewFactory().makeView(route, navigationStream: coordinator.eventSubject)
+          }
+      }
     }
-    return root
   }
 }
-
-#Preview {
-  AppView()
-    .environmentObject(CoordinatorManager())
-}
-

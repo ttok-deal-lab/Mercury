@@ -12,8 +12,7 @@ public extension Project {
   // MARK: - project manifests
   
   static let appName: String = "Mercury"
-  static let productName: String = "AuctionGod" // CFBundleDisplayName에서 변경
-  
+  static let productName: String = "Slug"
   static let bundleId = "com.auction.mercury"
   static let deploymentTarget: DeploymentTargets = .iOS("17.0")
   

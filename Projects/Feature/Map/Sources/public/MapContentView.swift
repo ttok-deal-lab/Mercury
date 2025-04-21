@@ -10,23 +10,13 @@ import SwiftUI
 import CoreLocation
 
 import AppFoundation
-import Coordinator
+import Router
 import UIComponent
 
 public struct MapContentView: View {
-  
-  // MARK: - private property
-  
   @StateObject private var store = MapStore(userLocationClient: UserLocationClientLive())
   
-  @ObservedObject private var coordinator: CoordinatorManager
-  
-  
-  // MARK: - life cycle
-  
-  public init(coordinator: CoordinatorManager) {
-    self.coordinator = coordinator
-  }
+  public init() { }
   
   public var body: some View {
     KakaoMapView(

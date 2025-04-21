@@ -8,12 +8,13 @@ import ProjectDescriptionHelpers
 
 let packageSettings = PackageSettings(
   productTypes: [
-    "ComposableArchitecture": .framework,
-    "KakaoMapsSDK-SPM": .staticFramework,
-    "Algorithms": .framework,
-    "Moya": .framework,
-    "SwiftyJSON": .framework,
-    "Testing": .framework
+    "KakaoMapsSDK-SPM": .framework,
+    "Testing": .framework,
+    "KakaoSDK": .framework,
+    "KakaoSDKCommon": .framework,
+    "KakaoSDKUser": .framework,
+    "KakaoSDKAuth": .framework,
+    "Lottie": .framework
   ],
   baseSettings: .settings(configurations: Configuration.configure())
 )
@@ -22,12 +23,13 @@ let packageSettings = PackageSettings(
 let package = Package(
   name: "SwiftPackages",
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", branch: "1.12.1"),
-    .package(url: "https://github.com/Moya/Moya.git", branch: "15.0.3"),
-    .package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", branch: "5.0.2"),
-    .package(url: "https://github.com/kakao-mapsSDK/KakaoMapsSDK-SPM.git", branch: "2.12.0"),
-    .package(url: "https://github.com/apple/swift-algorithms.git", branch: "1.2.0"),
-    .package(url: "https://github.com/swiftlang/swift-testing.git", branch: "0.9.0"),
-    .package(url: "https://github.com/google/GoogleSignIn-iOS.git", branch: "7.0.0")
+    .package(url: "https://github.com/kakao-mapsSDK/KakaoMapsSDK-SPM.git", from: "2.12.0"),
+    .package(url: "https://github.com/swiftlang/swift-testing.git", from: "0.9.0"),
+    .package(url: "https://github.com/google/GoogleSignIn-iOS.git", from: "7.0.0"),
+    .package(url: "https://github.com/naver/naveridlogin-sdk-ios", branch: "master"),
+    .package(url: "https://github.com/kakao/kakao-ios-sdk", branch: "master"),
+    .package(url: "https://github.com/airbnb/lottie-spm.git", from: "4.5.1"),
+    .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "11.11.0"))
+    
   ]
 )
