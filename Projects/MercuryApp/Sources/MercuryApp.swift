@@ -18,6 +18,7 @@ import GoogleSignInSwift
 import KakaoMapsSDK
 import NaverThirdPartyLogin
 import KakaoSDKCommon
+import FirebaseCore
 
 @main
 struct MercuryApp: App {
@@ -42,6 +43,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     configureGoogleInstance()
     configureNaverLoginInstance()
     configureKakaoLoginInstance()
+    
+    FirebaseApp.configure()
     
     let container = MercuryContainer.shared
     container.register(SignInTokenInformable.self, instance: SignInInformationManager.shared)

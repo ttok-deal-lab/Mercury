@@ -23,7 +23,12 @@ let project = Project.app(
     .feature(target: "Comment"),
     .feature(target: "Map"),
     .feature(target: "Onboard"),
-    .feature(target: "SignUp")
+    .feature(target: "SignUp"),
+    .firebaseCore,
+    .firebaseDatabase,
+    .firebaseMessaging,
+    .firebaseCrashlytics,
+    .firebaseAnalytics
   ],
   testDependencies: []
 )
