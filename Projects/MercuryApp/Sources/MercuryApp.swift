@@ -20,6 +20,7 @@ import NaverThirdPartyLogin
 import KakaoSDKCommon
 import FirebaseCore
 import FirebaseAnalytics
+import FirebaseMessaging
 
 @main
 struct MercuryApp: App {
@@ -45,7 +46,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     configureNaverLoginInstance()
     configureKakaoLoginInstance()
     
-    FirebaseApp.configure()
+    configFirebase(application)
     
     let container = MercuryContainer.shared
     container.register(SignInTokenInformable.self, instance: SignInInformationManager.shared)
@@ -56,8 +57,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     return true
   }
-  
-  // MARK: - pre-configure instances
+}
+
+extension AppDelegate { // pre-configure instances
   
   private func initiateKakaoMapInstance() {
     if let sdkAppKey = CommonDefine.mapKey {
@@ -82,5 +84,39 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   
   private func configureKakaoLoginInstance() {
     KakaoSDK.initSDK(appKey: CommonDefine.kakaoAuthKey ?? "", loggingEnable: false)
+  }
+  
+  private func configFirebase(_ application: UIApplication) {
+    
+    FirebaseApp.configure()
+    
+    Messaging.messaging().delegate = self
+    
+    UNUserNotificationCenter.current().delegate = self
+    let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+    UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { granted, _ in
+      if granted {
+        print("알림 등록이 완료되었습니다.")
+      }
+    }
+    application.registerForRemoteNotifications()
+  }
+  
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+  func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    Messaging.messaging().apnsToken = deviceToken
+  }
+  
+  // foreground 상에서 알림이 보이게끔 해준다.
+  func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    completionHandler([.banner, .sound, .badge])
+  }
+}
+
+extension AppDelegate: MessagingDelegate {
+  func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+    print("FCM Token: \(fcmToken)")
   }
 }
