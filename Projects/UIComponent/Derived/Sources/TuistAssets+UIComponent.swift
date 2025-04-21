@@ -50,7 +50,6 @@ public enum Asset {
     public static let red700TextError = ColorAsset(name: "Red700TextError")
   }
   public enum Images {
-    public static let updown = ImageAsset(name: "Updown")
     public static let arrowDownNoShaft = ImageAsset(name: "arrow-down-no-shaft")
     public static let arrowDown = ImageAsset(name: "arrow-down")
     public static let arrowLeftNoShaft = ImageAsset(name: "arrow-left-no-shaft")
@@ -63,6 +62,7 @@ public enum Asset {
     public static let chevronDown = ImageAsset(name: "chevron_down")
     public static let chevronLeft = ImageAsset(name: "chevron_left")
     public static let chevronRight = ImageAsset(name: "chevron_right")
+    public static let updown = ImageAsset(name: "updown")
     public static let closePassword = ImageAsset(name: "close-password")
     public static let close = ImageAsset(name: "close")
     public static let edit = ImageAsset(name: "edit")

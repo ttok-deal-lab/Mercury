@@ -13,7 +13,8 @@ let project = Project.app(
     .router,
     .domain,
     .infrastructure,
-    .feature(target: "Tabbar"),
+    .feature(target: "CustomSplash"),
+    .feature(target: "MainTab"),
     .feature(target: "Interest"),
     .feature(target: "Report"),
     .feature(target: "MyPage"),
@@ -22,7 +23,12 @@ let project = Project.app(
     .feature(target: "Comment"),
     .feature(target: "Map"),
     .feature(target: "Onboard"),
-    .feature(target: "SignUp")
+    .feature(target: "SignUp"),
+    .firebaseCore,
+    .firebaseDatabase,
+    .firebaseMessaging,
+    .firebaseCrashlytics,
+    .firebaseAnalytics
   ],
   testDependencies: []
 )

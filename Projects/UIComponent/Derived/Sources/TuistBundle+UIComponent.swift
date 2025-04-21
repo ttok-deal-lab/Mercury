@@ -1,15 +1,18 @@
+// swiftlint:disable:this file_name
 // swiftlint:disable all
 // swift-format-ignore-file
 // swiftformat:disable all
-import Foundation// MARK: - Swift Bundle Accessor - for SPM
+import Foundation
+// MARK: - Swift Bundle Accessor - for SPM
 private class BundleFinder {}
 extension Foundation.Bundle {
 /// Since UIComponent is a static framework, the bundle containing the resources is copied into the final product.
 static let module: Bundle = {
     let bundleName = "UIComponent_UIComponent"
+    let bundleFinderResourceURL = Bundle(for: BundleFinder.self).resourceURL
     var candidates = [
         Bundle.main.resourceURL,
-        Bundle(for: BundleFinder.self).resourceURL,
+        bundleFinderResourceURL,
         Bundle.main.bundleURL,
     ]
     // This is a fix to make Previews work with bundled resources.
@@ -20,7 +23,7 @@ static let module: Bundle = {
         // Deleting derived data and not rebuilding the frameworks containing resources may result in a state
         // where the bundles are only available in the framework's directory that is actively being previewed.
         // Since we don't know which framework this is, we also need to look in all the framework subpaths.
-        if let subpaths = try? FileManager.default.contentsOfDirectory(atPath: override) {
+        if let subpaths = try? Foundation.FileManager.default.contentsOfDirectory(atPath: override) {
             for subpath in subpaths {
                 if subpath.hasSuffix(".framework") {
                     candidates.append(URL(fileURLWithPath: override + "/" + subpath))
@@ -28,6 +31,14 @@ static let module: Bundle = {
             }
         }
     }
+
+    // This is a fix to make unit tests work with bundled resources.
+    // Making this change allows unit tests to search one directory up for a bundle.
+    // More context can be found in this PR: https://github.com/tuist/tuist/pull/6895
+    #if canImport(XCTest)
+    candidates.append(bundleFinderResourceURL?.appendingPathComponent(".."))
+    #endif
+
     for candidate in candidates {
         let bundlePath = candidate?.appendingPathComponent(bundleName + ".bundle")
         if let bundle = bundlePath.flatMap(Bundle.init(url:)) {
@@ -36,11 +47,13 @@ static let module: Bundle = {
     }
     fatalError("unable to find bundle named UIComponent_UIComponent")
 }()
-}// MARK: - Objective-C Bundle Accessor
+}
+// MARK: - Objective-C Bundle Accessor
 @objc
 public class UIComponentResources: NSObject {
 @objc public class var bundle: Bundle {
     return .module
 }
-}// swiftlint:enable all
+}
 // swiftformat:enable all
+// swiftlint:enable all

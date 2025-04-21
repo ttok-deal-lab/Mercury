@@ -15,8 +15,8 @@ public struct InterestViewWrapperView: View, InterestViewable {
   
   let hostView: InterestView
   
-  public init(navigationSubject: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.hostView = InterestView(navigationSubject: navigationSubject)
+  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
+    self.hostView = InterestView(navigationStream: navigationStream)
   }
   
   public var body: some View {

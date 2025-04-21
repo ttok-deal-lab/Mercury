@@ -10,6 +10,7 @@ struct UIComponentEntry: App {
       OverlayWindowView {
         ToastTestView()
         AlertTestView()
+        LoadingTest()
         ScrollView(.vertical) {
           FontTestView()
           Divider()
