@@ -22,6 +22,6 @@ struct LoadingTest: View {
         Text("Toggle loading")
       }
     }
-    .loading($isLoading)
+    .loading(isLoading)
   }
 }

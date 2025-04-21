@@ -9,11 +9,9 @@ import Foundation
 
 public struct OnboardRoute: Hashable {
   public private(set) var route: Route
-  public var onComplete: (() -> Void)?
 
-  public init(route: Route, onComplete: (() -> Void)? = nil) {
+  public init(route: Route) {
     self.route = route
-    self.onComplete = onComplete
   }
 
   public enum Route: Hashable {

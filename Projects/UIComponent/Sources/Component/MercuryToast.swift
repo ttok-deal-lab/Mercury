@@ -9,18 +9,18 @@ import SwiftUI
 import UIKit
 
 public protocol Toastable {
-  func present(title: String, tint: Color, timing: ToastTime)
+  func present(title: String, tintType: ToastTintType, timing: ToastTime)
 }
 
 struct ToastInformation: Identifiable {
   public let id: UUID = .init()
   var title: String
-  var tint: Color
+  var tintType: ToastTintType
   var timing: ToastTime = .medium
   
-  public init(title: String, tint: Color, timing: ToastTime) {
+  public init(title: String, tintType: ToastTintType, timing: ToastTime) {
     self.title = title
-    self.tint = tint
+    self.tintType = tintType
     self.timing = timing
   }
 }
@@ -31,6 +31,11 @@ public enum ToastTime: CGFloat {
   case long = 3.5
 }
 
+public enum ToastTintType {
+  case common
+  case urgent
+}
+
 @Observable
 public final class MercuryToast: Toastable {
   public static let shared = MercuryToast()
@@ -38,7 +43,7 @@ public final class MercuryToast: Toastable {
   
   public func present(
     title: String,
-    tint: Color = Asset.Colors.gray900TextBlack.color,
+    tintType: ToastTintType,
     timing: ToastTime = .long
   ) {
     withAnimation(.snappy) {
@@ -46,7 +51,7 @@ public final class MercuryToast: Toastable {
         .append(
           .init(
             title: title,
-            tint: tint,
+            tintType: tintType,
             timing: timing
           )
         )
@@ -97,7 +102,7 @@ fileprivate struct ToastView: View {
       Text(item.title)
         .lineLimit(1)
     }
-    .foregroundStyle(item.tint)
+    .foregroundStyle(item.tintType == .common ? Asset.Colors.gray900TextBlack.color : Asset.Colors.red700TextError.color)
     .padding(.horizontal, 15)
     .padding(.vertical, 8)
     .background(

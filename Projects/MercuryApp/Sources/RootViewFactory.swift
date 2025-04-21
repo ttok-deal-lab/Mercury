@@ -23,11 +23,8 @@ struct RootViewFactory: ViewFactory {
   ) -> some View {
     switch route {
     case .onboard(let signInStep):
-      OnboardingFactory(
-        serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
-        localStorageUsecasable: LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
-      )
-      .makeView(signInStep, navigationStream: navigationStream)
+      OnboardingFactory()
+        .makeView(signInStep, navigationStream: navigationStream)
     case .auction:
       EmptyView()
     }

@@ -46,6 +46,7 @@ struct AppView: View {
       .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
         fullScreenCoverContent()
       }
+      .toast(isPresented: isUserLoggedIn, text: "로그인 되었습니다!")
     }
   }
 
