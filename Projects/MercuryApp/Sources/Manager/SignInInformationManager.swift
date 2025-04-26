@@ -12,7 +12,7 @@ import AppFoundation
 import Domain
 import Infrastructure
 
-public final class SignInInformationManager: SignInInformation, AccessTokenManagable, UserInfoManagable {
+public final class SignInInformationManager: SignInInformationReadable, AccessTokenManagable, UserInfoManagable {
 
   private let localStorageUsecase: LocalStorageUsecase
   private let fcmTokenUsercase: FcmTokenUsecase
@@ -26,8 +26,14 @@ public final class SignInInformationManager: SignInInformation, AccessTokenManag
     didSet {
       if let accessToken = accessToken {
         self.tokenInfoStream.send(accessToken)
+        Task { [weak self] in
+          await self?.localStorageUsecase.setModel(accessToken, forKey: .signInTokenInfo)
+        }
       } else {
         self.tokenInfoStream.send(nil)
+        Task { [weak self] in
+          await self?.localStorageUsecase.remove(forKey: .signInTokenInfo)
+        }
       }
     }
   }
@@ -36,12 +42,14 @@ public final class SignInInformationManager: SignInInformation, AccessTokenManag
     didSet {
       if let userInfo {
         userInfoStream.send(userInfo)
-        
-        Task {
-          try await self.fcmTokenUsercase.sendFcmToken(fcmToken: "")
+        Task { [weak self] in
+          await self?.localStorageUsecase.setModel(userInfo, forKey: .signInUserInfo)
         }
       } else {
         userInfoStream.send(nil)
+        Task { [weak self] in
+          await self?.localStorageUsecase.remove(forKey: .signInUserInfo)
+        }
       }
     }
   }
@@ -84,7 +92,7 @@ public final class SignInInformationManager: SignInInformation, AccessTokenManag
     self.accessToken = accessToken
   }
   
-  public func removeAccessToken() {
+  public func removeAccessToken() { // logout
     self.accessToken = nil
   }
   

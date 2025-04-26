@@ -29,7 +29,7 @@ struct MercuryApp: App {
   var body: some Scene {
     WindowGroup {
       OverlayWindowView {
-        AppView()
+        MainView()
           .onOpenURL { url in
             GIDSignIn.sharedInstance.handle(url)
           }
@@ -49,7 +49,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     configFirebase(application)
     
     let container = MercuryContainer.shared
-    container.register(SignInInformation.self, instance: SignInInformationManager.shared)
+    container.register(SignInInformationReadable.self, instance: SignInInformationManager.shared)
     container.register(AccessTokenManagable.self, instance: SignInInformationManager.shared)
     container.register(UserInfoManagable.self, instance: SignInInformationManager.shared)
     container.register(Toastable.self, instance: MercuryToast.shared)

@@ -22,13 +22,11 @@ public struct SignInView: View {
   
   public init(
     onComplete: (() -> Void)? = nil,
-    serviceSignInUsecasable: ServiceSignInUsecasable,
-    localStorageUsecasable: LocalStorageUsecasable
+    serviceSignInUsecasable: ServiceSignInUsecasable
   ) {
     self.onComplete = onComplete
     self._modelData = StateObject(wrappedValue: OnboardingModelData(
-      serviceSignInUsecasable: serviceSignInUsecasable,
-      localStorageUsecasable: localStorageUsecasable
+      serviceSignInUsecasable: serviceSignInUsecasable
     ))
   }
   
@@ -51,7 +49,7 @@ public struct SignInView: View {
       }
     }
     .alert(error: $error)
-    .loading(modelData.isLoading) // 여기
+    .loading(modelData.isLoading)
   }
   
   @MainActor

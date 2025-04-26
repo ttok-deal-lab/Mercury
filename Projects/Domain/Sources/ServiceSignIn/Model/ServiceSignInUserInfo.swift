@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ServiceSignInStatus: String {
+public enum UserStatus: String {
   case active = "ACTIVE"
   case inactive = "INACTIVE"
 }
@@ -16,9 +16,9 @@ public struct UserInformation {
   public let id: Int
   public let email: String
   public let name: String
-  public let status: ServiceSignInStatus?
+  public let status: UserStatus?
   
-  public init(id: Int, email: String, name: String, status: ServiceSignInStatus?) {
+  public init(id: Int, email: String, name: String, status: UserStatus?) {
     self.id = id
     self.email = email
     self.name = name
@@ -39,7 +39,7 @@ extension UserInformation: Codable { // TODO: UserDefaults용으로 채택하나
     id = try container.decode(Int.self, forKey: .id)
     email = try container.decode(String.self, forKey: .email)
     name = try container.decode(String.self, forKey: .name)
-    status = try container.decodeIfPresent(ServiceSignInStatus.self, forKey: .status)
+    status = try container.decodeIfPresent(UserStatus.self, forKey: .status)
   }
 
   public func encode(to encoder: Encoder) throws {
@@ -51,6 +51,6 @@ extension UserInformation: Codable { // TODO: UserDefaults용으로 채택하나
   }
 }
 
-extension ServiceSignInStatus: Codable {
+extension UserStatus: Codable {
   
 }

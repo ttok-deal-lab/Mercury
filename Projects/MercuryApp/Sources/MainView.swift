@@ -12,12 +12,13 @@ import Combine
 import AppFoundation
 import Router
 import UIComponent
+import Domain
 
-struct AppView: View {
+struct MainView: View {
   @StateObject private var coordinator = NavigationCoordinator<FeatureRoute>()
   @State private var isSplashDone  = false
   @State private var isUserLoggedIn = false
-
+  
   var body: some View {
     ZStack {
       currentView()
@@ -28,14 +29,14 @@ struct AppView: View {
   @ViewBuilder
   private func currentView() -> some View {
     if !isSplashDone {
-      CustomSplashViewWrapperView { loggedIn in
+      CustomSplashViewWrapperView(onComplete: { loggedIn in
         isSplashDone = true
         isUserLoggedIn = loggedIn
-      }
+      })
     } else if !isUserLoggedIn {
-      SignInViewWrapperView {
+      SignInViewWrapperView(onComplete: {
         isUserLoggedIn = true
-      }
+      })
     } else {
       NavigationStack(path: $coordinator.navigationPath) {
         MainTabViewWrapperView(navigationStream: coordinator.eventSubject)

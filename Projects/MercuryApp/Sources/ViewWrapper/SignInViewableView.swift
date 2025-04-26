@@ -17,11 +17,10 @@ public struct SignInViewWrapperView: View, SignInViewable {
   
   private let hostView: SignInView
   
-  public init(onComplete: @escaping () -> Void) {
+  public init(onComplete: (() -> Void)?) {
     self.hostView = SignInView(
       onComplete: onComplete,
-      serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
-      localStorageUsecasable: LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
+      serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository())
     )
   }
   

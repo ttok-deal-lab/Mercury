@@ -22,10 +22,8 @@ public struct MainTabView<
 >: View {
   @StateObject private var modelData = MainTabModelData()
   @State private var selection: Tab = .home
-  @State private var didShowSignInToast = false
-  @State private var isUserLoggedIn = false
-  
   @Inject private var toast: Toastable
+  
   private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
   // MARK: - life cycle
@@ -36,7 +34,11 @@ public struct MainTabView<
   
   public var body: some View {
     ZStack {
-      tabView()
+      if !modelData.isUserLoggedIn {
+        SignInView(onComplete: nil)
+      } else {
+        tabView()
+      }
     }
   }
   

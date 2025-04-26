@@ -13,6 +13,9 @@ struct MercuryLoadingModifier: ViewModifier {
   
   func body(content: Content) -> some View {
     content
+      .onDisappear {
+        loadingView.hide()
+      }
       .onChange(of: isLoading) { oldValue, newValue in
         guard oldValue != newValue else { return }
         if newValue {

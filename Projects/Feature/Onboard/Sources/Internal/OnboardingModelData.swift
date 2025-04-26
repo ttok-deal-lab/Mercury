@@ -15,22 +15,14 @@ import Domain
 final class OnboardingModelData: ObservableObject {
   @Published var isLoading: Bool = false
   
-  // MARK: - private proprty
   private let serviceSignInUsecasable: ServiceSignInUsecasable
-  private let localStorageUsecasable: LocalStorageUsecasable
   private let oauthSignInProviderFactory = SignInProviderFactory()
   
-
-  // MARK: - life cycle
   init(
-    serviceSignInUsecasable: ServiceSignInUsecasable,
-    localStorageUsecasable: LocalStorageUsecasable
+    serviceSignInUsecasable: ServiceSignInUsecasable
   ) {
     self.serviceSignInUsecasable = serviceSignInUsecasable
-    self.localStorageUsecasable = localStorageUsecasable
   }
-  
-  // MARK: - private method
   
   @MainActor
   private func setLoading(_ value: Bool) {
@@ -50,8 +42,6 @@ final class OnboardingModelData: ObservableObject {
     }
     await setLoading(false)
   }
-  
-  // MARK: - public method
   
   func oauthSignIn(_ oauthProvider: OauthProvider) async throws {
     let signInProvider = oauthSignInProviderFactory.createProvider(provider: oauthProvider)

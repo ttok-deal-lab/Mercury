@@ -7,10 +7,12 @@
 
 import Foundation
 
+import AppFoundation
+import Domain
 import Network
 
 enum FCMTokenAPI {
-  case registFCMToken(fcmToken: String?, userID: String, deviceID: String, deviceType: String)
+  case registFCMToken(fcmToken: String, userID: String, deviceID: String, deviceType: String)
   case loadFCMToken(userID: String)
   case requestDeleteFCMToken(userID: String)
 }
@@ -59,6 +61,18 @@ extension FCMTokenAPI: BaseAPI {
       return .get
     case .requestDeleteFCMToken:
       return .delete
+    }
+  }
+  
+  var additionalHeaders: [String : String]? {
+    switch self {
+    case .registFCMToken:
+      if let accessToken = MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken {
+        return ["Authorization" : accessToken.value]
+      }
+      return nil
+    default:
+      return nil
     }
   }
   

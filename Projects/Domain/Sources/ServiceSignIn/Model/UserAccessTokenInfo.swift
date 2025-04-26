@@ -8,10 +8,10 @@
 import Foundation
 
 public struct UserAccessToken {
-  public let accessToken: String
+  public let value: String
   
-  public init(accessToken: String) {
-    self.accessToken = accessToken
+  public init(value: String) {
+    self.value = value
   }
 }
 

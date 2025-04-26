@@ -47,56 +47,68 @@ public extension BaseAPI {
   }
   
   func request<T: Decodable>(_ model: T.Type) async throws -> T {
-    var plainURLString: String {
-      if let domain = domain {
-        return baseURL.appending(domain).appending(path)
-      } else {
-        return baseURL.appending(path)
-      }
-    }
-    
-    guard var urlComponents = URLComponents(string: plainURLString) else {
-      throw NetworkError.failToConvertURL
-    }
-    
-    if let queryParam {
-      var queryItems: [URLQueryItem] = []
-      queryItems = queryParam.compactMap { key, value in
-        convertToQueryItem(key: key, value: value)
-      }
-      urlComponents.queryItems = queryItems.isEmpty ? nil : queryItems
-    }
-    
-    guard let finalURL = urlComponents.url else {
-      throw NetworkError.failToConvertURL
-    }
-    
-    var urlRequest = URLRequest(url: finalURL, cachePolicy: Const.cachePolicy, timeoutInterval: Const.timeout)
-    
-    urlRequest.httpMethod = method.rawValue
-    
-    if let requestBody {
-      let bodyData = try? JSONSerialization.data(withJSONObject: requestBody, options: [])
-      urlRequest.httpBody = bodyData
-    }
-    
-    if let headers {
-      urlRequest.allHTTPHeaderFields = headers
-    }
-    
     do {
-      let (data, _) = try await URLSession.shared.data(for: urlRequest)
-      let decodedModel = try JSONDecoder().decode(T.self, from: data)
-      print("Network request: URL:: \(finalURL.absoluteString)\nresponse: \(decodedModel)")
-      return decodedModel
+      let request = try makeURLRequest()
+      let (data, response) = try await URLSession.shared.data(for: request)
+      
+      guard let http = response as? HTTPURLResponse,
+            (200...299).contains(http.statusCode)
+      else {
+        throw NetworkError.invalidStatusCode
+      }
+      return try JSONDecoder().decode(T.self, from: data)
     } catch {
-      print("Decoding failed for URL:: \(finalURL.absoluteString)\nerror: \(error)")
       throw error
     }
   }
   
   func request() async throws {
+    let request = try makeURLRequest()
+    let (_, response) = try await URLSession.shared.data(for: request)
     
+    guard let http = response as? HTTPURLResponse,
+          (200...299).contains(http.statusCode)
+    else {
+      throw NetworkError.invalidStatusCode
+    }
+  }
+}
+
+private extension BaseAPI {
+  func makeURLRequest() throws -> URLRequest {
+    let plainURLString: String = {
+      if let domain = domain {
+        return baseURL.appending(domain).appending(path)
+      }
+      return baseURL.appending(path)
+    }()
+    
+    guard var comps = URLComponents(string: plainURLString) else {
+      throw NetworkError.failToConvertURL
+    }
+    if let queryParam {
+      comps.queryItems = queryParam.compactMap { key, value in
+        convertToQueryItem(key: key, value: value)
+      }
+    }
+    guard let url = comps.url else { throw NetworkError.failToConvertURL }
+    
+    var request = URLRequest(
+      url: url,
+      cachePolicy: Const.cachePolicy,
+      timeoutInterval: Const.timeout
+    )
+    request.httpMethod = method.rawValue
+    
+    if let requestBody {
+      request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
+    }
+    if let headers { request.allHTTPHeaderFields = headers }
+    if let additionalHeaders {
+      request.allHTTPHeaderFields?.merge(additionalHeaders) { _, new in new }
+    }
+    print("request: \(request)")
+    return request
   }
 }
 

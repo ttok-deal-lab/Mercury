@@ -1,5 +1,5 @@
 //
-//  SignInInformationDTO.swift
+//  UserInfoDTO.swift
 //  AppFoundation
 //
 //  Created by 송하민 on 1/12/25.
@@ -7,16 +7,32 @@
 
 import Foundation
 
-struct SignInInformationDTO: Codable {
+import Domain
+
+struct UserInfoDTO: Codable {
   var user: SignInUserInfoDTO
   var token: SignInTokenInfoDTO
   
-  public init(from decoder: any Decoder) throws {
+  init(from decoder: any Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     self.user = try container.decode(SignInUserInfoDTO.self, forKey: .user)
     self.token = try container.decode(SignInTokenInfoDTO.self, forKey: .token)
   }
   
+  func toUserAccessToken() -> UserAccessToken {
+    return .init(
+      value: self.token.accessToken
+    )
+  }
+  
+  func toUserInformation() -> UserInformation {
+    return .init(
+      id: self.user.id,
+      email: self.user.email,
+      name: self.user.name,
+      status: UserStatus(rawValue: self.user.status) 
+    )
+  }
 }
 
 struct SignInUserInfoDTO: Codable {

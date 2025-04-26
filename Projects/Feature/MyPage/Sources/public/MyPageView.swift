@@ -8,11 +8,15 @@
 import SwiftUI
 import Combine
 
+import AppFoundation
 import Router
 import UIComponent
+import Domain
 
 public struct MyPageView: View {
   @StateObject private var viewModel = MyPageModelData()
+  @Inject private var accessTokenManager: AccessTokenManagable
+  
   private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
   public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
@@ -20,8 +24,14 @@ public struct MyPageView: View {
   }
   
   public var body: some View {
-    Text("Profile")
-      .foregroundStyle(.black)
+    VStack {
+      Button {
+        accessTokenManager.removeAccessToken()
+      } label: {
+        Text("로그아웃")
+      }
+    }
+
   }
   
 }
