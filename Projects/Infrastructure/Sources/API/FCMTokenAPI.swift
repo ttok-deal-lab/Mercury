@@ -9,25 +9,25 @@ import Foundation
 
 import Network
 
-public enum FCMTokenAPI {
-  case registFCMToken(userID: String, deviceID: String)
+enum FCMTokenAPI {
+  case registFCMToken(fcmToken: String?, userID: String, deviceID: String, deviceType: String)
   case loadFCMToken(userID: String)
   case requestDeleteFCMToken(userID: String)
 }
 
 extension FCMTokenAPI: BaseAPI {
   
-  public var baseURL: String {
+  var baseURL: String {
     RestAPIDefine.base(.common)
   }
   
-  public var domain: String? {
+  var domain: String? {
     "v1/fcm/"
   }
   
-  public var path: String {
+  var path: String {
     switch self {
-    case let .registFCMToken(userID, deviceID):
+    case let .registFCMToken(_, userID, deviceID, _):
       return "\(userID)/\(deviceID)"
     case let .loadFCMToken(userID):
       return "\(userID)"
@@ -36,7 +36,22 @@ extension FCMTokenAPI: BaseAPI {
     }
   }
   
-  public var method: Network.HTTPMethod {
+  var requestBody: [String : Any]? {
+    switch self {
+    case let .registFCMToken(fcmToken, userID, deviceID, deviceType):
+      let param: [String: Any] = [
+        "userId": userID,
+        "deviceId": deviceID,
+        "FCM-TOKEN": fcmToken,
+        "DEVICE-TYPE": deviceType
+      ]
+      return param
+    default:
+      return nil
+    }
+  }
+  
+  var method: Network.HTTPMethod {
     switch self {
     case .registFCMToken:
       return .post

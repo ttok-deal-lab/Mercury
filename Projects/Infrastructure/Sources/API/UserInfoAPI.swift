@@ -9,27 +9,27 @@ import Foundation
 
 import Network
 
-public enum UserInfoAPI {
+enum UserInfoAPI {
   case userInfo(userID: Int)
 }
 
 extension UserInfoAPI: BaseAPI {
-  public var baseURL: String {
+  var baseURL: String {
     RestAPIDefine.base(.auth)
   }
   
-  public var domain: String?  {
+  var domain: String?  {
     return "v1/users/"
   }
   
-  public var path: String {
+  var path: String {
     switch self {
     case let .userInfo(userID):
       "\(userID)"
     }
   }
   
-  public var method: Network.HTTPMethod {
+  var method: Network.HTTPMethod {
     switch self {
     case .userInfo:
       return .get

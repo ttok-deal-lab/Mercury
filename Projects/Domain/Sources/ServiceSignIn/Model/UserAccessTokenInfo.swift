@@ -1,5 +1,5 @@
 //
-//  UserAccessTokenInfo.swift
+//  UserAccessToken.swift
 //  Domain
 //
 //  Created by 송하민 on 4/9/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct UserAccessTokenInfo {
+public struct UserAccessToken {
   public let accessToken: String
   
   public init(accessToken: String) {
@@ -15,6 +15,6 @@ public struct UserAccessTokenInfo {
   }
 }
 
-extension UserAccessTokenInfo: Codable {
+extension UserAccessToken: Codable {
   
 }

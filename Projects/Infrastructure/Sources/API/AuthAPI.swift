@@ -9,34 +9,34 @@ import Foundation
 
 import Network
 
-public enum AuthAPI {
+enum AuthAPI {
   case signIn(provider: String, idToken: String)
 }
 
 extension AuthAPI: BaseAPI {
-  public var baseURL: String {
+  var baseURL: String {
     RestAPIDefine.base(.auth)
   }
   
-  public var domain: String? {
+  var domain: String? {
     return "v1/auth/"
   }
   
-  public var path: String {
+  var path: String {
     switch self {
     case let .signIn(providier, _):
       "\(providier)"
     }
   }
   
-  public var method: Network.HTTPMethod {
+  var method: Network.HTTPMethod {
     switch self {
     case .signIn:
       return .post
     }
   }
   
-  public var requestBody: [String : Any]? {
+  var requestBody: [String : Any]? {
     switch self {
     case let .signIn(_, idToken):
       return [

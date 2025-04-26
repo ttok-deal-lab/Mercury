@@ -49,8 +49,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     configFirebase(application)
     
     let container = MercuryContainer.shared
-    container.register(SignInTokenInformable.self, instance: SignInInformationManager.shared)
-    container.register(SignInUserInformable.self, instance: SignInInformationManager.shared)
+    container.register(SignInInformation.self, instance: SignInInformationManager.shared)
+    container.register(AccessTokenManagable.self, instance: SignInInformationManager.shared)
+    container.register(UserInfoManagable.self, instance: SignInInformationManager.shared)
     container.register(Toastable.self, instance: MercuryToast.shared)
     container.register(Alertable.self, instance: MercuryAlert.shared)
     container.register(LoadingPresentable.self, instance: MercuryLoading.shared)
@@ -109,7 +110,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     Messaging.messaging().apnsToken = deviceToken
   }
   
-  // foreground 상에서 알림이 보이게끔 해준다.
   func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
     completionHandler([.banner, .sound, .badge])
   }
@@ -117,6 +117,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
 extension AppDelegate: MessagingDelegate {
   func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-    print("FCM Token: \(fcmToken)")
+    SignInInformationManager.shared.setFcmToken(fcmToken)
   }
 }

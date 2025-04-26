@@ -15,8 +15,8 @@ public final class ServiceSignInRepository: ServiceSignInRepositorable {
   
   // MARK: - private property
   
-  @LazyInject private var userInformable: SignInUserInformable
-  @LazyInject private var tokenInformable: SignInTokenInformable
+  @LazyInject private var userInfoManager: UserInfoManagable
+  @LazyInject private var accessTokenManager: AccessTokenManagable
   
   // MARK: - life cycle
   
@@ -24,7 +24,7 @@ public final class ServiceSignInRepository: ServiceSignInRepositorable {
   
   // MARK: - private method
   
-  private func parseToUserInfo(_ dto: SignInInformationDTO) -> ServiceSignInUserInfo {
+  private func parseToUserInfo(_ dto: SignInInformationDTO) -> UserInformation {
     return .init(
       id: dto.user.id,
       email: dto.user.email,
@@ -33,7 +33,7 @@ public final class ServiceSignInRepository: ServiceSignInRepositorable {
     )
   }
   
-  private func parseAccessToken(_ dto: SignInInformationDTO) -> UserAccessTokenInfo {
+  private func parseAccessToken(_ dto: SignInInformationDTO) -> UserAccessToken {
     return .init(accessToken: dto.token.accessToken)
   }
   
@@ -47,9 +47,8 @@ public final class ServiceSignInRepository: ServiceSignInRepositorable {
     
     let serviceUserInfo = parseToUserInfo(resultInfo)
     let accessTokenInfo = parseAccessToken(resultInfo)
-    
-    self.userInformable.userInfo.send(serviceUserInfo)
-    self.tokenInformable.tokenInfo.send(accessTokenInfo)
+    self.userInfoManager.setUserInfo(serviceUserInfo)
+    self.accessTokenManager.setAccessToken(accessTokenInfo)
   }
   
 }

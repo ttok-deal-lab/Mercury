@@ -20,6 +20,7 @@ public protocol BaseAPI {
   var queryParam: [String: Any]? { get }
   
   func request<T: Decodable>(_ model: T.Type) async throws -> T where T: Decodable
+  func request() async throws
 }
 
 public extension BaseAPI {
@@ -92,6 +93,10 @@ public extension BaseAPI {
       print("Decoding failed for URL:: \(finalURL.absoluteString)\nerror: \(error)")
       throw error
     }
+  }
+  
+  func request() async throws {
+    
   }
 }
 

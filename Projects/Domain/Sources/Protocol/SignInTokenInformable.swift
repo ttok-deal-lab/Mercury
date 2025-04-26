@@ -8,8 +8,11 @@
 import Foundation
 import Combine
 
-public protocol SignInTokenInformable {
-  var tokenInfo: CurrentValueSubject<UserAccessTokenInfo?, Never> { get }
+public protocol AccessTokenManagable {
+  var tokenInfoStream: CurrentValueSubject<UserAccessToken?, Never> { get }
+  
+  func setAccessToken(_ accessToken: UserAccessToken?)
+  func removeAccessToken()
 }
 
 

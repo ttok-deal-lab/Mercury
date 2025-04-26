@@ -8,6 +8,8 @@
 import Foundation
 import Combine
 
-public protocol SignInUserInformable {
-  var userInfo: CurrentValueSubject<ServiceSignInUserInfo?, Never> { get }
+public protocol UserInfoManagable {
+  var userInfoStream: CurrentValueSubject<UserInformation?, Never> { get }
+  
+  func setUserInfo(_ info: UserInformation?)
 }

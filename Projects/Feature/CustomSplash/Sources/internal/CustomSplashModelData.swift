@@ -12,7 +12,7 @@ import AppFoundation
 import Domain
 
 final class CustomSplashModelData: ObservableObject {
-  @Inject private var signInTokenInformable: SignInTokenInformable
+  @Inject private var signInTokenInformable: AccessTokenManagable
   private var store = Set<AnyCancellable>()
   
   init(onComplete: @escaping (Bool) -> Void) {

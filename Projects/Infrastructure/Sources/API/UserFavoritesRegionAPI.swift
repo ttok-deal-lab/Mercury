@@ -9,7 +9,7 @@ import Foundation
 
 import Network
 
-public enum UserFavoritesRegionAPI {
+enum UserFavoritesRegionAPI {
   case loadFavoritesRegion(userID: String, regionID: Int)
   case addFavoritesRegion(userID: String, regionID: Int)
   case deleteFavoritesRegion(userID: String, regionID: Int)
@@ -18,15 +18,15 @@ public enum UserFavoritesRegionAPI {
 }
 
 extension UserFavoritesRegionAPI: BaseAPI {
-  public var baseURL: String {
+  var baseURL: String {
     RestAPIDefine.base(.auth)
   }
   
-  public var domain: String? {
+  var domain: String? {
     "v1/users/"
   }
   
-  public var path: String {
+  var path: String {
     switch self {
     case let .loadFavoritesRegion(userID, regionID):
       return "\(userID)/favorites/regions/\(regionID)"
@@ -41,7 +41,7 @@ extension UserFavoritesRegionAPI: BaseAPI {
     }
   }
   
-  public var method: Network.HTTPMethod {
+  var method: Network.HTTPMethod {
     switch self {
     case .loadFavoritesRegion:
       return .get

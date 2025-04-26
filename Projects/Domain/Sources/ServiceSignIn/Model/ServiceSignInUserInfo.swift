@@ -12,7 +12,7 @@ public enum ServiceSignInStatus: String {
   case inactive = "INACTIVE"
 }
 
-public struct ServiceSignInUserInfo {
+public struct UserInformation {
   public let id: Int
   public let email: String
   public let name: String
@@ -26,7 +26,7 @@ public struct ServiceSignInUserInfo {
   }
 }
 
-extension ServiceSignInUserInfo: Codable { // TODO: UserDefaults용으로 채택하나, 기본적으로 Domain 모델들은 Codable사용을 하지 않아야 한다. 더 좋은 방법 구상할 것
+extension UserInformation: Codable { // TODO: UserDefaults용으로 채택하나, 기본적으로 Domain 모델들은 Codable사용을 하지 않아야 한다. 더 좋은 방법 구상할 것
   private enum CodingKeys: String, CodingKey {
     case id
     case email

@@ -13,13 +13,13 @@ import Router
 import Domain
 
 final class MyPageModelData: ObservableObject {
-  @Inject private var userInformationStream: SignInUserInformable
-  @Published var userInfo: ServiceSignInUserInfo?
+  @Inject private var userInfoManager: UserInfoManagable
+  @Published var userInfo: UserInformation?
   
   private var store = Set<AnyCancellable>()
   
   init() {
-    userInformationStream.userInfo.sink { [weak self] userInfo in
+    userInfoManager.userInfoStream.sink { [weak self] userInfo in
       Task { @MainActor [weak self] in
         self?.userInfo = userInfo
       }

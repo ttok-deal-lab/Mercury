@@ -9,22 +9,22 @@ import Foundation
 
 import Network
 
-public enum MapAPI {
+enum MapAPI {
   case loadProductCoordinate(courtSalesName: String, courtSalesAddress: String)
   case loadProductCoordinateList(courtSalesName: String, courtSalesAddress: String)
   case loadCourtSalesProducts(topLeftLatitude: Double, topLeftLongitude: Double, bottomRightLatitude: Double, bottomRightLongitude: Double)
 }
 
 extension MapAPI: BaseAPI {
-  public var baseURL: String {
+  var baseURL: String {
     RestAPIDefine.base(.common)
   }
   
-  public var domain: String? {
+  var domain: String? {
     "v1/map/"
   }
   
-  public var path: String {
+  var path: String {
     switch self {
     case .loadProductCoordinate:
       return "coordinate"
@@ -35,7 +35,7 @@ extension MapAPI: BaseAPI {
     }
   }
   
-  public var method: Network.HTTPMethod {
+  var method: Network.HTTPMethod {
     switch self {
     case .loadProductCoordinate:
       return .post
@@ -46,7 +46,7 @@ extension MapAPI: BaseAPI {
     }
   }
   
-  public var requestBody: [String : Any]? {
+  var requestBody: [String : Any]? {
     switch self {
     case let .loadProductCoordinate(courtSalesName, courtSalesAddress):
       return [
@@ -63,7 +63,7 @@ extension MapAPI: BaseAPI {
     }
   }
   
-  public var queryParam: [String : Any]? {
+  var queryParam: [String : Any]? {
     switch self {
     case .loadProductCoordinate:
       return nil
