@@ -22,6 +22,7 @@ import FirebaseCore
 import FirebaseAnalytics
 import FirebaseMessaging
 import Pulse
+import PulseProxy
 import PulseUI
 
 @main
@@ -51,6 +52,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     configFirebase(application)
     
     URLSessionProxyDelegate.enableAutomaticRegistration()
+    NetworkLogger.enableProxy()
     
     let container = MercuryContainer.shared
     container.register(SignInInformationReadable.self, instance: SignInInformationManager.shared)
