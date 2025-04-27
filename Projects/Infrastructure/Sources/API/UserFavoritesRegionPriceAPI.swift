@@ -7,7 +7,7 @@
 
 import Foundation
 
-import Network
+import Networking
 
 enum UserFavoritesRegionPriceAPI {
   case loadFavoritesRegionPrice(userID: String, regionID: Int)
@@ -41,7 +41,7 @@ extension UserFavoritesRegionPriceAPI: BaseAPI {
     }
   }
   
-  var method: Network.HTTPMethod {
+  var method: Networking.HTTPMethod {
     switch self {
     case .loadFavoritesRegionPrice:
       return .get

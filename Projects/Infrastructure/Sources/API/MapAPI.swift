@@ -7,7 +7,7 @@
 
 import Foundation
 
-import Network
+import Networking
 
 enum MapAPI {
   case loadProductCoordinate(courtSalesName: String, courtSalesAddress: String)
@@ -35,7 +35,7 @@ extension MapAPI: BaseAPI {
     }
   }
   
-  var method: Network.HTTPMethod {
+  var method: Networking.HTTPMethod {
     switch self {
     case .loadProductCoordinate:
       return .post

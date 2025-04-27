@@ -7,7 +7,7 @@
 
 import Foundation
 
-import Network
+import Networking
 
 enum AuctionAPI: BaseAPI {
   case auctionList(_ largeCategory: String, mediumCategory: String, page: Int)
@@ -30,7 +30,7 @@ enum AuctionAPI: BaseAPI {
     }
   }
   
-  var method: Network.HTTPMethod {
+  var method: Networking.HTTPMethod {
     switch self {
     case .auctionList, .auctionDetail: .get
     }

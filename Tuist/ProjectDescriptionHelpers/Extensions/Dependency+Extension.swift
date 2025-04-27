@@ -20,9 +20,12 @@ public extension TargetDependency {
   static let firebaseMessaging: TargetDependency = .external(name: "FirebaseMessaging")
   static let firebaseCrashlytics: TargetDependency = .external(name: "FirebaseCrashlytics")
   static let firebaseAnalytics: TargetDependency = .external(name: "FirebaseAnalytics")
+  static let pulse: TargetDependency = .external(name: "Pulse")
+  static let pulseProxy: TargetDependency = .external(name: "PulseProxy")
+  static let pulseUI: TargetDependency = .external(name: "PulseUI")
   
   static let appFoundation: TargetDependency = .project(target: "AppFoundation", path: .relativeToRoot("Projects/AppFoundation"))
-  static let network: TargetDependency = .project(target: "Network", path: .relativeToRoot("Projects/Network"))
+  static let networking: TargetDependency = .project(target: "Networking", path: .relativeToRoot("Projects/Network"))
   static let uiComponent: TargetDependency = .project(target: "UIComponent", path: .relativeToRoot("Projects/UIComponent"))
   static let router: TargetDependency = .project(target: "Router", path: .relativeToRoot("Projects/Router"))
   static let domain: TargetDependency = .project(target: "Domain", path: .relativeToRoot("Projects/Domain"))

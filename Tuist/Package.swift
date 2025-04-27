@@ -14,7 +14,10 @@ let packageSettings = PackageSettings(
     "KakaoSDKCommon": .framework,
     "KakaoSDKUser": .framework,
     "KakaoSDKAuth": .framework,
-    "Lottie": .framework
+    "Lottie": .framework,
+    "Pulse": .framework,
+    "PulseProxy": .framework,
+    "PulseUI": .framework
   ],
   baseSettings: .settings(configurations: Configuration.configure())
 )
@@ -29,7 +32,8 @@ let package = Package(
     .package(url: "https://github.com/naver/naveridlogin-sdk-ios", branch: "master"),
     .package(url: "https://github.com/kakao/kakao-ios-sdk", branch: "master"),
     .package(url: "https://github.com/airbnb/lottie-spm.git", from: "4.5.1"),
-    .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "11.11.0"))
+    .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "11.11.0")),
+    .package(url: "https://github.com/kean/Pulse.git", from: "5.1.4")
     
   ]
 )

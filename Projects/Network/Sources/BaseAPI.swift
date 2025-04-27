@@ -9,6 +9,8 @@ import Foundation
 
 import AppFoundation
 
+import Pulse
+
 public protocol BaseAPI {
   var baseURL: String { get }
   var domain: String? { get }
@@ -46,10 +48,16 @@ public extension BaseAPI {
     return nil
   }
   
+  private var session: URLSession {
+    let config = URLSessionConfiguration.default
+    let delegate = URLSessionProxyDelegate()
+    return URLSession(configuration: config, delegate: delegate, delegateQueue: nil)
+  }
+  
   func request<T: Decodable>(_ model: T.Type) async throws -> T {
     do {
       let request = try makeURLRequest()
-      let (data, response) = try await URLSession.shared.data(for: request)
+      let (data, response) = try await session.data(for: request)
       
       guard let http = response as? HTTPURLResponse,
             (200...299).contains(http.statusCode)
@@ -64,7 +72,7 @@ public extension BaseAPI {
   
   func request() async throws {
     let request = try makeURLRequest()
-    let (_, response) = try await URLSession.shared.data(for: request)
+    let (_, response) = try await session.data(for: request)
     
     guard let http = response as? HTTPURLResponse,
           (200...299).contains(http.statusCode)
@@ -107,7 +115,6 @@ private extension BaseAPI {
     if let additionalHeaders {
       request.allHTTPHeaderFields?.merge(additionalHeaders) { _, new in new }
     }
-    print("request: \(request)")
     return request
   }
 }

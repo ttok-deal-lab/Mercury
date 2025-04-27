@@ -9,7 +9,7 @@ import Foundation
 
 import AppFoundation
 import Domain
-import Network
+import Networking
 
 public final class ServiceSignInRepository: ServiceSignInRepositorable {
   @LazyInject private var userInfoManager: UserInfoManagable

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-import Network
+import Networking
 
 class JokeFetcher: ObservableObject {
   @Published var joke: JokeInfo?

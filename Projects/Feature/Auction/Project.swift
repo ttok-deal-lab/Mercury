@@ -15,7 +15,7 @@ let project = Project.framework(
     .appFoundation,
     .uiComponent,
     .router,
-    .network,
+    .networking,
     .domain,
     .infrastructure
   ],

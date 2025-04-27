@@ -28,7 +28,7 @@ public final class FcmTokenUsecase: FcmTokenUsecasable {
       throw MercuryError(.notFoundDeviceUUID)
     }
     let stringifiedUserId = String(userId)
-    let deviceType: String = "iOS"
+    let deviceType: String = "ios"
     try await self.repoistory.sendFcmToken(fcmToken: fcmToken ?? "", userId: stringifiedUserId, deviceId: deviceId, deviceType: deviceType)
   }
 }

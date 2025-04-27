@@ -7,7 +7,7 @@
 
 import Foundation
 
-import Network
+import Networking
 
 enum NotificationAPI {
   case loadNotifications(sessionID: String)
@@ -35,7 +35,7 @@ extension NotificationAPI: BaseAPI {
     }
   }
   
-  var method: Network.HTTPMethod {
+  var method: Networking.HTTPMethod {
     switch self {
     case .loadNotifications:
       return .get

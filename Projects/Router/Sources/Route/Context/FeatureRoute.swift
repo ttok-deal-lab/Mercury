@@ -11,4 +11,5 @@ import SwiftUI
 public enum FeatureRoute: Hashable {
   case onboard(OnboardRoute)
   case auction(AuctionRoute)
+  case networkConsole
 }

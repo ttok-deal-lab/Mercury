@@ -23,6 +23,9 @@ struct MainView: View {
     ZStack {
       currentView()
     }
+    .shake(onPresent: {
+      self.coordinator.eventSubject.send(.presentFullScreen(.networkConsole))
+    })
     .animation(.easeInOut(duration: DesignDefine.transitionOpacityDuration), value: isSplashDone)
   }
 

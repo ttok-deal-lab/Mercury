@@ -7,7 +7,7 @@
 
 import Foundation
 
-import Network
+import Networking
 
 enum UserFavoritesProductAPI {
   case loadFavoritesProduct(userID: String, productID: Int)
@@ -41,7 +41,7 @@ extension UserFavoritesProductAPI: BaseAPI {
     }
   }
   
-  var method: Network.HTTPMethod {
+  var method: Networking.HTTPMethod {
     switch self {
     case .loadFavoritesProduct:
       return .get

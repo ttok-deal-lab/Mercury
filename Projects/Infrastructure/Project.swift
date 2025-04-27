@@ -14,7 +14,7 @@ let project = Project.framework(
   dependencies: [
     .appFoundation,
     .domain,
-    .network
+    .networking
   ],
   testDependencies: [
     

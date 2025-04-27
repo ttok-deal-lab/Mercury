@@ -6,9 +6,9 @@ import Foundation
 // MARK: - Swift Bundle Accessor - for SPM
 private class BundleFinder {}
 extension Foundation.Bundle {
-/// Since Network is a static framework, the bundle containing the resources is copied into the final product.
+/// Since Networking is a static framework, the bundle containing the resources is copied into the final product.
 static let module: Bundle = {
-    let bundleName = "Network_Network"
+    let bundleName = "Networking_Networking"
     let bundleFinderResourceURL = Bundle(for: BundleFinder.self).resourceURL
     var candidates = [
         Bundle.main.resourceURL,
@@ -45,12 +45,12 @@ static let module: Bundle = {
             return bundle
         }
     }
-    fatalError("unable to find bundle named Network_Network")
+    fatalError("unable to find bundle named Networking_Networking")
 }()
 }
 // MARK: - Objective-C Bundle Accessor
 @objc
-public class NetworkResources: NSObject {
+public class NetworkingResources: NSObject {
 @objc public class var bundle: Bundle {
     return .module
 }

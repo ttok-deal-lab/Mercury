@@ -7,7 +7,7 @@
 
 import Foundation
 
-import Network
+import Networking
 
 enum AuthAPI {
   case signIn(provider: String, idToken: String)
@@ -29,7 +29,7 @@ extension AuthAPI: BaseAPI {
     }
   }
   
-  var method: Network.HTTPMethod {
+  var method: Networking.HTTPMethod {
     switch self {
     case .signIn:
       return .post

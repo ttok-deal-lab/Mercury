@@ -52,7 +52,6 @@ public struct OverlayWindowView<Content: View>: View {
 
 fileprivate class PassthroughWindow: UIWindow {
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    
     if #available(iOS 18, *) {
       let view = super.hitTest(point, with: event)
       guard let view, _hitTest(point, from: view) != rootViewController?.view else { return nil }

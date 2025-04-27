@@ -21,6 +21,8 @@ import KakaoSDKCommon
 import FirebaseCore
 import FirebaseAnalytics
 import FirebaseMessaging
+import Pulse
+import PulseUI
 
 @main
 struct MercuryApp: App {
@@ -47,6 +49,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     configureKakaoLoginInstance()
     
     configFirebase(application)
+    
+    URLSessionProxyDelegate.enableAutomaticRegistration()
     
     let container = MercuryContainer.shared
     container.register(SignInInformationReadable.self, instance: SignInInformationManager.shared)

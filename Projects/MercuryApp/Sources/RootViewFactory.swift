@@ -14,6 +14,8 @@ import Onboard
 import Domain
 import Infrastructure
 
+import PulseUI
+
 struct RootViewFactory: ViewFactory {
   
   @ViewBuilder
@@ -23,10 +25,12 @@ struct RootViewFactory: ViewFactory {
   ) -> some View {
     switch route {
     case .onboard(let signInStep):
-      OnboardingFactory()
+      OnboardingFactory() // 여기에 뷰 추상 타입을 끌어와서 써도 되지 않을까?
         .makeView(signInStep, navigationStream: navigationStream)
     case .auction:
       EmptyView()
+    case .networkConsole:
+      ConsoleView()
     }
   }
 }

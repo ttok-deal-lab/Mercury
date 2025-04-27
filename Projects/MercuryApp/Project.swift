@@ -9,7 +9,7 @@ let project = Project.app(
   dependencies: [
     .appFoundation,
     .uiComponent,
-    .network,
+    .networking,
     .router,
     .domain,
     .infrastructure,
@@ -28,7 +28,10 @@ let project = Project.app(
     .firebaseDatabase,
     .firebaseMessaging,
     .firebaseCrashlytics,
-    .firebaseAnalytics
+    .firebaseAnalytics,
+    .pulse,
+    .pulseProxy,
+    .pulseUI
   ],
   testDependencies: []
 )

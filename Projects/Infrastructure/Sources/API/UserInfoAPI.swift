@@ -7,7 +7,7 @@
 
 import Foundation
 
-import Network
+import Networking
 
 enum UserInfoAPI {
   case userInfo(userID: Int)
@@ -29,7 +29,7 @@ extension UserInfoAPI: BaseAPI {
     }
   }
   
-  var method: Network.HTTPMethod {
+  var method: Networking.HTTPMethod {
     switch self {
     case .userInfo:
       return .get

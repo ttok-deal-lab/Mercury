@@ -9,7 +9,7 @@ import Foundation
 
 import AppFoundation
 import Domain
-import Network
+import Networking
 
 enum FCMTokenAPI {
   case registFCMToken(fcmToken: String, userID: String, deviceID: String, deviceType: String)
@@ -39,21 +39,10 @@ extension FCMTokenAPI: BaseAPI {
   }
   
   var requestBody: [String : Any]? {
-    switch self {
-    case let .registFCMToken(fcmToken, userID, deviceID, deviceType):
-      let param: [String: Any] = [
-        "userId": userID,
-        "deviceId": deviceID,
-        "FCM-TOKEN": fcmToken,
-        "DEVICE-TYPE": deviceType
-      ]
-      return param
-    default:
-      return nil
-    }
+    nil
   }
   
-  var method: Network.HTTPMethod {
+  var method: Networking.HTTPMethod {
     switch self {
     case .registFCMToken:
       return .post
@@ -66,11 +55,11 @@ extension FCMTokenAPI: BaseAPI {
   
   var additionalHeaders: [String : String]? {
     switch self {
-    case .registFCMToken:
-      if let accessToken = MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken {
-        return ["Authorization" : accessToken.value]
-      }
-      return nil
+    case let .registFCMToken(fcmToken, _, _, deviceType):
+      return [
+        "FCM-TOKEN": fcmToken,
+        "DEVICE-TYPE": deviceType
+      ]
     default:
       return nil
     }

@@ -8,7 +8,7 @@
 import Foundation
 
 import Domain
-import Network
+import Networking
 
 public final class FcmTokenRepository: FcmTokenRepositorable {
   
