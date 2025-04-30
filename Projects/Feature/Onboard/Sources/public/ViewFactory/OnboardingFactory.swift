@@ -13,15 +13,19 @@ import Router
 import Domain
 
 public struct OnboardingFactory: ViewFactory {
+  private let modelData: OnboardingModelData
   
-  public init() {
-    
+  public init(modelData: OnboardingModelData) {
+    self.modelData = modelData
   }
   
   public func makeView(
     _ onboardRouter: OnboardRoute,
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   ) -> some View {
-    EmptyView()
+    switch onboardRouter.route {
+    case .permissionRequest:
+      PermissionRequestView(modelData: modelData, navigationStream: navigationStream)
+    }
   }
 }

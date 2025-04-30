@@ -94,18 +94,10 @@ extension AppDelegate { // pre-configure instances
   }
   
   private func configFirebase(_ application: UIApplication) {
-    
     FirebaseApp.configure()
-    
     Messaging.messaging().delegate = self
     
     UNUserNotificationCenter.current().delegate = self
-    let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-    UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { granted, _ in
-      if granted {
-        print("알림 등록이 완료되었습니다.")
-      }
-    }
     application.registerForRemoteNotifications()
   }
   

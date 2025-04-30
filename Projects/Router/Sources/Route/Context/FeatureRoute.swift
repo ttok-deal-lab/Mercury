@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+import Domain
+
 public enum FeatureRoute: Hashable {
   case onboard(OnboardRoute)
   case auction(AuctionRoute)

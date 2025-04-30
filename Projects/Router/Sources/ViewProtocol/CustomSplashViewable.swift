@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import Domain
+
 public protocol CustomSplashViewable where Self: View {
   init(onComplete: @escaping (_ isSplashDone: Bool) -> Void)
 }

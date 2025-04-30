@@ -8,20 +8,27 @@
 import Foundation
 import SwiftUI
 import Combine
+import CoreLocation
 
 import AppFoundation
 import Domain
 
-final class OnboardingModelData: ObservableObject {
-  @Published var isLoading: Bool = false
+@Observable
+public final class OnboardingModelData {
+  var isLoading: Bool = false
   
   private let serviceSignInUsecasable: ServiceSignInUsecasable
-  private let oauthSignInProviderFactory = SignInProviderFactory()
+  private let locationUsecasable: LocationUsecasable
+  private let oauthSignInProviderFactory: SignInProviderFactory
   
-  init(
-    serviceSignInUsecasable: ServiceSignInUsecasable
+  public init(
+    serviceSignInUsecasable: ServiceSignInUsecasable,
+    locationUsecasable: LocationUsecasable,
+    oauthSignInProviderFactory: SignInProviderFactory = SignInProviderFactory()
   ) {
     self.serviceSignInUsecasable = serviceSignInUsecasable
+    self.locationUsecasable = locationUsecasable
+    self.oauthSignInProviderFactory = oauthSignInProviderFactory
   }
   
   @MainActor
@@ -47,5 +54,16 @@ final class OnboardingModelData: ObservableObject {
     let signInProvider = oauthSignInProviderFactory.createProvider(provider: oauthProvider)
     let oauthSignInToken = try await signInProvider.signIn()
     try await serviceSignIn(provider: oauthProvider, oauthSignInToken: oauthSignInToken)
+  }
+  
+  func requestUserPermission() {
+    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
+      if granted {
+        print("알림 등록이 완료되었습니다.")
+      }
+    }
+    Task {
+      _ = await locationUsecasable.requestUserAuthorization()
+    }
   }
 }
