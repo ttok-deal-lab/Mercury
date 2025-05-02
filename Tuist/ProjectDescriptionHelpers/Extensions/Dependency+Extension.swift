@@ -13,7 +13,7 @@ public extension TargetDependency {
   static let swiftTesting: TargetDependency = .external(name: "Testing")
   static let googleSignIn: TargetDependency = .external(name: "GoogleSignIn")
   static let googleSignInSwift: TargetDependency = .external(name: "GoogleSignInSwift")
-  static let naverThirdPartyLogin: TargetDependency = .external(name: "NaverThirdPartyLogin")
+  static let naverThirdPartyLogin: TargetDependency = .external(name: "NidThirdPartyLogin")
   static let lottie: TargetDependency = .external(name: "Lottie")
   static let firebaseCore: TargetDependency = .external(name: "FirebaseCore")
   static let firebaseDatabase: TargetDependency = .external(name: "FirebaseDatabase")

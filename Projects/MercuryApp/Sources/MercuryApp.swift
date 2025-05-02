@@ -16,7 +16,7 @@ import Router
 import GoogleSignIn
 import GoogleSignInSwift
 import KakaoMapsSDK
-import NaverThirdPartyLogin
+import NidThirdPartyLogin
 import KakaoSDKCommon
 import FirebaseCore
 import FirebaseAnalytics
@@ -27,94 +27,102 @@ import PulseUI
 
 @main
 struct MercuryApp: App {
-  @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-  
-  var body: some Scene {
-    WindowGroup {
-      OverlayWindowView {
-        MainView()
-          .onOpenURL { url in
-            GIDSignIn.sharedInstance.handle(url)
-          }
-      }
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
+    var body: some Scene {
+        WindowGroup {
+            OverlayWindowView {
+                MainView()
+                    .onOpenURL { url in
+                        GIDSignIn.sharedInstance.handle(url)
+                    }
+            }
+        }
     }
-  }
 }
 
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-    initiateKakaoMapInstance()
-    configureGoogleInstance()
-    configureNaverLoginInstance()
-    configureKakaoLoginInstance()
-    
-    configFirebase(application)
-    
-    URLSessionProxyDelegate.enableAutomaticRegistration()
-    NetworkLogger.enableProxy()
-    
-    let container = MercuryContainer.shared
-    container.register(SignInInformationReadable.self, instance: SignInInformationManager.shared)
-    container.register(AccessTokenManagable.self, instance: SignInInformationManager.shared)
-    container.register(UserInfoManagable.self, instance: SignInInformationManager.shared)
-    container.register(Toastable.self, instance: MercuryToast.shared)
-    container.register(Alertable.self, instance: MercuryAlert.shared)
-    container.register(LoadingPresentable.self, instance: MercuryLoading.shared)
-    
-    return true
-  }
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        initiateKakaoMapInstance()
+        configureGoogleInstance()
+        configureNaverLoginInstance()
+        configureKakaoLoginInstance()
+        
+        configFirebase(application)
+        
+        URLSessionProxyDelegate.enableAutomaticRegistration()
+        NetworkLogger.enableProxy()
+        
+        let container = MercuryContainer.shared
+        container.register(SignInInformationReadable.self, instance: SignInInformationManager.shared)
+        container.register(AccessTokenManagable.self, instance: SignInInformationManager.shared)
+        container.register(UserInfoManagable.self, instance: SignInInformationManager.shared)
+        container.register(Toastable.self, instance: MercuryToast.shared)
+        container.register(Alertable.self, instance: MercuryAlert.shared)
+        container.register(LoadingPresentable.self, instance: MercuryLoading.shared)
+        
+        return true
+    }
 }
 
 extension AppDelegate { // pre-configure instances
-  
-  private func initiateKakaoMapInstance() {
-    if let sdkAppKey = CommonDefine.mapKey {
-      SDKInitializer.InitSDK(appKey: sdkAppKey)
-    }
-  }
-  
-  private func configureGoogleInstance() {
-    GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: CommonDefine.googleSignInClientId)
-  }
-  
-  private func configureNaverLoginInstance() {
-    let instance = NaverThirdPartyLoginConnection.getSharedInstance()
-    instance?.isNaverAppOauthEnable = true
-    instance?.isInAppOauthEnable = true
-    instance?.setOnlyPortraitSupportInIphone(false)
-    instance?.consumerKey = CommonDefine.naverClientID
-    instance?.consumerSecret = CommonDefine.naverClientSecret
-    instance?.serviceUrlScheme = Bundle.main.bundleIdentifier
-    instance?.appName = "Mercury"
-  }
-  
-  private func configureKakaoLoginInstance() {
-    KakaoSDK.initSDK(appKey: CommonDefine.kakaoAuthKey ?? "", loggingEnable: false)
-  }
-  
-  private func configFirebase(_ application: UIApplication) {
-    FirebaseApp.configure()
-    Messaging.messaging().delegate = self
     
-    UNUserNotificationCenter.current().delegate = self
-    application.registerForRemoteNotifications()
-  }
-  
+    private func initiateKakaoMapInstance() {
+        if let sdkAppKey = CommonDefine.mapKey {
+            SDKInitializer.InitSDK(appKey: sdkAppKey)
+        }
+    }
+    
+    private func configureGoogleInstance() {
+        GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: CommonDefine.googleSignInClientId)
+    }
+    
+    private func configureNaverLoginInstance() {
+        //    let instance = NaverThirdPartyLoginConnection.getSharedInstance()
+        //    instance?.isNaverAppOauthEnable = true
+        //    instance?.isInAppOauthEnable = true
+        //    instance?.setOnlyPortraitSupportInIphone(false)
+        //    instance?.consumerKey = CommonDefine.naverClientID
+        //    instance?.consumerSecret = CommonDefine.naverClientSecret
+        //    instance?.serviceUrlScheme = Bundle.main.bundleIdentifier
+        //    instance?.appName = "Mercury"
+        NidOAuth.shared.initialize()
+    }
+    
+    private func configureKakaoLoginInstance() {
+        KakaoSDK.initSDK(appKey: CommonDefine.kakaoAuthKey ?? "", loggingEnable: false)
+    }
+    
+    private func configFirebase(_ application: UIApplication) {
+        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
+        
+        UNUserNotificationCenter.current().delegate = self
+        application.registerForRemoteNotifications()
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        if (NidOAuth.shared.handleURL(url) == true) { // 네이버앱에서 전달된 Url인 경우
+            return true
+        }
+        // 다른 앱에서 들어온 url 처리
+        return false
+    }
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
-  func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-    Messaging.messaging().apnsToken = deviceToken
-  }
-  
-  func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-    completionHandler([.banner, .sound, .badge])
-  }
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound, .badge])
+    }
 }
 
 extension AppDelegate: MessagingDelegate {
-  func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-    SignInInformationManager.shared.setFcmToken(fcmToken)
-  }
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        SignInInformationManager.shared.setFcmToken(fcmToken)
+    }
 }
