@@ -11,8 +11,6 @@ import SwiftUI
 import AppFoundation
 import UIComponent
 
-import NaverThirdPartyLogin
-
 struct NaverSignInButtonView: View {
   var completion: () async  throws -> Void
   var body: some View {

@@ -16,7 +16,8 @@ import Router
 import GoogleSignIn
 import GoogleSignInSwift
 import KakaoMapsSDK
-import NaverThirdPartyLogin
+import KakaoSDKAuth
+import NidThirdPartyLogin
 import KakaoSDKCommon
 import FirebaseCore
 import FirebaseAnalytics
@@ -35,6 +36,9 @@ struct MercuryApp: App {
         MainView()
           .onOpenURL { url in
             GIDSignIn.sharedInstance.handle(url)
+            if AuthApi.isKakaoTalkLoginUrl(url) {
+              _ = AuthController.handleOpenUrl(url: url)
+            }
           }
       }
     }
@@ -64,6 +68,16 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     return true
   }
+  
+  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    if (NidOAuth.shared.handleURL(url) == true) { // 네이버앱에서 전달된 Url인 경우
+      return true
+    }
+      
+    // 다른 앱에서 들어온 url 처리
+    
+    return false
+  }
 }
 
 extension AppDelegate { // pre-configure instances
@@ -79,14 +93,16 @@ extension AppDelegate { // pre-configure instances
   }
   
   private func configureNaverLoginInstance() {
-    let instance = NaverThirdPartyLoginConnection.getSharedInstance()
-    instance?.isNaverAppOauthEnable = true
-    instance?.isInAppOauthEnable = true
-    instance?.setOnlyPortraitSupportInIphone(false)
-    instance?.consumerKey = CommonDefine.naverClientID
-    instance?.consumerSecret = CommonDefine.naverClientSecret
-    instance?.serviceUrlScheme = Bundle.main.bundleIdentifier
-    instance?.appName = "Mercury"
+//    let instance = NaverThirdPartyLoginConnection.getSharedInstance()
+//    instance?.isNaverAppOauthEnable = true
+//    instance?.isInAppOauthEnable = true
+//    instance?.setOnlyPortraitSupportInIphone(false)
+//    instance?.consumerKey = CommonDefine.naverClientID
+//    instance?.consumerSecret = CommonDefine.naverClientSecret
+//    instance?.serviceUrlScheme = Bundle.main.bundleIdentifier
+//    instance?.appName = "Mercury"
+    
+    NidOAuth.shared.initialize()
   }
   
   private func configureKakaoLoginInstance() {

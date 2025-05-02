@@ -4,7 +4,7 @@ import Foundation
 import AppFoundation
 import Domain
 
-import NaverThirdPartyLogin
+import NidThirdPartyLogin
 
 class NaverSignInProvider: NSObject, OauthSignInable {
   
