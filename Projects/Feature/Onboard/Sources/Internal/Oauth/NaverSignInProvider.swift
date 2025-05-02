@@ -21,7 +21,12 @@ class NaverSignInProvider: NSObject, OauthSignInable {
             NidOAuth.shared.requestLogin { result in
                 switch result {
                 case .success(let loginResult):
-                    let token = loginResult.accessToken.tokenString
+                  let token = loginResult.accessToken.tokenString
+                  if loginResult.accessToken.isExpired {
+                    let refreshToken = loginResult.refreshToken.tokenString
+                    continuation.resume(returning: refreshToken)
+                    return
+                  }
                     continuation.resume(returning: token)
                 case .failure(let error):
                     let mercuryError = MercuryError(code: (error as NSError).code)
