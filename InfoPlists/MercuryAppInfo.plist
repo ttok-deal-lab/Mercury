@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NidUrlScheme</key>
+	<string>${NAVER_URL_SCHEME}</string>
+	<key>NidAppName</key>
+	<string>${NAVER_APP_NAME}</string>
+  <key>NidClientID</key>
+  <string>${NAVER_CLIENT_ID}</string>
+  <key>NidClientSecret</key>
+  <string>${NAVER_CLIENT_SECRET}</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -30,6 +38,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.231639587392-4p1jbrhn6r16io5hspc05oulfvepi3mp</string>
+        <string>com.auction.mercury</string>
 			</array>
 		</dict>
 		<dict>
@@ -72,10 +81,6 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NAVER_SIGNIN_ID</key>
-	<string>${NAVER_CLIENT_ID}</string>
-	<key>NAVER_SIGNIN_SECRET</key>
-	<string>${NAVER_CLIENT_SECRET}</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
