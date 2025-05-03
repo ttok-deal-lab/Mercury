@@ -34,7 +34,13 @@ struct MercuryApp: App {
             OverlayWindowView {
                 MainView()
                     .onOpenURL { url in
-                        GIDSignIn.sharedInstance.handle(url)
+                      if GIDSignIn.sharedInstance.handle(url) {
+                        return
+                      }
+                      
+                      if NidOAuth.shared.handleURL(url) {
+                        return
+                      }
                     }
             }
         }
@@ -79,14 +85,6 @@ extension AppDelegate { // pre-configure instances
     }
     
     private func configureNaverLoginInstance() {
-        //    let instance = NaverThirdPartyLoginConnection.getSharedInstance()
-        //    instance?.isNaverAppOauthEnable = true
-        //    instance?.isInAppOauthEnable = true
-        //    instance?.setOnlyPortraitSupportInIphone(false)
-        //    instance?.consumerKey = CommonDefine.naverClientID
-        //    instance?.consumerSecret = CommonDefine.naverClientSecret
-        //    instance?.serviceUrlScheme = Bundle.main.bundleIdentifier
-        //    instance?.appName = "Mercury"
         NidOAuth.shared.initialize()
     }
     
@@ -100,14 +98,6 @@ extension AppDelegate { // pre-configure instances
         
         UNUserNotificationCenter.current().delegate = self
         application.registerForRemoteNotifications()
-    }
-    
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        if (NidOAuth.shared.handleURL(url) == true) { // 네이버앱에서 전달된 Url인 경우
-            return true
-        }
-        // 다른 앱에서 들어온 url 처리
-        return false
     }
 }
 

@@ -8,11 +8,6 @@ import NidThirdPartyLogin
 import NidLogin
 
 class NaverSignInProvider: NSObject, OauthSignInable {
-  
-  // MARK: - private property
-  
-  private var continuation: CheckedContinuation<OauthSignInToken, Error>?
-
   // MARK: - internal method
 
   @MainActor

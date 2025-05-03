@@ -17,6 +17,7 @@ import KakaoSDKAuth
 
 class KakaoSignInProvider: OauthSignInable {
   // MARK: - private method
+  
   private func kakaoTalkLogin(continuation: CheckedContinuation<OauthSignInToken, any Error>) {
     UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
       if let error = error {
