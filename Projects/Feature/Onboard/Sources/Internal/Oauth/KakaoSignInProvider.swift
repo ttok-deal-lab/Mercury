@@ -29,6 +29,7 @@ class KakaoSignInProvider: OauthSignInable {
         continuation.resume(throwing: MercuryError(.noOauthToken))
         return
       }
+      print("token: \(token)")
       continuation.resume(returning: token)
     }
   }
@@ -44,6 +45,7 @@ class KakaoSignInProvider: OauthSignInable {
         continuation.resume(throwing: MercuryError(.noOauthToken))
         return
       }
+      
       continuation.resume(returning: token)
     }
   }
