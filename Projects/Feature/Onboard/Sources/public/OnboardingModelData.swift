@@ -51,15 +51,15 @@ public final class OnboardingModelData {
   }
   
   func oauthSignIn(_ oauthProvider: OauthProvider) async throws {
-    let signInProvider = oauthSignInProviderFactory.createProvider(provider: oauthProvider)
-    let oauthSignInToken = try await signInProvider.signIn()
+    let oauthSignInProvider = oauthSignInProviderFactory.createProvider(provider: oauthProvider)
+    let oauthSignInToken = try await oauthSignInProvider.signIn()
     try await serviceSignIn(provider: oauthProvider, oauthSignInToken: oauthSignInToken)
   }
   
   func requestUserPermission() {
     UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
       if granted {
-        print("알림 등록이 완료되었습니다.")
+        print("알림 등록이 완료되었습니다.") // TODO: Analytics send
       }
     }
     Task {

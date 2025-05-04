@@ -39,8 +39,6 @@ public enum MercuryErrorDefine: Int {
   
   /// 로그인 시도했으나 리턴 nil
   case nilFromSignIn = 3000
-  /// 로그인 취소
-  case cancelUserLogin
   /// accessToken이 없음
   case noOauthToken
 }

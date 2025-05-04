@@ -59,7 +59,7 @@ public struct SignInView: View {
     do {
       try await modelData.oauthSignIn(provider)
       onComplete?()
-    } catch let error as MercuryError  {
+    } catch let error as MercuryError {
       self.error = error
     } catch {
       self.error = MercuryError(.unknown)

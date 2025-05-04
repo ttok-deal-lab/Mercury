@@ -13,6 +13,7 @@ import AuthenticationServices
 
 final class AppleSignInProvider: OauthSignInable {
   private var delegate: AppleSignInDelegate?
+
   
   func signIn() async throws -> OauthSignInToken {
     try await withCheckedThrowingContinuation { [weak self] continuation in
@@ -32,6 +33,7 @@ final class AppleSignInProvider: OauthSignInable {
 
 private class AppleSignInDelegate: NSObject, ASAuthorizationControllerDelegate {
   private let continuation: CheckedContinuation<OauthSignInToken, Error>
+  private let userCancelCode: Int = 1001
   
   init(continuation: CheckedContinuation<OauthSignInToken, Error>) {
     self.continuation = continuation
@@ -48,6 +50,7 @@ private class AppleSignInDelegate: NSObject, ASAuthorizationControllerDelegate {
   }
   
   func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+    guard (error as NSError).code != self.userCancelCode else { return }
     continuation.resume(throwing: MercuryError(code: (error as NSError).code))
   }
 }
