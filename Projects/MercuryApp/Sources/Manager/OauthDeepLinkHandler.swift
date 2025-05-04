@@ -15,9 +15,9 @@ public class OauthDeepLinkHandler {
     KakaoSignInHandler()
   ])
   
-  private let handlers: [URLHandlable]
+  private let handlers: [DeeplinkHandlable]
   
-  private init(handlers: [URLHandlable]) {
+  private init(handlers: [DeeplinkHandlable]) {
     self.handlers = handlers
   }
   

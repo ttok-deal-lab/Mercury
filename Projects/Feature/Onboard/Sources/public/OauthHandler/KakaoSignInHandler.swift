@@ -9,10 +9,10 @@ import Foundation
 import KakaoSDKCommon
 import KakaoSDKAuth
 
-public class KakaoSignInHandler: URLHandlable {
+public class KakaoSignInHandler: DeeplinkHandlable {
   public init() { }
   
-  @MainActor public func handle(url: URL) -> Bool {
+  public func handle(url: URL) -> Bool {
     return AuthController.handleOpenUrl(url: url)
   }
   

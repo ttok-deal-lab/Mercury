@@ -7,7 +7,7 @@
 import GoogleSignIn
 import GoogleSignInSwift
 
-public class GoogleSignInHandler: URLHandlable {
+public class GoogleSignInHandler: DeeplinkHandlable {
   public init() { }
   
   public func handle(url: URL) -> Bool {
