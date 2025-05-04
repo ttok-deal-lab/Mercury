@@ -9,8 +9,9 @@ import Foundation
 import NidThirdPartyLogin
 import NidLogin
 
-class NidOAuthHandler: SocialSignInURLHandler {
-  func handle(url: URL) -> Bool {
+public class NidOAuthHandler: URLHandlable {
+  public init() { }
+  public func handle(url: URL) -> Bool {
     return NidOAuth.shared.handleURL(url)
   }
 }

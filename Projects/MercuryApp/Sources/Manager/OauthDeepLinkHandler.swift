@@ -1,21 +1,23 @@
 //
-//  DeepLInkHandler.swift
+//  OauthDeepLinkHandler.swift
 //  Onboard
 //
 //  Created by 최수훈 on 5/4/25.
 //
 import Foundation
 
-public class DeepLinkHandler {
-  public static let shared = DeepLinkHandler(handlers: [
+import Onboard
+
+public class OauthDeepLinkHandler {
+  public static let shared = OauthDeepLinkHandler(handlers: [
     GoogleSignInHandler(),
     NidOAuthHandler(),
     KakaoSignInHandler()
   ])
   
-  private let handlers: [SocialSignInURLHandler]
+  private let handlers: [URLHandlable]
   
-  private init(handlers: [SocialSignInURLHandler]) {
+  private init(handlers: [URLHandlable]) {
     self.handlers = handlers
   }
   
