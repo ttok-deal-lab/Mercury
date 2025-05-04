@@ -26,7 +26,7 @@ class KakaoSignInProvider: OauthSignInable {
         continuation.resume(throwing: mercuryError)
         return
       }
-      guard let token = oauthToken?.idToken else {
+      guard let token = oauthToken?.accessToken else {
         continuation.resume(throwing: MercuryError(.noOauthToken))
         return
       }
@@ -41,7 +41,7 @@ class KakaoSignInProvider: OauthSignInable {
         continuation.resume(throwing: MercuryError(code: (error as NSError).code))
         return
       }
-      guard let token = oauthToken?.idToken else {
+      guard let token = oauthToken?.accessToken else {
         continuation.resume(throwing: MercuryError(.noOauthToken))
         return
       }
