@@ -37,18 +37,6 @@ struct MercuryApp: App {
         MainView()
           .onOpenURL { url in
             DeepLinkHandler.shared.handle(url: url)
-//            if GIDSignIn.sharedInstance.handle(url) {
-//              return
-//            }
-//            
-//            if NidOAuth.shared.handleURL(url) {
-//              return
-//            }
-//            
-//            if AuthController.handleOpenUrl(url: url) {
-//              return
-//            }
-//            
           }
       }
     }
