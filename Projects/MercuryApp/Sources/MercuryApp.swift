@@ -16,8 +16,9 @@ import Router
 import GoogleSignIn
 import GoogleSignInSwift
 import KakaoMapsSDK
-import NaverThirdPartyLogin
+import NidThirdPartyLogin
 import KakaoSDKCommon
+import KakaoSDKAuth
 import FirebaseCore
 import FirebaseAnalytics
 import FirebaseMessaging
@@ -34,7 +35,18 @@ struct MercuryApp: App {
       OverlayWindowView {
         MainView()
           .onOpenURL { url in
-            GIDSignIn.sharedInstance.handle(url)
+            if GIDSignIn.sharedInstance.handle(url) {
+              return
+            }
+            
+            if NidOAuth.shared.handleURL(url) {
+              return
+            }
+            
+            if AuthController.handleOpenUrl(url: url) {
+              return 
+            }
+            
           }
       }
     }
@@ -79,14 +91,7 @@ extension AppDelegate { // pre-configure instances
   }
   
   private func configureNaverLoginInstance() {
-    let instance = NaverThirdPartyLoginConnection.getSharedInstance()
-    instance?.isNaverAppOauthEnable = true
-    instance?.isInAppOauthEnable = true
-    instance?.setOnlyPortraitSupportInIphone(false)
-    instance?.consumerKey = CommonDefine.naverClientID
-    instance?.consumerSecret = CommonDefine.naverClientSecret
-    instance?.serviceUrlScheme = Bundle.main.bundleIdentifier
-    instance?.appName = "Mercury"
+    NidOAuth.shared.initialize()
   }
   
   private func configureKakaoLoginInstance() {
@@ -94,21 +99,12 @@ extension AppDelegate { // pre-configure instances
   }
   
   private func configFirebase(_ application: UIApplication) {
-    
     FirebaseApp.configure()
-    
     Messaging.messaging().delegate = self
     
     UNUserNotificationCenter.current().delegate = self
-    let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-    UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { granted, _ in
-      if granted {
-        print("알림 등록이 완료되었습니다.")
-      }
-    }
     application.registerForRemoteNotifications()
   }
-  
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {

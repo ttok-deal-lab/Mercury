@@ -20,7 +20,8 @@ public struct SignInViewWrapperView: View, SignInViewable {
   public init(onComplete: (() -> Void)?) {
     self.hostView = SignInView(
       onComplete: onComplete,
-      serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository())
+      serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
+      locationUsecasable: LocationUsecase()
     )
   }
   

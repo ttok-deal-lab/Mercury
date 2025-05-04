@@ -15,19 +15,21 @@ import Domain
 import Router
 
 public struct SignInView: View {
-  @StateObject private var modelData: OnboardingModelData
+  @State private var modelData: OnboardingModelData
   @State private var error: MercuryError?
   
   private var onComplete: (() -> Void)?
   
   public init(
     onComplete: (() -> Void)? = nil,
-    serviceSignInUsecasable: ServiceSignInUsecasable
+    serviceSignInUsecasable: ServiceSignInUsecasable,
+    locationUsecasable: LocationUsecasable
   ) {
     self.onComplete = onComplete
-    self._modelData = StateObject(wrappedValue: OnboardingModelData(
-      serviceSignInUsecasable: serviceSignInUsecasable
-    ))
+    self.modelData = OnboardingModelData(
+      serviceSignInUsecasable: serviceSignInUsecasable,
+      locationUsecasable: locationUsecasable
+    )
   }
   
   public var body: some View {

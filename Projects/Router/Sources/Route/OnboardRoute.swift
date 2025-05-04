@@ -15,7 +15,7 @@ public struct OnboardRoute: Hashable {
   }
 
   public enum Route: Hashable {
-    case signIn
+    case permissionRequest
   }
 
   public func hash(into hasher: inout Hasher) {

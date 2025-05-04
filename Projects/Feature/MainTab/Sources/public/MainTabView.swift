@@ -38,6 +38,10 @@ public struct MainTabView<
         SignInView(onComplete: nil)
       } else {
         tabView()
+          .onLoad {
+            // TODO: if isAppFirst 로직 들어가야함
+            navigationStream.send(.presentFullScreen(.onboard(.init(route: .permissionRequest))))
+          }
       }
     }
   }

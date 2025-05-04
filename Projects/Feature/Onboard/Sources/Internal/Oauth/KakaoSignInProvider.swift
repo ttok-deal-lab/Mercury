@@ -17,7 +17,8 @@ import KakaoSDKAuth
 
 class KakaoSignInProvider: OauthSignInable {
   // MARK: - private method
-  private func kakoTalkLogin(continuation: CheckedContinuation<OauthSignInToken, any Error>) {
+  
+  private func kakaoTalkLogin(continuation: CheckedContinuation<OauthSignInToken, any Error>) {
     UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
       if let error = error {
         let mercuryError = MercuryError(code: (error as NSError).code)
@@ -43,6 +44,7 @@ class KakaoSignInProvider: OauthSignInable {
         continuation.resume(throwing: MercuryError(.noOauthToken))
         return
       }
+      
       continuation.resume(returning: token)
     }
   }
@@ -52,7 +54,7 @@ class KakaoSignInProvider: OauthSignInable {
   @MainActor
   func signIn() async throws -> OauthSignInToken {
     return try await withCheckedThrowingContinuation { continuation in
-      UserApi.isKakaoTalkLoginAvailable() ? kakoTalkLogin(continuation: continuation) : kakaoAccountLogin(continuation: continuation)
+      UserApi.isKakaoTalkLoginAvailable() ? kakaoTalkLogin(continuation: continuation) : kakaoAccountLogin(continuation: continuation)
     }
   }
 }

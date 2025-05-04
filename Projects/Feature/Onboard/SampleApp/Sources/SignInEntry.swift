@@ -7,7 +7,7 @@ import Infrastructure
 
 import GoogleSignIn
 import GoogleSignInSwift
-import NaverThirdPartyLogin
+import NidThirdPartyLogin
 import KakaoSDKCommon
 import KakaoSDKAuth
 
