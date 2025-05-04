@@ -14,18 +14,26 @@ import Domain
 final class MainTabModelData: ObservableObject {
   @Inject private var accessTokenManager: AccessTokenManagable
   @Published var isUserLoggedIn: Bool = false
+  @Published var isTabEnterFirst: Bool = false
   
   private var store = Set<AnyCancellable>()
   
-  init() {
+  init(localStorageUsecase: LocalStorageUsecasable) {
+    self.accessTokenManager.tokenInfoStream
+      .receive(on: RunLoop.main)
+      .sink { [weak self] userAccessToken in
+        self?.isUserLoggedIn = userAccessToken != nil
+      }
+      .store(in: &store)
+    
     Task { [weak self] in
-      self?.accessTokenManager.tokenInfoStream
-        .sink { userAccessToken in
-          Task { @MainActor in
-            self?.isUserLoggedIn = userAccessToken != nil
-          }
+      let appFirstRunkeyExist = await localStorageUsecase.isKeyExist(forKey: .isTabEnterFirst)
+      if !appFirstRunkeyExist {
+        await MainActor.run { [weak self] in
+          self?.isTabEnterFirst = true
         }
-        .store(in: &self!.store)
+        await localStorageUsecase.set(false, forKey: .isTabEnterFirst)
+      }
     }
   }
   

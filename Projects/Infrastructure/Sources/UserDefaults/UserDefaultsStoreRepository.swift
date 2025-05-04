@@ -15,6 +15,10 @@ public final actor UserDefaultsStoreRepository: LocalStorageRepositorable {
   
   public init() { }
   
+  public func isKeyExist(forKey key: LocalStorageKey) async -> Bool {
+    return userDefaults.object(forKey: key.rawValue) != nil
+  }
+  
   public func setModel<T: Codable>(_ value: T, forKey key: LocalStorageKey) async {
     do {
       let encodedData = try JSONEncoder().encode(value)

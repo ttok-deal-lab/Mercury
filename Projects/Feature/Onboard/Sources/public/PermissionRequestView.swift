@@ -75,6 +75,7 @@ public struct PermissionRequestView: View {
             Spacer()
             
             MercuryButton("확인") {
+              modelData.requestUserPermission()
               navigationStream.send(.pop)
             }
           }
@@ -82,9 +83,6 @@ public struct PermissionRequestView: View {
         }
       }
       .ignoresSafeArea()
-    }
-    .onLoad {
-      modelData.requestUserPermission()
     }
   }
 
