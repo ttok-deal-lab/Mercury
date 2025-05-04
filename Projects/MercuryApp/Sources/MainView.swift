@@ -13,6 +13,7 @@ import AppFoundation
 import Router
 import UIComponent
 import Domain
+import Infrastructure
 
 struct MainView: View {
   @StateObject private var coordinator = NavigationCoordinator<FeatureRoute>()
@@ -42,10 +43,13 @@ struct MainView: View {
       })
     } else {
       NavigationStack(path: $coordinator.navigationPath) {
-        MainTabViewWrapperView(navigationStream: coordinator.eventSubject)
-          .navigationDestination(for: FeatureRoute.self) { route in
-            RootViewFactory().makeView(route, navigationStream: coordinator.eventSubject)
-          }
+        MainTabViewWrapperView(
+          navigationStream: coordinator.eventSubject,
+          localStorageUsecase: LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
+        )
+        .navigationDestination(for: FeatureRoute.self) { route in
+          RootViewFactory().makeView(route, navigationStream: coordinator.eventSubject)
+        }
       }
       .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
         fullScreenCoverContent()

@@ -16,6 +16,10 @@ public final class LocalStorageUsecase: LocalStorageUsecasable {
     self.localStorageRepositorable = localStorageRepositorable
   }
   
+  public func isKeyExist(forKey key: LocalStorageKey) async -> Bool {
+    await localStorageRepositorable.isKeyExist(forKey: key)
+  }
+  
   public func setModel<T>(_ value: T, forKey key: LocalStorageKey) async where T : Decodable, T : Encodable {
     await localStorageRepositorable.setModel(value, forKey: key)
   }
