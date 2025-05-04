@@ -10,34 +10,34 @@ import Foundation
 import AppFoundation
 
 public final class LocalStorageUsecase: LocalStorageUsecasable {
-  private let localStorageRepositorable: LocalStorageRepositorable
+  private let repository: LocalStorageRepositorable
   
-  public init(localStorageRepositorable: LocalStorageRepositorable) {
-    self.localStorageRepositorable = localStorageRepositorable
+  public init(repository: LocalStorageRepositorable) {
+    self.repository = repository
   }
   
   public func isKeyExist(forKey key: LocalStorageKey) async -> Bool {
-    await localStorageRepositorable.isKeyExist(forKey: key)
+    await repository.isKeyExist(forKey: key)
   }
   
   public func setModel<T>(_ value: T, forKey key: LocalStorageKey) async where T : Decodable, T : Encodable {
-    await localStorageRepositorable.setModel(value, forKey: key)
+    await repository.setModel(value, forKey: key)
   }
   
   public func getModel<T>(forKey key: LocalStorageKey, as type: T.Type) async -> T? where T : Decodable, T : Encodable {
-    await localStorageRepositorable.getModel(forKey: key, as: type)
+    await repository.getModel(forKey: key, as: type)
   }
   
   public func set<T>(_ value: T, forKey key: LocalStorageKey) async {
-    await localStorageRepositorable.set(value, forKey: key)
+    await repository.set(value, forKey: key)
   }
   
   public func get<T>(forKey key: LocalStorageKey) async -> T? {
-    await localStorageRepositorable.get(forKey: key)
+    await repository.get(forKey: key)
   }
   
   public func remove(forKey key: LocalStorageKey) async {
-    await localStorageRepositorable.remove(forKey: key)
+    await repository.remove(forKey: key)
   }
   
 }
