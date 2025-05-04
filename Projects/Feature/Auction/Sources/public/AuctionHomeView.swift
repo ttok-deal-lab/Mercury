@@ -19,6 +19,24 @@ public struct AuctionHomeView: View {
   }
   
   public var body: some View {
-    Text("AuctionHomeView")
+    VStack(spacing: .zero) {
+      AuctionHomeNavigationView(
+        onSelectArea: { areaName in
+          print(areaName)
+        },
+        onTapSearch: {
+          print("search")
+        },
+        onTapNotification: {
+          print("notification")
+        }
+      )
+      AuctionFilterView()
+      Text("리스트")
+      
+      Spacer()
+  
+    }
+    
   }
 }
