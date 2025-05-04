@@ -12,6 +12,7 @@ import UIComponent
 import AppFoundation
 import Domain
 import Router
+import Onboard
 
 import GoogleSignIn
 import GoogleSignInSwift
@@ -35,15 +36,7 @@ struct MercuryApp: App {
       OverlayWindowView {
         MainView()
           .onOpenURL { url in
-            if GIDSignIn.sharedInstance.handle(url) {
-              return
-            }
-            if NidOAuth.shared.handleURL(url) {
-              return
-            }
-            if AuthController.handleOpenUrl(url: url) {
-              return 
-            }
+            DeepLinkHandler.shared.handle(url: url)
           }
       }
     }
