@@ -25,6 +25,6 @@ public class DeepLinkHandler {
         return
       }
     }
-    print("처리할 핸들러를 찾지 못했습니다: \(url)")
+    print("Handler not found : \(url)")
   }
 }
