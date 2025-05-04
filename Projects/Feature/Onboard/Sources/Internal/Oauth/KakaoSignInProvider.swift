@@ -16,7 +16,8 @@ import KakaoSDKUser
 import KakaoSDKAuth
 
 class KakaoSignInProvider: OauthSignInable {
-  // MARK: - private method
+  
+  private let userCancelCode: Int = .zero
   
   private func kakaoTalkLogin(continuation: CheckedContinuation<OauthSignInToken, any Error>) {
     UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
@@ -34,10 +35,10 @@ class KakaoSignInProvider: OauthSignInable {
   }
   
   private func kakaoAccountLogin(continuation: CheckedContinuation<OauthSignInToken, any Error>) {
-    UserApi.shared.loginWithKakaoAccount { (oauthToken, error) in
+    UserApi.shared.loginWithKakaoAccount { [weak self] (oauthToken, error) in
       if let error = error {
-        let mercuryError = MercuryError(code: (error as NSError).code)
-        continuation.resume(throwing: mercuryError)
+        guard (error as NSError).code != self?.userCancelCode else { return }
+        continuation.resume(throwing: MercuryError(code: (error as NSError).code))
         return
       }
       guard let token = oauthToken?.idToken else {
