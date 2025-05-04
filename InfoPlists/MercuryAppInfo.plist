@@ -49,7 +49,7 @@
 			<string>com.auction.mercury</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakao513a4b9c44de76f81700c04ef0cbfb2c</string>
+				<string>kakao${KAKAO_AUTH_KEY}</string>
 			</array>
 		</dict>
 	</array>
