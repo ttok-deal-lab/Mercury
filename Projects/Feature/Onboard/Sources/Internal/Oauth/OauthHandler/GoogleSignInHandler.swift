@@ -7,8 +7,10 @@
 import GoogleSignIn
 import GoogleSignInSwift
 
-class GoogleSignInHandler: SocialSignInURLHandler {
-  func handle(url: URL) -> Bool {
+public class GoogleSignInHandler: URLHandlable {
+  public init() { }
+  
+  public func handle(url: URL) -> Bool {
     return GIDSignIn.sharedInstance.handle(url)
   }
 }
