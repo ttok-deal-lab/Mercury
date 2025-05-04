@@ -171,7 +171,7 @@ struct AuctionItemDTO: Decodable {
     appraisalDocumentUrl = try container.decode(URL.self, forKey: .appraisalDocumentUrl)
     
     let isoFormatter = ISO8601DateFormatter()
-    isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+    isoFormatter.formatOptions = [.withInternetDateTime]
     
     salesDateTime = try isoFormatter.decode(from: container, key: .salesDateTime)
     salesReceptionDate = try isoFormatter.decode(from: container, key: .salesReceptionDate)

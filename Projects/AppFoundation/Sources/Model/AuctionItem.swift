@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct AuctionItem {
+public struct AuctionItem: Identifiable {
   public let id: Int
   public let courtName: String
   public let salesNumber: String
@@ -26,12 +26,12 @@ public struct AuctionItem {
   public let appraisalDocumentUrl: URL
   public let createdAt: Date
   
-  let salesBuildings: [SalesBuilding]
-  let auctionDetails: [AuctionDetail]
-  let itemDetails: [ItemDetail]
-  let conditionReport: ConditionReport
-  let appraisalDocuments: [AppraisalDocument]
-  let nearbySalesStats: [NearbySalesStat]
+  public let salesBuildings: [SalesBuilding]
+  public let auctionDetails: [AuctionDetail]
+  public let itemDetails: [ItemDetail]
+  public let conditionReport: ConditionReport
+  public let appraisalDocuments: [AppraisalDocument]
+  public let nearbySalesStats: [NearbySalesStat]
   
   public init(
     id: Int,
@@ -85,13 +85,13 @@ public struct AuctionItem {
 }
 
 public struct SalesBuilding {
-  let siDoAddressName: String
-  let guAddressName: String
-  let dongAddressName: String
-  let riAddressName: String
-  let fullAddressName: String
-  let detailAddressName: String
-  let category: String
+  public let siDoAddressName: String
+  public let guAddressName: String
+  public let dongAddressName: String
+  public let riAddressName: String
+  public let fullAddressName: String
+  public let detailAddressName: String
+  public let category: String
   
   public init(siDoAddressName: String, guAddressName: String, dongAddressName: String, riAddressName: String, fullAddressName: String, detailAddressName: String, category: String) {
     self.siDoAddressName = siDoAddressName

@@ -61,11 +61,20 @@ final class AuctionHomeModelData {
       self?.isLoading = true
     }
     
-    let items = try await auctionListUsecase.fetchAllList(courtName: "서울중앙지방법원")
-    await MainActor.run { [weak self] in
-      self?.totalAuctionCount = items.count
-      self?.items = items
-      self?.isLoading = false
+    do {
+      let items = try await auctionListUsecase.fetchAllList(courtName: "서울중앙지방법원")
+      
+      await MainActor.run { [weak self] in
+        self?.totalAuctionCount = items.count
+        self?.items = items
+        self?.isLoading = false
+        print("first item ~> \n\(items.first)")
+      }
+    } catch {
+      await MainActor.run { [weak self] in
+        self?.isLoading = false
+      }
+      throw error
     }
   }
   

@@ -64,6 +64,7 @@ public extension BaseAPI {
       else {
         throw NetworkError.invalidStatusCode
       }
+      
       return try JSONDecoder().decode(T.self, from: data)
     } catch {
       throw error

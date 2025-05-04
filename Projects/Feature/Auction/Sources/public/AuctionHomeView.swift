@@ -44,22 +44,33 @@ public struct AuctionHomeView: View {
       
       AuctionSortView(modelData: $modelData)
       
-      InformCertificationView()
-      
-      Text("리스트")
-      
-      Spacer()
-  
+      ScrollView(.vertical) {
+        InformCertificationView()
+        
+        ForEach(modelData.items) { item in
+          AuctionItemView(
+            appraisalPrice: item.appraisalPrice,
+            locationBuildingName: item.salesBuildings.first?.fullAddressName ?? "",
+            locationAddressName: item.salesBuildings.last?.fullAddressName ?? ""
+          )
+        }
+        
+        Spacer()
+        
+      }
     }
+    
     .alert(error: $error)
     .loading(modelData.isLoading)
     .task(priority: .background) {
       do {
         try await modelData.loadAuctionList()
       } catch {
-        self.error = error as? MercuryError
+        self.error = error.toMercuryError()
       }
     }
     
   }
 }
+
+
