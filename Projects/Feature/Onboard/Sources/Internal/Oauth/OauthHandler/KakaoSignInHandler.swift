@@ -9,8 +9,10 @@ import Foundation
 import KakaoSDKCommon
 import KakaoSDKAuth
 
-class KakaoSignInHandler: SocialSignInURLHandler {
-  @MainActor func handle(url: URL) -> Bool {
+public class KakaoSignInHandler: URLHandlable {
+  public init() { }
+  
+  @MainActor public func handle(url: URL) -> Bool {
     return AuthController.handleOpenUrl(url: url)
   }
   
