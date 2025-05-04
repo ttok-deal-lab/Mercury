@@ -18,15 +18,15 @@ struct AuctionItemDTO: Decodable {
   let appraisalPrice: Int
   let lowestSalesPrice: Int
   let bidType: String
-  let salesDateTime: String
+  let salesDateTime: Date
   let salesLocation: String
   let salesNote: String
-  let salesReceptionDate: String
-  let salesOpenDate: String
-  let distributionRequiredDeadlineDate: String
+  let salesReceptionDate: Date
+  let salesOpenDate: Date
+  let distributionRequiredDeadlineDate: Date
   let claimPrice: Int
-  let appraisalDocumentUrl: String
-  let createdAt: String
+  let appraisalDocumentUrl: URL
+  let createdAt: Date
   
   let salesBuildings: [SalesBuildingDTO]
   let auctionDetails: [AuctionDetailDTO]
@@ -156,6 +156,7 @@ struct AuctionItemDTO: Decodable {
   
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
+    
     id = try container.decode(Int.self, forKey: .id)
     courtName = try container.decode(String.self, forKey: .courtName)
     salesNumber = try container.decode(String.self, forKey: .salesNumber)
@@ -164,15 +165,19 @@ struct AuctionItemDTO: Decodable {
     appraisalPrice = try container.decode(Int.self, forKey: .appraisalPrice)
     lowestSalesPrice = try container.decode(Int.self, forKey: .lowestSalesPrice)
     bidType = try container.decode(String.self, forKey: .bidType)
-    salesDateTime = try container.decode(String.self, forKey: .salesDateTime)
     salesLocation = try container.decode(String.self, forKey: .salesLocation)
     salesNote = try container.decode(String.self, forKey: .salesNote)
-    salesReceptionDate = try container.decode(String.self, forKey: .salesReceptionDate)
-    salesOpenDate = try container.decode(String.self, forKey: .salesOpenDate)
-    distributionRequiredDeadlineDate = try container.decode(String.self, forKey: .distributionRequiredDeadlineDate)
     claimPrice = try container.decode(Int.self, forKey: .claimPrice)
-    appraisalDocumentUrl = try container.decode(String.self, forKey: .appraisalDocumentUrl)
-    createdAt = try container.decode(String.self, forKey: .createdAt)
+    appraisalDocumentUrl = try container.decode(URL.self, forKey: .appraisalDocumentUrl)
+    
+    let isoFormatter = ISO8601DateFormatter()
+    isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+    
+    salesDateTime = try isoFormatter.decode(from: container, key: .salesDateTime)
+    salesReceptionDate = try isoFormatter.decode(from: container, key: .salesReceptionDate)
+    salesOpenDate = try isoFormatter.decode(from: container, key: .salesOpenDate)
+    distributionRequiredDeadlineDate = try isoFormatter.decode(from: container, key: .distributionRequiredDeadlineDate)
+    createdAt = try isoFormatter.decode(from: container, key: .createdAt)
     
     let salesBuildingsString = try container.decode(String.self, forKey: .salesBuildingsJson)
     salesBuildings = try JSONDecoder().decode([SalesBuildingDTO].self, from: Data(salesBuildingsString.utf8))

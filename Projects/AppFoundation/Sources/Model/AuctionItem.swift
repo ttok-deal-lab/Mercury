@@ -16,15 +16,15 @@ public struct AuctionItem {
   public let appraisalPrice: Int
   public let lowestSalesPrice: Int
   public let bidType: String
-  public let salesDateTime: String
+  public let salesDateTime: Date
   public let salesLocation: String
   public let salesNote: String
-  public let salesReceptionDate: String
-  public let salesOpenDate: String
-  public let distributionRequiredDeadlineDate: String
+  public let salesReceptionDate: Date
+  public let salesOpenDate: Date
+  public let distributionRequiredDeadlineDate: Date
   public let claimPrice: Int
-  public let appraisalDocumentUrl: String
-  public let createdAt: String
+  public let appraisalDocumentUrl: URL
+  public let createdAt: Date
   
   let salesBuildings: [SalesBuilding]
   let auctionDetails: [AuctionDetail]
@@ -33,7 +33,31 @@ public struct AuctionItem {
   let appraisalDocuments: [AppraisalDocument]
   let nearbySalesStats: [NearbySalesStat]
   
-  public init(id: Int, courtName: String, salesNumber: String, salesSequence: Int, salesType: String, appraisalPrice: Int, lowestSalesPrice: Int, bidType: String, salesDateTime: String, salesLocation: String, salesNote: String, salesReceptionDate: String, salesOpenDate: String, distributionRequiredDeadlineDate: String, claimPrice: Int, appraisalDocumentUrl: String, createdAt: String, salesBuildings: [SalesBuilding], auctionDetails: [AuctionDetail], itemDetails: [ItemDetail], conditionReport: ConditionReport, appraisalDocuments: [AppraisalDocument], nearbySalesStats: [NearbySalesStat]) {
+  public init(
+    id: Int,
+    courtName: String,
+    salesNumber: String,
+    salesSequence: Int,
+    salesType: String,
+    appraisalPrice: Int,
+    lowestSalesPrice: Int,
+    bidType: String,
+    salesDateTime: Date,
+    salesLocation: String,
+    salesNote: String,
+    salesReceptionDate: Date,
+    salesOpenDate: Date,
+    distributionRequiredDeadlineDate: Date,
+    claimPrice: Int,
+    appraisalDocumentUrl: URL,
+    createdAt: Date,
+    salesBuildings: [SalesBuilding],
+    auctionDetails: [AuctionDetail],
+    itemDetails: [ItemDetail],
+    conditionReport: ConditionReport,
+    appraisalDocuments: [AppraisalDocument],
+    nearbySalesStats: [NearbySalesStat]
+  ) {
     self.id = id
     self.courtName = courtName
     self.salesNumber = salesNumber
@@ -91,7 +115,6 @@ public struct ItemDetail {
     self.content = content
   }
 }
-
 
 public struct AuctionDetail {
   let timeStamp: AuctionTime
