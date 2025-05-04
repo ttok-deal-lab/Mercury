@@ -8,6 +8,7 @@
 import AppFoundation
 
 public protocol LocalStorageUsecasable {
+  func isKeyExist(forKey key: LocalStorageKey) async -> Bool
   func setModel<T: Codable>(_ value: T, forKey key: LocalStorageKey) async
   func getModel<T: Codable>(forKey key: LocalStorageKey, as type: T.Type) async -> T?
   func set<T>(_ value: T, forKey key: LocalStorageKey) async where T: Any

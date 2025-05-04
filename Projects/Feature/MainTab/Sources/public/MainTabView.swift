@@ -12,6 +12,7 @@ import Combine
 import AppFoundation
 import UIComponent
 import Router
+import Domain
 
 public struct MainTabView<
   AuctionHomeView: AuctionHomeViewable,
@@ -20,7 +21,7 @@ public struct MainTabView<
   MyPageView: MyPageViewable,
   SignInView: SignInViewable
 >: View {
-  @StateObject private var modelData = MainTabModelData()
+  @StateObject private var modelData: MainTabModelData
   @State private var selection: Tab = .home
   @Inject private var toast: Toastable
   
@@ -28,8 +29,12 @@ public struct MainTabView<
   
   // MARK: - life cycle
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
+  public init(
+    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
+    localStorageUsecase: LocalStorageUsecasable
+  ) {
     self.navigationStream = navigationStream
+    self._modelData = StateObject(wrappedValue: MainTabModelData(localStorageUsecase: localStorageUsecase))
   }
   
   public var body: some View {
@@ -38,9 +43,10 @@ public struct MainTabView<
         SignInView(onComplete: nil)
       } else {
         tabView()
-          .onLoad {
-            // TODO: if isAppFirst 로직 들어가야함
-            navigationStream.send(.presentFullScreen(.onboard(.init(route: .permissionRequest))))
+          .task {
+            if modelData.isTabEnterFirst {
+              navigationStream.send(.presentFullScreen(.onboard(.init(route: .permissionRequest))))
+            }
           }
       }
     }

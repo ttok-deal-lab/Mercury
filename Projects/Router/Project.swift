@@ -12,6 +12,7 @@ let project = Project.framework(
   name: "Router",
   platform: .iOS,
   dependencies: [
+    .domain
   ],
   testDependencies: [
     

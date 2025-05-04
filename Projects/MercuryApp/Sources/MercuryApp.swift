@@ -38,15 +38,12 @@ struct MercuryApp: App {
             if GIDSignIn.sharedInstance.handle(url) {
               return
             }
-            
             if NidOAuth.shared.handleURL(url) {
               return
             }
-            
             if AuthController.handleOpenUrl(url: url) {
               return 
             }
-            
           }
       }
     }
