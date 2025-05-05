@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct BottomSheetTestView: View {
+struct TraySheetTestView: View {
   
   @State private var show = false
   
   var body: some View {
-    Button("Show") { show.toggle() }
-      .bottomSheet2(isPresented: $show) {
+    Button("Show tray sheet") { show.toggle() }
+      .traySheet(isPresented: $show) {
         VStack(spacing: 12) {
-          ForEach(0..<40) { Text("Row \($0)") }
+          ForEach(0..<6) { Text("Row \($0)") }
         }
         .padding()
       }

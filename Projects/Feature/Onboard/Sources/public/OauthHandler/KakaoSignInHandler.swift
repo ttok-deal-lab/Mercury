@@ -6,12 +6,15 @@
 //
 import Foundation
 
+import Domain
+
 import KakaoSDKCommon
 import KakaoSDKAuth
 
-public class KakaoSignInHandler: DeeplinkHandlable {
+public class KakaoSignInHandler: @preconcurrency DeeplinkHandlable {
   public init() { }
   
+  @MainActor
   public func handle(url: URL) -> Bool {
     return AuthController.handleOpenUrl(url: url)
   }

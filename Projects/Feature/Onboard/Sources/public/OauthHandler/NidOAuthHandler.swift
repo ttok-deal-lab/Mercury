@@ -4,7 +4,10 @@
 //
 //  Created by 최수훈 on 5/4/25.
 //
+
 import Foundation
+
+import Domain
 
 import NidThirdPartyLogin
 import NidLogin
