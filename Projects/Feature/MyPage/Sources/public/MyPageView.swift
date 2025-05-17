@@ -14,7 +14,7 @@ import UIComponent
 import Domain
 
 public struct MyPageView: View {
-  @StateObject private var viewModel = MyPageModelData()
+  @State private var viewModel = MyPageModelData()
   @Inject private var accessTokenManager: AccessTokenManagable
   
   private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>

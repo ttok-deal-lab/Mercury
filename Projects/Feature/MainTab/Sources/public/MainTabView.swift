@@ -21,7 +21,7 @@ public struct MainTabView<
   MyPageView: MyPageViewable,
   SignInView: SignInViewable
 >: View {
-  @StateObject private var modelData: MainTabModelData
+  @State private var modelData: MainTabModelData
   @State private var selection: Tab = .home
   @Inject private var toast: Toastable
   
@@ -37,7 +37,7 @@ public struct MainTabView<
   ) {
     self.navigationStream = navigationStream
     self.auctionListUsecase = auctionListUsecase
-    self._modelData = StateObject(wrappedValue: MainTabModelData(localStorageUsecase: localStorageUsecase))
+    self.modelData = MainTabModelData(localStorageUsecase: localStorageUsecase)
   }
   
   public var body: some View {

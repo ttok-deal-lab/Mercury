@@ -16,7 +16,7 @@ import Domain
 import Infrastructure
 
 struct MainView: View {
-  @StateObject private var coordinator = NavigationCoordinator<FeatureRoute>()
+  @State private var coordinator = NavigationCoordinator<FeatureRoute>()
   @State private var isSplashDone  = false
   @State private var isUserLoggedIn = false
   
