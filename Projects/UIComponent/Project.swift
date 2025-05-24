@@ -27,6 +27,7 @@ let project = Project.framework(
   testDependencies: [],
   resourceSynthesizers: [
     .assets(),
-    .fonts()
+    .fonts(),
+    .strings()
   ]
 )
