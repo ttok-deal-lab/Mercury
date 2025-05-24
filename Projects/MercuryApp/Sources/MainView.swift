@@ -16,7 +16,7 @@ import Domain
 import Infrastructure
 
 struct MainView: View {
-  @StateObject private var coordinator = NavigationCoordinator<FeatureRoute>()
+  @State private var coordinator = NavigationCoordinator<FeatureRoute>()
   @State private var isSplashDone  = false
   @State private var isUserLoggedIn = false
   
@@ -45,7 +45,8 @@ struct MainView: View {
       NavigationStack(path: $coordinator.navigationPath) {
         MainTabViewWrapperView(
           navigationStream: coordinator.eventSubject,
-          localStorageUsecase: LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
+          localStorageUsecase: LocalStorageUsecase(repository: UserDefaultsStoreRepository()),
+          auctionListUsecase: AuctionListUsecase(repository: AuctionListRepository())
         )
         .navigationDestination(for: FeatureRoute.self) { route in
           RootViewFactory().makeView(route, navigationStream: coordinator.eventSubject)

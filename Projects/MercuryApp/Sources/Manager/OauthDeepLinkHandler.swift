@@ -4,9 +4,11 @@
 //
 //  Created by 최수훈 on 5/4/25.
 //
+
 import Foundation
 
 import Onboard
+import Domain
 
 public class OauthDeepLinkHandler {
   public static let shared = OauthDeepLinkHandler(handlers: [
@@ -15,9 +17,9 @@ public class OauthDeepLinkHandler {
     KakaoSignInHandler()
   ])
   
-  private let handlers: [URLHandlable]
+  private let handlers: [DeeplinkHandlable]
   
-  private init(handlers: [URLHandlable]) {
+  private init(handlers: [DeeplinkHandlable]) {
     self.handlers = handlers
   }
   

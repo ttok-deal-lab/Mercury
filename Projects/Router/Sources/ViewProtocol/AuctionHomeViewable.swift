@@ -8,6 +8,8 @@
 import SwiftUI
 import Combine
 
+import Domain
+
 public protocol AuctionHomeViewable where Self: View {
-  init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>)
+  init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>, auctionListUsecase: AuctionListUsecasable)
 }

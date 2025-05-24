@@ -59,7 +59,7 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
   public static let shared = SignInInformationManager()
   
   private init(
-    localStorageUsecase: LocalStorageUsecase = LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository()),
+    localStorageUsecase: LocalStorageUsecase = LocalStorageUsecase(repository: UserDefaultsStoreRepository()),
     fcmTokenUsecase: FcmTokenUsecase = FcmTokenUsecase(repository: FcmTokenRepository())
   ) {
     self.localStorageUsecase = localStorageUsecase

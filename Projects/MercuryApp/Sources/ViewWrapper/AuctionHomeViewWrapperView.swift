@@ -10,13 +10,14 @@ import Combine
 
 import Router
 import Auction
+import Domain
 
 public struct AuctionHomeViewWrapperView: View, AuctionHomeViewable {
   
   let hostView: AuctionHomeView
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.hostView = AuctionHomeView(navigationStream: navigationStream)
+  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>, auctionListUsecase: AuctionListUsecasable) {
+    self.hostView = AuctionHomeView(navigationStream: navigationStream, auctionListUsecase: auctionListUsecase)
   }
   
   public var body: some View {

@@ -11,7 +11,8 @@ import Combine
 import AppFoundation
 import Domain
 
-final class InterestModelData: ObservableObject {
+@Observable
+final class InterestModelData {
   
   init() {
     

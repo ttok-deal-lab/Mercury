@@ -14,7 +14,7 @@ import Router
 import UIComponent
 
 public struct MapContentView: View {
-  @StateObject private var store = MapStore(userLocationClient: UserLocationClientLive())
+  @State private var store = MapStore(userLocationClient: UserLocationClientLive())
   
   public init() { }
   

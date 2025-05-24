@@ -21,7 +21,7 @@ public struct CustomSplashViewWrapperView: View, CustomSplashViewable {
   ) {
     self.hostView = CustomSplashView(
       onComplete: onComplete,
-      localStorageUsecasable: LocalStorageUsecase(localStorageRepositorable: UserDefaultsStoreRepository())
+      localStorageUsecasable: LocalStorageUsecase(repository: UserDefaultsStoreRepository())
     )
   }
   

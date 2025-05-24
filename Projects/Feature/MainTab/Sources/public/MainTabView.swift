@@ -21,20 +21,23 @@ public struct MainTabView<
   MyPageView: MyPageViewable,
   SignInView: SignInViewable
 >: View {
-  @StateObject private var modelData: MainTabModelData
+  @State private var modelData: MainTabModelData
   @State private var selection: Tab = .home
   @Inject private var toast: Toastable
   
   private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+  private let auctionListUsecase: AuctionListUsecasable
   
   // MARK: - life cycle
   
   public init(
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
-    localStorageUsecase: LocalStorageUsecasable
+    localStorageUsecase: LocalStorageUsecasable,
+    auctionListUsecase: AuctionListUsecasable
   ) {
     self.navigationStream = navigationStream
-    self._modelData = StateObject(wrappedValue: MainTabModelData(localStorageUsecase: localStorageUsecase))
+    self.auctionListUsecase = auctionListUsecase
+    self.modelData = MainTabModelData(localStorageUsecase: localStorageUsecase)
   }
   
   public var body: some View {
@@ -56,11 +59,14 @@ public struct MainTabView<
   
   private func tabView() -> some View {
     TabView(selection: $selection) {
-      AuctionHomeView(navigationStream: navigationStream)
-        .tabItem {
-          Tab.home.iconView(isSelected: selection == .home)
-        }
-        .tag(Tab.home)
+      AuctionHomeView(
+        navigationStream: navigationStream,
+        auctionListUsecase: auctionListUsecase
+      )
+      .tabItem {
+        Tab.home.iconView(isSelected: selection == .home)
+      }
+      .tag(Tab.home)
       
       InterestView(navigationStream: navigationStream)
         .tabItem {

@@ -50,11 +50,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     configureGoogleInstance()
     configureNaverLoginInstance()
     configureKakaoLoginInstance()
-    
     configFirebase(application)
-    
-    URLSessionProxyDelegate.enableAutomaticRegistration()
-    NetworkLogger.enableProxy()
+    configureNetworkLogger()
     
     let container = MercuryContainer.shared
     container.register(SignInInformationReadable.self, instance: SignInInformationManager.shared)
@@ -63,6 +60,18 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     container.register(Toastable.self, instance: MercuryToast.shared)
     container.register(Alertable.self, instance: MercuryAlert.shared)
     container.register(LoadingPresentable.self, instance: MercuryLoading.shared)
+    
+    let opaque = UITabBarAppearance()
+    opaque.configureWithOpaqueBackground()
+    opaque.backgroundColor = UIColor(Color.white)
+    
+    let blurred = UITabBarAppearance()
+    blurred.configureWithTransparentBackground()
+    blurred.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+    blurred.backgroundColor = .clear
+    
+    UITabBar.appearance().standardAppearance = blurred
+    UITabBar.appearance().scrollEdgeAppearance = opaque
     
     return true
   }
@@ -94,6 +103,11 @@ extension AppDelegate { // pre-configure instances
     
     UNUserNotificationCenter.current().delegate = self
     application.registerForRemoteNotifications()
+  }
+  
+  private func configureNetworkLogger() {
+    URLSessionProxyDelegate.enableAutomaticRegistration()
+    NetworkLogger.enableProxy()
   }
 }
 

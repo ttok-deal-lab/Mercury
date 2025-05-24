@@ -7,10 +7,11 @@
 import SwiftUI
 import Combine
 
-public final class NavigationCoordinator<Route: Hashable>: ObservableObject {
-  @Published public var navigationPath = NavigationPath()
-  @Published public var isFullScreenPresented = false
-  @Published public var fullScreenPath = NavigationPath()
+@Observable
+public final class NavigationCoordinator<Route: Hashable> {
+  public var navigationPath = NavigationPath()
+  public var isFullScreenPresented = false
+  public var fullScreenPath = NavigationPath()
   public var fullScreenRoute: Route? = nil
   public var eventSubject = PassthroughSubject<NavigationEvent<Route>, Never>()
   

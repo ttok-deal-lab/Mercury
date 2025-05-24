@@ -10,7 +10,7 @@ import Foundation
 import Networking
 
 enum AuctionAPI: BaseAPI {
-  case auctionList(_ largeCategory: String, mediumCategory: String, page: Int)
+  case auctionList(courtName: String)
   case auctionDetail(_ salesId: String, _ largeCategory: String, mediumCategory: String, _ courtName: String, salesNumber: Int)
   
   var baseURL: String {
@@ -19,13 +19,13 @@ enum AuctionAPI: BaseAPI {
   
   var domain: String? {
     switch self {
-    case .auctionList, .auctionDetail: "sales/"
+    case .auctionList, .auctionDetail: "v1/courts/"
     }
   }
   
   var path: String {
     switch self {
-    case .auctionList: "court"
+    case .auctionList: "sales"
     case .auctionDetail(let salesId, _, _, _, _): "court/\(salesId)"
     }
   }
@@ -38,11 +38,9 @@ enum AuctionAPI: BaseAPI {
   
   var queryParam: [String : Any]? {
     switch self {
-    case let .auctionList(largeCategory, mediumCategory, page):
+    case let .auctionList(courtName):
       return [
-        "largeCategory": largeCategory,
-        "mediumCategory": mediumCategory,
-        "page": "\(page)"
+        "courtName": courtName
       ]
     case .auctionDetail(_, let largeCategory, let mediumCategory, let courtName, let salesNumber):
       return [

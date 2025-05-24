@@ -64,6 +64,7 @@ public extension BaseAPI {
       else {
         throw NetworkError.invalidStatusCode
       }
+      
       return try JSONDecoder().decode(T.self, from: data)
     } catch {
       throw error
@@ -101,6 +102,8 @@ private extension BaseAPI {
     }
     guard let url = comps.url else { throw NetworkError.failToConvertURL }
     
+    print("Request URL: \(url)")
+    
     var request = URLRequest(
       url: url,
       cachePolicy: Const.cachePolicy,
@@ -108,12 +111,16 @@ private extension BaseAPI {
     )
     request.httpMethod = method.rawValue
     
+    print("Request method: \(String(describing: request.httpMethod))")
+    
     if let requestBody {
       request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
+      print("Request body: \(requestBody)")
     }
     if let headers { request.allHTTPHeaderFields = headers }
     if let additionalHeaders {
       request.allHTTPHeaderFields?.merge(additionalHeaders) { _, new in new }
+      print("Request Header: \(additionalHeaders)")
     }
     return request
   }

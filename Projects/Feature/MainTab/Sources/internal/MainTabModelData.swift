@@ -11,10 +11,11 @@ import Combine
 import AppFoundation
 import Domain
 
-final class MainTabModelData: ObservableObject {
-  @Inject private var accessTokenManager: AccessTokenManagable
-  @Published var isUserLoggedIn: Bool = false
-  @Published var isTabEnterFirst: Bool = false
+@Observable
+final class MainTabModelData {
+  private var accessTokenManager = MercuryContainer.shared.resolve(AccessTokenManagable.self)
+  var isUserLoggedIn: Bool = false
+  var isTabEnterFirst: Bool = false
   
   private var store = Set<AnyCancellable>()
   

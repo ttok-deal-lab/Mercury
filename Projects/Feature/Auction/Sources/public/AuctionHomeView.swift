@@ -10,15 +10,69 @@ import Combine
 
 import Router
 import UIComponent
+import AppFoundation
+import Domain
 
 public struct AuctionHomeView: View {
-  let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+  @State private var modelData: AuctionHomeModelData
+  @State private var error: MercuryError?
+  private let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
+  public init(
+    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
+    auctionListUsecase: AuctionListUsecasable
+  ) {
     self.navigationStream = navigationStream
+    self.modelData = AuctionHomeModelData(auctionListUsecase: auctionListUsecase)
   }
   
   public var body: some View {
-    Text("AuctionHomeView")
+    VStack(spacing: .zero) {
+      AuctionHomeNavigationView(
+        onSelectArea: { areaName in
+          print(areaName)
+        },
+        onTapSearch: {
+          print("search")
+        },
+        onTapNotification: {
+          print("notification")
+        }
+      )
+      
+      AuctionFilterView()
+      
+      AuctionSortView(modelData: $modelData)
+      
+      ScrollView(.vertical) {
+        LazyVStack(spacing: .zero) {
+          InformCertificationView()
+          
+          ForEach(modelData.items) { item in
+            AuctionItemView(
+              appraisalPrice: item.appraisalPrice,
+              locationBuildingName: item.salesBuildings.first?.fullAddressName ?? "",
+              locationAddressName: item.salesBuildings.last?.fullAddressName ?? ""
+            )
+          }
+        }
+        
+        Spacer()
+        
+      }
+    }
+    
+    .alert(error: $error)
+    .loading(modelData.isLoading)
+    .task(priority: .background) {
+      do {
+        try await modelData.loadAuctionList()
+      } catch {
+        self.error = error.toMercuryError()
+      }
+    }
+    
   }
 }
+
+

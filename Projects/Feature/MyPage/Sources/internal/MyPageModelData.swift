@@ -12,9 +12,10 @@ import AppFoundation
 import Router
 import Domain
 
-final class MyPageModelData: ObservableObject {
-  @Inject private var userInfoManager: UserInfoManagable
-  @Published var userInfo: UserInformation?
+@Observable
+final class MyPageModelData {
+  private var userInfoManager = MercuryContainer.shared.resolve(UserInfoManagable.self)
+  var userInfo: UserInformation?
   
   private var store = Set<AnyCancellable>()
   

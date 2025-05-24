@@ -11,10 +11,11 @@ import Combine
 import AppFoundation
 import Domain
 
-final class CustomSplashModelData: ObservableObject {
-  @Published var isAppFirstRun: Bool = false
-  @Inject private var signInInformation: SignInInformationReadable
+@Observable
+final class CustomSplashModelData {
+  var isAppFirstRun: Bool = false
   private var store = Set<AnyCancellable>()
+  private var signInInformation = MercuryContainer.shared.resolve(SignInInformationReadable.self)
   
   init(onComplete: @escaping (Bool) -> Void, localStorageUsecasable: LocalStorageUsecasable) {
     Task { @MainActor [weak self] in
