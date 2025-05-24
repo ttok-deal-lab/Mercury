@@ -21,7 +21,8 @@ extension Project {
       name: name,
       destinations: destinations,
       scripts: [
-        .prebuildScript(utility: .swiftLint, name: "Lint")
+        .prebuildScript(.swiftLint, name: "Lint"),
+        .prebuildScript(.localization, name: "Localization")
       ],
       dependencies: dependencies,
       testDependencies: testDependencies

@@ -45,14 +45,16 @@ public struct AuctionHomeView: View {
       AuctionSortView(modelData: $modelData)
       
       ScrollView(.vertical) {
-        InformCertificationView()
-        
-        ForEach(modelData.items) { item in
-          AuctionItemView(
-            appraisalPrice: item.appraisalPrice,
-            locationBuildingName: item.salesBuildings.first?.fullAddressName ?? "",
-            locationAddressName: item.salesBuildings.last?.fullAddressName ?? ""
-          )
+        LazyVStack(spacing: .zero) {
+          InformCertificationView()
+          
+          ForEach(modelData.items) { item in
+            AuctionItemView(
+              appraisalPrice: item.appraisalPrice,
+              locationBuildingName: item.salesBuildings.first?.fullAddressName ?? "",
+              locationAddressName: item.salesBuildings.last?.fullAddressName ?? ""
+            )
+          }
         }
         
         Spacer()

@@ -11,17 +11,22 @@ public extension TargetScript {
   
   enum UtilityTool {
     case swiftLint
-    
-    var scriptCommand: String {
-      switch self {
-      case .swiftLint:
-        return "${PROJECT_DIR}/../../Tools/swiftlint --config \"${PROJECT_DIR}/../UIComponent/Resources/swiftlint.yml\""
-      }
+    case localization
+  }
+  
+  static func prebuildScript(_ utility: UtilityTool, name: String) -> TargetScript {
+    return .pre(script: utility.command, name: name)
+  }
+  
+}
+
+private extension TargetScript.UtilityTool {
+  var command: String {
+    switch self {
+    case .swiftLint:
+      "${PROJECT_DIR}/../../Tools/swiftlint --config \"${PROJECT_DIR}/../UIComponent/Resources/swiftlint.yml\""
+    case .localization:
+      "${PROJECT_DIR}/../../Tools/generate_strings.sh"
     }
   }
-  
-  static func prebuildScript(utility: UtilityTool, name: String) -> TargetScript {
-    return .pre(script: utility.scriptCommand, name: name)
-  }
-  
 }
