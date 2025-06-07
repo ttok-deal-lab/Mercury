@@ -10,7 +10,6 @@ import SwiftUI
 import UIComponent
 
 struct AuctionHomeNavigationView: View {
-//  @State private var currentArea: String = "서울 관악구"
   @State private var currentArea: String = L10n.homeDefaultArea
   private let onSelectArea: (String) -> Void
   private let onTapSearch: () -> Void

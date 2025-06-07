@@ -19,7 +19,7 @@ let packageSettings = PackageSettings(
     "PulseProxy": .framework,
     "PulseUI": .framework
   ],
-  baseSettings: .settings(configurations: Configuration.configure())
+  baseSettings: .settings(configurations: Configuration.frameworkConfigure())
 )
 #endif
 

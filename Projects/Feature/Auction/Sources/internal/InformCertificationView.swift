@@ -20,10 +20,11 @@ struct InformCertificationView: View {
             .resizable()
             .frame(width: 22, height: 22)
           HStack(spacing: .zero) {
-            Text("인증매물")
+//            Text("인증매물")
+            Text(L10n.auctionIntroduceCertifiedListingTitleA)
               .foregroundStyle(Asset.Colors.primary200TextSuccess.color)
               .fonts(.bodyMediumBold)
-            Text("이란")
+            Text(L10n.auctionIntroduceCertifiedListingTitleB)
               .foregroundStyle(Asset.Colors.gray700TextDefault.color)
               .fonts(.bodyMediumBold)
           }
@@ -31,7 +32,7 @@ struct InformCertificationView: View {
         }
         
         HStack(spacing: .zero) {
-          Text("임장보고서가 존재해 정확한 정보를 확인할 수 있어요.")
+          Text(L10n.auctionIntroduceCertifiedListingDescription)
             .foregroundStyle(Asset.Colors.gray400TextSubText.color)
             .fonts(.bodyMiniMedium)
           Spacer()

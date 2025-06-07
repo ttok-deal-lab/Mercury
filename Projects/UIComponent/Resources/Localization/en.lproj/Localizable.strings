@@ -3,4 +3,12 @@
 "common_close" = "close";
 "common_yes" = "yes";
 "common_no" = "no";
+"common_won" = "%@won";
 "home_default_area" = "Seoul Guanak-gu";
+"setting_logout" = "logout";
+"setting_login" = "login";
+"auction_item" = "Item";
+"auction_sort_by_latest_registration" = "By newest registration";
+"auction_introduce_certified_listing_title_A" = "What is a";
+"auction_introduce_certified_listing_title_B" = "certified listing";
+"auction_introduce_certified_listing_description" = "The executive report exists so you can see the exact information.";

@@ -24,7 +24,7 @@ struct AuctionItemView: View {
           .frame(width: 100, height: 100)
         
         VStack(alignment: .leading, spacing: 2) {
-          Text("\(appraisalPrice)원")
+          Text(L10n.commonWon(appraisalPrice))
             .foregroundStyle(Asset.Colors.gray700TextDefault.color)
             .fonts(.bodyLargeBold)
           Text("\(locationBuildingName)")

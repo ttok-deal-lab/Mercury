@@ -10,14 +10,13 @@ import SwiftUI
 import AppFoundation
 import UIComponent
 
-
 struct AuctionSortView: View {
   @Binding var modelData: AuctionHomeModelData
   
   var body: some View {
     VStack(spacing: .zero) {
       HStack(spacing: .zero) {
-        Text("상품 ")
+        Text(L10n.auctionIntroduceCertifiedListingDescription)
           .fonts(.bodyMicroMedium)
           .foregroundStyle(Asset.Colors.gray700TextDefault.color)
         Text("\(modelData.totalAuctionCount)")
@@ -53,7 +52,7 @@ extension AuctionSortType {
   var displayName: String {
     switch self {
     case .recentUpload:
-      "최신 등록순"
+      L10n.auctionSortByLatestRegistration
     }
   }
 }

@@ -23,8 +23,7 @@ final class AuctionHomeModelData {
   var currentSort: AuctionSortType = .recentUpload(isAsc: false) {
     didSet {
       Task { [weak self] in
-        guard let self else { return }
-        self.sort(with: self.currentSort)
+        self?.sort(with: self.currentSort)
       }
     }
   }
