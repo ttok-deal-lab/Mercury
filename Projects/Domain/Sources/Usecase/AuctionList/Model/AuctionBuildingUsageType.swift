@@ -6,7 +6,7 @@
 //
 
 /// 건물용도
-public enum SalesType {
+public enum AuctionBuildingUsageType {
   case all
   /// 아파트
   case apartment

@@ -6,7 +6,7 @@
 //
 
 /// 건물용도
-enum AuctionSalesType: String, Identifiable, CaseIterable {
+enum AuctionBuildingUsageType: String, Identifiable, CaseIterable {
   var id: Self { self }
   
   case all
@@ -20,7 +20,7 @@ enum AuctionSalesType: String, Identifiable, CaseIterable {
   case multifamiliy
 }
 
-extension AuctionSalesType {
+extension AuctionBuildingUsageType {
   var title: String {
     switch self {
     case .all:

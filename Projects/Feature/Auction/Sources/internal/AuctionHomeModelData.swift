@@ -54,7 +54,7 @@ final class AuctionHomeModelData {
     self.isLoading = false
   }
   
-  func filterSales(salesType: [AuctionSalesType]) {
+  func filterBuildingUsage(usageType: [AuctionBuildingUsageType]) {
     self.isLoading = true
     var filteredItem: [AuctionItem] = self.items
     filteredItem = self.items.filter { item in
@@ -64,7 +64,7 @@ final class AuctionHomeModelData {
     self.isLoading = false
   }
   
-  func filterBid(bidType: [AuctionBidType]) {
+  func filterStatus(statusType: [AuctionStatusType]) {
     self.isLoading = true
     var filteredItem: [AuctionItem] = self.items
     filteredItem = self.items.filter { item in

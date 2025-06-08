@@ -12,8 +12,9 @@ import UIComponent
 
 struct AuctionFilterView: View {
   @Binding var modelData: AuctionHomeModelData
-  @State private var isSalesFilterSheetShow: Bool = false
-  @State private var isBidFilterSheetShow: Bool = false
+  @State private var isBuildingUsageFilterSheetShow: Bool = false
+  @State private var isAuctionStatusFilterSheetShow: Bool = false
+  @State private var isPriceFilterSheetShow: Bool = false
   @State private var filterItems: [FilterItem] = AuctionFilterType.allCases.map { FilterItem(type: $0) }
   
   var body: some View {
@@ -58,14 +59,23 @@ struct AuctionFilterView: View {
       .padding(.vertical, 12)
     }
     .scrollIndicators(.hidden)
-    .sheet(isPresented: $isSalesFilterSheetShow) {
-      FilterSalesTypeView(modelData: $modelData) {
-        isSalesFilterSheetShow = false
+    .sheet(isPresented: $isBuildingUsageFilterSheetShow) {
+      AuctionBuildingUsageFilterView(modelData: $modelData) {
+        isBuildingUsageFilterSheetShow = false
       }
       .dynamicSheet()
     }
-    .sheet(isPresented: $isBidFilterSheetShow) {
-      
+    .sheet(isPresented: $isAuctionStatusFilterSheetShow) {
+      AuctionStatusFilterView(modelData: $modelData) {
+        isAuctionStatusFilterSheetShow = false
+      }
+      .dynamicSheet()
+    }
+    .sheet(isPresented: $isPriceFilterSheetShow) {
+      AuctionPriceFilterView(modelData: $modelData) {
+        isPriceFilterSheetShow = false
+      }
+      .dynamicSheet()
     }
   }
   
@@ -75,12 +85,11 @@ struct AuctionFilterView: View {
     }
     switch item.type {
     case .buildingUsage:
-      isSalesFilterSheetShow = true
+      isBuildingUsageFilterSheetShow = true
     case .auctionStatus:
-      isBidFilterSheetShow = true
+      isAuctionStatusFilterSheetShow = true
     case .price:
-      // TODO
-      break
+      isPriceFilterSheetShow = true
     default:
       break
     }

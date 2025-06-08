@@ -6,7 +6,7 @@
 //
 
 /// 경매상태
-public enum AuctionBidType {
+public enum AuctionStatusType {
   case all
   /// 신건
   case new
