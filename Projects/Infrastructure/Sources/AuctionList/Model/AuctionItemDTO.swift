@@ -7,7 +7,7 @@
 
 import Foundation
 
-import AppFoundation
+import Domain
 
 struct AuctionItemDTO: Decodable {
   let id: Int

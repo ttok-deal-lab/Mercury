@@ -14,6 +14,12 @@
 "auction_sort_by_less_bidding" = "유찰 적은 순";
 "auction_sort_by_price_higher" = "가격 높은 순";
 "auction_sort_by_price_lower" = "가격 낮은 순";
+"auction_filter_certified" = "인증매물";
+"auction_filter_building_usage" = "건물용도";
+"auction_filter_auction_status" = "경매상태";
+"auction_filter_price" = "가격";
+"auction_filter_bidWon" = "낙찰";
+"auction_filter_multi_select" = "$1%@ 외 $2%@";
 "auction_introduce_certified_listing_title_A" = "인증매물";
 "auction_introduce_certified_listing_title_B" = "이란";
 "auction_introduce_certified_listing_description" = "임장보고서가 존재해 정확한 정보를 확인할 수 있어요.";

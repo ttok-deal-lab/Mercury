@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+import UIComponent
+
 enum AuctionFilterType: Identifiable, CaseIterable {
   /// 인증매물
   case certified
@@ -24,11 +26,11 @@ enum AuctionFilterType: Identifiable, CaseIterable {
   
   var defaultTitle: String {
     switch self {
-    case .certified: return "인증매물"
-    case .buildingUsage: return "건물용도"
-    case .auctionStatus: return "경매상태"
-    case .price: return "가격"
-    case .bidWon: return "낙찰"
+    case .certified: return L10n.auctionFilterCertified
+    case .buildingUsage: return L10n.auctionFilterBuildingUsage
+    case .auctionStatus: return L10n.auctionFilterAuctionStatus
+    case .price: return L10n.auctionFilterPrice
+    case .bidWon: return L10n.auctionFilterBidWon
     }
   }
   
@@ -61,7 +63,7 @@ struct FilterItem: Identifiable {
     } else if selectedValues.count == 1 {
       return selectedValues.first!
     } else {
-      return "\(selectedValues.first!) 외 \(selectedValues.count - 1)"
+      return L10n.auctionFilterMultiSelect(selectedValues.first!, selectedValues.count - 1)
     }
   }
 }

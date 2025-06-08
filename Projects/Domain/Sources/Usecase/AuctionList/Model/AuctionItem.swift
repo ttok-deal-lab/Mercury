@@ -38,10 +38,10 @@ public struct AuctionItem: Identifiable {
     courtName: String,
     salesNumber: String,
     salesSequence: Int,
-    salesType: String,
+    salesType: String, // TODO: SalesType 모델 사용할 것 (API 완성되면)
     appraisalPrice: Int,
     lowestSalesPrice: Int,
-    bidType: String,
+    bidType: String, // TODO: BidType 모델 사용할 것 (API 완성되면)
     salesDateTime: Date,
     salesLocation: String,
     salesNote: String,

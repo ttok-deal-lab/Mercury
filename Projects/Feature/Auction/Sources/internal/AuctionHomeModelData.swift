@@ -11,25 +11,6 @@ import SwiftUI
 import AppFoundation
 import Domain
 
-enum AuctionSortType: String, Identifiable, CaseIterable {
-  var id: String {
-    self.rawValue
-  }
-  
-  /// 최신 등록순
-  case recentRegistration
-  /// 관심 많은 순
-  case mostInterested
-  /// 기일 임박 순
-  case impendingDueDate
-  /// 유찰 적은 순
-  case lessBidding
-  /// 가격 높은 순
-  case highPrice
-  /// 가격 낮은 순
-  case lowPrice
-}
-
 @Observable
 final class AuctionHomeModelData {
   var items: [AuctionItem] = []
@@ -42,6 +23,7 @@ final class AuctionHomeModelData {
       }
     }
   }
+  var filteredItemCount: Int = .zero
   
   private let auctionListUsecase: AuctionListUsecasable
   
@@ -72,24 +54,37 @@ final class AuctionHomeModelData {
     self.isLoading = false
   }
   
-  func loadAuctionList() async throws {
-    await MainActor.run { [weak self] in
-      self?.isLoading = true
+  func filterSales(salesType: [AuctionSalesType]) {
+    self.isLoading = true
+    var filteredItem: [AuctionItem] = self.items
+    filteredItem = self.items.filter { item in
+      return true // TODO: 백엔드 작업 후 진행
     }
+    self.items = filteredItem
+    self.isLoading = false
+  }
+  
+  func filterBid(bidType: [AuctionBidType]) {
+    self.isLoading = true
+    var filteredItem: [AuctionItem] = self.items
+    filteredItem = self.items.filter { item in
+      return true // TODO: 백엔드 작업 후 진행
+    }
+    self.items = filteredItem
+    self.isLoading = false
+  }
+  
+  func loadAuctionList() async throws {
+    self.isLoading = true
     
     do {
       let items = try await auctionListUsecase.fetchAllList(courtName: "서울중앙지방법원")
-      
-      await MainActor.run { [weak self] in
-        self?.totalAuctionCount = items.count
-        self?.items = items
-        self?.isLoading = false
-        print("first item ~> \n\(items.first)")
-      }
+      self.totalAuctionCount = items.count
+      self.items = items
+      self.filteredItemCount = items.count
+      self.isLoading = false
     } catch {
-      await MainActor.run { [weak self] in
-        self?.isLoading = false
-      }
+      self.isLoading = false
       throw error
     }
   }

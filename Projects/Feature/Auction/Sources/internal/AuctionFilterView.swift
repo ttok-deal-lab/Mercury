@@ -11,14 +11,15 @@ import AppFoundation
 import UIComponent
 
 struct AuctionFilterView: View {
-  
-  @State private var items: [FilterItem] = AuctionFilterType.allCases.map { FilterItem(type: $0) }
-  var filterTapCompletion: ((AuctionFilterType) -> Void)?
+  @Binding var modelData: AuctionHomeModelData
+  @State private var isSalesFilterSheetShow: Bool = false
+  @State private var isBidFilterSheetShow: Bool = false
+  @State private var filterItems: [FilterItem] = AuctionFilterType.allCases.map { FilterItem(type: $0) }
   
   var body: some View {
     ScrollView(.horizontal) {
       HStack(spacing: 6) {
-        ForEach($items) { $item in
+        ForEach($filterItems) { $item in
           Button {
             toggle(item: &item)
           } label: {
@@ -57,13 +58,31 @@ struct AuctionFilterView: View {
       .padding(.vertical, 12)
     }
     .scrollIndicators(.hidden)
+    .sheet(isPresented: $isSalesFilterSheetShow) {
+      FilterSalesTypeView(modelData: $modelData) {
+        isSalesFilterSheetShow = false
+      }
+      .dynamicSheet()
+    }
+    .sheet(isPresented: $isBidFilterSheetShow) {
+      
+    }
   }
   
   private func toggle(item: inout FilterItem) {
     if item.type.isSingleToggle {
       item.selectedValues = item.isActive ? [] : [item.type.defaultTitle]
-    } else {
-      filterTapCompletion?(item.type)
+    }
+    switch item.type {
+    case .buildingUsage:
+      isSalesFilterSheetShow = true
+    case .auctionStatus:
+      isBidFilterSheetShow = true
+    case .price:
+      // TODO
+      break
+    default:
+      break
     }
   }
 }
