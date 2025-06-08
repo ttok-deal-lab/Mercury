@@ -12,7 +12,7 @@ import UIComponent
 
 struct AuctionSortView: View {
   @Binding var modelData: AuctionHomeModelData
-  @State var isShowSortBottomSheet: Bool = false
+  @State var isShowSortHandleView: Bool = false
   
   var body: some View {
     VStack(spacing: .zero) {
@@ -26,8 +26,7 @@ struct AuctionSortView: View {
         Spacer()
         
         Button {
-          
-          isShowSortBottomSheet = true
+          isShowSortHandleView = true
         } label: {
           HStack(spacing: 2) {
             Text("\(modelData.currentSort.displayName)")
@@ -41,13 +40,9 @@ struct AuctionSortView: View {
       }
       .padding(.horizontal, 20)
       .padding(.vertical, 12)
-      .dynamicSheet(isPresented: $isShowSortBottomSheet) {
-        VStack {
-          Text("정렬")
-          ForEach(AuctionSortType.allCases) { type in
-            Text(type.displayName)
-          }
-        }
+      .sheet(isPresented: $isShowSortHandleView) {
+        AuctionSortHandlingView()
+          .dynamicSheet()
       }
     }
     
