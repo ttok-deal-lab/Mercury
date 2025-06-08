@@ -45,7 +45,6 @@ public extension View {
           .padding(.horizontal, config.horizontalPadding)
           .padding(.bottom, config.bottomPadding)
           .frame(maxHeight: .infinity, alignment: .bottom)
-        
           .presentationDetents([config.maxDetent])
           .presentationCornerRadius(0)
           .presentationBackground(.clear)

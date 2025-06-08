@@ -91,7 +91,7 @@ public struct PermissionRequestView: View {
     HStack {
       Text("앱 사용을 위해\n접근 권한을 허용해주세요.")
         .fonts(.headingSmallBold)
-        .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+        .foregroundStyle(Asset.Colors.neutral.color)
       
       Spacer()
     }
@@ -101,7 +101,7 @@ public struct PermissionRequestView: View {
     HStack(spacing: .zero) {
       Text("선택 권한")
         .fonts(.bodyMediumMedium)
-        .foregroundStyle(Asset.Colors.gray400TextSubText.color)
+        .foregroundStyle(Asset.Colors.neutralSubtler.color)
       
       Spacer()
     }
@@ -115,11 +115,11 @@ public struct PermissionRequestView: View {
           .frame(width: 26, height: 26)
         Text(permission.text)
           .fonts(.titleMediumMedium)
-          .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+          .foregroundStyle(Asset.Colors.neutral.color)
           .padding(.leading, 12)
         Text(permission.description)
           .fonts(.bodySmallRegular)
-          .foregroundStyle(Asset.Colors.gray400TextSubText.color)
+          .foregroundStyle(Asset.Colors.neutralSubtler.color)
           .padding(.leading, 8)
         
         Spacer()
@@ -132,14 +132,14 @@ public struct PermissionRequestView: View {
       HStack {
         Text("접근 권한 안내")
           .fonts(.bodyMiniMedium)
-          .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+          .foregroundStyle(Asset.Colors.neutral.color)
         Spacer()
       }
       
       HStack {
         Text("접근 권한은 서비스 사용 중 필요한 시점에 동의를 받고\n있습니다. 허용하지 않을 경우에도 해당 기능 외 서비스는 이용\n할 수 있습니다.")
           .fonts(.bodyMiniRegular)
-          .foregroundStyle(Asset.Colors.gray400TextSubText.color)
+          .foregroundStyle(Asset.Colors.neutralSubtler.color)
         Spacer()
       }
     }
@@ -150,14 +150,14 @@ public struct PermissionRequestView: View {
       HStack {
         Text("접근 권한 변경 안내")
           .fonts(.bodyMiniMedium)
-          .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+          .foregroundStyle(Asset.Colors.neutral.color)
         Spacer()
       }
       
       HStack {
         Text("휴대폰 설정 > 앱 > 민들팽이")
           .fonts(.bodyMiniRegular)
-          .foregroundStyle(Asset.Colors.gray400TextSubText.color)
+          .foregroundStyle(Asset.Colors.neutralSubtler.color)
         Spacer()
       }
     }

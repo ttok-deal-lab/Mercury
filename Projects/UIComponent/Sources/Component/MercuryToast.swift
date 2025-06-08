@@ -102,7 +102,7 @@ fileprivate struct ToastView: View {
       Text(item.title)
         .lineLimit(1)
     }
-    .foregroundStyle(item.tintType == .common ? Asset.Colors.gray900TextBlack.color : Asset.Colors.red700TextError.color)
+    .foregroundStyle(item.tintType == .common ? Asset.Colors.neutral.color : Asset.Colors.critical.color)
     .padding(.horizontal, 15)
     .padding(.vertical, 8)
     .background(

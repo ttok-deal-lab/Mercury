@@ -25,13 +25,13 @@ struct AuctionItemView: View {
         
         VStack(alignment: .leading, spacing: 2) {
           Text(L10n.commonWon(appraisalPrice))
-            .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+            .foregroundStyle(Asset.Colors.neutral.color)
             .fonts(.bodyLargeBold)
           Text("\(locationBuildingName)")
-            .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+            .foregroundStyle(Asset.Colors.neutral.color)
             .fonts(.bodyMicroMedium)
           Text("\(locationAddressName)")
-            .foregroundStyle(Asset.Colors.gray400TextSubText.color)
+            .foregroundStyle(Asset.Colors.neutralSubtler.color)
             .fonts(.bodyMicroRegular)
         }
         

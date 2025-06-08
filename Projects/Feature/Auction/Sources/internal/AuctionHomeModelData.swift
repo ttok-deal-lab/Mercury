@@ -11,8 +11,23 @@ import SwiftUI
 import AppFoundation
 import Domain
 
-enum AuctionSortType {
-  case recentUpload(isAsc: Bool)
+enum AuctionSortType: String, Identifiable, CaseIterable {
+  var id: String {
+    self.rawValue
+  }
+  
+  /// 최신 등록순
+  case recentRegistration
+  /// 관심 많은 순
+  case mostInterested
+  /// 기일 임박 순
+  case impendingDueDate
+  /// 유찰 적은 순
+  case lessBidding
+  /// 가격 높은 순
+  case highPrice
+  /// 가격 낮은 순
+  case lowPrice
 }
 
 @Observable
@@ -20,10 +35,10 @@ final class AuctionHomeModelData {
   var items: [AuctionItem] = []
   var isLoading: Bool = false
   var totalAuctionCount: Int = .zero
-  var currentSort: AuctionSortType = .recentUpload(isAsc: false) {
+  var currentSort: AuctionSortType = .recentRegistration {
     didSet {
       Task { [weak self] in
-        self?.sort(with: self.currentSort)
+        self?.sort(with: self?.currentSort ?? .recentRegistration)
       }
     }
   }
@@ -36,22 +51,32 @@ final class AuctionHomeModelData {
   
   private func sort(with type: AuctionSortType) {
     Task { [weak self] in
-      await MainActor.run { [weak self] in
-        self?.isLoading = true
-      }
+      self?.isLoading = true
+      var sortedItems: [AuctionItem]? = self?.items
       switch type {
-      case .recentUpload(let isAsc):
-        var sortedItems: [AuctionItem] {
-          let items = self?.items.sorted { lhs, rhs in
-            isAsc ? lhs.createdAt >= rhs.createdAt : lhs.createdAt <= rhs.createdAt
-          }
-          return items ?? []
+      case .recentRegistration:
+        sortedItems = self?.items.sorted { lhs, rhs in
+          lhs.createdAt >= rhs.createdAt
         }
-        await MainActor.run { [weak self] in
-          self?.items = sortedItems
-          self?.isLoading = false
+      case .mostInterested:
+        return // TODO: 백엔드 개발 필요
+      case .impendingDueDate:
+        sortedItems = self?.items.sorted { lhs, rhs in
+          lhs.distributionRequiredDeadlineDate >= rhs.distributionRequiredDeadlineDate
+        }
+      case .lessBidding:
+        return // TODO: 백엔드 개발 필요
+      case .highPrice:
+        sortedItems = self?.items.sorted { lhs, rhs in
+          lhs.claimPrice >= rhs.claimPrice
+        }
+      case .lowPrice:
+        sortedItems = self?.items.sorted { lhs, rhs in
+          lhs.claimPrice <= rhs.claimPrice
         }
       }
+      self?.items = sortedItems ?? []
+      self?.isLoading = false
     }
   }
   

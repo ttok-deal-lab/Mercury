@@ -12,37 +12,43 @@ import UIComponent
 
 struct AuctionSortView: View {
   @Binding var modelData: AuctionHomeModelData
+  @State var isShowSortBottomSheet: Bool = false
   
   var body: some View {
     VStack(spacing: .zero) {
       HStack(spacing: .zero) {
-        Text(L10n.auctionIntroduceCertifiedListingDescription)
+        Text(L10n.auctionItem)
           .fonts(.bodyMicroMedium)
-          .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+          .foregroundStyle(Asset.Colors.neutral.color)
         Text("\(modelData.totalAuctionCount)")
           .fonts(.bodyMicroBold)
-          .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+          .foregroundStyle(Asset.Colors.neutral.color)
         Spacer()
         
         Button {
-          switch modelData.currentSort {
-          case .recentUpload(let isAsc):
-            self.modelData.currentSort = .recentUpload(isAsc: !isAsc)
-          }
+          
+          isShowSortBottomSheet = true
         } label: {
           HStack(spacing: 2) {
             Text("\(modelData.currentSort.displayName)")
-              .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+              .foregroundStyle(Asset.Colors.neutral.color)
               .fonts(.bodyMiniMedium)
             Asset.Images.updown.image
               .resizable()
               .frame(width: 16, height: 16)
           }
         }
-
       }
       .padding(.horizontal, 20)
       .padding(.vertical, 12)
+      .dynamicSheet(isPresented: $isShowSortBottomSheet) {
+        VStack {
+          Text("정렬")
+          ForEach(AuctionSortType.allCases) { type in
+            Text(type.displayName)
+          }
+        }
+      }
     }
     
   }
@@ -51,8 +57,18 @@ struct AuctionSortView: View {
 extension AuctionSortType {
   var displayName: String {
     switch self {
-    case .recentUpload:
+    case .recentRegistration:
       L10n.auctionSortByLatestRegistration
+    case .mostInterested:
+      L10n.auctionSortByMostInterested
+    case .impendingDueDate:
+      L10n.auctionSortByImpendingDueDate
+    case .lessBidding:
+      L10n.auctionSortByLessBidding
+    case .highPrice:
+      L10n.auctionSortByPriceHigher
+    case .lowPrice:
+      L10n.auctionSortByPriceLower
     }
   }
 }

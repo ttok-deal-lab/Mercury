@@ -10,9 +10,10 @@ import SwiftUI
 import AppFoundation
 import UIComponent
 
-struct AuctionFilterView: View { // 기본 UI만 잡아놓음. 추가 개발 필요
+struct AuctionFilterView: View {
   
   @State private var items: [FilterItem] = AuctionFilterType.allCases.map { FilterItem(type: $0) }
+  var filterTapCompletion: ((AuctionFilterType) -> Void)?
   
   var body: some View {
     ScrollView(.horizontal) {
@@ -30,13 +31,13 @@ struct AuctionFilterView: View { // 기본 UI만 잡아놓음. 추가 개발 필
               
               Text(item.displayTitle)
                 .fonts(.bodyMiniMedium)
-                .foregroundStyle(item.isActive ? Asset.Colors.gray10TextWhite.color : Asset.Colors.gray700TextDefault.color)
+                .foregroundStyle(item.isActive ? Asset.Colors.neutralWhite.color : Asset.Colors.neutral.color)
               
               if item.isExpandable {
                 Asset.Images.arrowDownNoShaft.image
                   .renderingMode(.template)
                   .resizable()
-                  .foregroundStyle(item.isActive ? Asset.Colors.gray10TextWhite.color : Asset.Colors.gray700TextDefault.color)
+                  .foregroundStyle(item.isActive ? Asset.Colors.neutralWhite.color : Asset.Colors.neutral.color)
                   .frame(width: 16, height: 16)
               }
             }
@@ -47,7 +48,7 @@ struct AuctionFilterView: View { // 기본 UI만 잡아놓음. 추가 개발 필
                 .stroke(style: .init(lineWidth: 1))
                 .foregroundStyle(item.isActive ? .clear : Asset.Colors.gray150.color)
             }
-            .background(item.isActive ? Asset.Colors.gray700TextDefault.color : .clear)
+            .background(item.isActive ? Asset.Colors.neutral.color : .clear)
             .clipShape(Capsule())
           }
         }
@@ -62,7 +63,7 @@ struct AuctionFilterView: View { // 기본 UI만 잡아놓음. 추가 개발 필
     if item.type.isSingleToggle {
       item.selectedValues = item.isActive ? [] : [item.type.defaultTitle]
     } else {
-      print("바텀시트 필요")
+      filterTapCompletion?(item.type)
     }
   }
 }

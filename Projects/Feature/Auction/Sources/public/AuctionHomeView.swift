@@ -40,7 +40,20 @@ public struct AuctionHomeView: View {
         }
       )
       
-      AuctionFilterView()
+      AuctionFilterView(filterTapCompletion: { auctionFilterType in
+        switch auctionFilterType {
+        case .certified:
+          return // TODO: 기획 필요
+        case .buildingUsage:
+          return
+        case .auctionStatus:
+          return
+        case .price:
+          return
+        case .bidWon:
+          return // TODO: 기획 필요
+        }
+      })
       
       AuctionSortView(modelData: $modelData)
       
@@ -61,7 +74,6 @@ public struct AuctionHomeView: View {
         
       }
     }
-    
     .alert(error: $error)
     .loading(modelData.isLoading)
     .task(priority: .background) {

@@ -9,10 +9,15 @@ import Foundation
 import SwiftUI
 
 enum AuctionFilterType: Identifiable, CaseIterable {
+  /// 인증매물
   case certified
+  /// 건물용도
   case buildingUsage
+  /// 경매상태
   case auctionStatus
+  /// 가격
   case price
+  /// 낙찰
   case bidWon
   
   var id: Self { self }

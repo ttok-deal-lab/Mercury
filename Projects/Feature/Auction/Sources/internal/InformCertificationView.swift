@@ -25,7 +25,7 @@ struct InformCertificationView: View {
               .foregroundStyle(Asset.Colors.primary200TextSuccess.color)
               .fonts(.bodyMediumBold)
             Text(L10n.auctionIntroduceCertifiedListingTitleB)
-              .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+              .foregroundStyle(Asset.Colors.neutral.color)
               .fonts(.bodyMediumBold)
           }
           Spacer()
@@ -33,7 +33,7 @@ struct InformCertificationView: View {
         
         HStack(spacing: .zero) {
           Text(L10n.auctionIntroduceCertifiedListingDescription)
-            .foregroundStyle(Asset.Colors.gray400TextSubText.color)
+            .foregroundStyle(Asset.Colors.neutralSubtler.color)
             .fonts(.bodyMiniMedium)
           Spacer()
         }

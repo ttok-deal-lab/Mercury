@@ -21,6 +21,8 @@ public struct MainTabView<
   MyPageView: MyPageViewable,
   SignInView: SignInViewable
 >: View {
+  @Environment(NetworkMonitor.self) var networkMonitor
+  @State private var isShowNetworkDisconnect: Bool = false
   @State private var modelData: MainTabModelData
   @State private var selection: Tab = .home
   @Inject private var toast: Toastable
@@ -86,6 +88,21 @@ public struct MainTabView<
         }
         .tag(Tab.myPage)
     }
+    .onChange(of: networkMonitor.isConnected) { _, isConnected in
+      isShowNetworkDisconnect = !isConnected
+    }
+    .traySheet(isPresented: $isShowNetworkDisconnect, content: {
+      VStack { // TODO: 디자인 필요
+        Text("인터넷 연결이 되지 않아요")
+          .fonts(.titleMediumBold)
+          .padding(.vertical, 18)
+        Text("인터넷 상태를 확인해주세요")
+          .fonts(.bodyLargeMedium)
+        Text("인터넷 연결이 되면 바로 사용할 수 있어요")
+          .fonts(.bodyLargeMedium)
+          .padding(.vertical, 18)
+      }
+    })
   }
 }
 
@@ -111,7 +128,7 @@ enum Tab {
   }
   
   func textColor(isSelected: Bool) -> Color {
-    isSelected ? Asset.Colors.primary200TextSuccess.color : Asset.Colors.gray400TextSubText.color
+    isSelected ? Asset.Colors.primary200TextSuccess.color : Asset.Colors.neutralSubtler.color
   }
   
   func iconView(isSelected: Bool) -> some View {

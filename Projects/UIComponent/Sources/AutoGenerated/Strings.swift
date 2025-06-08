@@ -18,8 +18,18 @@ public enum L10n {
   public static let auctionIntroduceCertifiedListingTitleB = L10n.tr("Localizable", "auction_introduce_certified_listing_title_B", fallback: "이란")
   /// 상품 
   public static let auctionItem = L10n.tr("Localizable", "auction_item", fallback: "상품 ")
+  /// 기일 임박 순
+  public static let auctionSortByImpendingDueDate = L10n.tr("Localizable", "auction_sort_by_impending_due_date", fallback: "기일 임박 순")
   /// 최신 등록순
   public static let auctionSortByLatestRegistration = L10n.tr("Localizable", "auction_sort_by_latest_registration", fallback: "최신 등록순")
+  /// 유찰 적은 순
+  public static let auctionSortByLessBidding = L10n.tr("Localizable", "auction_sort_by_less_bidding", fallback: "유찰 적은 순")
+  /// 관심 많은 순
+  public static let auctionSortByMostInterested = L10n.tr("Localizable", "auction_sort_by_most_interested", fallback: "관심 많은 순")
+  /// 가격 높은 순
+  public static let auctionSortByPriceHigher = L10n.tr("Localizable", "auction_sort_by_price_higher", fallback: "가격 높은 순")
+  /// 가격 낮은 순
+  public static let auctionSortByPriceLower = L10n.tr("Localizable", "auction_sort_by_price_lower", fallback: "가격 낮은 순")
   /// 취소
   public static let commonCancel = L10n.tr("Localizable", "common_cancel", fallback: "취소")
   /// 닫기
