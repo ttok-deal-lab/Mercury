@@ -41,8 +41,10 @@ struct AuctionSortView: View {
       .padding(.horizontal, 20)
       .padding(.vertical, 12)
       .sheet(isPresented: $isShowSortHandleView) {
-        AuctionSortHandlingView()
-          .dynamicSheet()
+        AuctionSortHandlingView(modelData: $modelData, onComplete: {
+          isShowSortHandleView = false
+        })
+        .dynamicSheet()
       }
     }
     

@@ -50,34 +50,26 @@ final class AuctionHomeModelData {
   }
   
   private func sort(with type: AuctionSortType) {
-    Task { [weak self] in
-      self?.isLoading = true
-      var sortedItems: [AuctionItem]? = self?.items
+    self.isLoading = true
+    var sortedItems: [AuctionItem] = self.items
+    sortedItems = self.items.sorted { lhs, rhs in
       switch type {
       case .recentRegistration:
-        sortedItems = self?.items.sorted { lhs, rhs in
-          lhs.createdAt >= rhs.createdAt
-        }
+        return lhs.createdAt >= rhs.createdAt
       case .mostInterested:
-        return // TODO: 백엔드 개발 필요
+        return false  // TODO: 백엔드 개발 필요
       case .impendingDueDate:
-        sortedItems = self?.items.sorted { lhs, rhs in
-          lhs.distributionRequiredDeadlineDate >= rhs.distributionRequiredDeadlineDate
-        }
+        return lhs.distributionRequiredDeadlineDate >= rhs.distributionRequiredDeadlineDate
       case .lessBidding:
-        return // TODO: 백엔드 개발 필요
+        return false // TODO: 백엔드 개발 필요
       case .highPrice:
-        sortedItems = self?.items.sorted { lhs, rhs in
-          lhs.claimPrice >= rhs.claimPrice
-        }
+        return lhs.claimPrice >= rhs.claimPrice
       case .lowPrice:
-        sortedItems = self?.items.sorted { lhs, rhs in
-          lhs.claimPrice <= rhs.claimPrice
-        }
+        return lhs.claimPrice <= rhs.claimPrice
       }
-      self?.items = sortedItems ?? []
-      self?.isLoading = false
     }
+    self.items = sortedItems
+    self.isLoading = false
   }
   
   func loadAuctionList() async throws {
