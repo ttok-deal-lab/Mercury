@@ -16,25 +16,28 @@ public final class ImageCache: Cacheable {
   public func loadImage(_ url: URL?,
                         _ option: CacheOption = .both) async -> UIImage? {
     guard let url else { return nil }
-    // 1) Memory
-    let key = convertToKey(from: url) as NSString
-    if let img = memory.object(forKey: key) {
-      
-      return img
-    }
-    
-    // 2) Disk (디스크 접근은 상대적으로 느리므로 백그라운드로)
-    
-    if let diskImage = await withCheckedContinuation({ (continuation: CheckedContinuation<UIImage?, Never>) in
-      DispatchQueue.global(qos: .userInitiated).async {
-        continuation.resume(returning: DiskCache.shared.loadImage(url))
+    // 1. Memory
+    if option != .onlyDisk && option != .nothing {
+      let key = convertToKey(from: url) as NSString
+      if let img = memory.object(forKey: key) {
+        print("Load Image from Memory")
+        return img
       }
-    }) {
-      saveToMemory(diskImage, url, option)
-       print("Load image from Disk")
-      return diskImage
     }
-    // 3) Network
+    
+    // 2. Disk (디스크 접근은 상대적으로 느리므로 백그라운드로)
+    if option != .onlyMemory && option != .nothing {
+      if let diskImage = await withCheckedContinuation({ (continuation: CheckedContinuation<UIImage?, Never>) in
+        DispatchQueue.global(qos: .userInitiated).async {
+          continuation.resume(returning: DiskCache.shared.loadImage(url))
+        }
+      }) {
+        saveToMemory(diskImage, url, option)
+        print("Load image from Disk")
+        return diskImage
+      }
+    }
+    // 3. Network
     do {
       let (data, _) = try await URLSession.shared.data(from: url)
       if let image = UIImage(data: data) {
@@ -61,6 +64,7 @@ public final class ImageCache: Cacheable {
     guard option != .onlyDisk && option != .nothing else { return }
     let key = convertToKey(from: url) as NSString
     memory.setObject(image, forKey: key)
+    print("Save Image to memory")
   }
   
   public func removeAll() {
