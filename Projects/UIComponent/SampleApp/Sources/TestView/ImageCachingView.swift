@@ -12,7 +12,7 @@ struct ImageChachingView: View {
   @State var imageUrl: String = ""
   
   var body: some View {
-    CachedAsyncImage(url: URL(string: imageUrl), option: .onlyMemory) { image in
+    CachedAsyncImage(url: URL(string: imageUrl)) { image in
         image.resizable().scaledToFill()
     } placeholder: {
         ZStack {
