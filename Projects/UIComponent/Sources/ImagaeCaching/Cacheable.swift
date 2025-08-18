@@ -10,15 +10,15 @@ import UIKit
 import CryptoKit
 
 protocol Cacheable {
-  func convertToKey(from url: URL) -> String
+  func convertToKey(from url: String) -> String
 }
 
 // URL Unique화
 extension Cacheable {
-  func convertToKey(from url: URL) -> String {
-    let data = Data(url.absoluteString.utf8)
-    let digest = SHA256.hash(data: data)
-    return digest.map { String(format: "%02x", $0) }.joined()
+  func convertToKey(from url: String) -> String {
+    let urlKeyString =  "\(url)" + "\(Date.now.description)"
+    print("urlKey : " , urlKeyString)
+    return urlKeyString
   }
 }
 
