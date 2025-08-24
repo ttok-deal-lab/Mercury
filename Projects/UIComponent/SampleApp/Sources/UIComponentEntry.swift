@@ -4,7 +4,7 @@ import UIComponent
 
 @main
 struct UIComponentEntry: App {
-  
+//  var
   var body: some Scene {
     WindowGroup {
       OverlayWindowView {
@@ -12,8 +12,15 @@ struct UIComponentEntry: App {
         ToastTestView()
         AlertTestView()
         LoadingTest()
-        ImageChachingView(imageUrl: "https://images.unsplash.com/photo-1515263487990-61b07816b324?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXBhcnRtZW50fGVufDB8fDB8fHww")
-        ImageChachingView(imageUrl: "https://plus.unsplash.com/premium_photo-1674676471104-3c4017645e6f?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8YXBhcnRtZW50fGVufDB8fDB8fHww")
+        ImageCachingView(imageUrl: "https://images.unsplash.com/photo-1494145904049-0dca59b4bbad?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YnVpbGRpbmd8ZW58MHx8MHx8fDA%3D")
+//        Image
+//        Button {
+//          
+//        } label: {
+//          Text("Memory Cache Test")
+//        }
+//        ImageChachingView(imageUrl: "https://plus.unsplash.com/premium_photo-1674676471104-3c4017645e6f?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8YXBhcnRtZW50fGVufDB8fDB8fHww")
+        
         ScrollView(.vertical) {
           FontTestView()
           Divider()

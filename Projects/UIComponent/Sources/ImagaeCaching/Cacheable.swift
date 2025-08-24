@@ -16,8 +16,7 @@ protocol Cacheable {
 // URL Unique화
 extension Cacheable {
   func convertToKey(from url: String) -> String {
-    let urlKeyString =  "\(url)" + "\(Date.now.description)"
-    print("urlKey : " , urlKeyString)
+    let urlKeyString =  url
     return urlKeyString
   }
 }

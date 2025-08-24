@@ -8,11 +8,12 @@
 import SwiftUI
 import UIComponent
 
-struct ImageChachingView: View {
+struct ImageCachingView: View {
   @State var imageUrl: String = ""
   
   var body: some View {
-    CachedAsyncImage(url: URL(string: imageUrl)) { image in
+
+    CachedAsyncImage(url: URL(string: imageUrl) ) { image in
         image.resizable().scaledToFill()
     } placeholder: {
         ZStack {
