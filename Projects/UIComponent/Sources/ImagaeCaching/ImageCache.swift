@@ -93,6 +93,7 @@ public final class ImageCache: Cacheable {
     memory.setObject(image, forKey: key)
   }
   
+  // 사용 X
   public func removeAll() {
     memory.removeAllObjects()
   }

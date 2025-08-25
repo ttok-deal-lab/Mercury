@@ -37,7 +37,7 @@ final class DiskCache: Cacheable {
       } else {
         // 해당 경로로 들어오거나 생성된 루트 삭제
         try? fm.removeItem(atPath: path)
-        print("🗑️ Removed corrupted file")
+        return nil
       }
     }
     return nil
