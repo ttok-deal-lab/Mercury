@@ -23,7 +23,7 @@ struct GoogleSignInButtonView: View {
       ZStack {
         Text("구글로 로그인")
           .fonts(.bodyMediumMedium)
-          .foregroundStyle(Asset.Colors.gray900TextBlack.color)
+          .foregroundStyle(Asset.Colors.neutral.color)
         HStack(spacing: .zero) {
           Asset.Images.google.image
             .resizable()

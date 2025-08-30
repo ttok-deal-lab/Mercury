@@ -40,7 +40,7 @@ public struct AuctionHomeView: View {
         }
       )
       
-      AuctionFilterView()
+      AuctionFilterView(modelData: $modelData)
       
       AuctionSortView(modelData: $modelData)
       
@@ -61,7 +61,6 @@ public struct AuctionHomeView: View {
         
       }
     }
-    
     .alert(error: $error)
     .loading(modelData.isLoading)
     .task(priority: .background) {

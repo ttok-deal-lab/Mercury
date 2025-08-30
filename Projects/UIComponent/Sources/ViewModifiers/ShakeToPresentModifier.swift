@@ -11,11 +11,11 @@ struct ShakeToPresentModifier: ViewModifier {
   var onPresent: () -> Void
   func body(content: Content) -> some View {
     content
-      .onReceive(NotificationCenter.default.publisher(for: .deviceDidShakeNotification)) { _ in
 #if DEBUG
+      .onReceive(NotificationCenter.default.publisher(for: .deviceDidShakeNotification)) { _ in
         onPresent()
-#endif
       }
+#endif
     
   }
 }

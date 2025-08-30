@@ -12,6 +12,7 @@ public extension TargetScript {
   enum UtilityTool {
     case swiftLint
     case localization
+    case swiftGen
   }
   
   static func prebuildScript(_ utility: UtilityTool, name: String) -> TargetScript {
@@ -27,6 +28,8 @@ private extension TargetScript.UtilityTool {
       "${PROJECT_DIR}/../../Tools/swiftlint --config \"${PROJECT_DIR}/../UIComponent/Resources/swiftlint.yml\""
     case .localization:
       "${PROJECT_DIR}/../../Tools/generate_strings.sh"
+    case .swiftGen:
+      "${PROJECT_DIR}/../../Tools/swiftgen config run --config ${PROJECT_DIR}/../UIComponent/Resources/swiftgen.yml"
     }
   }
 }

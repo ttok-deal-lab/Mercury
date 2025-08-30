@@ -24,14 +24,14 @@ struct AuctionItemView: View {
           .frame(width: 100, height: 100)
         
         VStack(alignment: .leading, spacing: 2) {
-          Text("\(appraisalPrice)원")
-            .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+          Text(L10n.commonWon(appraisalPrice))
+            .foregroundStyle(Asset.Colors.neutral.color)
             .fonts(.bodyLargeBold)
           Text("\(locationBuildingName)")
-            .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+            .foregroundStyle(Asset.Colors.neutral.color)
             .fonts(.bodyMicroMedium)
           Text("\(locationAddressName)")
-            .foregroundStyle(Asset.Colors.gray400TextSubText.color)
+            .foregroundStyle(Asset.Colors.neutralSubtler.color)
             .fonts(.bodyMicroRegular)
         }
         

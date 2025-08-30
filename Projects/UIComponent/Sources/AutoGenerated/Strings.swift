@@ -1,0 +1,90 @@
+// swiftlint:disable all
+// Generated using SwiftGen — https://github.com/SwiftGen/SwiftGen
+
+import Foundation
+
+// swiftlint:disable superfluous_disable_command file_length implicit_return prefer_self_in_static_references
+
+// MARK: - Strings
+
+// swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
+// swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
+public enum L10n {
+  /// 경매상태
+  public static let auctionFilterAuctionStatus = L10n.tr("Localizable", "auction_filter_auction_status", fallback: "경매상태")
+  /// 낙찰
+  public static let auctionFilterBidWon = L10n.tr("Localizable", "auction_filter_bidWon", fallback: "낙찰")
+  /// 건물용도
+  public static let auctionFilterBuildingUsage = L10n.tr("Localizable", "auction_filter_building_usage", fallback: "건물용도")
+  /// 인증매물
+  public static let auctionFilterCertified = L10n.tr("Localizable", "auction_filter_certified", fallback: "인증매물")
+  /// %1$@ 외 %2$@
+  public static func auctionFilterMultiSelect(_ p1: Any, _ p2: Any) -> String {
+    return L10n.tr("Localizable", "auction_filter_multi_select", String(describing: p1), String(describing: p2), fallback: "%1$@ 외 %2$@")
+  }
+  /// 가격
+  public static let auctionFilterPrice = L10n.tr("Localizable", "auction_filter_price", fallback: "가격")
+  /// 임장보고서가 존재해 정확한 정보를 확인할 수 있어요.
+  public static let auctionIntroduceCertifiedListingDescription = L10n.tr("Localizable", "auction_introduce_certified_listing_description", fallback: "임장보고서가 존재해 정확한 정보를 확인할 수 있어요.")
+  /// 인증매물
+  public static let auctionIntroduceCertifiedListingTitleA = L10n.tr("Localizable", "auction_introduce_certified_listing_title_A", fallback: "인증매물")
+  /// 이란
+  public static let auctionIntroduceCertifiedListingTitleB = L10n.tr("Localizable", "auction_introduce_certified_listing_title_B", fallback: "이란")
+  /// 상품 
+  public static let auctionItem = L10n.tr("Localizable", "auction_item", fallback: "상품 ")
+  /// 기일 임박 순
+  public static let auctionSortByImpendingDueDate = L10n.tr("Localizable", "auction_sort_by_impending_due_date", fallback: "기일 임박 순")
+  /// 최신 등록순
+  public static let auctionSortByLatestRegistration = L10n.tr("Localizable", "auction_sort_by_latest_registration", fallback: "최신 등록순")
+  /// 유찰 적은 순
+  public static let auctionSortByLessBidding = L10n.tr("Localizable", "auction_sort_by_less_bidding", fallback: "유찰 적은 순")
+  /// 관심 많은 순
+  public static let auctionSortByMostInterested = L10n.tr("Localizable", "auction_sort_by_most_interested", fallback: "관심 많은 순")
+  /// 가격 높은 순
+  public static let auctionSortByPriceHigher = L10n.tr("Localizable", "auction_sort_by_price_higher", fallback: "가격 높은 순")
+  /// 가격 낮은 순
+  public static let auctionSortByPriceLower = L10n.tr("Localizable", "auction_sort_by_price_lower", fallback: "가격 낮은 순")
+  /// 취소
+  public static let commonCancel = L10n.tr("Localizable", "common_cancel", fallback: "취소")
+  /// 닫기
+  public static let commonClose = L10n.tr("Localizable", "common_close", fallback: "닫기")
+  /// 확인
+  public static let commonConfirm = L10n.tr("Localizable", "common_confirm", fallback: "확인")
+  /// 아니오
+  public static let commonNo = L10n.tr("Localizable", "common_no", fallback: "아니오")
+  /// %@원
+  public static func commonWon(_ p1: Any) -> String {
+    return L10n.tr("Localizable", "common_won", String(describing: p1), fallback: "%@원")
+  }
+  /// 네
+  public static let commonYes = L10n.tr("Localizable", "common_yes", fallback: "네")
+  /// 서울 관악구
+  public static let homeDefaultArea = L10n.tr("Localizable", "home_default_area", fallback: "서울 관악구")
+  /// 로그인
+  public static let settingLogin = L10n.tr("Localizable", "setting_login", fallback: "로그인")
+  /// 로그아웃
+  public static let settingLogout = L10n.tr("Localizable", "setting_logout", fallback: "로그아웃")
+}
+// swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
+// swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces
+
+// MARK: - Implementation Details
+
+extension L10n {
+  private static func tr(_ table: String, _ key: String, _ args: CVarArg..., fallback value: String) -> String {
+    let format = BundleToken.bundle.localizedString(forKey: key, value: value, table: table)
+    return String(format: format, locale: Locale.current, arguments: args)
+  }
+}
+
+// swiftlint:disable convenience_type
+private final class BundleToken {
+  static let bundle: Bundle = {
+    #if SWIFT_PACKAGE
+    return Bundle.module
+    #else
+    return Bundle(for: BundleToken.self)
+    #endif
+  }()
+}
+// swiftlint:enable convenience_type

@@ -35,6 +35,7 @@ struct MercuryApp: App {
     WindowGroup {
       OverlayWindowView {
         MainView()
+          .environment(NetworkMonitor.shared)
           .onOpenURL { url in
             OauthDeepLinkHandler.shared.handle(url: url)
           }

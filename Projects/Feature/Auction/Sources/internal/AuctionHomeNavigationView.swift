@@ -10,7 +10,6 @@ import SwiftUI
 import UIComponent
 
 struct AuctionHomeNavigationView: View {
-//  @State private var currentArea: String = "서울 관악구"
   @State private var currentArea: String = L10n.homeDefaultArea
   private let onSelectArea: (String) -> Void
   private let onTapSearch: () -> Void
@@ -34,11 +33,11 @@ struct AuctionHomeNavigationView: View {
         HStack(spacing: 4) {
           Text("\(currentArea)") // TODO: 필터 개발 필요
             .fonts(.titleLargeBold)
-            .foregroundStyle(Asset.Colors.gray900TextBlack.color)
+            .foregroundStyle(Asset.Colors.neutral.color)
           Asset.Images.arrowDownNoShaft.image
             .renderingMode(.template)
             .resizable()
-            .foregroundStyle(Asset.Colors.gray900TextBlack.color)
+            .foregroundStyle(Asset.Colors.neutral.color)
             .frame(width: 16, height: 16)
         }
       }
@@ -50,7 +49,7 @@ struct AuctionHomeNavigationView: View {
           Asset.Images.search.image
             .renderingMode(.template)
             .resizable()
-            .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+            .foregroundStyle(Asset.Colors.neutral.color)
             .frame(width: 28, height: 28)
         }
         
@@ -60,7 +59,7 @@ struct AuctionHomeNavigationView: View {
           Asset.Images.notification.image
             .renderingMode(.template)
             .resizable()
-            .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+            .foregroundStyle(Asset.Colors.neutral.color)
             .frame(width: 28, height: 28)
         }
       }

@@ -11,23 +11,19 @@ import SwiftUI
 import AppFoundation
 import Domain
 
-enum AuctionSortType {
-  case recentUpload(isAsc: Bool)
-}
-
 @Observable
 final class AuctionHomeModelData {
   var items: [AuctionItem] = []
   var isLoading: Bool = false
   var totalAuctionCount: Int = .zero
-  var currentSort: AuctionSortType = .recentUpload(isAsc: false) {
+  var currentSort: AuctionSortType = .recentRegistration {
     didSet {
       Task { [weak self] in
-        guard let self else { return }
-        self.sort(with: self.currentSort)
+        self?.sort(with: self?.currentSort ?? .recentRegistration)
       }
     }
   }
+  var filteredItemCount: Int = .zero
   
   private let auctionListUsecase: AuctionListUsecasable
   
@@ -36,44 +32,59 @@ final class AuctionHomeModelData {
   }
   
   private func sort(with type: AuctionSortType) {
-    Task { [weak self] in
-      await MainActor.run { [weak self] in
-        self?.isLoading = true
-      }
+    self.isLoading = true
+    var sortedItems: [AuctionItem] = self.items
+    sortedItems = self.items.sorted { lhs, rhs in
       switch type {
-      case .recentUpload(let isAsc):
-        var sortedItems: [AuctionItem] {
-          let items = self?.items.sorted { lhs, rhs in
-            isAsc ? lhs.createdAt >= rhs.createdAt : lhs.createdAt <= rhs.createdAt
-          }
-          return items ?? []
-        }
-        await MainActor.run { [weak self] in
-          self?.items = sortedItems
-          self?.isLoading = false
-        }
+      case .recentRegistration:
+        return lhs.createdAt >= rhs.createdAt
+      case .mostInterested:
+        return false  // TODO: 백엔드 개발 필요
+      case .impendingDueDate:
+        return lhs.distributionRequiredDeadlineDate >= rhs.distributionRequiredDeadlineDate
+      case .lessBidding:
+        return false // TODO: 백엔드 개발 필요
+      case .highPrice:
+        return lhs.claimPrice >= rhs.claimPrice
+      case .lowPrice:
+        return lhs.claimPrice <= rhs.claimPrice
       }
     }
+    self.items = sortedItems
+    self.isLoading = false
+  }
+  
+  func filterBuildingUsage(usageType: [AuctionBuildingUsageType]) {
+    self.isLoading = true
+    var filteredItem: [AuctionItem] = self.items
+    filteredItem = self.items.filter { item in
+      return true // TODO: 백엔드 작업 후 진행
+    }
+    self.items = filteredItem
+    self.isLoading = false
+  }
+  
+  func filterStatus(statusType: [AuctionStatusType]) {
+    self.isLoading = true
+    var filteredItem: [AuctionItem] = self.items
+    filteredItem = self.items.filter { item in
+      return true // TODO: 백엔드 작업 후 진행
+    }
+    self.items = filteredItem
+    self.isLoading = false
   }
   
   func loadAuctionList() async throws {
-    await MainActor.run { [weak self] in
-      self?.isLoading = true
-    }
+    self.isLoading = true
     
     do {
-      let items = try await auctionListUsecase.fetchAllList(courtName: "서울중앙지방법원")
-      
-      await MainActor.run { [weak self] in
-        self?.totalAuctionCount = items.count
-        self?.items = items
-        self?.isLoading = false
-        print("first item ~> \n\(items.first)")
-      }
+      let items = try await auctionListUsecase.fetchAllSalesList()
+      self.totalAuctionCount = items.count
+      self.items = items
+      self.filteredItemCount = items.count
+      self.isLoading = false
     } catch {
-      await MainActor.run { [weak self] in
-        self?.isLoading = false
-      }
+      self.isLoading = false
       throw error
     }
   }

@@ -7,8 +7,11 @@
 
 import AppFoundation
 import Foundation
-import KakaoMapsSDK
 import CoreLocation
+
+import Domain
+
+import KakaoMapsSDK
 
 public class KakaoMapCoordinator: NSObject, MapControllerDelegate {
   
