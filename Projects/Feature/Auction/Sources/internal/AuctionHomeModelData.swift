@@ -78,7 +78,7 @@ final class AuctionHomeModelData {
     self.isLoading = true
     
     do {
-      let items = try await auctionListUsecase.fetchAllList(courtName: "서울중앙지방법원")
+      let items = try await auctionListUsecase.fetchAllSalesList()
       self.totalAuctionCount = items.count
       self.items = items
       self.filteredItemCount = items.count

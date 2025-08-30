@@ -16,8 +16,8 @@ public final class AuctionListRepository: AuctionListRepositorable {
     
   }
   
-  public func fetchAllList(courtName: String) async throws -> [AuctionItem] {
-    let auctionItemDTOs = try await AuctionAPI.auctionList(courtName: courtName).request([AuctionItemDTO].self)
+  public func fetchAllSalesList() async throws -> [AuctionItem] {
+    let auctionItemDTOs = try await AuctionAPI.auctionList.request([AuctionItemDTO].self)
     let auctionItems = auctionItemDTOs.map { $0.toAuctionItem() }
     return auctionItems
   }

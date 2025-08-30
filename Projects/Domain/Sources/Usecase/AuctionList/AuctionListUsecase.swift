@@ -16,8 +16,8 @@ public final class AuctionListUsecase: AuctionListUsecasable {
     self.repository = repository
   }
   
-  public func fetchAllList(courtName: String) async throws -> [AuctionItem] {
-    return try await self.repository.fetchAllList(courtName: courtName)
+  public func fetchAllSalesList() async throws -> [AuctionItem] {
+    return try await self.repository.fetchAllSalesList()
   }
   
 }

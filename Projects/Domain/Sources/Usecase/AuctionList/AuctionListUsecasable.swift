@@ -10,5 +10,5 @@ import Foundation
 import AppFoundation
 
 public protocol AuctionListUsecasable {
-  func fetchAllList(courtName: String) async throws -> [AuctionItem]
+  func fetchAllSalesList() async throws -> [AuctionItem]
 }

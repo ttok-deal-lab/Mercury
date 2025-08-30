@@ -62,9 +62,10 @@ public extension BaseAPI {
       guard let http = response as? HTTPURLResponse,
             (200...299).contains(http.statusCode)
       else {
+        print("Network Status Code Err: \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
         throw NetworkError.invalidStatusCode
       }
-      
+      /// 401이면 갱신 해야 함.
       return try JSONDecoder().decode(T.self, from: data)
     } catch {
       throw error

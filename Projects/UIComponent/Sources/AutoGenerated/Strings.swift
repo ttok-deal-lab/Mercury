@@ -18,9 +18,9 @@ public enum L10n {
   public static let auctionFilterBuildingUsage = L10n.tr("Localizable", "auction_filter_building_usage", fallback: "건물용도")
   /// 인증매물
   public static let auctionFilterCertified = L10n.tr("Localizable", "auction_filter_certified", fallback: "인증매물")
-  /// $1%@ 외 $2%@
+  /// %1$@ 외 %2$@
   public static func auctionFilterMultiSelect(_ p1: Any, _ p2: Any) -> String {
-    return L10n.tr("Localizable", "auction_filter_multi_select", String(describing: p1), String(describing: p2), fallback: "$1%@ 외 $2%@")
+    return L10n.tr("Localizable", "auction_filter_multi_select", String(describing: p1), String(describing: p2), fallback: "%1$@ 외 %2$@")
   }
   /// 가격
   public static let auctionFilterPrice = L10n.tr("Localizable", "auction_filter_price", fallback: "가격")
