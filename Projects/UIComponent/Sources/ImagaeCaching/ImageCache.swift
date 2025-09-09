@@ -91,6 +91,7 @@ public final class ImageCache: Cacheable {
     guard option != .onlyDisk else { return }
     let key = convertToKey(from: url.absoluteString) as NSString
     memory.setObject(image, forKey: key)
+    print("Save image to memory")
   }
   
   // 사용 X

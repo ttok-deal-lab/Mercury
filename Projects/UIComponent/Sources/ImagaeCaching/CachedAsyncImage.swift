@@ -31,32 +31,31 @@ public struct CachedAsyncImage<Placeholder: View, Content: View>: View {
   @Environment(\.imageCache) private var cache
   
   public var body: some View {
-      switch loadPhase {
-      case .empty:
-        placeholder()
-          .task {
-            await loadImageWithCache()
-          }
-      case .success(let image):
-        content(image)
-          .transition(.opacity)
-      case .failure(_):
-        AsyncImage(url: url) { phase in
-          switch phase {
-          case .empty:
-            placeholder()
-          case .success(let image):
-            content(image)
-          case .failure(_):
-            placeholder()
-          @unknown default:
-            placeholder()
-          }
-
+    switch loadPhase {
+    case .empty:
+      placeholder()
+        .task {
+          await loadImageWithCache()
         }
-      @unknown default:
-        placeholder()
+    case .success(let image):
+      content(image)
+        .transition(.opacity)
+    case .failure(_):
+      AsyncImage(url: url) { phase in
+        switch phase {
+        case .empty:
+          placeholder()
+        case .success(let image):
+          content(image)
+        case .failure(_):
+          placeholder()
+        @unknown default:
+          placeholder()
+        }
       }
+    @unknown default:
+      placeholder()
+    }
   }
   
   private func loadImageWithCache() async {
