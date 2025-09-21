@@ -61,36 +61,37 @@ public struct MainTabView<
   
   private func tabView() -> some View {
     TabView(selection: $selection) {
-      Group {
-        AuctionHomeView(
-          navigationStream: navigationStream,
-          auctionListUsecase: auctionListUsecase
-        )
-        .tabItem {
-          Tab.home.iconView(isSelected: selection == .home)
-        }
-        .tag(Tab.home)
-        
-        InterestView(navigationStream: navigationStream)
-          .tabItem {
-            Tab.interest.iconView(isSelected: selection == .interest)
-          }
-          .tag(Tab.interest)
-        
-        ReportView(navigationStream: navigationStream)
-          .tabItem {
-            Tab.report.iconView(isSelected: selection == .report)
-          }
-          .tag(Tab.report)
-        
-        MyPageView(navigationStream: navigationStream)
-          .tabItem {
-            Tab.myPage.iconView(isSelected: selection == .myPage)
-          }
-          .tag(Tab.myPage)
+      AuctionHomeView(
+        navigationStream: navigationStream,
+        auctionListUsecase: auctionListUsecase
+      )
+      .tabItem {
+        Tab.home.iconView(isSelected: selection == .home)
       }
-      .toolbarBackground(.white, for: .tabBar)
-      .toolbarBackground(.visible, for: .tabBar)
+      .tag(Tab.home)
+      
+      InterestView(navigationStream: navigationStream)
+        .tabItem {
+          Tab.interest.iconView(isSelected: selection == .interest)
+        }
+        .tag(Tab.interest)
+      
+      ReportView(navigationStream: navigationStream)
+        .tabItem {
+          Tab.report.iconView(isSelected: selection == .report)
+        }
+        .tag(Tab.report)
+      
+      MyPageView(navigationStream: navigationStream)
+        .tabItem {
+          Tab.myPage.iconView(isSelected: selection == .myPage)
+        }
+        .tag(Tab.myPage)
+    }
+    .onAppear {
+      let tabBarAppearance = UITabBarAppearance()
+      tabBarAppearance.configureWithDefaultBackground()
+      UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
     }
     .onChange(of: networkMonitor.isConnected) { _, isConnected in
       isShowNetworkDisconnect = !isConnected
