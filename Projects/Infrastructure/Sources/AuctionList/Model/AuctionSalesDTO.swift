@@ -18,7 +18,7 @@ struct AuctionSalesDTO: Decodable {
 extension AuctionSalesDTO {
   func toEntity() -> AuctionSales {
     return AuctionSales(
-      itmes: items.map { $0.toEntity() },
+      items: items.map { $0.toEntity() },
       nextCursor: nextCursor,
       hasNext: hasNext
     )
@@ -28,6 +28,7 @@ extension AuctionSalesDTO {
 struct AuctionSalesItemDTO: Decodable {
   let id: Int
   let salesAddress: String
+  let itemTypes: [String]
   let salesCategories: [String]
   let salesDateTime: String
   let appraisalPrice: Int64
@@ -41,6 +42,7 @@ extension AuctionSalesItemDTO {
     return AuctionSalesItem(
       id: id,
       salesAddress: salesAddress,
+      itemTypes: itemTypes.map { AuctionSalesItemType.fromRawValue($0) },
       salesCategories: salesCategories.map { AuctionSalesCategory.fromRawValue($0) },
       salesDate: salesDate,
       appraisalPrice: formattedAppraisalPrice,

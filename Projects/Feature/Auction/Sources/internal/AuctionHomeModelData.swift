@@ -13,6 +13,9 @@ import Domain
 
 @Observable
 final class AuctionHomeModelData {
+  
+  // MARK: - internal properties
+  
   var auctionSalesItems: [AuctionSalesItem] = []
   var isLoading: Bool = false
   var totalAuctionCount: Int = .zero
@@ -25,11 +28,17 @@ final class AuctionHomeModelData {
   }
   var filteredItemCount: Int = .zero
   
+  // MARK: - private properties
+  
   private let auctionListUsecase: AuctionSalesListUsecasable
+  
+  // MARK: - life cycle
   
   init(auctionListUsecase: AuctionSalesListUsecasable) {
     self.auctionListUsecase = auctionListUsecase
   }
+  
+  // MARK: - private methods
   
   private func sort(with type: AuctionSortType) {
     self.isLoading = true
@@ -53,40 +62,59 @@ final class AuctionHomeModelData {
     self.auctionSalesItems = sortedItems
     self.isLoading = false
   }
+
+  // MARK: - internal methods
   
   func filterBuildingUsage(usageType: [AuctionBuildingUsageType]) {
     self.isLoading = true
+    defer {
+      self.isLoading = false
+    }
+    
     var filteredItem: [AuctionSalesItem] = self.auctionSalesItems
     filteredItem = self.auctionSalesItems.filter { item in
       return true // TODO: 백엔드 작업 후 진행
     }
     self.auctionSalesItems = filteredItem
-    self.isLoading = false
   }
   
   func filterStatus(statusType: [AuctionStatusType]) {
     self.isLoading = true
+    defer {
+      self.isLoading = false
+    }
+    
     var filteredItem: [AuctionSalesItem] = self.auctionSalesItems
     filteredItem = self.auctionSalesItems.filter { item in
       return true // TODO: 백엔드 작업 후 진행
     }
     self.auctionSalesItems = filteredItem
-    self.isLoading = false
   }
   
   func loadAuctionSalesList() async throws {
     self.isLoading = true
+    defer {
+      self.isLoading = false
+    }
     
     do {
-      let auctionSales = try await auctionListUsecase.fetchAllSalesList()
-      
-      self.totalAuctionCount = auctionSales.itmes.count
-      self.filteredItemCount = auctionSales.itmes.count
-      self.auctionSalesItems = auctionSales.itmes
-      
-      self.isLoading = false
+      let auctionSalesItems = try await auctionListUsecase.fetchSalesList()
+      self.auctionSalesItems = auctionSalesItems
     } catch {
+      throw error
+    }
+  }
+  
+  func loadMoreAuctionSales() async throws {
+    self.isLoading = true
+    defer {
       self.isLoading = false
+    }
+    let currentAuctionSalesItems = self.auctionSalesItems
+    do {
+      let auctionSalesItems = try await auctionListUsecase.fetchNextSalesList()
+      self.auctionSalesItems = currentAuctionSalesItems + auctionSalesItems
+    } catch {
       throw error
     }
   }

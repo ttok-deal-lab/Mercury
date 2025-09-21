@@ -55,16 +55,20 @@ public struct AuctionHomeView: View {
               locationBuildingName: item.salesAddress,
               category: item.salesCategories
             )
-//            AuctionItemView(
-//              appraisalPrice: item.appraisalPrice,
-//              locationBuildingName: item.salesBuildings.first?.fullAddressName ?? "",
-//              locationAddressName: item.salesBuildings.last?.fullAddressName ?? ""
-//            )
           }
+          
+          loadMoreView()
         }
         
         Spacer()
         
+      }
+      .refreshable {
+        do {
+          try await modelData.loadAuctionSalesList()
+        } catch {
+          self.error = error.toMercuryError()
+        }
       }
     }
     .alert(error: $error)
@@ -77,6 +81,27 @@ public struct AuctionHomeView: View {
       }
     }
     
+  }
+  
+  private func shouldTriggerLoadMore(at index: Int) -> Bool {
+    print(index)
+    let itemCount = modelData.auctionSalesItems.count
+    guard itemCount >= 20 else { return false }
+    
+    let thresholdIndex = itemCount - 3
+    return index == thresholdIndex
+  }
+  
+  @ViewBuilder
+  private func loadMoreView() -> some View {
+    Color.clear
+      .task {
+        do {
+          try await modelData.loadMoreAuctionSales()
+        } catch {
+          self.error = error.toMercuryError()
+        }
+      }
   }
 }
 

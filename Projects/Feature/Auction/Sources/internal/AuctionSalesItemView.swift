@@ -20,10 +20,14 @@ struct AuctionSalesItemView: View {
   var body: some View {
     VStack(spacing: .zero) {
       HStack(spacing: 16) {
-        
-        AsyncImage(url: auctionSalesItemURL)
-          
-          .frame(width: 100, height: 100)
+        CachedAsyncImage(url: auctionSalesItemURL, content: { image in
+          image
+            .resizable()
+            .frame(width: 100, height: 100)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+        }) {
+          Asset.Colors.gray150.color
+        }
         
         VStack(alignment: .leading, spacing: 2) {
           Text(L10n.commonWon(appraisalPrice))

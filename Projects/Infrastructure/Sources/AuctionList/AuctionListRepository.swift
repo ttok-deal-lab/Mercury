@@ -16,8 +16,9 @@ public final class AuctionSalesListRepository: AuctionSalesListRepositorable {
     
   }
   
-  public func fetchAllSalesList() async throws -> AuctionSales {
-    let auctionSalesItemDTO = try await AuctionAPI.auctionList.request(AuctionSalesDTO.self)
+  public func fetchAuctionSales(cursor: String?, size: Int) async throws -> AuctionSales {
+    let auctionSalesItemDTO = try await AuctionAPI.auctionList(cursor: cursor, size: size)
+      .request(AuctionSalesDTO.self)
     let auctionItems = auctionSalesItemDTO.toEntity()
     return auctionItems
   }
