@@ -20,7 +20,7 @@ public struct AuctionHomeView: View {
   
   public init(
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
-    auctionListUsecase: AuctionListUsecasable
+    auctionListUsecase: AuctionSalesListUsecasable
   ) {
     self.navigationStream = navigationStream
     self.modelData = AuctionHomeModelData(auctionListUsecase: auctionListUsecase)
@@ -48,12 +48,18 @@ public struct AuctionHomeView: View {
         LazyVStack(spacing: .zero) {
           InformCertificationView()
           
-          ForEach(modelData.items) { item in
-            AuctionItemView(
+          ForEach(modelData.auctionSalesItems) { item in
+            AuctionSalesItemView(
+              auctionSalesItemURL: item.salesPictureURL,
               appraisalPrice: item.appraisalPrice,
-              locationBuildingName: item.salesBuildings.first?.fullAddressName ?? "",
-              locationAddressName: item.salesBuildings.last?.fullAddressName ?? ""
+              locationBuildingName: item.salesAddress,
+              category: item.salesCategories
             )
+//            AuctionItemView(
+//              appraisalPrice: item.appraisalPrice,
+//              locationBuildingName: item.salesBuildings.first?.fullAddressName ?? "",
+//              locationAddressName: item.salesBuildings.last?.fullAddressName ?? ""
+//            )
           }
         }
         
@@ -65,7 +71,7 @@ public struct AuctionHomeView: View {
     .loading(modelData.isLoading)
     .task(priority: .background) {
       do {
-        try await modelData.loadAuctionList()
+        try await modelData.loadAuctionSalesList()
       } catch {
         self.error = error.toMercuryError()
       }

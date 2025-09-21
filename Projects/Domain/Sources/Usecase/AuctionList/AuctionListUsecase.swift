@@ -9,14 +9,14 @@ import Foundation
 
 import AppFoundation
 
-public final class AuctionListUsecase: AuctionListUsecasable {
-  private let repository: AuctionListRepositorable
+public final class AuctionSalesListUsecase: AuctionSalesListUsecasable {
+  private let repository: AuctionSalesListRepositorable
   
-  public init(repository: AuctionListRepositorable) {
+  public init(repository: AuctionSalesListRepositorable) {
     self.repository = repository
   }
   
-  public func fetchAllSalesList() async throws -> [AuctionItem] {
+  public func fetchAllSalesList() async throws -> AuctionSales {
     return try await self.repository.fetchAllSalesList()
   }
   

@@ -8,31 +8,31 @@
 import SwiftUI
 
 import AppFoundation
+import Domain
 import UIComponent
 
-struct AuctionItemView: View {
-  
-  var appraisalPrice: Int
+struct AuctionSalesItemView: View {
+  var auctionSalesItemURL: URL?
+  var appraisalPrice: String
   var locationBuildingName: String
-  var locationAddressName: String
+  var category: [AuctionSalesCategory?]
   
   var body: some View {
     VStack(spacing: .zero) {
       HStack(spacing: 16) {
-        RoundedRectangle(cornerRadius: 8) // 사진 임시
-          .foregroundStyle(.gray.opacity(0.7))
+        
+        AsyncImage(url: auctionSalesItemURL)
+          
           .frame(width: 100, height: 100)
         
         VStack(alignment: .leading, spacing: 2) {
           Text(L10n.commonWon(appraisalPrice))
             .foregroundStyle(Asset.Colors.neutral.color)
             .fonts(.bodyLargeBold)
+          
           Text("\(locationBuildingName)")
             .foregroundStyle(Asset.Colors.neutral.color)
             .fonts(.bodyMicroMedium)
-          Text("\(locationAddressName)")
-            .foregroundStyle(Asset.Colors.neutralSubtler.color)
-            .fonts(.bodyMicroRegular)
         }
         
         Spacer()
