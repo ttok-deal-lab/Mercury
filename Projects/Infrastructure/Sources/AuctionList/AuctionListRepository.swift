@@ -1,5 +1,5 @@
 //
-//  AuctionListRepository.swift
+//  AuctionSalesListRepository.swift
 //  Infrastructure
 //
 //  Created by 송하민 on 5/4/25.
@@ -10,15 +10,16 @@ import Foundation
 import AppFoundation
 import Domain
 
-public final class AuctionListRepository: AuctionListRepositorable {
+public final class AuctionSalesListRepository: AuctionSalesListRepositorable {
   
   public init() {
     
   }
   
-  public func fetchAllSalesList() async throws -> [AuctionItem] {
-    let auctionItemDTOs = try await AuctionAPI.auctionList.request([AuctionItemDTO].self)
-    let auctionItems = auctionItemDTOs.map { $0.toAuctionItem() }
+  public func fetchAuctionSales(cursor: String?, size: Int) async throws -> AuctionSales {
+    let auctionSalesItemDTO = try await AuctionAPI.auctionList(cursor: cursor, size: size)
+      .request(AuctionSalesDTO.self)
+    let auctionItems = auctionSalesItemDTO.toEntity()
     return auctionItems
   }
 }

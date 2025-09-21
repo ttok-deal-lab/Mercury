@@ -28,14 +28,14 @@ public struct MainTabView<
   @Inject private var toast: Toastable
   
   private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
-  private let auctionListUsecase: AuctionListUsecasable
+  private let auctionListUsecase: AuctionSalesListUsecasable
   
   // MARK: - life cycle
   
   public init(
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
     localStorageUsecase: LocalStorageUsecasable,
-    auctionListUsecase: AuctionListUsecasable
+    auctionListUsecase: AuctionSalesListUsecasable
   ) {
     self.navigationStream = navigationStream
     self.auctionListUsecase = auctionListUsecase
@@ -87,6 +87,11 @@ public struct MainTabView<
           Tab.myPage.iconView(isSelected: selection == .myPage)
         }
         .tag(Tab.myPage)
+    }
+    .onAppear {
+      let tabBarAppearance = UITabBarAppearance()
+      tabBarAppearance.configureWithDefaultBackground()
+      UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
     }
     .onChange(of: networkMonitor.isConnected) { _, isConnected in
       isShowNetworkDisconnect = !isConnected

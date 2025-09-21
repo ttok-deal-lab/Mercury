@@ -13,6 +13,6 @@ import Auction
 struct ContentView: View {
   
   var body: some View {
-    AuctionListView()
+    AuctionSalesListView()
   }
 }

@@ -9,6 +9,7 @@ import Foundation
 
 import AppFoundation
 
-public protocol AuctionListUsecasable {
-  func fetchAllSalesList() async throws -> [AuctionItem]
+public protocol AuctionSalesListUsecasable {
+  func fetchSalesList() async throws -> [AuctionSalesItem]
+  func fetchNextSalesList() async throws -> [AuctionSalesItem]
 }

@@ -13,7 +13,10 @@ import Domain
 
 @Observable
 final class AuctionHomeModelData {
-  var items: [AuctionItem] = []
+  
+  // MARK: - internal properties
+  
+  var auctionSalesItems: [AuctionSalesItem] = []
   var isLoading: Bool = false
   var totalAuctionCount: Int = .zero
   var currentSort: AuctionSortType = .recentRegistration {
@@ -25,66 +28,93 @@ final class AuctionHomeModelData {
   }
   var filteredItemCount: Int = .zero
   
-  private let auctionListUsecase: AuctionListUsecasable
+  // MARK: - private properties
   
-  init(auctionListUsecase: AuctionListUsecasable) {
+  private let auctionListUsecase: AuctionSalesListUsecasable
+  
+  // MARK: - life cycle
+  
+  init(auctionListUsecase: AuctionSalesListUsecasable) {
     self.auctionListUsecase = auctionListUsecase
   }
   
+  // MARK: - private methods
+  
   private func sort(with type: AuctionSortType) {
     self.isLoading = true
-    var sortedItems: [AuctionItem] = self.items
-    sortedItems = self.items.sorted { lhs, rhs in
+    var sortedItems: [AuctionSalesItem] = self.auctionSalesItems
+    sortedItems = self.auctionSalesItems.sorted(by: { lhsItem, rhsItem in
       switch type {
       case .recentRegistration:
-        return lhs.createdAt >= rhs.createdAt
+        return lhsItem.salesDate >= rhsItem.salesDate
       case .mostInterested:
-        return false  // TODO: 백엔드 개발 필요
+        return lhsItem.zzimCount >= rhsItem.zzimCount
       case .impendingDueDate:
-        return lhs.distributionRequiredDeadlineDate >= rhs.distributionRequiredDeadlineDate
+        return false // TODO: 백엔드 개발필요
       case .lessBidding:
-        return false // TODO: 백엔드 개발 필요
+        return lhsItem.failBidCount <= rhsItem.failBidCount
       case .highPrice:
-        return lhs.claimPrice >= rhs.claimPrice
+        return lhsItem.appraisalPrice >= rhsItem.appraisalPrice
       case .lowPrice:
-        return lhs.claimPrice <= rhs.claimPrice
+        return lhsItem.appraisalPrice <= rhsItem.appraisalPrice
       }
-    }
-    self.items = sortedItems
+    })
+    self.auctionSalesItems = sortedItems
     self.isLoading = false
   }
+
+  // MARK: - internal methods
   
   func filterBuildingUsage(usageType: [AuctionBuildingUsageType]) {
     self.isLoading = true
-    var filteredItem: [AuctionItem] = self.items
-    filteredItem = self.items.filter { item in
+    defer {
+      self.isLoading = false
+    }
+    
+    var filteredItem: [AuctionSalesItem] = self.auctionSalesItems
+    filteredItem = self.auctionSalesItems.filter { item in
       return true // TODO: 백엔드 작업 후 진행
     }
-    self.items = filteredItem
-    self.isLoading = false
+    self.auctionSalesItems = filteredItem
   }
   
   func filterStatus(statusType: [AuctionStatusType]) {
     self.isLoading = true
-    var filteredItem: [AuctionItem] = self.items
-    filteredItem = self.items.filter { item in
+    defer {
+      self.isLoading = false
+    }
+    
+    var filteredItem: [AuctionSalesItem] = self.auctionSalesItems
+    filteredItem = self.auctionSalesItems.filter { item in
       return true // TODO: 백엔드 작업 후 진행
     }
-    self.items = filteredItem
-    self.isLoading = false
+    self.auctionSalesItems = filteredItem
   }
   
-  func loadAuctionList() async throws {
+  func loadAuctionSalesList() async throws {
     self.isLoading = true
+    defer {
+      self.isLoading = false
+    }
     
     do {
-      let items = try await auctionListUsecase.fetchAllSalesList()
-      self.totalAuctionCount = items.count
-      self.items = items
-      self.filteredItemCount = items.count
-      self.isLoading = false
+      let auctionSalesItems = try await auctionListUsecase.fetchSalesList()
+      self.auctionSalesItems = auctionSalesItems
     } catch {
+      throw error
+    }
+  }
+  
+  func loadMoreAuctionSales() async throws {
+    self.isLoading = true
+    defer {
       self.isLoading = false
+    }
+    let currentAuctionSalesItems = self.auctionSalesItems
+    do {
+      let auctionSalesItems = try await auctionListUsecase.fetchNextSalesList()
+      self.auctionSalesItems = currentAuctionSalesItems + auctionSalesItems
+    } catch {
       throw error
     }
   }

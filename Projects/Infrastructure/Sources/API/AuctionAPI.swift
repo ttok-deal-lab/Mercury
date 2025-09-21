@@ -10,7 +10,7 @@ import Foundation
 import Networking
 
 enum AuctionAPI: BaseAPI {
-  case auctionList
+  case auctionList(cursor: String?, size: Int)
   case auctionDetail(_ salesId: String, _ largeCategory: String, mediumCategory: String, _ courtName: String, salesNumber: Int)
   
   var baseURL: String {
@@ -38,8 +38,11 @@ enum AuctionAPI: BaseAPI {
   
   var queryParam: [String : Any]? {
     switch self {
-    case .auctionList:
-      return nil 
+    case let .auctionList(cursor, size):
+      return [
+        "cursor": cursor,
+        "size": "\(size)"
+      ].compactMapValues { $0 }
     case .auctionDetail(_, let largeCategory, let mediumCategory, let courtName, let salesNumber):
       return [
         "largeCategory": "\(largeCategory)",

@@ -19,7 +19,6 @@ public struct OverlayGroup: View {
   }
 }
 
-
 public struct OverlayWindowView<Content: View>: View {
   @ViewBuilder public var content: Content
   @State private var overlayWindow: UIWindow?
@@ -30,71 +29,9 @@ public struct OverlayWindowView<Content: View>: View {
   
   public var body: some View {
     content
-      .onAppear {
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, overlayWindow == nil {
-          let window = PassthroughWindow(windowScene: windowScene)
-          window.backgroundColor = .clear
-          
-          let rootViewController = UIHostingController(rootView: OverlayGroup())
-          rootViewController.view.frame = windowScene.keyWindow?.frame ?? .zero
-          rootViewController.view.backgroundColor = .clear
-          window.rootViewController = rootViewController
-          
-          window.isHidden = false
-          window.isUserInteractionEnabled = true
-          window.windowLevel = .alert + 1
-          
-          overlayWindow = window
-        }
+      .overlay(alignment: .center) {
+        OverlayGroup()
+          .allowsHitTesting(true)
       }
-  }
-}
-
-fileprivate class PassthroughWindow: UIWindow {
-  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    if #available(iOS 18, *) {
-      let view = super.hitTest(point, with: event)
-      guard let view, _hitTest(point, from: view) != rootViewController?.view else { return nil }
-      return view
-    } else {
-      guard let hitView = super.hitTest(point, with: event) else { return nil }
-      if rootViewController?.view == hitView {
-        return nil
-      } else if hitView.subviews.last is PassthroughView {
-        return nil
-      } else {
-        return hitView
-      }
-    }
-  }
-  
-  private func _hitTest(_ point: CGPoint, from view: UIView) -> UIView? {
-    let converted = convert(point, to: view)
-    
-    guard view.bounds.contains(converted)
-            && view.isUserInteractionEnabled
-            && !view.isHidden
-            && view.alpha > 0
-    else {
-      return nil
-    }
-    
-    return view.subviews.reversed()
-      .reduce(Optional<UIView>.none) { result, view in
-        result ?? _hitTest(point, from: view)
-      } ?? view
-  }
-}
-
-private class PassthroughView: UIView {
-  private var onHitView: (() -> Void)?
-  
-  public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    onHitView?()
-    return nil
-  }
-  
-  public func onHit(_ closure: (() -> Void)?) {
-    onHitView = closure
   }
 }
