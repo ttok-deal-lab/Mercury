@@ -17,7 +17,6 @@ import Domain
 public struct MainTabView<
   AuctionHomeView: AuctionHomeViewable,
   InterestView: InterestViewable,
-  ReportView: ReportViewable,
   MyPageView: MyPageViewable,
   SignInView: SignInViewable
 >: View {
@@ -76,12 +75,6 @@ public struct MainTabView<
         }
         .tag(Tab.interest)
       
-      ReportView(navigationStream: navigationStream)
-        .tabItem {
-          Tab.report.iconView(isSelected: selection == .report)
-        }
-        .tag(Tab.report)
-      
       MyPageView(navigationStream: navigationStream)
         .tabItem {
           Tab.myPage.iconView(isSelected: selection == .myPage)
@@ -112,14 +105,13 @@ public struct MainTabView<
 }
 
 enum Tab {
-  case home, interest, report, myPage
+  case home, interest, myPage
   
   var title: String {
     switch self {
     case .home: return "홈"
     case .interest: return "관심"
-    case .report: return "임장보고서"
-    case .myPage: return "설정"
+    case .myPage: return "마이페이지"
     }
   }
   
@@ -127,7 +119,6 @@ enum Tab {
     switch self {
     case .home: return isSelected ? Asset.Images.gnbHome.image : Asset.Images.gnbHomeGray.image
     case .interest: return isSelected ? Asset.Images.gnbInterest.image : Asset.Images.gnbInterestGray.image
-    case .report: return isSelected ? Asset.Images.gnbReport.image : Asset.Images.gnbReportGray.image
     case .myPage: return isSelected ? Asset.Images.gnbMypage.image : Asset.Images.gnbMypageGray.image
     }
   }
