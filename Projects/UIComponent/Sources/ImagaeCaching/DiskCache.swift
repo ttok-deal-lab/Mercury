@@ -69,7 +69,7 @@ final class DiskCache: Cacheable {
   }
   
   private func saveImageToDisk(_ image: UIImage, at path: String, url: URL) async {
-    // JPEG 저장 (원글도 JPEG 사용)
+    // JPEG 저장
     let createFile = fm.createFile(atPath: path,
                                    contents: image.jpegData(compressionQuality: 1.0), // 임시
                                    attributes: nil)
