@@ -21,13 +21,12 @@ struct AuctionSalesItemView: View {
     VStack(spacing: .zero) {
       HStack(spacing: 16) {
         CachedAsyncImage(url: auctionSalesItemURL, content: { image in
-          image
-            .resizable()
-            .frame(width: 100, height: 100)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+          image.resizable()
         }) {
           Asset.Colors.gray150.color
         }
+        .frame(width: 100, height: 100)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
         
         VStack(alignment: .leading, spacing: 2) {
           Text(L10n.commonWon(appraisalPrice))
@@ -37,6 +36,7 @@ struct AuctionSalesItemView: View {
           Text("\(locationBuildingName)")
             .foregroundStyle(Asset.Colors.neutral.color)
             .fonts(.bodyMicroMedium)
+            .multilineTextAlignment(.leading)
         }
         
         Spacer()

@@ -7,6 +7,7 @@
 
 import Foundation
 
-public protocol FcmTokenUsecasable {
+public protocol FcmTokenUsecasable: Sendable {
   func sendFcmToken(fcmToken: String?) async throws
 }
+

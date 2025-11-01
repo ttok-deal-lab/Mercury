@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct AuctionDetail {
+public struct AuctionDetail: Sendable {
   public let id: Int
   public let salesNumber: String
   public let itemTypes: [ItemType]
@@ -65,7 +65,7 @@ public struct AuctionDetail {
   }
   
   // MARK: - Enums
-  public enum ItemType {
+  public enum ItemType: Sendable {
     case apartment
     case detachedHouse
     case multiHousehold
@@ -104,7 +104,7 @@ public struct AuctionDetail {
     }
   }
   
-  public enum SalesCategory {
+  public enum SalesCategory: Sendable {
     case housing
     case villa
     case apartment
@@ -125,7 +125,7 @@ public struct AuctionDetail {
     }
   }
   
-  public enum BidType {
+  public enum BidType: Sendable {
     case general
     case limited
     case other(String)
@@ -140,7 +140,7 @@ public struct AuctionDetail {
   }
   
   // MARK: - Nested Structs
-  public struct Court {
+  public struct Court: Sendable {
     let code: CourtCode
     let team: String
     
@@ -149,7 +149,7 @@ public struct AuctionDetail {
       self.team = team
     }
     
-    public enum CourtCode {
+    public enum CourtCode: Sendable {
       case seoulCentralDistrict
       case seoulEasternDistrict
       case seoulWesternDistrict
@@ -170,7 +170,7 @@ public struct AuctionDetail {
     }
   }
   
-  public struct SalesDetail {
+  public struct SalesDetail: Sendable {
     public let timeStamp: Date
     public let type: SalesDetailType
     public let location: String
@@ -185,7 +185,7 @@ public struct AuctionDetail {
       self.result = result
     }
     
-    public enum SalesDetailType {
+    public enum SalesDetailType: Sendable {
       case saleDate
       case other(String)
       
@@ -197,7 +197,7 @@ public struct AuctionDetail {
       }
     }
     
-    public enum SalesResult {
+    public enum SalesResult: Sendable {
       case failedBid
       case sold
       case postponed
@@ -216,7 +216,7 @@ public struct AuctionDetail {
     }
   }
   
-  public struct SalesPicture {
+  public struct SalesPicture: Sendable {
     public let sequence: Int
     public let imageUrl: URL?
     
@@ -226,7 +226,7 @@ public struct AuctionDetail {
     }
   }
   
-  public struct SalesBuilding {
+  public struct SalesBuilding: Sendable {
     public let address: Address
     public let detailAddress: String
     public let category: BuildingCategory
@@ -237,7 +237,7 @@ public struct AuctionDetail {
       self.category = category
     }
     
-    public struct Address {
+    public struct Address: Sendable {
       public let siDo: String
       public let gu: String
       public let dong: String
@@ -253,7 +253,7 @@ public struct AuctionDetail {
       }
     }
     
-    public enum BuildingCategory {
+    public enum BuildingCategory: Sendable {
       case exclusiveResidential
       case generalResidential
       case commercial
@@ -272,7 +272,7 @@ public struct AuctionDetail {
     }
   }
   
-  public struct SalesItemDetail {
+  public struct SalesItemDetail: Sendable {
     public let sequence: Int
     public let type: ItemDetailType
     public let content: String
@@ -283,7 +283,7 @@ public struct AuctionDetail {
       self.content = content
     }
     
-    public enum ItemDetailType {
+    public enum ItemDetailType: Sendable {
       case land
       case building
       case other(String)
@@ -298,7 +298,7 @@ public struct AuctionDetail {
     }
   }
   
-  public struct ConditionReport {
+  public struct ConditionReport: Sendable {
     public let investigationDate: Date
     public let estateLeaseInfos: [EstateLeaseInfo]
     public let occupationRelations: [OccupationRelation]
@@ -311,7 +311,7 @@ public struct AuctionDetail {
       self.occupationRelationReports = occupationRelationReports
     }
     
-    public struct EstateLeaseInfo {
+    public struct EstateLeaseInfo: Sendable {
       public let sequence: Int
       public let address: String
       public let leaseRelation: LeaseRelationType
@@ -322,7 +322,7 @@ public struct AuctionDetail {
         self.leaseRelation = leaseRelation
       }
       
-      public enum LeaseRelationType {
+      public enum LeaseRelationType: Sendable {
         case tenant
         case landlord
         case other(String)
@@ -337,7 +337,7 @@ public struct AuctionDetail {
       }
     }
     
-    public struct OccupationRelation {
+    public struct OccupationRelation: Sendable {
       public let address: String
       public let relation: String
       public let etc: String
@@ -349,7 +349,7 @@ public struct AuctionDetail {
       }
     }
     
-    public struct OccupationRelationReport {
+    public struct OccupationRelationReport: Sendable {
       public let sequence: Int
       public let address: String
       public let occupant: String
@@ -376,7 +376,7 @@ public struct AuctionDetail {
         self.confirmedAt = confirmedAt
       }
       
-      public enum OccupantRelation {
+      public enum OccupantRelation: Sendable {
         case debtor
         case tenant
         case owner
@@ -392,7 +392,7 @@ public struct AuctionDetail {
         }
       }
       
-      public enum OccupationPurpose {
+      public enum OccupationPurpose: Sendable {
         case residential
         case commercial
         case office
@@ -410,7 +410,7 @@ public struct AuctionDetail {
     }
   }
   
-  public struct AppraisalDocument {
+  public struct AppraisalDocument: Sendable {
     public let sequence: Int
     public let title: String
     public let subTitle: String
@@ -424,7 +424,7 @@ public struct AuctionDetail {
     }
   }
   
-  public struct NearbySalesStat {
+  public struct NearbySalesStat: Sendable {
     public let term: Int  // months
     public let salesCount: Int
     public let averageAppraisalPrice: Int
@@ -442,4 +442,3 @@ public struct AuctionDetail {
     }
   }
 }
-

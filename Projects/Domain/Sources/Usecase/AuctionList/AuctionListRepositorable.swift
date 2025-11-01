@@ -9,6 +9,6 @@ import Foundation
 
 import AppFoundation
 
-public protocol AuctionSalesListRepositorable {
+public protocol AuctionSalesListRepositorable: Sendable {
   func fetchAuctionSales(cursor: String?, size: Int) async throws -> AuctionSales
 }
