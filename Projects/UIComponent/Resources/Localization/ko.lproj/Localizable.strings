@@ -4,6 +4,9 @@
 "common_yes" = "네";
 "common_no" = "아니오";
 "common_won" = "%@원";
+"tab_home" = "홈";
+"tab_interest" = "관심";
+"tab_setting" = "설정";
 "home_default_area" = "서울 관악구";
 "setting_logout" = "로그아웃";
 "setting_login" = "로그인";
