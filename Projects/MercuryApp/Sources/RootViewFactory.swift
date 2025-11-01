@@ -8,11 +8,12 @@
 import SwiftUI
 import Combine
 
-import Router
 import Auction
+import MyPage
 import Onboard
 import Domain
 import Infrastructure
+import Router
 
 import PulseUI
 
@@ -38,6 +39,14 @@ struct RootViewFactory: ViewFactory {
       EmptyView()
     case .networkConsole:
       ConsoleView()
+    case .setting(let settingStep):
+      SettingViewFactory(
+        modelData: MyPageModelData(
+          userProfileUsecasable: UserProfileUsecase(
+            repository: UserProfileRepository()
+          )
+        )
+      ).makeView(settingStep, navigationStream: navigationStream)
     }
   }
 }

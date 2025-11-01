@@ -31,7 +31,7 @@ public final class MyPageModelData {
   
   // MARK: - life cycle
   
-  init(userProfileUsecasable: UserProfileUsecasable) {
+  public init(userProfileUsecasable: UserProfileUsecasable) {
     self.userProfileUsecasable = userProfileUsecasable
   }
   

@@ -16,6 +16,7 @@ import Domain
 public struct MyPageView: View {
   @State private var modelData: MyPageModelData
   @State private var error: MercuryError?
+  @State private var hasFetched = false
   @Inject private var accessTokenManager: AccessTokenManagable
   
   private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
@@ -29,16 +30,19 @@ public struct MyPageView: View {
   }
   
   public var body: some View {
-    UserInfoView(modelData: $modelData)
     VStack {
+      UserInfoView(modelData: $modelData)
       Button {
         accessTokenManager.removeAccessToken()
       } label: {
         Text("로그아웃")
       }
+      Spacer()
     } //: VStack
     .alert(error: $error)
-    .task(priority: .background) {
+    .task(priority: .high) {
+      if hasFetched { return }
+      hasFetched = true
       do {
         try await modelData.fetchProfile()
       } catch {

@@ -8,6 +8,7 @@
 import SwiftUI
 
 import Domain
+import UIComponent
 
 struct UserInfoView: View {
   
@@ -21,7 +22,9 @@ struct UserInfoView: View {
           Spacer()
         }
         HStack {
-          Text("\(modelData.userProfile.provider.toText()) 로 로그인")
+          modelData.userProfile.provider.toImage()
+            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 6))
+          Text("\(modelData.userProfile.provider.toText())로 로그인")
           Spacer()
         }
       }
@@ -40,6 +43,19 @@ extension OauthProvider {
       return "카카오"
     case .naver:
       return "네이버"
+    }
+  }
+  
+  func toImage() -> Image {
+    switch self {
+    case .google:
+      Asset.Images.google.image
+    case .apple:
+      Asset.Images.apple.image
+    case .kakao:
+      Asset.Images.kakao.image
+    case .naver:
+      Asset.Images.naver.image
     }
   }
 }
