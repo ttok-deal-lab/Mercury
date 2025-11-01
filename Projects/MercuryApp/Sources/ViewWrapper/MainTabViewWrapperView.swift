@@ -19,12 +19,14 @@ public struct MainTabViewWrapperView: View, MainTabViewable {
   public init(
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
     localStorageUsecase: LocalStorageUsecasable,
-    auctionListUsecase: AuctionSalesListUsecasable
+    auctionListUsecase: AuctionSalesListUsecasable,
+    userProfileUsecase: UserProfileUsecasable
   ) {
     hostView = MainTabView(
       navigationStream: navigationStream,
       localStorageUsecase: localStorageUsecase,
-      auctionListUsecase: auctionListUsecase
+      auctionListUsecase: auctionListUsecase,
+      userProfileUsecase: userProfileUsecase
     )
   }
   

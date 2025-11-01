@@ -4,6 +4,9 @@
 "common_yes" = "yes";
 "common_no" = "no";
 "common_won" = "%@won";
+"tab_home" = "HOME";
+"tab_interest" = "INTEREST";
+"tab_setting" = "SETTING";
 "home_default_area" = "Seoul Guanak-gu";
 "setting_logout" = "logout";
 "setting_login" = "login";
