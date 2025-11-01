@@ -15,9 +15,25 @@ import Domain
 
 public struct AuctionViewFactory: ViewFactory {
   
-  public init() {}
+  private let auctionDetailUsecase: AuctionDetailUsecase
   
-  public func makeView(_ route: AuctionRoute, navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) -> some View {
-    EmptyView()
+  public init(
+    auctionDetailUsecase: AuctionDetailUsecase
+  ) {
+    self.auctionDetailUsecase = auctionDetailUsecase
+  }
+  
+  public func makeView(
+    _ auctionRoute: AuctionRoute,
+    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+  ) -> some View {
+    switch auctionRoute.route {
+    case .auctionDetail(let auctionID):
+      AuctionDetailView(
+        auctionID: auctionID,
+        auctionDetailUsecase: self.auctionDetailUsecase,
+        navigationStream: navigationStream
+      )
+    }
   }
 }

@@ -13,10 +13,15 @@ import Router
 import Domain
 
 public struct OnboardingFactory: ViewFactory {
-  private let modelData: OnboardingModelData
+  private let serviceSignInUsecasable: ServiceSignInUsecasable
+  private let locationUsecasable: LocationUsecasable
   
-  public init(modelData: OnboardingModelData) {
-    self.modelData = modelData
+  public init(
+    serviceSignInUsecasable: ServiceSignInUsecasable,
+    locationUsecasable: LocationUsecasable
+  ) {
+    self.serviceSignInUsecasable = serviceSignInUsecasable
+    self.locationUsecasable = locationUsecasable
   }
   
   public func makeView(
@@ -25,7 +30,10 @@ public struct OnboardingFactory: ViewFactory {
   ) -> some View {
     switch onboardRouter.route {
     case .permissionRequest:
-      PermissionRequestView(modelData: modelData, navigationStream: navigationStream)
+      PermissionRequestView(
+        modelData: OnboardingModelData(serviceSignInUsecasable: self.serviceSignInUsecasable, locationUsecasable: self.locationUsecasable),
+        navigationStream: navigationStream
+      )
     }
   }
 }
