@@ -15,7 +15,7 @@ public struct AuctionRoute: Hashable {
   }
   
   public enum Route: Hashable {
-    case signIn
+    case auctionDetail(auctionID: Int)
   }
   
   public func hash(into hasher: inout Hasher) {

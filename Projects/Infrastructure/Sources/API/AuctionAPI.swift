@@ -11,7 +11,7 @@ import Networking
 
 enum AuctionAPI: BaseAPI {
   case auctionList(cursor: String?, size: Int)
-  case auctionDetail(_ salesId: String, _ largeCategory: String, mediumCategory: String, _ courtName: String, salesNumber: Int)
+  case auctionDetail(_ auctionID: Int)
   
   var baseURL: String {
     RestAPIDefine.base(.common)
@@ -26,7 +26,7 @@ enum AuctionAPI: BaseAPI {
   var path: String {
     switch self {
     case .auctionList: "sales/all"
-    case .auctionDetail(let salesId, _, _, _, _): "court/\(salesId)"
+    case .auctionDetail(let auctionID): "sales/\(auctionID)"
     }
   }
   
@@ -43,13 +43,8 @@ enum AuctionAPI: BaseAPI {
         "cursor": cursor,
         "size": "\(size)"
       ].compactMapValues { $0 }
-    case .auctionDetail(_, let largeCategory, let mediumCategory, let courtName, let salesNumber):
-      return [
-        "largeCategory": "\(largeCategory)",
-        "mediumCategory": "\(mediumCategory)",
-        "courtName": "\(courtName)",
-        "salesNumber": "\(salesNumber)"
-      ]
+    case .auctionDetail:
+      return nil
     }
   }
   

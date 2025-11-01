@@ -9,7 +9,7 @@ import Foundation
 
 import Domain
 
-struct UserInfoDTO: Codable {
+struct UserInfoDTO: Codable, Sendable {
   var user: SignInUserInfoDTO
   var token: SignInTokenInfoDTO
   
@@ -35,7 +35,7 @@ struct UserInfoDTO: Codable {
   }
 }
 
-struct SignInUserInfoDTO: Codable {
+struct SignInUserInfoDTO: Codable, Sendable {
   let id: Int
   let email: String
   let name: String
@@ -52,7 +52,7 @@ struct SignInUserInfoDTO: Codable {
   }
 }
 
-struct SignInTokenInfoDTO: Codable {
+struct SignInTokenInfoDTO: Codable, Sendable {
   let accessToken: String
   
   init(from decoder: any Decoder) throws {

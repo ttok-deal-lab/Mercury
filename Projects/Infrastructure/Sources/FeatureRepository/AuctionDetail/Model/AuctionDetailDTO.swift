@@ -9,7 +9,7 @@ import Foundation
 
 import Domain
 
-struct AuctionDetailDTO: Decodable {
+struct AuctionDetailDTO: Decodable, Sendable {
   let id: Int
   let salesNumber: String
   let itemTypes: [String]
@@ -73,7 +73,7 @@ struct AuctionDetailDTO: Decodable {
   }
 }
 
-struct SalesDetailDTO: Decodable {
+struct SalesDetailDTO: Decodable, Sendable {
   let timeStamp: String
   let type: String
   let location: String
@@ -91,7 +91,7 @@ struct SalesDetailDTO: Decodable {
   }
 }
 
-struct SalesPictureDTO: Decodable {
+struct SalesPictureDTO: Decodable, Sendable {
   let sequence: Int
   let imageUrl: String
   
@@ -103,7 +103,7 @@ struct SalesPictureDTO: Decodable {
   }
 }
 
-struct SalesBuildingDTO: Decodable {
+struct SalesBuildingDTO: Decodable, Sendable {
   let siDoAddressName: String
   let guAddressName: String
   let dongAddressName: String
@@ -127,7 +127,7 @@ struct SalesBuildingDTO: Decodable {
   }
 }
 
-struct SalesItemDetailDTO: Decodable {
+struct SalesItemDetailDTO: Decodable, Sendable {
   let sequence: Int
   let type: String
   let content: String
@@ -141,7 +141,7 @@ struct SalesItemDetailDTO: Decodable {
   }
 }
 
-struct ConditionReportDTO: Decodable {
+struct ConditionReportDTO: Decodable, Sendable {
   let investigationDate: String
   let estateLeaseInfos: [EstateLeaseInfoDTO]
   let occupationRelations: [OccupationRelationDTO]
@@ -157,7 +157,7 @@ struct ConditionReportDTO: Decodable {
   }
 }
 
-struct EstateLeaseInfoDTO: Decodable {
+struct EstateLeaseInfoDTO: Decodable, Sendable {
   let sequence: Int
   let address: String
   let leaseRelation: String
@@ -171,7 +171,7 @@ struct EstateLeaseInfoDTO: Decodable {
   }
 }
 
-struct OccupationRelationDTO: Decodable {
+struct OccupationRelationDTO: Decodable, Sendable {
   let address: String
   let relation: String
   let etc: String
@@ -185,7 +185,7 @@ struct OccupationRelationDTO: Decodable {
   }
 }
 
-struct OccupationRelationReportDTO: Decodable {
+struct OccupationRelationReportDTO: Decodable, Sendable {
   let sequence: Int
   let address: String
   let occupant: String
@@ -215,7 +215,7 @@ struct OccupationRelationReportDTO: Decodable {
   }
 }
 
-struct AppraisalDocumentDTO: Decodable {
+struct AppraisalDocumentDTO: Decodable, Sendable {
   let sequence: Int
   let title: String
   let subTitle: String
@@ -231,7 +231,7 @@ struct AppraisalDocumentDTO: Decodable {
   }
 }
 
-struct NearbySalesStatDTO: Decodable {
+struct NearbySalesStatDTO: Decodable, Sendable {
   let term: String
   let salesCount: Int
   let averageAppraisalPrice: Int

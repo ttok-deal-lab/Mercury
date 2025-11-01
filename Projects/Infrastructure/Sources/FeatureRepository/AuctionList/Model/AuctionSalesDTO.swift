@@ -9,7 +9,7 @@ import Foundation
 
 import Domain
 
-struct AuctionSalesDTO: Decodable {
+struct AuctionSalesDTO: Decodable, Sendable {
   let items: [AuctionSalesItemDTO]
   let nextCursor: String?
   let hasNext: Bool
@@ -25,7 +25,7 @@ extension AuctionSalesDTO {
   }
 }
 
-struct AuctionSalesItemDTO: Decodable {
+struct AuctionSalesItemDTO: Decodable, Sendable {
   let id: Int
   let salesAddress: String
   let itemTypes: [String]

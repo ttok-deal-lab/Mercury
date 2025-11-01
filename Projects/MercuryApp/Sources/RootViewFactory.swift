@@ -26,16 +26,15 @@ struct RootViewFactory: ViewFactory {
     switch route {
     case .onboard(let signInStep):
       OnboardingFactory(
-        modelData: OnboardingModelData(
-          serviceSignInUsecasable: ServiceSignInUsecase(
-            repository: ServiceSignInRepository()
-          ),
-          locationUsecasable: LocationUsecase()
-        )
+        serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
+        locationUsecasable: LocationUsecase()
       )
       .makeView(signInStep, navigationStream: navigationStream)
-    case .auction:
-      EmptyView()
+    case .auction(let auctionStep):
+      AuctionViewFactory(
+        auctionDetailUsecase: AuctionDetailUsecase(auctionDetailRepositorable: AuctionDetailRepository())
+      )
+      .makeView(auctionStep, navigationStream: navigationStream)
     case .networkConsole:
       ConsoleView()
     }
