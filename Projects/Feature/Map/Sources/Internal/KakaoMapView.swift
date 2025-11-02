@@ -19,19 +19,16 @@ public struct KakaoMapView: UIViewRepresentable {
   // MARK: - public property
   
   @Binding public var draw: Bool
-  public var userLocation: CLLocationCoordinate2D?
-  @Binding public var cameraCenterLocation: CLLocationCoordinate2D?
+  @Binding public var cameraCenterLocation: CLLocationCoordinate2D
   
   
   // MARK: - life cycle
 
   public init(
     draw: Binding<Bool>,
-    userLocation: CLLocationCoordinate2D?,
-    cameraCenterLocation: Binding<CLLocationCoordinate2D?>
+    cameraCenterLocation: Binding<CLLocationCoordinate2D>
   ) {
     self._draw = draw
-    self.userLocation = userLocation
     self._cameraCenterLocation = cameraCenterLocation
   }
   
@@ -65,13 +62,15 @@ public struct KakaoMapView: UIViewRepresentable {
   // MARK: - private method
   
   private func onMapFullyLoaded(context: Self.Context) {
-    if let userLocation {
-      context.coordinator.setCameraFirst(location: userLocation)
-    }
+    context.coordinator.setCameraFirst(location: cameraCenterLocation)
   }
   
   public func makeCoordinator() -> KakaoMapCoordinator {
-    return KakaoMapCoordinator(parent: self)
+    return KakaoMapCoordinator(
+      parent: self,
+      longitude: cameraCenterLocation.longitude,
+      latitude: cameraCenterLocation.latitude
+    )
   }
 
   

@@ -20,6 +20,7 @@ public final class AuctionDetailModelData {
   
   var error: MercuryError?
   var auctionDetailItem: AuctionDetail?
+  var isLoading: Bool = false
   
   // MARK: - private properties
   
@@ -44,6 +45,10 @@ public final class AuctionDetailModelData {
   // MARK: - private methods
   
   private func fetchAuctionDetailItem() async throws -> AuctionDetail {
+    self.isLoading = true
+    defer {
+      self.isLoading = false
+    }
     return try await self.auctionDetailUsecase.fetchAuctionDetail(auctionID: self.auctionID)
   }
   

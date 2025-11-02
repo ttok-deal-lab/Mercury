@@ -14,14 +14,21 @@ import Router
 import UIComponent
 
 public struct MapContentView: View {
-  @State private var store = MapStore(userLocationClient: UserLocationClientLive())
+  @State private var store: MapStore
   
-  public init() { }
+  public init(targetLongitude: Double, targetLatitude: Double) {
+    self.store = MapStore(
+      userLocationClient: UserLocationClientLive(),
+      targetCoordinate: CLLocationCoordinate2D(
+        latitude: targetLatitude,
+        longitude: targetLongitude
+      )
+    )
+  }
   
   public var body: some View {
     KakaoMapView(
       draw: $store.isMapDraw,
-      userLocation: store.userLocation,
       cameraCenterLocation: Binding(get: {
         store.cameraCenterLocation
       }, set: { newValue in

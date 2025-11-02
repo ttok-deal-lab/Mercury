@@ -7,7 +7,9 @@
 
 import Foundation
 
-public struct SalesPicture: Sendable {
+public struct SalesPicture: Sendable, Equatable, Identifiable {
+  public var id: Int { sequence }
+  
   public let sequence: Int
   public let url: URL?
   

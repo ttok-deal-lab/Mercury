@@ -10,19 +10,19 @@ import SwiftUI
 import UIComponent
 import Domain
 
-// TODO: pager view 구현해야 함
 struct AuctionDetailPicturesPagerView: View {
   let height: CGFloat
   let item: AuctionDetail
   
   var body: some View {
-    CachedAsyncImage(
-      url: item.salesPictures[0].url) { image in
+    InfinitePager(items: item.salesPictures) { item in
+      CachedAsyncImage(url: item.url) { image in
         image.resizable()
       } placeholder: {
         Color.gray
       }
       .frame(maxWidth: .infinity)
-      .frame(height: height)
+    }
+    .frame(height: height)
   }
 }

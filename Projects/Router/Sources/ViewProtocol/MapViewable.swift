@@ -8,5 +8,5 @@
 import SwiftUI
 
 public protocol MapViewable where Self: View {
-  init()
+  init(targetLongitude: Double, targetLatitude: Double)
 }

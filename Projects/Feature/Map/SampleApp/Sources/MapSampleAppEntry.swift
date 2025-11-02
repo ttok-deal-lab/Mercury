@@ -18,7 +18,7 @@ struct MapSampleAppEntry: App {
   
   var body: some Scene {
     WindowGroup {
-      MapContentView()
+      MapContentView(targetLongitude: 0.0, targetLatitude: 0.0)
     }
   }
 }

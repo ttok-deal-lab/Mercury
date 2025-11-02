@@ -148,19 +148,19 @@ public struct AuctionDetail: Sendable {
   }
   
   /// 매물 카테고리
-  public enum SalesCategory: Sendable {
+  public enum SalesCategory: String, Sendable {
     /// 주택
-    case housing
+    case housing = "주택"
     /// 빌라
-    case villa
+    case villa = "빌라"
     /// 아파트
-    case apartment
+    case apartment = "아파트"
     /// 상점
-    case shopHouse
+    case shopHouse = "상점"
     /// 오피스텔
-    case officetel
+    case officetel = "오피스텔"
     /// 기타
-    case other
+    case other = "기타"
     
     public init?(rawValue: String) {
       switch rawValue {

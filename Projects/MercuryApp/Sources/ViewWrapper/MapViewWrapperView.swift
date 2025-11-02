@@ -17,8 +17,8 @@ public struct MapViewWrapperView: View, MapViewable {
   
   private let hostView: MapContentView
   
-  public init() {
-    self.hostView = MapContentView()
+  public init(targetLongitude: Double, targetLatitude: Double) {
+    self.hostView = MapContentView(targetLongitude: targetLongitude, targetLatitude: targetLatitude)
   }
   
   public var body: some View {
