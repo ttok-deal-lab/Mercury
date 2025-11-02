@@ -63,12 +63,12 @@ public extension BaseAPI {
             (200...299).contains(http.statusCode)
       else {
         print("Network Status Code Err: \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
-        throw NetworkError.invalidStatusCode
+        throw NetworkError.invalidStatusCode.toMercuryError()
       }
       /// 401이면 갱신 해야 함.
       return try JSONDecoder().decode(T.self, from: data)
     } catch {
-      throw error
+      throw error.toMercuryError()
     }
   }
   
@@ -79,7 +79,7 @@ public extension BaseAPI {
     guard let http = response as? HTTPURLResponse,
           (200...299).contains(http.statusCode)
     else {
-      throw NetworkError.invalidStatusCode
+      throw NetworkError.invalidStatusCode.toMercuryError()
     }
   }
 }
@@ -94,14 +94,14 @@ private extension BaseAPI {
     }()
     
     guard var comps = URLComponents(string: plainURLString) else {
-      throw NetworkError.failToConvertURL
+      throw NetworkError.failToConvertURL.toMercuryError()
     }
     if let queryParam {
       comps.queryItems = queryParam.compactMap { key, value in
         convertToQueryItem(key: key, value: value)
       }
     }
-    guard let url = comps.url else { throw NetworkError.failToConvertURL }
+    guard let url = comps.url else { throw NetworkError.failToConvertURL.toMercuryError() }
     
     print("Request URL: \(url)")
     

@@ -14,11 +14,8 @@ import Domain
 import Router
 
 struct AuctionDetailMainContentView<MapView: MapViewable>: View {
-  private let item: AuctionDetail
-
-  init(item: AuctionDetail) {
-    self.item = item
-  }
+  @Binding var modelData: AuctionDetailModelData
+  let item: AuctionDetail
 
   var body: some View {
     VStack(spacing: .zero) {
@@ -39,7 +36,10 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
     }
     .navigationBarBackButtonHidden()
     .toolbarVisibility(.hidden, for: .navigationBar)
+    .alert(error: $modelData.error)
   }
+    
  
   
 }
+

@@ -12,12 +12,10 @@ import Domain
 public final class AuctionDetailRepository: AuctionDetailRepositorable {
   
   public init() { }
+  
   public func auctionDetail(auctionID: Int) async throws -> AuctionDetail {
-//    let auctionDetailDTO = try await AuctionAPI.auctionDetail(auctionID).request(AuctionDetailDTO.self)
-//    return auctionDetailDTO.toEntity()
-    
-    // 일단 mock
-    return self.mockAuctionDetail
+    let auctionDetailDTO = try await AuctionAPI.auctionDetail(auctionID).request(AuctionDetailDTO.self)
+    return auctionDetailDTO.toEntity()
   }
 }
 

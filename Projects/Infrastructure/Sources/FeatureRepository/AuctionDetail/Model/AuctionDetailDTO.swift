@@ -38,13 +38,24 @@ struct AuctionDetailDTO: Decodable, Sendable {
   let nearbySalesStats: [NearbySalesStatDTO]
   let soldOut: Bool
   
+  enum CodingKeys: String, CodingKey {
+    case id, salesNumber, itemTypes, appraisalPrice, lowestSalesPrice
+    case bidType, salesDateTime, salesLocation, salesNote
+    case salesReceptionDate, salesOpenDate, distributionRequiredDeadlineDate
+    case salesAddress, salesCategories, failBidCount, zzimCount
+    case courtCode, courtTeam, salesDetails, salesPictures
+    case salesBuildings, salesItemDetails, conditionReport
+    case appraisalDocumentUrl, appraisalDocuments, nearbySalesStats
+    case soldOut = "isSoldOut"  // 매핑 필요
+  }
+  
   func toEntity() -> AuctionDetail {
     let itemTypes = self.itemTypes.compactMap { AuctionDetail.ItemType(rawValue: $0) }
     let bidType = AuctionDetail.BidType(rawValue: self.bidType)
-    let salesDateTime = Self.parseDate(from: self.salesDateTime) ?? Date(timeIntervalSince1970: 0)
-    let salesReceptionDate = Self.parseDate(from: self.salesReceptionDate) ?? Date(timeIntervalSince1970: 0)
-    let salesOpenDate = Self.parseDate(from: self.salesOpenDate) ?? Date(timeIntervalSince1970: 0)
-    let distributionRequiredDeadlineDate = Self.parseDate(from: self.distributionRequiredDeadlineDate) ?? Date(timeIntervalSince1970: 0)
+    let salesDateTime = self.salesDateTime.toKoreanDate()
+    let salesReceptionDate = self.salesReceptionDate.toKoreanDate()
+    let salesOpenDate = self.salesOpenDate.toKoreanDate()
+    let distributionRequiredDeadlineDate = self.distributionRequiredDeadlineDate.toKoreanDate()
     let salesCategories = self.salesCategories.compactMap { AuctionDetail.SalesCategory(rawValue: $0) }
     let courtCode = AuctionDetail.Court.CourtCode(rawValue: self.courtCode)
     let salesDetails = self.salesDetails.map { $0.toEntity() }
@@ -241,7 +252,7 @@ struct NearbySalesStatDTO: Decodable, Sendable {
   let salesCount: Int
   let averageAppraisalPrice: Int
   let averageSalesPrice: Int
-  let salesPriceRate: Int
+  let salesPriceRate: Double
   let averageFailBidCount: Double
   
   func toEntity() -> AuctionDetail.NearbySalesStat {
@@ -250,7 +261,7 @@ struct NearbySalesStatDTO: Decodable, Sendable {
       salesCount: salesCount,
       averageAppraisalPrice: averageAppraisalPrice,
       averageSalesPrice: averageSalesPrice,
-      salesPriceRate: Double(salesPriceRate),
+      salesPriceRate: salesPriceRate,
       averageFailBidCount: averageFailBidCount
     )
   }

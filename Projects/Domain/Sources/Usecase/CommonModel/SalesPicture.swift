@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct SalesPicture {
+public struct SalesPicture: Sendable {
   public let sequence: Int
   public let url: URL?
   

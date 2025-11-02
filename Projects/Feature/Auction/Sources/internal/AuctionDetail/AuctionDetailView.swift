@@ -15,7 +15,7 @@ import Router
 
 public struct AuctionDetailView<MapView: MapViewable>: View {
   @State private var modelData: AuctionDetailModelData
-  @State private var error: MercuryError?
+  
   private let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
   public init(
@@ -32,9 +32,10 @@ public struct AuctionDetailView<MapView: MapViewable>: View {
   
   public var body: some View {
     if let item = modelData.auctionDetailItem {
-      AuctionDetailMainContentView<MapView>(item: item)
+      AuctionDetailMainContentView<MapView>(modelData: $modelData, item: item)
     } else {
       ProgressView()
+        .alert(error: $modelData.error)
     }
     
   }
