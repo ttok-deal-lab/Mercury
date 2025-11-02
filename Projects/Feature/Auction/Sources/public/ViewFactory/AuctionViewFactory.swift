@@ -13,7 +13,7 @@ import Router
 import Domain
 
 
-public struct AuctionViewFactory: ViewFactory {
+public struct AuctionViewFactory<MapView: MapViewable>: ViewFactory {
   
   private let auctionDetailUsecase: AuctionDetailUsecase
   
@@ -29,7 +29,7 @@ public struct AuctionViewFactory: ViewFactory {
   ) -> some View {
     switch auctionRoute.route {
     case .auctionDetail(let auctionID):
-      AuctionDetailView(
+      AuctionDetailView<MapView>(
         auctionID: auctionID,
         auctionDetailUsecase: self.auctionDetailUsecase,
         navigationStream: navigationStream

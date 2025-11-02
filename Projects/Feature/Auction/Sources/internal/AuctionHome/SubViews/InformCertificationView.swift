@@ -20,7 +20,6 @@ struct InformCertificationView: View {
             .resizable()
             .frame(width: 22, height: 22)
           HStack(spacing: .zero) {
-//            Text("인증매물")
             Text(L10n.auctionIntroduceCertifiedListingTitleA)
               .foregroundStyle(Asset.Colors.primary200TextSuccess.color)
               .fonts(.bodyMediumBold)

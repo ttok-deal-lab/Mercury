@@ -90,7 +90,7 @@ public struct MainTabView<
     .onChange(of: networkMonitor.isConnected) { _, isConnected in
       isShowNetworkDisconnect = !isConnected
     }
-    .traySheet(isPresented: $isShowNetworkDisconnect, content: {
+    .sheet(isPresented: $isShowNetworkDisconnect, content: {
       VStack { // TODO: 디자인 필요
         Text("인터넷 연결이 되지 않아요")
           .fonts(.titleMediumBold)
@@ -101,6 +101,7 @@ public struct MainTabView<
           .fonts(.bodyLargeMedium)
           .padding(.vertical, 18)
       }
+      .dynamicSheet()
     })
   }
 }

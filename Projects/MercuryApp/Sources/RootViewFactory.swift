@@ -31,7 +31,7 @@ struct RootViewFactory: ViewFactory {
       )
       .makeView(signInStep, navigationStream: navigationStream)
     case .auction(let auctionStep):
-      AuctionViewFactory(
+      AuctionViewFactory<MapViewWrapperView>(
         auctionDetailUsecase: AuctionDetailUsecase(auctionDetailRepositorable: AuctionDetailRepository())
       )
       .makeView(auctionStep, navigationStream: navigationStream)

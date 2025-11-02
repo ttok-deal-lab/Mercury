@@ -13,7 +13,7 @@ import UIComponent
 import Domain
 import Router
 
-public struct AuctionDetailView: View {
+public struct AuctionDetailView<MapView: MapViewable>: View {
   @State private var modelData: AuctionDetailModelData
   @State private var error: MercuryError?
   private let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
@@ -30,6 +30,12 @@ public struct AuctionDetailView: View {
   }
   
   public var body: some View {
-    Text("\(modelData.auctionDetailItem)")
+    if let item = modelData.auctionDetailItem {
+      AuctionDetailMainContentView<MapView>(item: item)
+    } else {
+      Color.blue
+    }
+    
   }
 }
+
