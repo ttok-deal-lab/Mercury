@@ -215,17 +215,7 @@ public struct AuctionDetail: Sendable {
       }
     }
   }
-  
-  public struct SalesPicture: Sendable {
-    public let sequence: Int
-    public let imageUrl: URL?
-    
-    public init(sequence: Int, imageUrl: URL?) {
-      self.sequence = sequence
-      self.imageUrl = imageUrl
-    }
-  }
-  
+
   public struct SalesBuilding: Sendable {
     public let address: Address
     public let detailAddress: String

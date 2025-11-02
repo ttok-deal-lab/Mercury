@@ -8,91 +8,62 @@
 import Foundation
 
 public struct AuctionSales {
+  public let searchHitCount: Int
   public let items: [AuctionSalesItem]
   public let nextCursor: String?
-  public let hasNext: Bool
   
-  public init(items: [AuctionSalesItem], nextCursor: String?, hasNext: Bool) {
+  public init(searchHitCount: Int, items: [AuctionSalesItem], nextCursor: String?) {
+    self.searchHitCount = searchHitCount
     self.items = items
     self.nextCursor = nextCursor
-    self.hasNext = hasNext
   }
 }
 
 public struct AuctionSalesItem: Identifiable {
   public let id: Int
+  /// 경매 번호
+  public let caseNumber: String
   /// 물건 주소
   public let salesAddress: String
-  /// ???
-  public let itemTypes: [AuctionSalesItemType?]
-  /// 카테고리 ??
+  /// 카테고리
   public let salesCategories: [AuctionSalesCategory?]
-  /// 날짜?
-  public let salesDate: Date
+  /// 경매 날짜
+  public let salesDateTime: Date
   /// 가격
   public let appraisalPrice: String
-  /// 물건 사진 URL
-  public let salesPictureURL: URL?
+  /// 물건 사진 정보
+  public let salesPictures: [SalesPicture]
   /// 입찰실패 횟수
   public let failBidCount: Int
   /// 찜 횟수
   public let zzimCount: Int
+  /// 등록 날짜
+  public let registerDate: Date
+  /// 인증 물건 여부
+  public let verified: Bool
   
-  public init(id: Int, salesAddress: String, itemTypes: [AuctionSalesItemType?], salesCategories: [AuctionSalesCategory?], salesDate: Date, appraisalPrice: String, salesPictureURL: URL?, failBidCount: Int, zzimCount: Int) {
+  public init(id: Int, caseNumber: String, salesAddress: String, salesCategories: [AuctionSalesCategory?], salesDateTime: Date, appraisalPrice: String, salesPictures: [SalesPicture], failBidCount: Int, zzimCount: Int, registerDate: Date, verified: Bool) {
     self.id = id
+    self.caseNumber = caseNumber
     self.salesAddress = salesAddress
-    self.itemTypes = itemTypes
     self.salesCategories = salesCategories
-    self.salesDate = salesDate
+    self.salesDateTime = salesDateTime
     self.appraisalPrice = appraisalPrice
-    self.salesPictureURL = salesPictureURL
+    self.salesPictures = salesPictures
     self.failBidCount = failBidCount
     self.zzimCount = zzimCount
+    self.registerDate = registerDate
+    self.verified = verified
   }
-}
-
-public enum AuctionSalesCategory: String, Codable, CaseIterable {
-  case apartment = "APARTMENT"
-  case detached_house = "DETACHED_HOUSE"
-  case multi_household = "MULTI_HOUSEHOLD"
-  case row_house = "ROW_HOUSE"
-  case multi_family = "MULTI_FAMILY"
-  case villa = "VILLA"
-  case automobile = "AUTOMOBILE"
-  case heavy_equipment = "HEAVY_EQUIPMENT"
-  case land = "LAND"
-  case forest = "FOREST"
-  case farmland = "FARMLAND"
-  case commercial = "COMMERCIAL"
-  case office_tel = "OFFICE_TEL"
-  case neighborhood_facility = "NEIGHBORHOOD_FACILITY"
-  case other = "OTHER"
   
-  public static func fromRawValue(_ rawValue: String) -> Self? {
-    return AuctionSalesCategory(rawValue: rawValue)
-  }
 }
 
-public enum AuctionSalesItemType: String {
-  case housing = "HOUSING"
-  case villa = "VILLA"
-  case apartment = "APARTMENT"
-  case shop_house = "SHOP_HOUSE"
-  case officetel = "OFFICETEL"
-  case other = "OTHER"
+public struct SalesPicture {
+  public let sequence: Int
+  public let url: URL?
   
-  public static func fromRawValue(_ rawValue: String) -> Self? {
-    return AuctionSalesItemType(rawValue: rawValue)
+  public init(sequence: Int, url: URL?) {
+    self.sequence = sequence
+    self.url = url
   }
-}
-
-/// 경매상태
-public enum AuctionStatusType {
-  case all
-  /// 신건
-  case new
-  /// 기일 변경 중
-  case changingDueDate
-  /// 유찰
-  case outbid
 }

@@ -46,7 +46,7 @@ final class AuctionHomeModelData {
     sortedItems = self.auctionSalesItems.sorted(by: { lhsItem, rhsItem in
       switch type {
       case .recentRegistration:
-        return lhsItem.salesDate >= rhsItem.salesDate
+        return lhsItem.salesDateTime >= rhsItem.salesDateTime
       case .mostInterested:
         return lhsItem.zzimCount >= rhsItem.zzimCount
       case .impendingDueDate:

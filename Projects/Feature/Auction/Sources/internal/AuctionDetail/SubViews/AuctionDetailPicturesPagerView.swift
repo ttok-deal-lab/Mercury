@@ -17,7 +17,7 @@ struct AuctionDetailPicturesPagerView: View {
   
   var body: some View {
     CachedAsyncImage(
-      url: item.salesPictures[0].imageUrl) { image in
+      url: item.salesPictures[0].url) { image in
         image.resizable()
       } placeholder: {
         Color.gray

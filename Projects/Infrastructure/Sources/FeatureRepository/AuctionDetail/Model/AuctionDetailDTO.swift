@@ -39,35 +39,52 @@ struct AuctionDetailDTO: Decodable, Sendable {
   let soldOut: Bool
   
   func toEntity() -> AuctionDetail {
+    let itemTypes = self.itemTypes.compactMap { AuctionDetail.ItemType(rawValue: $0) }
+    let bidType = AuctionDetail.BidType(rawValue: self.bidType)
+    let salesDateTime = Self.parseDate(from: self.salesDateTime) ?? Date(timeIntervalSince1970: 0)
+    let salesReceptionDate = Self.parseDate(from: self.salesReceptionDate) ?? Date(timeIntervalSince1970: 0)
+    let salesOpenDate = Self.parseDate(from: self.salesOpenDate) ?? Date(timeIntervalSince1970: 0)
+    let distributionRequiredDeadlineDate = Self.parseDate(from: self.distributionRequiredDeadlineDate) ?? Date(timeIntervalSince1970: 0)
+    let salesCategories = self.salesCategories.compactMap { AuctionDetail.SalesCategory(rawValue: $0) }
+    let courtCode = AuctionDetail.Court.CourtCode(rawValue: self.courtCode)
+    let salesDetails = self.salesDetails.map { $0.toEntity() }
+    let salesPictures = self.salesPictures.map { $0.toEntity() }
+    let salesBuildings = self.salesBuildings.map { $0.toEntity() }
+    let salesItemDetails = self.salesItemDetails.map { $0.toEntity() }
+    let conditionReport = self.conditionReport.toEntity()
+    let appraisalDocumentUrl = URL(string: self.appraisalDocumentUrl)
+    let appraisalDocuments = self.appraisalDocuments.map { $0.toEntity() }
+    let nearbySalesStats = self.nearbySalesStats.map { $0.toEntity() }
+    
     return .init(
       id: id,
       salesNumber: salesNumber,
-      itemTypes: itemTypes.compactMap { AuctionDetail.ItemType(rawValue: $0) },
+      itemTypes: itemTypes,
       appraisalPrice: appraisalPrice,
       lowestSalesPrice: lowestSalesPrice,
-      bidType: AuctionDetail.BidType(rawValue: bidType),
-      salesDateTime: Self.parseDate(from: salesDateTime) ?? Date(timeIntervalSince1970: 0),
+      bidType: bidType,
+      salesDateTime: salesDateTime,
       salesLocation: salesLocation,
       salesNote: salesNote,
-      salesReceptionDate: Self.parseDate(from: salesReceptionDate) ?? Date(timeIntervalSince1970: 0),
-      salesOpenDate: Self.parseDate(from: salesOpenDate) ?? Date(timeIntervalSince1970: 0),
-      distributionRequiredDeadlineDate: Self.parseDate(from: distributionRequiredDeadlineDate) ?? Date(timeIntervalSince1970: 0),
+      salesReceptionDate: salesReceptionDate,
+      salesOpenDate: salesOpenDate,
+      distributionRequiredDeadlineDate: distributionRequiredDeadlineDate,
       salesAddress: salesAddress,
-      salesCategories: salesCategories.compactMap { AuctionDetail.SalesCategory(rawValue: $0) },
+      salesCategories: salesCategories,
       failBidCount: failBidCount,
       zzimCount: zzimCount,
       court: .init(
-        code: AuctionDetail.Court.CourtCode(rawValue: courtCode),
+        code: courtCode,
         team: courtTeam
       ),
-      salesDetails: salesDetails.map { $0.toEntity() },
-      salesPictures: salesPictures.map { $0.toEntity() },
-      salesBuildings: salesBuildings.map { $0.toEntity() },
-      salesItemDetails: salesItemDetails.map { $0.toEntity() },
-      conditionReport: conditionReport.toEntity(),
-      appraisalDocumentUrl: URL(string: appraisalDocumentUrl),
-      appraisalDocuments: appraisalDocuments.map { $0.toEntity() },
-      nearbySalesStats: nearbySalesStats.map { $0.toEntity() },
+      salesDetails: salesDetails,
+      salesPictures: salesPictures,
+      salesBuildings: salesBuildings,
+      salesItemDetails: salesItemDetails,
+      conditionReport: conditionReport,
+      appraisalDocumentUrl: appraisalDocumentUrl,
+      appraisalDocuments: appraisalDocuments,
+      nearbySalesStats: nearbySalesStats,
       soldOut: soldOut
     )
   }
@@ -87,18 +104,6 @@ struct SalesDetailDTO: Decodable, Sendable {
       location: location,
       leastSalesPrice: leastSalesPrice,
       result: AuctionDetail.SalesDetail.SalesResult(rawValue: result)
-    )
-  }
-}
-
-struct SalesPictureDTO: Decodable, Sendable {
-  let sequence: Int
-  let imageUrl: String
-  
-  func toEntity() -> AuctionDetail.SalesPicture {
-    return .init(
-      sequence: sequence,
-      imageUrl: URL(string: imageUrl)
     )
   }
 }

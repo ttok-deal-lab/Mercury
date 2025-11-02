@@ -281,21 +281,21 @@ struct AuctionDetailAbstractInfoView: View {
       )
     ],
     salesPictures: [
-      AuctionDetail.SalesPicture(
+      SalesPicture (
         sequence: 1,
-        imageUrl: URL(string: "https://example.com/images/auction_1_front.jpg")
+        url: URL(string: "https://example.com/images/auction_1_front.jpg")
       ),
-      AuctionDetail.SalesPicture(
+      SalesPicture (
         sequence: 2,
-        imageUrl: URL(string: "https://example.com/images/auction_1_living.jpg")
+        url: URL(string: "https://example.com/images/auction_1_living.jpg")
       ),
-      AuctionDetail.SalesPicture(
+      SalesPicture (
         sequence: 3,
-        imageUrl: URL(string: "https://example.com/images/auction_1_kitchen.jpg")
+        url: URL(string: "https://example.com/images/auction_1_kitchen.jpg")
       ),
-      AuctionDetail.SalesPicture(
+      SalesPicture (
         sequence: 4,
-        imageUrl: URL(string: "https://example.com/images/auction_1_room1.jpg")
+        url: URL(string: "https://example.com/images/auction_1_room1.jpg")
       )
     ],
     salesBuildings: [

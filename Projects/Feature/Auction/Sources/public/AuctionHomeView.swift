@@ -53,7 +53,7 @@ public struct AuctionHomeView: View {
               navigationStream.send(.push(.auction(AuctionRoute(route: .auctionDetail(auctionID: 1))))) // TODO: auction 실제 id 필요
             } label: {
               AuctionSalesItemView(
-                auctionSalesItemURL: item.salesPictureURL,
+                auctionSalesItemURL: item.salesPictures.first?.url,
                 appraisalPrice: item.appraisalPrice,
                 locationBuildingName: item.salesAddress,
                 category: item.salesCategories

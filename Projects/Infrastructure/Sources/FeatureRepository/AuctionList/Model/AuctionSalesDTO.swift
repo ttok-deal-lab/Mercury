@@ -7,20 +7,21 @@
 
 import Foundation
 
+import AppFoundation
 import Domain
 
 struct AuctionSalesDTO: Decodable, Sendable {
-  let items: [AuctionSalesItemDTO]
+  let searchHitCount: Int
+  let auctionItemResponses: [AuctionSalesItemDTO]
   let nextCursor: String?
-  let hasNext: Bool
 }
 
 extension AuctionSalesDTO {
   func toEntity() -> AuctionSales {
     return AuctionSales(
-      items: items.map { $0.toEntity() },
-      nextCursor: nextCursor,
-      hasNext: hasNext
+      searchHitCount: searchHitCount,
+      items: auctionItemResponses.map { $0.toEntity() },
+      nextCursor: nextCursor
     )
   }
 }
@@ -28,44 +29,53 @@ extension AuctionSalesDTO {
 struct AuctionSalesItemDTO: Decodable, Sendable {
   let id: Int
   let salesAddress: String
-  let itemTypes: [String]
   let salesCategories: [String]
   let salesDateTime: String
-  let appraisalPrice: Int64
-  let salesPicture: String
+  let appraisalPrice: Int
   let failBidCount: Int
   let zzimCount: Int
+  let caseNumber: String
+  let salesPicture: [SalesPictureDTO]
+  let registerDate: String
+  let verified: Bool
+  
+  enum CodingKeys: String, CodingKey {
+    case id, caseNumber, salesAddress, salesCategories
+    case salesDateTime, appraisalPrice, salesPicture
+    case failBidCount, zzimCount, registerDate, verified
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    
+    id = try container.decode(Int.self, forKey: .id)
+    caseNumber = try container.decode(String.self, forKey: .caseNumber)
+    salesAddress = try container.decode(String.self, forKey: .salesAddress)
+    salesCategories = try container.decode([String].self, forKey: .salesCategories)
+    appraisalPrice = try container.decode(Int.self, forKey: .appraisalPrice)
+    salesPicture = try container.decode([SalesPictureDTO].self, forKey: .salesPicture)
+    failBidCount = try container.decode(Int.self, forKey: .failBidCount)
+    zzimCount = try container.decode(Int.self, forKey: .zzimCount)
+    verified = try container.decode(Bool.self, forKey: .verified)
+    salesDateTime = try container.decode(String.self, forKey: .salesDateTime)
+    registerDate = try container.decode(String.self, forKey: .registerDate)
+  }
 }
 
 extension AuctionSalesItemDTO {
   func toEntity() -> AuctionSalesItem {
     return AuctionSalesItem(
       id: id,
+      caseNumber: caseNumber,
       salesAddress: salesAddress,
-      itemTypes: itemTypes.map { AuctionSalesItemType.fromRawValue($0) },
       salesCategories: salesCategories.map { AuctionSalesCategory.fromRawValue($0) },
-      salesDate: salesDate,
-      appraisalPrice: formattedAppraisalPrice,
-      salesPictureURL: URL(string: salesPicture),
+      salesDateTime: salesDateTime.toKoreanDate(),
+      appraisalPrice: appraisalPrice.toKoreanPriceFormat(),
+      salesPictures: salesPicture.map { SalesPicture(sequence: $0.sequence, url: URL(string: $0.imageUrl)) },
       failBidCount: failBidCount,
-      zzimCount: zzimCount
+      zzimCount: zzimCount,
+      registerDate: registerDate.toKoreanDate(),
+      verified: verified
     )
-  }
-  
-  var formattedAppraisalPrice: String {
-    let formatter = NumberFormatter()
-    formatter.numberStyle = .decimal
-    formatter.locale = Locale(identifier: "ko_KR")
-    
-    let priceInWon = NSNumber(value: appraisalPrice)
-    return formatter.string(from: priceInWon) ?? "\(appraisalPrice)"
-  }
-  
-  var salesDate: Date {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-    formatter.locale = Locale(identifier: "ko_KR")
-    formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
-    return formatter.date(from: salesDateTime) ?? Date()
   }
 }

@@ -63,7 +63,7 @@ actor AuctionSalesListFetcher {
     )
     
     self.cursor = fetchedAuctionSales.nextCursor
-    self.hasNext = fetchedAuctionSales.hasNext
+    self.hasNext = self.cursor != nil
     
     return fetchedAuctionSales.items
   }
