@@ -68,7 +68,7 @@ extension AuctionSalesItemDTO {
       id: id,
       caseNumber: caseNumber,
       salesAddress: salesAddress,
-      salesCategories: salesCategories.map { AuctionSalesCategory.fromRawValue($0) },
+      salesCategories: salesCategories.compactMap { AuctionSalesCategory.fromRawValue($0) },
       salesDateTime: salesDateTime.toKoreanDate(),
       appraisalPrice: appraisalPrice.toKoreanPriceFormat(),
       salesPictures: salesPicture.map { SalesPicture(sequence: $0.sequence, url: URL(string: $0.imageUrl)) },

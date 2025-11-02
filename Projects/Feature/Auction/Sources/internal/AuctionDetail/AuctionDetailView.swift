@@ -21,19 +21,20 @@ public struct AuctionDetailView<MapView: MapViewable>: View {
   public init(
     auctionID: Int,
     auctionDetailUsecase: AuctionDetailUsecase,
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-      self.navigationStream = navigationStream
-      self.modelData = AuctionDetailModelData(
-        auctionDetailUsecase: auctionDetailUsecase,
-        auctionID: auctionID
-      )
+    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+  ) {
+    self.navigationStream = navigationStream
+    self.modelData = AuctionDetailModelData(
+      auctionDetailUsecase: auctionDetailUsecase,
+      auctionID: auctionID
+    )
   }
   
   public var body: some View {
     if let item = modelData.auctionDetailItem {
       AuctionDetailMainContentView<MapView>(item: item)
     } else {
-      Color.blue
+      ProgressView()
     }
     
   }

@@ -12,12 +12,14 @@ import AppFoundation
 import Domain
 
 @Observable
+@MainActor
 final class AuctionHomeModelData {
   
   // MARK: - internal properties
   
   var auctionSalesItems: [AuctionSalesItem] = []
   var isLoading: Bool = false
+  var isLoadingForPaging: Bool = false
   var totalAuctionCount: Int = .zero
   var currentSort: AuctionSortType = .recentRegistration {
     didSet {
@@ -98,21 +100,29 @@ final class AuctionHomeModelData {
     }
     
     do {
-      let auctionSalesItems = try await auctionListUsecase.fetchSalesList()
-      self.auctionSalesItems = auctionSalesItems
+      let auctionSales = try await auctionListUsecase.fetchAuctionSales()
+      if let auctionCount = auctionSales.auctionCount {
+        self.totalAuctionCount = auctionCount
+      }
+      self.auctionSalesItems = auctionSales.items
+      
     } catch {
       throw error
     }
   }
   
   func loadMoreAuctionSales() async throws {
-    self.isLoading = true
+    withAnimation {
+      self.isLoadingForPaging = true
+    }
     defer {
-      self.isLoading = false
+      withAnimation {
+        self.isLoadingForPaging = false
+      }
     }
     let currentAuctionSalesItems = self.auctionSalesItems
     do {
-      let auctionSalesItems = try await auctionListUsecase.fetchNextSalesList()
+      let auctionSalesItems = try await auctionListUsecase.fetchNextAuctionSales()
       self.auctionSalesItems = currentAuctionSalesItems + auctionSalesItems
     } catch {
       throw error

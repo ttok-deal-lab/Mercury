@@ -50,18 +50,22 @@ public struct AuctionHomeView: View {
           
           ForEach(modelData.auctionSalesItems) { item in
             Button {
-              navigationStream.send(.push(.auction(AuctionRoute(route: .auctionDetail(auctionID: 1))))) // TODO: auction 실제 id 필요
+              navigationStream.send(.push(.auction(AuctionRoute(route: .auctionDetail(auctionID: item.id)))))
             } label: {
-              AuctionSalesItemView(
-                auctionSalesItemURL: item.salesPictures.first?.url,
-                appraisalPrice: item.appraisalPrice,
-                locationBuildingName: item.salesAddress,
-                category: item.salesCategories
-              )
+              AuctionSalesItemView(item: item, onZzim: {
+               // 찜 했을때의 액션
+              })
             }
           }
           
-          loadMoreView()
+          if !modelData.auctionSalesItems.isEmpty {
+            loadMoreView()
+          }
+          
+          if modelData.isLoadingForPaging {
+            ProgressView()
+              .frame(width: 50, height: 50)
+          }
         }
         
         Spacer()
@@ -77,14 +81,15 @@ public struct AuctionHomeView: View {
     }
     .alert(error: $error)
     .loading(modelData.isLoading)
-    .task(priority: .background) {
-      do {
-        try await modelData.loadAuctionSalesList()
-      } catch {
-        self.error = error.toMercuryError()
+    .onLoad {
+      Task {
+        do {
+          try await modelData.loadAuctionSalesList()
+        } catch {
+          self.error = error.toMercuryError()
+        }
       }
     }
-    
   }
   
   private func shouldTriggerLoadMore(at index: Int) -> Bool {
@@ -108,5 +113,4 @@ public struct AuctionHomeView: View {
       }
   }
 }
-
 

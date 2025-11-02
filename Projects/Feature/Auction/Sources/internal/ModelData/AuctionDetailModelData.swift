@@ -13,6 +13,7 @@ import AppFoundation
 import Domain
 
 @Observable
+@MainActor
 public final class AuctionDetailModelData {
   
   // MARK: - internal properties
@@ -30,12 +31,12 @@ public final class AuctionDetailModelData {
   public init(auctionDetailUsecase: AuctionDetailUsecase, auctionID: Int) {
     self.auctionDetailUsecase = auctionDetailUsecase
     self.auctionID = auctionID
-    Task {
+    Task { [weak self] in
       do {
-        let item = try await fetchAuctionDetailItem()
-        self.auctionDetailItem = item
+        let item = try await self?.fetchAuctionDetailItem()
+        self?.auctionDetailItem = item
       } catch let error as MercuryError {
-        self.error = error
+        self?.error = error
       }
     }
   }

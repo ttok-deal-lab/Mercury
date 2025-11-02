@@ -26,7 +26,7 @@ public final class AuctionSalesListRepository: AuctionSalesListRepositorable {
       varificationStatus: nil,
       minimumPrice: nil,
       maximumPrice: nil,
-      nextCursor: nil,
+      nextCursor: cursor,
       sort: nil
     ).request(AuctionSalesDTO.self)
     let auctionItems = auctionSalesItemDTO.toEntity()

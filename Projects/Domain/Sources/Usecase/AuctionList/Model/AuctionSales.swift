@@ -26,7 +26,7 @@ public struct AuctionSalesItem: Identifiable {
   /// 물건 주소
   public let salesAddress: String
   /// 카테고리
-  public let salesCategories: [AuctionSalesCategory?]
+  public let salesCategories: [AuctionSalesCategory]
   /// 경매 날짜
   public let salesDateTime: Date
   /// 가격
@@ -41,8 +41,10 @@ public struct AuctionSalesItem: Identifiable {
   public let registerDate: Date
   /// 인증 물건 여부
   public let verified: Bool
+  /// 매각까지 남은 기간
+  public let salesLeftDays: Int
   
-  public init(id: Int, caseNumber: String, salesAddress: String, salesCategories: [AuctionSalesCategory?], salesDateTime: Date, appraisalPrice: String, salesPictures: [SalesPicture], failBidCount: Int, zzimCount: Int, registerDate: Date, verified: Bool) {
+  public init(id: Int, caseNumber: String, salesAddress: String, salesCategories: [AuctionSalesCategory], salesDateTime: Date, appraisalPrice: String, salesPictures: [SalesPicture], failBidCount: Int, zzimCount: Int, registerDate: Date, verified: Bool) {
     self.id = id
     self.caseNumber = caseNumber
     self.salesAddress = salesAddress
@@ -54,16 +56,11 @@ public struct AuctionSalesItem: Identifiable {
     self.zzimCount = zzimCount
     self.registerDate = registerDate
     self.verified = verified
-  }
-  
-}
-
-public struct SalesPicture {
-  public let sequence: Int
-  public let url: URL?
-  
-  public init(sequence: Int, url: URL?) {
-    self.sequence = sequence
-    self.url = url
+    let leftDays: Int = {
+      let interval = Date().timeIntervalSince(salesDateTime)
+      let days = Int(interval / 86400)
+      return days
+    }()
+    self.salesLeftDays = leftDays
   }
 }
