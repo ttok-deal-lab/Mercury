@@ -145,6 +145,7 @@ public enum Asset {
     public static let redo = ImageAsset(name: "Redo")
     public static let reduce = ImageAsset(name: "Reduce")
     public static let search = ImageAsset(name: "Search")
+    public static let settingBlack = ImageAsset(name: "Setting-black")
     public static let settingFill = ImageAsset(name: "Setting-fill")
     public static let setting = ImageAsset(name: "Setting")
     public static let undo = ImageAsset(name: "Undo")
@@ -179,9 +180,13 @@ public enum Asset {
     public static let squareUncheck = ImageAsset(name: "square_uncheck")
     public static let uncheck = ImageAsset(name: "uncheck")
     public static let apple = ImageAsset(name: "Apple")
+    public static let appleLogo = ImageAsset(name: "AppleLogo")
     public static let google = ImageAsset(name: "Google")
+    public static let googleLogo = ImageAsset(name: "GoogleLogo")
     public static let kakao = ImageAsset(name: "Kakao")
+    public static let kakaoLogo = ImageAsset(name: "KakaoLogo")
     public static let naver = ImageAsset(name: "Naver")
+    public static let naverLogo = ImageAsset(name: "NaverLogo")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

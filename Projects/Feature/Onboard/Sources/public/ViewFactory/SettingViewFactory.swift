@@ -25,9 +25,9 @@ public struct SettingViewFactory: ViewFactory {
   ) -> some View {
     switch settingRouter.route {
     case .setting:
-      EmptyView()
+      SettingView()
     case .notification:
-      EmptyView()
+      NotificationView()
     }
   }
 }

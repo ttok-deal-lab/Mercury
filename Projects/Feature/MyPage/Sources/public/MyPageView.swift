@@ -31,7 +31,15 @@ public struct MyPageView: View {
   
   public var body: some View {
     VStack {
-      UserInfoView(modelData: $modelData)
+      MercuryNavigationBar(
+        rightButtons: {
+          Button {
+            navigationStream.send(.push(.setting(.init(route: .setting))))
+          } label: {
+            Asset.Images.settingBlack.image
+          }
+      })
+      UserProfileView(modelData: $modelData)
       Button {
         accessTokenManager.removeAccessToken()
       } label: {
