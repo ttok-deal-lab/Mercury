@@ -9,12 +9,12 @@ import SwiftUI
 
 public struct MercuryNavigationBar<LeftContent: View, RightContent: View>: View {
   
-  let title: Text?
+  let title: String?
   let leftButtons: LeftContent
   let rightButtons: RightContent
   
   public init(
-    _ title: Text? = nil,
+    _ title: String? = nil,
     @ViewBuilder leftButtons: () -> LeftContent = { EmptyView() },
     @ViewBuilder rightButtons: () -> RightContent = { EmptyView() }
   ) {
@@ -28,30 +28,34 @@ public struct MercuryNavigationBar<LeftContent: View, RightContent: View>: View 
       HStack(alignment: .center, spacing: 0) {
         leftButtons
           .frame(minWidth: 28, minHeight: 28)
-          .padding(EdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 0))
+          .padding(EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 12))
+        
+        if let title = title {
+          Text(title)
+            .fonts(.bodyLargeBold)
+            .foregroundStyle(.black)
+            .lineLimit(1)
+            .padding(.vertical, 16)
+        } else {
+          EmptyView()
+        }
         
         Spacer()
         
         rightButtons
           .frame(minWidth: 28, minHeight: 28)
-          .padding(EdgeInsets(top: 16, leading: 0, bottom: 0, trailing: 20))
+          .padding(EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 20))
         
       } // HStack
       
-      if title == nil {
-        EmptyView()
-      } else {
-        title
-        .lineLimit(1)
-        .padding(30)
-      }
     }
+    .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 20))
   }
 }
 
 extension MercuryNavigationBar where LeftContent == EmptyView {
   public init(
-    _ title: Text?,
+    _ title: String?,
     @ViewBuilder rightButtons: () -> RightContent
   ) {
     self.title = title
@@ -62,8 +66,8 @@ extension MercuryNavigationBar where LeftContent == EmptyView {
 
 extension MercuryNavigationBar where RightContent == EmptyView {
   public init(
-    _ title: Text?,
-    @ViewBuilder leftButtons: () -> LeftContent
+    _ title: String?,
+    @ViewBuilder leftButtons: @escaping () -> LeftContent
   ) {
     self.title = title
     self.leftButtons = leftButtons()
