@@ -75,6 +75,7 @@ public enum Asset {
     public static let arrowDown = ImageAsset(name: "arrow-down")
     public static let arrowLeftNoShaft = ImageAsset(name: "arrow-left-no-shaft")
     public static let arrowLeft = ImageAsset(name: "arrow-left")
+    public static let arrowRightNoShaftGray = ImageAsset(name: "arrow-right-no-shaft-gray")
     public static let arrowRightNoShaft = ImageAsset(name: "arrow-right-no-shaft")
     public static let arrowRight = ImageAsset(name: "arrow-right")
     public static let arrowUpNoShaft = ImageAsset(name: "arrow-up-no-shaft")
