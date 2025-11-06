@@ -15,12 +15,13 @@ struct UserProfileView: View {
   @Binding var modelData: MyPageModelData
   
     var body: some View {
-      VStack {
+      VStack(spacing: 0){
         HStack {
           Text(modelData.userProfile.name)
             .fonts(.titleLargeBold)
           Spacer()
         }
+        .padding(.bottom, 6)
         HStack {
           modelData.userProfile.provider.toImage()
             .resizable()

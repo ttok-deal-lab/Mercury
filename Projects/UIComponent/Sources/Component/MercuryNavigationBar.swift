@@ -44,12 +44,13 @@ public struct MercuryNavigationBar<LeftContent: View, RightContent: View>: View 
         
         rightButtons
           .frame(minWidth: 28, minHeight: 28)
-          .padding(EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 20))
+          .padding(.vertical, 16)
         
       } // HStack
       
     }
-    .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 20))
+    .padding(.leading, 16)
+    .padding(.trailing, 20)
   }
 }
 
