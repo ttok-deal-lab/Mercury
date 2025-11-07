@@ -47,6 +47,12 @@ struct RootViewFactory: ViewFactory {
           )
         )
       ).makeView(settingStep, navigationStream: navigationStream)
+    case .agreement(let agreementStep):
+      AgreementViewFactory(
+        modelData: MyPageModelData(
+          userProfileUsecasable: UserProfileUsecase(repository: UserProfileRepository())
+        )
+      ).makeView(agreementStep, navigationStream: navigationStream)
     }
   }
 }

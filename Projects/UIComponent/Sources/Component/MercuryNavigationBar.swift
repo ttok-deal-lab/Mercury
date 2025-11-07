@@ -28,7 +28,7 @@ public struct MercuryNavigationBar<LeftContent: View, RightContent: View>: View 
       HStack(alignment: .center, spacing: 0) {
         leftButtons
           .frame(minWidth: 28, minHeight: 28)
-          .padding(EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 12))
+          .padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 12))
         
         if let title = title {
           Text(title)
@@ -45,12 +45,13 @@ public struct MercuryNavigationBar<LeftContent: View, RightContent: View>: View 
         rightButtons
           .frame(minWidth: 28, minHeight: 28)
           .padding(.vertical, 16)
+          .padding(.trailing, 20)
         
       } // HStack
       
     }
-    .padding(.leading, 16)
-    .padding(.trailing, 20)
+    .contentShape(Rectangle())
+    .background(.white)
   }
 }
 

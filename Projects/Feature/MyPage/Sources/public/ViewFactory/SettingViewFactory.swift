@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 import Combine
 
-import MyPage
 import Router
 
 public struct SettingViewFactory: ViewFactory {
@@ -25,9 +24,15 @@ public struct SettingViewFactory: ViewFactory {
   ) -> some View {
     switch settingRouter.route {
     case .setting:
-      SettingView()
+      SettingView(navigationStream: navigationStream)
     case .notification:
       NotificationView()
+    case .version:
+      EmptyView()
+    case .signOut:
+      SignOutView()
+    case .license:
+      OpenLicenseView()
     }
   }
 }

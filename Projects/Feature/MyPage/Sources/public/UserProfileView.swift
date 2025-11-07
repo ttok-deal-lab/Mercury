@@ -22,17 +22,20 @@ struct UserProfileView: View {
           Spacer()
         }
         .padding(.bottom, 6)
-        HStack {
+        
+        HStack(spacing: 0) {
           modelData.userProfile.provider.toImage()
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 18, height: 18)
-            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 6))
+            .padding(.trailing, 6)
           Text("\(modelData.userProfile.provider.toText())로 로그인")
           Spacer()
         }
       }
-      .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+      .padding(.horizontal, 20)
+      .contentShape(Rectangle())
+      .background(.white)
     }
 }
 

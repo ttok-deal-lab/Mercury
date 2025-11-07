@@ -1,13 +1,13 @@
 //
-//  SettingRoute.swift
+//  AgreementRoute.swift
 //  Router
 //
-//  Created by 최수훈 on 11/1/25.
+//  Created by 최수훈 on 11/8/25.
 //
 
 import Foundation
 
-public struct SettingRoute: Hashable {
+public struct AgreementRoute: Hashable {
   public private(set) var route: Route
   
   public init(route: Route) {
@@ -15,11 +15,9 @@ public struct SettingRoute: Hashable {
   }
   
   public enum Route: Hashable {
-    case setting
-    case notification
-    case version
-    case signOut
-    case license
+    case agreements
+    case termsOfUser
+    case privacy
   }
   
   public func hash(into hasher: inout Hasher) {
