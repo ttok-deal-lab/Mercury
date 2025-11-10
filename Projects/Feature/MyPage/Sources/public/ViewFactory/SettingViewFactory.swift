@@ -26,7 +26,7 @@ public struct SettingViewFactory: ViewFactory {
     case .setting:
       SettingView(navigationStream: navigationStream)
     case .notification:
-      NotificationView()
+      NotificationView(navigationStream: navigationStream)
     case .version:
       EmptyView()
     case .signOut:
