@@ -109,13 +109,29 @@ public struct SettingView: View {
     switch item {
     case .notification:
       navigationStream.send(.push(.setting(.init(route: .notification))))
-    case .agreement:
+    case .terms:
       print("serviceAgreement Tapped")
-      navigationStream.send(.push(.agreement(.init(route: .agreements))))
+      navigationStream.send(.push(.terms(.init(route: .terms))))
     case .logout:
       // TODO: 모달 띄우기
-      print("logout Tapped")
-      //      accessTokenManager.removeAccessToken()
+      MercuryAlert.shared
+        .present(
+          type:
+              .cancallable(
+                information: .init(
+                  title: "로그아웃 하시겠어요?",
+                  description: "",
+                  confirmButtonTitle: "네",
+                  cancelButtonTitle: "아니요",
+                  onConfirm: {
+                    accessTokenManager.removeAccessToken()
+                    navigationStream.send(.popToRoot)
+                  },
+                  onCancel: { }
+                )
+              )
+        )
+      
     case .signOut:
       print("SignOut Tapped")
       
