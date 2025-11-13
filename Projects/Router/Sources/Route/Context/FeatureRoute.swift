@@ -12,6 +12,6 @@ public enum FeatureRoute: Hashable {
   case onboard(OnboardRoute)
   case auction(AuctionRoute)
   case setting(SettingRoute)
-  case agreement(AgreementRoute)
+  case terms(TermsRoute)
   case networkConsole
 }

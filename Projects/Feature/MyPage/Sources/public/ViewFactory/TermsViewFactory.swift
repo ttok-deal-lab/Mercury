@@ -11,7 +11,7 @@ import Combine
 
 import Router
 
-public struct AgreementViewFactory: ViewFactory {
+public struct TermsViewFactory: ViewFactory {
   private let modelData: MyPageModelData
   
   public init(modelData: MyPageModelData) {
@@ -19,16 +19,16 @@ public struct AgreementViewFactory: ViewFactory {
   }
   
   public func makeView(
-    _ agreementRouter: AgreementRoute,
+    _ agreementRouter: TermsRoute,
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   ) -> some View {
     switch agreementRouter.route {
-    case .agreements:
-      AgreementsView()
-    case .termsOfUser:
-      EmptyView()
+    case .terms:
+      TermsView(navigationStream: navigationStream)
+    case .agreement:
+      AgreementView(navigationStream: navigationStream)
     case .privacy:
-      EmptyView()
+      PrivacyView(navigationStream: navigationStream)
     }
   }
 }

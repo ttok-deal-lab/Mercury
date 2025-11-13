@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct AgreementRoute: Hashable {
+public struct TermsRoute: Hashable {
   public private(set) var route: Route
   
   public init(route: Route) {
@@ -15,8 +15,8 @@ public struct AgreementRoute: Hashable {
   }
   
   public enum Route: Hashable {
-    case agreements
-    case termsOfUser
+    case terms
+    case agreement
     case privacy
   }
   

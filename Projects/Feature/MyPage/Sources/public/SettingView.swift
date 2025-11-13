@@ -39,7 +39,7 @@ public struct SettingView: View {
         
         ForEach(items, id: \.self) { item in
           
-          if item == SettingItemType.agreement.rawValue {
+          if item == SettingItemType.terms.rawValue {
             MercuryMenuItemView(
               item: item,
               left: .textLabel,
