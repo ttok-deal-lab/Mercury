@@ -13,12 +13,17 @@ import Router
 import UIComponent
 import Domain
 
+enum MyPageItemType: String, CaseIterable {
+  case recentlySales = "최근 본 매물"
+  case chat = "1:1 문의"
+}
+
 public struct MyPageView: View {
   @State private var modelData: MyPageModelData
   @State private var error: MercuryError?
   @State private var hasFetched = false
   @Inject private var accessTokenManager: AccessTokenManagable
-  private var items: [String] = ["최근 본 매물", "1:1 문의"]
+  private var items: [String] = MyPageItemType.allCases.map(\.rawValue)
   private var icons: [Image] = [Asset.Images.home.image, Asset.Images.chat.image]
   
   private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
@@ -57,14 +62,6 @@ public struct MyPageView: View {
           // TODO: - navigation 처리 필요
         }
       }
-      
-      // FIXME: 삭제
-      Button {
-        accessTokenManager.removeAccessToken()
-      } label: {
-        Text("로그아웃")
-      }
-      
       Spacer()
       
     } //: VStack
@@ -81,4 +78,13 @@ public struct MyPageView: View {
     
   }
   
+  private func onTapItem(item: String) {
+    guard let item = MyPageItemType(rawValue: item) else { return }
+    switch item {
+    case .recentlySales:
+      print("최근 본 매물 이동")
+    case .chat:
+      print("1:1 문의 이동")
+    }
+  }
 }
