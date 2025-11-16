@@ -53,6 +53,12 @@ struct RootViewFactory: ViewFactory {
           userProfileUsecasable: UserProfileUsecase(repository: UserProfileRepository())
         )
       ).makeView(agreementStep, navigationStream: navigationStream)
+    case .mypage(let myPageStep):
+      MyPageViewFactory(
+        modelData: MyPageModelData(
+          userProfileUsecasable: UserProfileUsecase(repository: UserProfileRepository())
+        )
+      ).makeView(myPageStep, navigationStream: navigationStream)
     }
   }
 }
