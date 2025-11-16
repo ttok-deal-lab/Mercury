@@ -59,7 +59,7 @@ public struct MyPageView: View {
             Asset.Images.arrowRightNoShaftGray.image
           }
         ) {
-          // TODO: - navigation 처리 필요
+          onTapItem(item: item)
         }
       }
       Spacer()
@@ -75,16 +75,16 @@ public struct MyPageView: View {
         self.error = error.toMercuryError()
       }
     }
-    
   }
   
   private func onTapItem(item: String) {
     guard let item = MyPageItemType(rawValue: item) else { return }
     switch item {
     case .recentlySales:
-      print("최근 본 매물 이동")
+      navigationStream.send(.push(.mypage(.init(route: .recentlySales))))
     case .chat:
-      print("1:1 문의 이동")
+      EmptyView()
+      // Mail 연결
     }
   }
 }

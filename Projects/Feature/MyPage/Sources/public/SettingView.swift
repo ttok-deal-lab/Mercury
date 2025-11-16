@@ -28,7 +28,7 @@ public struct SettingView: View {
   
   public var body: some View {
     ZStack {
-      VStack(spacing: 0) {
+      VStack(alignment: .leading, spacing: 0) {
         MercuryNavigationBar("설정") {
           Button {
             navigationStream.send(.pop)
@@ -84,7 +84,6 @@ public struct SettingView: View {
   //              }
               }
           }
-            .padding(.top, 20)
           
           Text("오픈소스 라이선스 보기")
             .fonts(.bodySmallMedium)
@@ -96,6 +95,8 @@ public struct SettingView: View {
               //            navigationStream.send(.presentFullScreen(1))
             }
         }
+        .padding(.top, 20)
+        .padding(.leading, 20)
         
         Spacer()
       }
