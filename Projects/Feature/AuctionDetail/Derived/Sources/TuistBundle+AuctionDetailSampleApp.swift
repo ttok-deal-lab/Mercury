@@ -6,12 +6,12 @@ import Foundation
 // MARK: - Swift Bundle Accessor for Frameworks
 private class BundleFinder {}
 extension Foundation.Bundle {
-/// Since AuctionSampleApp is a application, the bundle for classes within this module can be used directly.
+/// Since AuctionDetailSampleApp is a application, the bundle for classes within this module can be used directly.
 static let module = Bundle(for: BundleFinder.self)
 }
 // MARK: - Objective-C Bundle Accessor
 @objc
-public class AuctionSampleAppResources: NSObject {
+public class AuctionDetailSampleAppResources: NSObject {
 @objc public class var bundle: Bundle {
     return .module
 }

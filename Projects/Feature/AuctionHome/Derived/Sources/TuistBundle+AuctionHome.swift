@@ -6,9 +6,9 @@ import Foundation
 // MARK: - Swift Bundle Accessor - for SPM
 private class BundleFinder {}
 extension Foundation.Bundle {
-/// Since Auction is a static framework, the bundle containing the resources is copied into the final product.
+/// Since AuctionHome is a static framework, the bundle containing the resources is copied into the final product.
 static let module: Bundle = {
-    let bundleName = "Auction_Auction"
+    let bundleName = "AuctionHome_AuctionHome"
     let bundleFinderResourceURL = Bundle(for: BundleFinder.self).resourceURL
     var candidates = [
         Bundle.main.resourceURL,
@@ -45,12 +45,12 @@ static let module: Bundle = {
             return bundle
         }
     }
-    fatalError("unable to find bundle named Auction_Auction")
+    fatalError("unable to find bundle named AuctionHome_AuctionHome")
 }()
 }
 // MARK: - Objective-C Bundle Accessor
 @objc
-public class AuctionResources: NSObject {
+public class AuctionHomeResources: NSObject {
 @objc public class var bundle: Bundle {
     return .module
 }

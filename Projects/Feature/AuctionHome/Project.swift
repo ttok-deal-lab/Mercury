@@ -9,7 +9,7 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.framework(
-  name: "Auction",
+  name: "AuctionHome",
   platform: .iOS,
   dependencies: [
     .appFoundation,
