@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-public protocol LocationUsecasable {
+public protocol LocationUsecasable: Sendable {
   func userAuthorization() -> CLAuthorizationStatus?
   func userCurrentLocation() -> CLLocationCoordinate2D?
   func requestUserAuthorization() async -> CLAuthorizationStatus?

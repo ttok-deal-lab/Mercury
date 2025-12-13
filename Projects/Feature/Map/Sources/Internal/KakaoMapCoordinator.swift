@@ -10,14 +10,16 @@ import Foundation
 import CoreLocation
 
 import Domain
+import UIComponent
 
 import KakaoMapsSDK
 
-public class KakaoMapCoordinator: NSObject, MapControllerDelegate {
+public class KakaoMapCoordinator: NSObject, MapControllerDelegate, KakaoMapEventDelegate {
   
   // MARK: - private property
   
   private let parent: KakaoMapView
+  private let firstMapCenterPoint: MapPoint
   
   private var isFirstEntry: Bool = true
   private var isMapReady: Bool = false
@@ -31,8 +33,14 @@ public class KakaoMapCoordinator: NSObject, MapControllerDelegate {
   
   // MARK: - life cycle
   
-  public init(parent: KakaoMapView) {
+  public init(
+    parent: KakaoMapView,
+    longitude: Double,
+    latitude: Double
+  ) {
     self.parent = parent
+    self.firstMapCenterPoint = MapPoint(longitude: longitude, latitude: latitude)
+    
     super.init()
   }
   
@@ -43,7 +51,7 @@ public class KakaoMapCoordinator: NSObject, MapControllerDelegate {
   }
   
   @objc public func addViews() {
-    let defaultPosition: MapPoint = MapPoint(longitude: 127.108678, latitude: 37.402001) // 초기 좌표
+    let defaultPosition: MapPoint = self.firstMapCenterPoint // 초기 좌표
     let mapviewInfo: MapviewInfo = MapviewInfo(viewName: "mapview", viewInfoName: "map", defaultPosition: defaultPosition)
     
     controller?.addView(mapviewInfo)
@@ -54,9 +62,7 @@ public class KakaoMapCoordinator: NSObject, MapControllerDelegate {
     self.kakaoMap = self.controller?.getView(viewName) as? KakaoMap
     self.setup()
   }
-  
-  
-  
+
   
   // MARK: - private method
   
@@ -67,6 +73,8 @@ public class KakaoMapCoordinator: NSObject, MapControllerDelegate {
     }
     self.kakaoMap?.eventDelegate = self
     self.createLabelLayer()
+    self.createCenterPoiStyle()
+    self.addCenterPoi()
   }
   
   private func createLabelLayer() {
@@ -77,11 +85,45 @@ public class KakaoMapCoordinator: NSObject, MapControllerDelegate {
       competitionType: .none,
       competitionUnit: .symbolFirst,
       orderType: .rank,
-      zOrder: 1
+      zOrder: 10
     )
     let _ = manager.addLabelLayer(option: layerOption)
   }
   
+  private func createCenterPoiStyle() {
+    guard let kakaoMap else { return }
+    let manager = kakaoMap.getLabelManager()
+    
+    let symbolImage = UIImage(named: "Place", in: Bundle.module, compatibleWith: nil)
+
+    let icon = PoiIconStyle(
+      symbol: symbolImage,
+      anchorPoint: CGPoint(x: 0.5, y: 1.0),  // 핀 바닥이 좌표에 닿도록
+      badges: []
+    )
+
+
+    let perLevel = PerLevelPoiStyle(iconStyle: icon, level: 0)
+
+    let style = PoiStyle(
+      styleID: "CenterPoiStyle",
+      styles: [perLevel]
+    )
+
+    manager.addPoiStyle(style)
+  }
+  
+  private func addCenterPoi() {
+    guard let kakaoMap else { return }
+    let manager = kakaoMap.getLabelManager()
+    guard let layer = manager.getLabelLayer(layerID: "PoiLayer") else { return }
+
+    let option = PoiOptions(styleID: "CenterPoiStyle")
+    option.rank = 0
+
+    let poi = layer.addPoi(option: option, at: self.firstMapCenterPoint)
+    poi?.show() // 표출
+  }
   
   // MARK: - public method
   
@@ -100,42 +142,6 @@ public class KakaoMapCoordinator: NSObject, MapControllerDelegate {
       self.pendingCameraUpdate = updateCamera
     }
   }
-  
-//  public func drawItemMarker(item: [AuctionItem]) {
-//    guard let kakaoMap else { return }
-//    let manager = kakaoMap.getLabelManager()
-//    let layer = manager.getLabelLayer(layerID: "PoiLayer")
-//    let poiOption = PoiOptions(styleID: "PerLevelStyle")
-//    poiOption.rank = 1
-//    
-//    // FIXME: Poi는 기술 및 기획검토 필요
-//    let iconStyle1 = PoiIconStyle(
-//      symbol: UIImage(systemName: "paperplane.fill"),
-//      anchorPoint: CGPoint(x: 0.5, y: 0.5),
-//      badges: []
-//    )
-//    let poiStyle = PoiStyle(styleID: "PerLevelStyle", styles: [
-//      PerLevelPoiStyle(iconStyle: iconStyle1, level: 999),
-//    ])
-//    manager.addPoiStyle(poiStyle)
-//    
-//    let poi1 = layer?.addPoi(option:poiOption, at: MapPoint(longitude: 37.3583237, latitude: 126.932912))
-//    poi1?.show()
-//  }
-
  
 }
 
-extension KakaoMapCoordinator: @preconcurrency KakaoMapEventDelegate {
-  
-  @MainActor
-  @objc public func cameraDidStopped(kakaoMap: KakaoMap, by: MoveBy) {
-    let position = kakaoMap.getPosition(.init(x: 0.5, y: 0.5))
-    let centerCoord = CLLocationCoordinate2D(
-      latitude: position.wgsCoord.latitude,
-      longitude: position.wgsCoord.longitude
-    )
-    self.parent.cameraCenterLocation = centerCoord
-  }
-  
-}

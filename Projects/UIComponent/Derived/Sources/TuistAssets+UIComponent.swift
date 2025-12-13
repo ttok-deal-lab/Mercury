@@ -109,6 +109,7 @@ public enum Asset {
     public static let person = ImageAsset(name: "Person")
     public static let placeTime = ImageAsset(name: "Place-time")
     public static let place = ImageAsset(name: "Place")
+    public static let share = ImageAsset(name: "Share")
     public static let starHalf = ImageAsset(name: "Star-Half")
     public static let star = ImageAsset(name: "Star")
     public static let visible = ImageAsset(name: "Visible")

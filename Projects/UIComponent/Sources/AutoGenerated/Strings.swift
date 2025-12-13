@@ -64,6 +64,12 @@ public enum L10n {
   public static let settingLogin = L10n.tr("Localizable", "setting_login", fallback: "로그인")
   /// 로그아웃
   public static let settingLogout = L10n.tr("Localizable", "setting_logout", fallback: "로그아웃")
+  /// 홈
+  public static let tabHome = L10n.tr("Localizable", "tab_home", fallback: "홈")
+  /// 관심
+  public static let tabInterest = L10n.tr("Localizable", "tab_interest", fallback: "관심")
+  /// 설정
+  public static let tabSetting = L10n.tr("Localizable", "tab_setting", fallback: "설정")
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces

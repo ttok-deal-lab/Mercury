@@ -76,17 +76,11 @@ public struct MainTabView<
         }
         .tag(Tab.interest)
       
-      ReportView(navigationStream: navigationStream)
-        .tabItem {
-          Tab.report.iconView(isSelected: selection == .report)
-        }
-        .tag(Tab.report)
-      
       MyPageView(navigationStream: navigationStream)
         .tabItem {
-          Tab.myPage.iconView(isSelected: selection == .myPage)
+          Tab.setting.iconView(isSelected: selection == .setting)
         }
-        .tag(Tab.myPage)
+        .tag(Tab.setting)
     }
     .onAppear {
       let tabBarAppearance = UITabBarAppearance()
@@ -96,7 +90,7 @@ public struct MainTabView<
     .onChange(of: networkMonitor.isConnected) { _, isConnected in
       isShowNetworkDisconnect = !isConnected
     }
-    .traySheet(isPresented: $isShowNetworkDisconnect, content: {
+    .sheet(isPresented: $isShowNetworkDisconnect, content: {
       VStack { // TODO: 디자인 필요
         Text("인터넷 연결이 되지 않아요")
           .fonts(.titleMediumBold)
@@ -107,19 +101,19 @@ public struct MainTabView<
           .fonts(.bodyLargeMedium)
           .padding(.vertical, 18)
       }
+      .dynamicSheet()
     })
   }
 }
 
 enum Tab {
-  case home, interest, report, myPage
+  case home, interest, setting
   
   var title: String {
     switch self {
-    case .home: return "홈"
-    case .interest: return "관심"
-    case .report: return "임장보고서"
-    case .myPage: return "설정"
+    case .home: return L10n.tabHome
+    case .interest: return L10n.tabInterest
+    case .setting: return L10n.tabSetting
     }
   }
   
@@ -127,8 +121,7 @@ enum Tab {
     switch self {
     case .home: return isSelected ? Asset.Images.gnbHome.image : Asset.Images.gnbHomeGray.image
     case .interest: return isSelected ? Asset.Images.gnbInterest.image : Asset.Images.gnbInterestGray.image
-    case .report: return isSelected ? Asset.Images.gnbReport.image : Asset.Images.gnbReportGray.image
-    case .myPage: return isSelected ? Asset.Images.gnbMypage.image : Asset.Images.gnbMypageGray.image
+    case .setting: return isSelected ? Asset.Images.gnbMypage.image : Asset.Images.gnbMypageGray.image
     }
   }
   

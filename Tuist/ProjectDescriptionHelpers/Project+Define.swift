@@ -14,7 +14,7 @@ public extension Project {
   static let appName: String = "Mercury"
   static let productName: String = "Slug"
   static let bundleId = "com.auction.mercury"
-  static let deploymentTarget: DeploymentTargets = .iOS("17.0")
+  static let deploymentTarget: DeploymentTargets = .iOS("18.0")
   
   // MARK: - read file path
   

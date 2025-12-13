@@ -9,7 +9,8 @@ import SwiftUI
 import Combine
 
 import Router
-import Auction
+import AuctionHome
+import AuctionDetail
 import Onboard
 import Domain
 import Infrastructure
@@ -26,16 +27,15 @@ struct RootViewFactory: ViewFactory {
     switch route {
     case .onboard(let signInStep):
       OnboardingFactory(
-        modelData: OnboardingModelData(
-          serviceSignInUsecasable: ServiceSignInUsecase(
-            repository: ServiceSignInRepository()
-          ),
-          locationUsecasable: LocationUsecase()
-        )
+        serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
+        locationUsecasable: LocationUsecase()
       )
       .makeView(signInStep, navigationStream: navigationStream)
-    case .auction:
-      EmptyView()
+    case .auctionDetail(let auctionStep):
+      AuctionDetailViewFactory<MapViewWrapperView>(
+        auctionDetailUsecase: AuctionDetailUsecase(auctionDetailRepositorable: AuctionDetailRepository())
+      )
+      .makeView(auctionStep, navigationStream: navigationStream)
     case .networkConsole:
       ConsoleView()
     }

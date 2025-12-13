@@ -8,7 +8,7 @@ import ProjectDescriptionHelpers
 
 let packageSettings = PackageSettings(
   productTypes: [
-    "KakaoMapsSDK-SPM": .framework,
+    "KakaoMapsSDK-SPM": .staticFramework,
     "Testing": .framework,
     "KakaoSDK": .framework,
     "KakaoSDKCommon": .framework,

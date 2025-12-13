@@ -14,7 +14,13 @@ import Domain
 
 public struct MainTabViewWrapperView: View, MainTabViewable {
   
-  let hostView: MainTabView<AuctionHomeViewWrapperView, InterestViewWrapperView, ReportViewWrapperView, MyPageViewWrapperView, SignInViewWrapperView>
+  let hostView: MainTabView<
+    AuctionHomeViewWrapperView,
+    InterestViewWrapperView,
+    ReportViewWrapperView,
+    MyPageViewWrapperView,
+    SignInViewWrapperView
+  >
   
   public init(
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,

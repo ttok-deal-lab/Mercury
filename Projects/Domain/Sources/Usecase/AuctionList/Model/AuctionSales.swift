@@ -8,45 +8,59 @@
 import Foundation
 
 public struct AuctionSales {
+  public let searchHitCount: Int
   public let items: [AuctionSalesItem]
   public let nextCursor: String?
-  public let hasNext: Bool
   
-  public init(items: [AuctionSalesItem], nextCursor: String?, hasNext: Bool) {
+  public init(searchHitCount: Int, items: [AuctionSalesItem], nextCursor: String?) {
+    self.searchHitCount = searchHitCount
     self.items = items
     self.nextCursor = nextCursor
-    self.hasNext = hasNext
   }
 }
 
 public struct AuctionSalesItem: Identifiable {
   public let id: Int
+  /// 경매 번호
+  public let caseNumber: String
   /// 물건 주소
   public let salesAddress: String
-  /// ???
-  public let itemTypes: [AuctionSalesItemType?]
-  /// 카테고리 ??
-  public let salesCategories: [AuctionSalesCategory?]
-  /// 날짜?
-  public let salesDate: Date
+  /// 카테고리
+  public let salesCategories: [AuctionSalesCategory]
+  /// 경매 날짜
+  public let salesDateTime: Date
   /// 가격
   public let appraisalPrice: String
-  /// 물건 사진 URL
-  public let salesPictureURL: URL?
+  /// 물건 사진 정보
+  public let salesPictures: [SalesPicture]
   /// 입찰실패 횟수
   public let failBidCount: Int
   /// 찜 횟수
   public let zzimCount: Int
+  /// 등록 날짜
+  public let registerDate: Date
+  /// 인증 물건 여부
+  public let verified: Bool
+  /// 매각까지 남은 기간
+  public let salesLeftDays: Int
   
-  public init(id: Int, salesAddress: String, itemTypes: [AuctionSalesItemType?], salesCategories: [AuctionSalesCategory?], salesDate: Date, appraisalPrice: String, salesPictureURL: URL?, failBidCount: Int, zzimCount: Int) {
+  public init(id: Int, caseNumber: String, salesAddress: String, salesCategories: [AuctionSalesCategory], salesDateTime: Date, appraisalPrice: String, salesPictures: [SalesPicture], failBidCount: Int, zzimCount: Int, registerDate: Date, verified: Bool) {
     self.id = id
+    self.caseNumber = caseNumber
     self.salesAddress = salesAddress
-    self.itemTypes = itemTypes
     self.salesCategories = salesCategories
-    self.salesDate = salesDate
+    self.salesDateTime = salesDateTime
     self.appraisalPrice = appraisalPrice
-    self.salesPictureURL = salesPictureURL
+    self.salesPictures = salesPictures
     self.failBidCount = failBidCount
     self.zzimCount = zzimCount
+    self.registerDate = registerDate
+    self.verified = verified
+    let leftDays: Int = {
+      let interval = Date().timeIntervalSince(salesDateTime)
+      let days = Int(interval / 86400)
+      return days
+    }()
+    self.salesLeftDays = leftDays
   }
 }

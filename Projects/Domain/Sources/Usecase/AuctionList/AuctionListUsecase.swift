@@ -16,11 +16,11 @@ public final class AuctionSalesListUsecase: AuctionSalesListUsecasable {
     self.fetcher = AuctionSalesListFetcher(repository: repository)
   }
   
-  public func fetchSalesList() async throws -> [AuctionSalesItem] {
+  public func fetchAuctionSales() async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
     return try await self.fetcher.fetchInitial()
   }
   
-  public func fetchNextSalesList() async throws -> [AuctionSalesItem] {
+  public func fetchNextAuctionSales() async throws -> [AuctionSalesItem] {
     return try await self.fetcher.fetchNext()
   }
   
@@ -38,7 +38,7 @@ actor AuctionSalesListFetcher {
     self.repository = repository
   }
   
-  func fetchInitial() async throws -> [AuctionSalesItem] {
+  func fetchInitial() async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
     self.cursor = nil
     self.hasNext = true
     return try await fetch()
@@ -49,10 +49,11 @@ actor AuctionSalesListFetcher {
     guard hasNext else {
       return [] // 더 이상 데이터가 없음
     }
-    return try await fetch()
+    let fetchResult = try await fetch()
+    return fetchResult.items
   }
   
-  private func fetch() async throws -> [AuctionSalesItem] {
+  private func fetch() async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
     self.isLoading = true
     defer {
       self.isLoading = false
@@ -63,8 +64,8 @@ actor AuctionSalesListFetcher {
     )
     
     self.cursor = fetchedAuctionSales.nextCursor
-    self.hasNext = fetchedAuctionSales.hasNext
+    self.hasNext = self.cursor != nil
     
-    return fetchedAuctionSales.items
+    return (auctionCount: fetchedAuctionSales.searchHitCount, items: fetchedAuctionSales.items)
   }
 }
