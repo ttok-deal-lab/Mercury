@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Date {
+public extension Date {
   enum KoreanDateFormat {
     case full                   // "2024년 7월 23일 (화) 오전 9:00"
     case dateOnly               // "2024년 7월 23일"
@@ -35,7 +35,7 @@ extension Date {
   }
   
   /// Date를 한국어 형식 문자열로 변환
-  func toKoreanDateString(format: KoreanDateFormat = .full) -> String {
+  func toKoreanDateString(format: KoreanDateFormat = .dateOnly) -> String {
     let formatter = DateFormatter()
     formatter.locale = Locale(identifier: "ko_KR")
     formatter.timeZone = TimeZone(identifier: "Asia/Seoul")

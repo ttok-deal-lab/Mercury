@@ -36,10 +36,19 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
         VStack(spacing: .zero) {
           AuctionDetailPicturesPagerView(height: 216, auctionDetailInfo: auctionDetailItem)
           AuctionDetailAbstractInfoView(auctionDetailInfo: auctionDetailItem)
-          dividerView()
-          AuctionDetailTabPagerContainerView(auctionDetailInfo: auctionDetailItem)
+          
           dividerView()
           
+          AuctionDetailTabPagerContainerView(auctionDetailInfo: auctionDetailItem)
+          
+          dividerView()
+          
+          AuctionDetailHistoryView(
+            auctionStartDateText: auctionDetailItem.salesOpenDate.toKoreanDateString(),
+            distributionDeadlineText: auctionDetailItem.distributionRequiredDeadlineDate.toKoreanDateString(),
+            appraisalDateText: auctionDetailItem.conditionReport.investigationDate.toKoreanDateString(),
+            salesDetails: modelData.sortedSalesDetailByTime()
+          )
           
           Button {
             isShowFullMap = true
