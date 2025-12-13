@@ -30,10 +30,12 @@ public struct UnderlineTabBar<Tab: Identifiable & Hashable>: View {
         Button {
           withAnimation(.snappy) { selected = tab }
         } label: {
-          VStack(spacing: 8) {
+          VStack(spacing: .zero) {
             Text(title(tab))
-              .font(.system(size: 15, weight: selected == tab ? .semibold : .regular))
-              .foregroundStyle(selected == tab ? Color.blue : Color.gray)
+              .fonts(.bodyLargeBold)
+              .foregroundStyle(selected == tab ? Asset.Colors.primary.color : Asset.Colors.neutralSubtler.color)
+              .fixedSize(horizontal: true, vertical: false)
+              .frame(height: 48)
 
             ZStack {
               if selected == tab {
@@ -46,13 +48,18 @@ public struct UnderlineTabBar<Tab: Identifiable & Hashable>: View {
               }
             }
           }
+          .fixedSize(horizontal: true, vertical: false)
+          .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
       }
-      Spacer(minLength: 0)
+      Spacer()
     }
-    .padding(.horizontal, 16)
-    .padding(.vertical, 10)
+    .padding(.horizontal, 20)
+    .overlay(alignment: .bottom) {
+      Asset.Colors.gray150.color
+        .frame(height: 1)
+    }
   }
 }
 
@@ -85,6 +92,7 @@ public struct TabPager<Tab: Identifiable & Hashable, Page: View>: View {
       LazyHStack(spacing: spacing) {
         ForEach(tabs) { tab in
           page(tab)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .fixedSize(horizontal: false, vertical: true)
             .background(PageHeightReporter(id: tab.id))
             .containerRelativeFrame(.horizontal)
@@ -96,8 +104,8 @@ public struct TabPager<Tab: Identifiable & Hashable, Page: View>: View {
     }
     .scrollIndicators(.hidden)
     .scrollTargetBehavior(.paging)
-    .scrollPosition(id: $visibleID, anchor: .center)
-    .frame(height: max(1, currentHeight))
+    .scrollPosition(id: $visibleID, anchor: .top)
+    .frame(height: max(1, currentHeight), alignment: .top)
     .clipped()
     .onAppear {
       guard !isReady else { return }

@@ -33,20 +33,23 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
       AuctionDetailCustomToolbarView(auctionDetailInfo: auctionDetailItem)
       
       ScrollView(.vertical) {
-        AuctionDetailPicturesPagerView(height: 216, auctionDetailInfo: auctionDetailItem)
-        
-        AuctionDetailAbstractInfoView(auctionDetailInfo: auctionDetailItem)
-        
-        AuctionDetailTabPagerContainer(auctionDetailInfo: auctionDetailItem)
-        
-        Button {
-          isShowFullMap = true
-        } label: {
-          MapView(targetLongitude: 127.108678, targetLatitude: 37.402001)
-            .frame(maxWidth: .infinity)
-            .frame(height: 120)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .padding(.horizontal, 20)
+        VStack(spacing: .zero) {
+          AuctionDetailPicturesPagerView(height: 216, auctionDetailInfo: auctionDetailItem)
+          AuctionDetailAbstractInfoView(auctionDetailInfo: auctionDetailItem)
+          dividerView()
+          AuctionDetailTabPagerContainerView(auctionDetailInfo: auctionDetailItem)
+          dividerView()
+          
+          
+          Button {
+            isShowFullMap = true
+          } label: {
+            MapView(targetLongitude: 127.108678, targetLatitude: 37.402001)
+              .frame(maxWidth: .infinity)
+              .frame(height: 120)
+              .clipShape(RoundedRectangle(cornerRadius: 12))
+              .padding(.horizontal, 20)
+          }
         }
       }
     }
@@ -74,5 +77,10 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
     .alert(error: $modelData.error)
   }
 
+  private func dividerView(height: CGFloat = 10) -> some View {
+    Rectangle()
+      .frame(height: height)
+      .foregroundStyle(Asset.Colors.neutralWeak.color)
+  }
 }
 

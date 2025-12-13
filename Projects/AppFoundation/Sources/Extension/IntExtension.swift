@@ -8,7 +8,7 @@
 import Foundation
 
 public extension Int {
-  func toKoreanPriceFormat() -> String {
+  var toKoreanWon: String {
     let formatter = NumberFormatter()
     formatter.numberStyle = .decimal
     formatter.locale = Locale(identifier: "ko_KR")

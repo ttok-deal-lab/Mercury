@@ -70,7 +70,7 @@ extension AuctionSalesItemDTO {
       salesAddress: salesAddress,
       salesCategories: salesCategories.compactMap { AuctionSalesCategory.fromRawValue($0) },
       salesDateTime: salesDateTime.toKoreanDate(),
-      appraisalPrice: appraisalPrice.toKoreanPriceFormat(),
+      appraisalPrice: appraisalPrice.toKoreanWon,
       salesPictures: salesPicture.map { SalesPicture(sequence: $0.sequence, url: URL(string: $0.imageUrl)) },
       failBidCount: failBidCount,
       zzimCount: zzimCount,
