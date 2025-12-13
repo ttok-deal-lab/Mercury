@@ -5,7 +5,6 @@
 //  Created by 송하민 on 11/2/25.
 //
 
-
 import SwiftUI
 
 public struct InfinitePager<Item, Content>: View where Item: Identifiable & Equatable, Content: View {
@@ -17,7 +16,7 @@ public struct InfinitePager<Item, Content>: View where Item: Identifiable & Equa
   private let spacing: CGFloat
   private let showsIndicator: Bool
 
-  @State private var selection: Int = 1
+  @State private var visibleID: Int? = nil
   @State private var isReady: Bool = false
 
   private var wrapped: [Item] {
@@ -25,18 +24,12 @@ public struct InfinitePager<Item, Content>: View where Item: Identifiable & Equa
     return [last] + items + [first]
   }
 
-  private func realToWrapped(_ idx: Int) -> Int {
-    idx + 1
-  }
-  
-  private func wrappedToReal(_ sel: Int) -> Int {
-    if sel == 0 {
-      return items.count - 1
-    }
-    if sel == items.count + 1 {
-      return 0
-    }
-    return sel - 1
+  private func realToWrappedID(_ real: Int) -> Int { real + 1 }
+
+  private func wrappedIDToReal(_ id: Int) -> Int {
+    if id == 0 { return max(items.count - 1, 0) }
+    if id == items.count + 1 { return 0 }
+    return id - 1
   }
 
   public init(
@@ -54,47 +47,74 @@ public struct InfinitePager<Item, Content>: View where Item: Identifiable & Equa
   }
 
   public var body: some View {
-    TabView(selection: $selection) {
-      ForEach(Array(wrapped.enumerated()), id: \.offset) { i, item in
-        content(item)
-          .tag(i)
-          .containerRelativeFrame(.horizontal)
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .contentShape(Rectangle())
+    GeometryReader { _ in
+      ScrollView(.horizontal) {
+        LazyHStack(spacing: spacing) {
+          ForEach(Array(wrapped.enumerated()), id: \.offset) { id, item in
+            content(item)
+              .frame(maxWidth: .infinity, maxHeight: .infinity)
+              .containerRelativeFrame(.horizontal)
+              .id(id)
+              .contentShape(Rectangle())
+          }
+        }
+        .scrollTargetLayout()
       }
-    }
-    .tabViewStyle(.page(indexDisplayMode: .never))
-    .onAppear {
-      guard !isReady, !items.isEmpty else { return }
-      isReady = true
-      selection = realToWrapped(index.clamped(to: 0...(items.count - 1)))
-    }
-    .onChange(of: index) { _, newValue in
-      guard !items.isEmpty else { return }
-      withAnimation(.snappy) {
-        selection = realToWrapped(newValue.clamped(to: 0...(items.count - 1)))
-      }
-    }
-    .onChange(of: selection) { _, newSelection in
-      guard !items.isEmpty else { return }
-      let newReal = wrappedToReal(newSelection)
-      if index != newReal { index = newReal }
+      .scrollIndicators(.hidden)
+      .scrollTargetBehavior(.paging)
+      .scrollPosition(id: $visibleID, anchor: .center)
+      .onAppear {
+        guard !isReady else { return }
+        isReady = true
+        guard !items.isEmpty else { return }
 
-      if newSelection == 0 {
-        withTransaction(Transaction(animation: nil)) {
-          selection = items.count
-        }
-      } else if newSelection == items.count + 1 {
-        withTransaction(Transaction(animation: nil)) {
-          selection = 1
+        let clamped = index.clamped(to: 0...(items.count - 1))
+        DispatchQueue.main.async {
+          visibleID = realToWrappedID(clamped)
         }
       }
-    }
-    .overlay(alignment: .bottomTrailing) {
-      if showsIndicator, items.count > 1 {
-        PageIndicator(totalCount: items.count, index: $selection)
-          .padding(.horizontal, 12)
-          .padding(.vertical, 14)
+      .onChange(of: index) { _, newValue in
+        guard !items.isEmpty else { return }
+
+        let clamped = newValue.clamped(to: 0...(items.count - 1))
+        let targetID = realToWrappedID(clamped)
+        guard visibleID != targetID else { return }
+
+        withAnimation(.snappy) {
+          visibleID = targetID
+        }
+      }
+      .onChange(of: visibleID) { _, newID in
+        guard !items.isEmpty else { return }
+        guard let newID else { return }
+
+        let newReal = wrappedIDToReal(newID)
+        if index != newReal {
+          index = newReal
+        }
+
+        if newID == 0 {
+          let target = items.count
+          DispatchQueue.main.async {
+            withTransaction(Transaction(animation: nil)) {
+              visibleID = target
+            }
+          }
+        } else if newID == items.count + 1 {
+          let target = 1
+          DispatchQueue.main.async {
+            withTransaction(Transaction(animation: nil)) {
+              visibleID = target
+            }
+          }
+        }
+      }
+      .overlay(alignment: .bottomTrailing) {
+        if showsIndicator, items.count > 1 {
+          PageIndicator(totalCount: items.count, realIndex: $index)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 14)
+        }
       }
     }
   }
@@ -102,17 +122,16 @@ public struct InfinitePager<Item, Content>: View where Item: Identifiable & Equa
 
 private struct PageIndicator: View {
   let totalCount: Int
-  @Binding var index: Int
-  
+  @Binding var realIndex: Int
+
   var body: some View {
-    HStack(spacing: .zero) {
-      Text("\(index)")
-        .fonts(.bodyMiniBold)
+    HStack(spacing: 0) {
+      Text("\(realIndex + 1)")
         .foregroundStyle(.white)
       Text("/ \(totalCount)")
-        .fonts(.bodyMiniBold)
         .foregroundStyle(.white.opacity(0.5))
     }
+    .font(.system(size: 12, weight: .semibold))
     .padding(.horizontal, 10)
     .padding(.vertical, 5)
     .frame(height: 24)

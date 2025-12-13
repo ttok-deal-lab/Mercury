@@ -16,16 +16,24 @@ import Router
 struct AuctionDetailMainContentView<MapView: MapViewable>: View {
   @Binding var modelData: AuctionDetailModelData
   @State private var isShowFullMap = false // 지도 상호작용 상태
-  let item: AuctionDetail
-
+  
   var body: some View {
+    if let auctionDetailItem = modelData.auctionDetailItem {
+      mainContentView(auctionDetailItem: auctionDetailItem)
+    } else {
+      ProgressView()
+    }
+  }
+  
+  @ViewBuilder
+  func mainContentView(auctionDetailItem: AuctionDetail) -> some View {
     VStack(spacing: .zero) {
-      AuctionDetailCustomToolbarView(item: item)
+      AuctionDetailCustomToolbarView(auctionDetailInfo: auctionDetailItem)
       
       ScrollView(.vertical) {
-        AuctionDetailPicturesPagerView(height: 216, item: item)
+        AuctionDetailPicturesPagerView(height: 216, auctionDetailInfo: auctionDetailItem)
         
-        AuctionDetailAbstractInfoView(item: item)
+        AuctionDetailAbstractInfoView(auctionDetailInfo: auctionDetailItem)
         
         Button {
           isShowFullMap = true
@@ -61,8 +69,6 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
     .toolbarVisibility(.hidden, for: .navigationBar)
     .alert(error: $modelData.error)
   }
-    
- 
-  
+
 }
 

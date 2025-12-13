@@ -12,7 +12,7 @@ import UIComponent
 
 struct AuctionDetailCustomToolbarView: View {
   @Environment(\.dismiss) var dismiss
-  let item: AuctionDetail
+  let auctionDetailInfo: AuctionDetail
   
   var body: some View {
     HStack {
@@ -24,7 +24,7 @@ struct AuctionDetailCustomToolbarView: View {
           .frame(width: 28, height: 28)
       }
       
-      Text(item.salesAddress)
+      Text(auctionDetailInfo.salesAddress)
         .fonts(.bodyLargeBold)
         .lineLimit(1)
         .truncationMode(.tail)

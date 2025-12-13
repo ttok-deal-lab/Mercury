@@ -31,13 +31,7 @@ public struct AuctionDetailView<MapView: MapViewable>: View {
   }
   
   public var body: some View {
-    if let item = modelData.auctionDetailItem {
-      AuctionDetailMainContentView<MapView>(modelData: $modelData, item: item)
-    } else {
-      ProgressView()
-        .alert(error: $modelData.error)
-    }
-    
+    AuctionDetailMainContentView<MapView>(modelData: $modelData)
   }
 }
 

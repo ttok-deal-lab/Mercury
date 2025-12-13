@@ -12,9 +12,8 @@ import Combine
 import AppFoundation
 import Domain
 
-@Observable
 @MainActor
-public final class AuctionDetailModelData {
+public final class AuctionDetailModelData: ObservableObject {
   
   // MARK: - internal properties
   
@@ -49,7 +48,9 @@ public final class AuctionDetailModelData {
     defer {
       self.isLoading = false
     }
-    return try await self.auctionDetailUsecase.fetchAuctionDetail(auctionID: self.auctionID)
+    let result = try await self.auctionDetailUsecase.fetchAuctionDetail(auctionID: self.auctionID)
+    print("auction detail response: \n\(result)")
+    return result
   }
   
 }

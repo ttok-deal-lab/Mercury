@@ -1,8 +1,8 @@
 //
-//  AuctionDetailAbstractInfoView.swift
+//  AbstractTitleInfoView.swift
 //  Auction
 //
-//  Created by 송하민 on 11/2/25.
+//  Created by 송하민 on 12/13/25.
 //
 
 import SwiftUI
@@ -10,25 +10,22 @@ import SwiftUI
 import UIComponent
 import Domain
 
-struct AuctionDetailAbstractInfoView: View {
+struct AbstractTitleInfoView: View {
   let auctionDetailInfo: AuctionDetail
   
   var body: some View {
-    VStack(spacing: .zero) {
-      AbstractTitleInfoView(auctionDetailInfo: auctionDetailInfo)
-      
-      AbstractChipsView(auctionDetailInfo: auctionDetailInfo)
-        .padding(.bottom, 16)
-      
-      AbstractTopCardView(auctionDetailInfo: auctionDetailInfo)
-      
+    HStack(spacing: 12) {
+      VStack(alignment: .leading, spacing: 6) {
+        titleView()
+        categoryWithCapacityView()
+        auctionNumberView()
+      }
+      Spacer()
+      ZzimButtonView(isZzimed: false, item: auctionDetailInfo)
     }
-    .padding(20)
-   
+    .padding(.bottom, 16)
   }
   
-  // MARK: - SubView methods
-    
   /// 물건 이름
   private func titleView() -> some View {
     Text("\(auctionDetailInfo.salesAddress)")

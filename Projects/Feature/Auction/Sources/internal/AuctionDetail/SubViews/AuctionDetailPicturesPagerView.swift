@@ -12,10 +12,10 @@ import Domain
 
 struct AuctionDetailPicturesPagerView: View {
   let height: CGFloat
-  let item: AuctionDetail
+  let auctionDetailInfo: AuctionDetail
   
   var body: some View {
-    InfinitePager(items: item.salesPictures) { item in
+    InfinitePager(items: auctionDetailInfo.salesPictures) { item in
       CachedAsyncImage(url: item.url) { image in
         image.resizable()
       } placeholder: {
