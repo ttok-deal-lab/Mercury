@@ -25,6 +25,8 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
     }
   }
   
+  // MARK: - Main Content View
+  
   @ViewBuilder
   func mainContentView(auctionDetailItem: AuctionDetail) -> some View {
     VStack(spacing: .zero) {
@@ -34,6 +36,8 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
         AuctionDetailPicturesPagerView(height: 216, auctionDetailInfo: auctionDetailItem)
         
         AuctionDetailAbstractInfoView(auctionDetailInfo: auctionDetailItem)
+        
+        AuctionDetailTabPagerContainer()
         
         Button {
           isShowFullMap = true

@@ -12,8 +12,8 @@ import Combine
 import AppFoundation
 import Domain
 
-@MainActor
-public final class AuctionDetailModelData: ObservableObject {
+@Observable
+public final class AuctionDetailModelData {
   
   // MARK: - internal properties
   
