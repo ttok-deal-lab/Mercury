@@ -9,7 +9,6 @@ struct UIComponentEntry: App {
   var body: some Scene {
     WindowGroup {
       OverlayWindowView {
-        TraySheetTestView()
         ToastTestView()
         AlertTestView()
         LoadingTest()

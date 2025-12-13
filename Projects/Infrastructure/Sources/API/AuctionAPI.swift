@@ -10,8 +10,8 @@ import Foundation
 import Networking
 
 enum AuctionAPI: BaseAPI {
-  case auctionList(cursor: String?, size: Int)
-  case auctionDetail(_ salesId: String, _ largeCategory: String, mediumCategory: String, _ courtName: String, salesNumber: Int)
+  case auctionSearchList(keyword: String?, region: String?, district: String?, buildType: String?, auctionFailCount: String?, varificationStatus: String?, minimumPrice: Int?, maximumPrice: Int?, nextCursor: String?, sort: String?)
+  case auctionDetail(_ auctionID: Int)
   
   var baseURL: String {
     RestAPIDefine.base(.common)
@@ -19,37 +19,83 @@ enum AuctionAPI: BaseAPI {
   
   var domain: String? {
     switch self {
-    case .auctionList, .auctionDetail: "v2/courts/"
+    case .auctionSearchList: nil
+    case .auctionDetail: "v2/courts/"
     }
   }
   
   var path: String {
     switch self {
-    case .auctionList: "sales/all"
-    case .auctionDetail(let salesId, _, _, _, _): "court/\(salesId)"
+    case .auctionSearchList: "api/v2/search"
+    case .auctionDetail(let auctionID): "sales/\(auctionID)"
     }
   }
   
   var method: Networking.HTTPMethod {
     switch self {
-    case .auctionList, .auctionDetail: .get
+    case .auctionSearchList: .get
+    case .auctionDetail: .get
     }
   }
   
   var queryParam: [String : Any]? {
     switch self {
-    case let .auctionList(cursor, size):
-      return [
-        "cursor": cursor,
-        "size": "\(size)"
-      ].compactMapValues { $0 }
-    case .auctionDetail(_, let largeCategory, let mediumCategory, let courtName, let salesNumber):
-      return [
-        "largeCategory": "\(largeCategory)",
-        "mediumCategory": "\(mediumCategory)",
-        "courtName": "\(courtName)",
-        "salesNumber": "\(salesNumber)"
-      ]
+    case let .auctionSearchList(keyword, region, district, buildType, auctionFailCount, varificationStatus, minimumPrice, maximumPrice, nextCursor, sort):
+      var params: [String: Any] = [:]
+      
+      if let keyword = keyword {
+        params["keyword"] = keyword
+      }
+      
+      if let region = region {
+        params["region"] = region
+      } else {
+        params["region"] = "ALL"
+      }
+      
+      if let district = district {
+        params["district"] = district
+      }
+      
+      if let buildType = buildType {
+        params["buildType"] = buildType
+      } else {
+        params["buildType"] = "ALL"
+      }
+      
+      if let auctionFailCount = auctionFailCount {
+        params["auctionFailCount"] = auctionFailCount
+      } else {
+        params["auctionFailCount"] = "ALL"
+      }
+      
+      if let varificationStatus = varificationStatus {
+        params["varificationStatus"] = varificationStatus
+      } else {
+        params["varificationStatus"] = "ALL"
+      }
+      
+      if let minimumPrice = minimumPrice {
+        params["minimumPrice"] = minimumPrice
+      }
+      
+      if let maximumPrice = maximumPrice {
+        params["maximumPrice"] = maximumPrice
+      }
+      
+      if let nextCursor {
+        params["nextCursor"] = nextCursor
+      }
+      
+      if let sort = sort {
+        params["sort"] = sort
+      } else {
+        params["sort"] = "LATEST_REGISTERED"
+      }
+      
+      return params
+    case .auctionDetail:
+      return nil
     }
   }
   

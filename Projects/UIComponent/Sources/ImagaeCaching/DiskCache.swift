@@ -26,14 +26,12 @@ final class DiskCache: Cacheable {
     return cacheURL.appendingPathComponent(url.lastPathComponent).path()
   }
   
-  /// 캐시 디렉토리 전체 경로 반환
   private func cacheDirectoryPath() -> String? {
     return FileManager.default.urls(for: .cachesDirectory,
                                     in: .userDomainMask).first?.path()
   }
   
   func loadImage(_ url: URL) -> UIImage? {
-    print("🔍 Attempting to load image from disk: \(url)")
     guard let path = filePath(for: url) else {
       return nil
     }
@@ -41,14 +39,10 @@ final class DiskCache: Cacheable {
     let fileExists = fm.fileExists(atPath: path)
     
     if fileExists {
-      
       updateFileAccessTime(at: path)
-      
       if let image = UIImage(contentsOfFile: path) {
-        print("✅ Successfully loaded image from disk")
         return image
       } else {
-        // 해당 경로로 들어오거나 생성된 루트 삭제
         try? fm.removeItem(atPath: path)
         return nil
       }
@@ -61,7 +55,6 @@ final class DiskCache: Cacheable {
     guard option != .onlyMemory else { return }
     guard let path = filePath(for: url),
           !fm.fileExists(atPath: path) else { return }
-    print("returning filePath: \(path)")
     
     Task {
       await saveImageToDisk(image, at: path, url: url)
@@ -75,13 +68,10 @@ final class DiskCache: Cacheable {
                                    attributes: nil)
     
     if createFile {
-      // 캐시 사이즈 비교하고 정리
       Task {
         await checkCacheSizeAndCleanUp()
       }
-      print("✅ save Image to Disk:", path)  // 성공일 때만 로그
     } else {
-      print("❌ save failed (createFile returned false):", path)
     }
   }
   
@@ -110,8 +100,6 @@ final class DiskCache: Cacheable {
       }
       
       if totalSize > maxCacheSize {
-        print("🧹 Cache size exceeded (\(totalSize) bytes), cleaning up...")
-        
         fileInfos.sort { $0.date < $1.date }
         
         //60% 까지 줄이기
@@ -125,13 +113,9 @@ final class DiskCache: Cacheable {
           
           try? fm.removeItem(atPath: fileInfo.path)
           currentSize -= fileInfo.size
-          print("🗑️ Removed old cached file: \(URL(fileURLWithPath: fileInfo.path).lastPathComponent)")
         }
-        
-        print("✅ Cache cleanup completed. Size: \(currentSize) bytes")
       }
     } catch {
-      print("❌ Cache cleanup error: \(error)")
     }
   }
   
@@ -150,12 +134,11 @@ final class DiskCache: Cacheable {
           let age = now.timeIntervalSince(date)
           if age > maxCacheAge {
             try fm.removeItem(atPath: fullPath)
-            print("🗑️ Removed expired cached file: \(file)")
+
           }
         }
       }
     } catch {
-      print("❌ Expired files cleanup error: \(error)")
     }
   }
 }

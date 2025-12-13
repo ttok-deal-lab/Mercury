@@ -17,6 +17,7 @@ import Domain
 public struct MainTabView<
   AuctionHomeView: AuctionHomeViewable,
   InterestView: InterestViewable,
+  ReportView: ReportViewable,
   MyPageView: MyPageViewable,
   SignInView: SignInViewable
 >: View {
@@ -28,19 +29,16 @@ public struct MainTabView<
   
   private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   private let auctionListUsecase: AuctionSalesListUsecasable
-  private let userProfileUsecase: UserProfileUsecasable
   
   // MARK: - life cycle
   
   public init(
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
     localStorageUsecase: LocalStorageUsecasable,
-    auctionListUsecase: AuctionSalesListUsecasable,
-    userProfileUsecase: UserProfileUsecasable
+    auctionListUsecase: AuctionSalesListUsecasable
   ) {
     self.navigationStream = navigationStream
     self.auctionListUsecase = auctionListUsecase
-    self.userProfileUsecase = userProfileUsecase
     self.modelData = MainTabModelData(localStorageUsecase: localStorageUsecase)
   }
   
@@ -78,14 +76,11 @@ public struct MainTabView<
         }
         .tag(Tab.interest)
       
-      MyPageView(
-        navigationStream: navigationStream,
-        userProfileUseCase: userProfileUsecase
-      )
+      MyPageView(navigationStream: navigationStream)
         .tabItem {
-          Tab.myPage.iconView(isSelected: selection == .myPage)
+          Tab.setting.iconView(isSelected: selection == .setting)
         }
-        .tag(Tab.myPage)
+        .tag(Tab.setting)
     }
     .onAppear {
       let tabBarAppearance = UITabBarAppearance()
@@ -95,7 +90,7 @@ public struct MainTabView<
     .onChange(of: networkMonitor.isConnected) { _, isConnected in
       isShowNetworkDisconnect = !isConnected
     }
-    .traySheet(isPresented: $isShowNetworkDisconnect, content: {
+    .sheet(isPresented: $isShowNetworkDisconnect, content: {
       VStack { // TODO: 디자인 필요
         Text("인터넷 연결이 되지 않아요")
           .fonts(.titleMediumBold)
@@ -106,18 +101,19 @@ public struct MainTabView<
           .fonts(.bodyLargeMedium)
           .padding(.vertical, 18)
       }
+      .dynamicSheet()
     })
   }
 }
 
 enum Tab {
-  case home, interest, myPage
+  case home, interest, setting
   
   var title: String {
     switch self {
-    case .home: return "홈"
-    case .interest: return "관심"
-    case .myPage: return "마이페이지"
+    case .home: return L10n.tabHome
+    case .interest: return L10n.tabInterest
+    case .setting: return L10n.tabSetting
     }
   }
   
@@ -125,7 +121,7 @@ enum Tab {
     switch self {
     case .home: return isSelected ? Asset.Images.gnbHome.image : Asset.Images.gnbHomeGray.image
     case .interest: return isSelected ? Asset.Images.gnbInterest.image : Asset.Images.gnbInterestGray.image
-    case .myPage: return isSelected ? Asset.Images.gnbMypage.image : Asset.Images.gnbMypageGray.image
+    case .setting: return isSelected ? Asset.Images.gnbMypage.image : Asset.Images.gnbMypageGray.image
     }
   }
   

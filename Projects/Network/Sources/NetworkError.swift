@@ -7,8 +7,8 @@
 
 import Foundation
 
-public enum NetworkError: Error {
-  case failToConvertURL
+public enum NetworkError: Int, Error {
+  case failToConvertURL = 400
   case unauthorized
   case invalidStatusCode
   

@@ -62,17 +62,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     container.register(Alertable.self, instance: MercuryAlert.shared)
     container.register(LoadingPresentable.self, instance: MercuryLoading.shared)
     
-    let opaque = UITabBarAppearance()
-    opaque.configureWithOpaqueBackground()
-    opaque.backgroundColor = UIColor(Color.white)
+    let appearance = UITabBarAppearance.blurredSafe()
     
-    let blurred = UITabBarAppearance()
-    blurred.configureWithTransparentBackground()
-    blurred.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
-    blurred.backgroundColor = .clear
-    
-    UITabBar.appearance().standardAppearance = blurred
-    UITabBar.appearance().scrollEdgeAppearance = opaque
+    UITabBar.appearance().standardAppearance = appearance
+    UITabBar.appearance().scrollEdgeAppearance = appearance
+    UITabBar.appearance().isTranslucent = true
     
     return true
   }
@@ -125,5 +119,16 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 extension AppDelegate: MessagingDelegate {
   func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
     SignInInformationManager.shared.setFcmToken(fcmToken)
+  }
+}
+
+extension UITabBarAppearance {
+  static func blurredSafe() -> UITabBarAppearance {
+    let appearance = UITabBarAppearance()
+    appearance.configureWithDefaultBackground()
+    appearance.backgroundEffect = UIBlurEffect(style: .systemMaterial)
+    appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.6)
+    appearance.shadowColor = .clear
+    return appearance
   }
 }

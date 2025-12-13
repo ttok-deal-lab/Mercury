@@ -12,35 +12,29 @@ import CoreLocation
 import KakaoMapsSDK
 import KakaoMapsSDK_SPM
 
-@MainActor public struct KakaoMapView: UIViewRepresentable {
+public struct KakaoMapView: UIViewRepresentable {
   
   // MARK: - private property
   
   // MARK: - public property
   
   @Binding public var draw: Bool
-  public var userLocation: CLLocationCoordinate2D?
-  @Binding public var cameraCenterLocation: CLLocationCoordinate2D?
-//  public var auctionItems: [AuctionItem]?
+  @Binding public var cameraCenterLocation: CLLocationCoordinate2D
   
   
   // MARK: - life cycle
 
   public init(
     draw: Binding<Bool>,
-    userLocation: CLLocationCoordinate2D?,
-    cameraCenterLocation: Binding<CLLocationCoordinate2D?>
-//    auctionItems: [AuctionItem]?
+    cameraCenterLocation: Binding<CLLocationCoordinate2D>
   ) {
     self._draw = draw
-    self.userLocation = userLocation
     self._cameraCenterLocation = cameraCenterLocation
-//    self.auctionItems = auctionItems
   }
   
   
   // MARK: - public method
-
+  
   public func makeUIView(context: Self.Context) -> KMViewContainer {
     let view: KMViewContainer = KMViewContainer()
     view.sizeToFit()
@@ -68,16 +62,15 @@ import KakaoMapsSDK_SPM
   // MARK: - private method
   
   private func onMapFullyLoaded(context: Self.Context) {
-    if let userLocation {
-      context.coordinator.setCameraFirst(location: userLocation)
-    }
-//    if let auctionItems {
-//      context.coordinator.drawItemMarker(item: auctionItems)
-//    }
+    context.coordinator.setCameraFirst(location: cameraCenterLocation)
   }
   
   public func makeCoordinator() -> KakaoMapCoordinator {
-    return KakaoMapCoordinator(parent: self)
+    return KakaoMapCoordinator(
+      parent: self,
+      longitude: cameraCenterLocation.longitude,
+      latitude: cameraCenterLocation.latitude
+    )
   }
 
   
