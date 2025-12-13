@@ -15,12 +15,12 @@ struct AuctionDetailAbstractInfoView: View {
   
   var body: some View {
     VStack(spacing: .zero) {
-      AbstractTitleInfoView(auctionDetailInfo: auctionDetailInfo)
+      AuctionDetailAbstractTitleInfoView(auctionDetailInfo: auctionDetailInfo)
       
-      AbstractChipsView(auctionDetailInfo: auctionDetailInfo)
+      AuctionDetailAbstractChipsView(auctionDetailInfo: auctionDetailInfo)
         .padding(.bottom, 16)
       
-      AbstractTopCardView(auctionDetailInfo: auctionDetailInfo)
+      AuctionDetailAbstractTopCardView(auctionDetailInfo: auctionDetailInfo)
       
       dividerView().padding(.top, 20)
       

@@ -65,6 +65,9 @@ public struct TabPager<Tab: Identifiable & Hashable, Page: View>: View {
   @State private var visibleID: Tab.ID?
   @State private var isReady = false
 
+  @State private var pageHeights: [Tab.ID: CGFloat] = [:]
+  @State private var currentHeight: CGFloat = 0
+
   public init(
     tabs: [Tab],
     selected: Binding<Tab>,
@@ -82,7 +85,8 @@ public struct TabPager<Tab: Identifiable & Hashable, Page: View>: View {
       LazyHStack(spacing: spacing) {
         ForEach(tabs) { tab in
           page(tab)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .fixedSize(horizontal: false, vertical: true)
+            .background(PageHeightReporter(id: tab.id))
             .containerRelativeFrame(.horizontal)
             .id(tab.id)
             .contentShape(Rectangle())
@@ -93,6 +97,8 @@ public struct TabPager<Tab: Identifiable & Hashable, Page: View>: View {
     .scrollIndicators(.hidden)
     .scrollTargetBehavior(.paging)
     .scrollPosition(id: $visibleID, anchor: .center)
+    .frame(height: max(1, currentHeight))
+    .clipped()
     .onAppear {
       guard !isReady else { return }
       isReady = true
@@ -105,6 +111,7 @@ public struct TabPager<Tab: Identifiable & Hashable, Page: View>: View {
       withAnimation(.snappy) {
         visibleID = newSelected.id
       }
+      updateHeight(for: newSelected.id, animated: true)
     }
     .onChange(of: visibleID) { _, newID in
       guard let newID else { return }
@@ -112,6 +119,20 @@ public struct TabPager<Tab: Identifiable & Hashable, Page: View>: View {
       if selected != newSelected {
         selected = newSelected
       }
+      updateHeight(for: newID, animated: true)
+    }
+    .onPreferenceChange(PageHeightPreferenceKey<Tab.ID>.self) { new in
+      pageHeights.merge(new, uniquingKeysWith: { $1 })
+      updateHeight(for: selected.id, animated: false)
+    }
+  }
+
+  private func updateHeight(for id: Tab.ID, animated: Bool) {
+    guard let h = pageHeights[id], h > 0 else { return }
+    if animated {
+      withAnimation(.snappy) { currentHeight = h }
+    } else {
+      currentHeight = h
     }
   }
 }
@@ -141,6 +162,26 @@ public struct UnderlineTabPager<Tab: Identifiable & Hashable, Page: View>: View 
     VStack(spacing: 0) {
       UnderlineTabBar(tabs: tabs, selected: $selected, title: title)
       TabPager(tabs: tabs, selected: $selected, spacing: spacing, page: page)
+    }
+  }
+  
+}
+
+
+private struct PageHeightPreferenceKey<ID: Hashable>: PreferenceKey {
+  static var defaultValue: [ID: CGFloat] { [:] }
+  static func reduce(value: inout [ID: CGFloat], nextValue: () -> [ID: CGFloat]) {
+    value.merge(nextValue(), uniquingKeysWith: { $1 })
+  }
+}
+
+private struct PageHeightReporter<ID: Hashable>: View {
+  let id: ID
+
+  var body: some View {
+    GeometryReader { proxy in
+      Color.clear
+        .preference(key: PageHeightPreferenceKey<ID>.self, value: [id: proxy.size.height])
     }
   }
 }

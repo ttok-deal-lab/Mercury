@@ -10,7 +10,7 @@ import SwiftUI
 import UIComponent
 import Domain
 
-fileprivate enum EasyInformation: String, Identifiable {
+fileprivate enum AuctionDetailEasyInformation: String, Identifiable {
   var id: Self { self }
   
   /// 최저 매각 가격
@@ -19,8 +19,8 @@ fileprivate enum EasyInformation: String, Identifiable {
   case estimated_value
 }
 
-struct AbstractTopCardView: View {
-  @State private var showEasyInfoType: EasyInformation?
+struct AuctionDetailAbstractTopCardView: View {
+  @State private var showEasyInfoType: AuctionDetailEasyInformation?
   let auctionDetailInfo: AuctionDetail
   
   var body: some View {

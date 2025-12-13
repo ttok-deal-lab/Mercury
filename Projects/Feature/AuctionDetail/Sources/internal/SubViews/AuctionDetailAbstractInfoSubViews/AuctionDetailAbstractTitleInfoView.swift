@@ -10,7 +10,7 @@ import SwiftUI
 import UIComponent
 import Domain
 
-struct AbstractTitleInfoView: View {
+struct AuctionDetailAbstractTitleInfoView: View {
   let auctionDetailInfo: AuctionDetail
   
   var body: some View {
@@ -61,6 +61,42 @@ struct AbstractTitleInfoView: View {
           .resizable()
           .frame(width: 18, height: 18)
       }
+    }
+  }
+}
+
+fileprivate struct ZzimButtonView: View {
+  @State private var isZzimed: Bool = false
+  @State private var zzimCount: Int
+  private let item: AuctionDetail
+  
+  init(isZzimed: Bool, item: AuctionDetail) {
+    self.isZzimed = isZzimed
+    self.item = item
+    self.zzimCount = item.zzimCount
+  }
+  
+  var body: some View {
+    VStack(spacing: 4) {
+      Button {
+        self.isZzimed.toggle()
+        if isZzimed {
+          zzimCount += 1
+        } else {
+          zzimCount -= 1
+        }
+      } label: {
+        Asset.Images.heart.image
+          .renderingMode(.template)
+          .resizable()
+          .foregroundStyle(!isZzimed ? Asset.Colors.gray150.color : Asset.Colors.red700TextError.color)
+          .frame(width: 28, height: 28)
+      }
+      Text("\(zzimCount)")
+        .fonts(.bodyMicroMedium)
+        .foregroundStyle(Asset.Colors.neutralSubtle.color)
+      
+      Spacer()
     }
   }
 }

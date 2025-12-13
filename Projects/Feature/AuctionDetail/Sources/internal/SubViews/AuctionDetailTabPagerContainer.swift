@@ -8,6 +8,7 @@
 import SwiftUI
 
 import UIComponent
+import Domain
 
 enum AuctionDetailTabTitles: String, CaseIterable, Identifiable, Hashable {
   case auction = "경매정보"
@@ -16,9 +17,9 @@ enum AuctionDetailTabTitles: String, CaseIterable, Identifiable, Hashable {
   var id: Self { self }
 }
 
-
 struct AuctionDetailTabPagerContainer: View {
   @State private var selected: AuctionDetailTabTitles = .auction
+  let auctionDetailInfo: AuctionDetail
   
   var body: some View {
     UnderlineTabPager(
@@ -29,11 +30,11 @@ struct AuctionDetailTabPagerContainer: View {
     ) { tab in
       switch tab {
       case .auction:
-        Color.red.frame(height: 100)
+        AuctionDetailTabBriefCardView()
       case .rights:
-        Color.blue.frame(height: 100)
+        AuctionDetailTabRightsAnalysisView(report: auctionDetailInfo.conditionReport)
       case .building:
-        Color.yellow.frame(height: 100)
+        Color.yellow
       }
     }
   }

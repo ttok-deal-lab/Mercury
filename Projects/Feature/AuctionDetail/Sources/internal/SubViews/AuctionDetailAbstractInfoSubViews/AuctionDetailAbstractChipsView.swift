@@ -11,7 +11,7 @@ import UIComponent
 import Domain
 
 /// 경매 물건 칩
-struct AbstractChipsView: View {
+struct AuctionDetailAbstractChipsView: View {
   let auctionDetailInfo: AuctionDetail
   
   var body: some View {

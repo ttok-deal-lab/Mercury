@@ -37,7 +37,7 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
         
         AuctionDetailAbstractInfoView(auctionDetailInfo: auctionDetailItem)
         
-        AuctionDetailTabPagerContainer()
+        AuctionDetailTabPagerContainer(auctionDetailInfo: auctionDetailItem)
         
         Button {
           isShowFullMap = true

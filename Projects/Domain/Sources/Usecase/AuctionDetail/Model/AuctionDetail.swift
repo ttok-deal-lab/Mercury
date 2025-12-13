@@ -481,7 +481,7 @@ public struct AuctionDetail: Sendable {
         self.confirmedAt = confirmedAt
       }
       
-      public enum OccupantRelation: Sendable {
+      public enum OccupantRelation: Sendable, Equatable {
         /// 채무자
         case debtor
         /// 임차인
