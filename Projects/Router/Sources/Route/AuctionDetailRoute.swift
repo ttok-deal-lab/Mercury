@@ -1,5 +1,5 @@
 //
-//  AuctionRoute.swift
+//  AuctionDetailRoute.swift
 //  Coordinator
 //
 //  Created by 송하민 on 12/29/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct AuctionRoute: Hashable {
+public struct AuctionDetailRoute: Hashable {
   public private(set) var route: Route
   
   public init(route: Route) {

@@ -12,8 +12,7 @@ import Combine
 import Router
 import Domain
 
-
-public struct AuctionViewFactory<MapView: MapViewable>: ViewFactory {
+public struct AuctionDetailViewFactory<MapView: MapViewable>: ViewFactory {
   
   private let auctionDetailUsecase: AuctionDetailUsecase
   
@@ -24,7 +23,7 @@ public struct AuctionViewFactory<MapView: MapViewable>: ViewFactory {
   }
   
   public func makeView(
-    _ auctionRoute: AuctionRoute,
+    _ auctionRoute: AuctionDetailRoute,
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   ) -> some View {
     switch auctionRoute.route {

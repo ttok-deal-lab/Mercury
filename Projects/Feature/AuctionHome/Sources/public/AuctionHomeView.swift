@@ -50,7 +50,7 @@ public struct AuctionHomeView: View {
           
           ForEach(modelData.auctionSalesItems) { item in
             Button {
-              navigationStream.send(.push(.auction(AuctionRoute(route: .auctionDetail(auctionID: item.id)))))
+              navigationStream.send(.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id)))))
             } label: {
               AuctionSalesItemView(item: item, onZzim: {
                // 찜 했을때의 액션

@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 import Router
-import Auction
+import AuctionHome
 import Domain
 
 public struct AuctionHomeViewWrapperView: View, AuctionHomeViewable {

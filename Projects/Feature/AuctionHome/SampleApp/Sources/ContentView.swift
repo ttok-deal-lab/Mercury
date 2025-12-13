@@ -8,11 +8,11 @@
 import Foundation
 import SwiftUI
 
-import Auction
+import AuctionHome
 
 struct ContentView: View {
   
   var body: some View {
-    AuctionSalesListView()
+    EmptyView()
   }
 }

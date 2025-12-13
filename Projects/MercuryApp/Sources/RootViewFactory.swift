@@ -9,7 +9,8 @@ import SwiftUI
 import Combine
 
 import Router
-import Auction
+import AuctionHome
+import AuctionDetail
 import Onboard
 import Domain
 import Infrastructure
@@ -30,8 +31,8 @@ struct RootViewFactory: ViewFactory {
         locationUsecasable: LocationUsecase()
       )
       .makeView(signInStep, navigationStream: navigationStream)
-    case .auction(let auctionStep):
-      AuctionViewFactory<MapViewWrapperView>(
+    case .auctionDetail(let auctionStep):
+      AuctionDetailViewFactory<MapViewWrapperView>(
         auctionDetailUsecase: AuctionDetailUsecase(auctionDetailRepositorable: AuctionDetailRepository())
       )
       .makeView(auctionStep, navigationStream: navigationStream)
