@@ -198,9 +198,9 @@ public struct AuctionDetail: Sendable {
   /// 법원
   public struct Court: Sendable {
     /// 법원코드
-    let code: CourtCode
+    public let code: CourtCode
     /// 담당 팀명
-    let team: String
+    public let team: String
     
     public init(code: CourtCode, team: String) {
       self.code = code
@@ -208,11 +208,11 @@ public struct AuctionDetail: Sendable {
     }
     
     public enum CourtCode: Sendable {
-      case seoulCentralDistrict
-      case seoulEasternDistrict
-      case seoulWesternDistrict
-      case seoulSouthernDistrict
-      case seoulNorthernDistrict
+      case seoulCentralDistrict // 서울중앙지방법원
+      case seoulEasternDistrict // 서울동부지방법원
+      case seoulWesternDistrict // 서울서부지방법원
+      case seoulSouthernDistrict // 서울남부지방법원
+      case seoulNorthernDistrict // 서울북부지방법원
       case other(String)
       
       public init(rawValue: String) {
@@ -224,6 +224,17 @@ public struct AuctionDetail: Sendable {
         case "SEOUL_NORTHERN_DISTRICT": self = .seoulNorthernDistrict
         default: self = .other(rawValue)
         }
+      }
+    }
+    
+    public var name: String {
+      switch self.code {
+      case .seoulCentralDistrict: return "서울중앙지방법원"
+      case .seoulEasternDistrict: return "서울동부지방법원"
+      case .seoulWesternDistrict: return "서울서부지방법원"
+      case .seoulSouthernDistrict: return "서울남부지방법원"
+      case .seoulNorthernDistrict: return "서울북부지방법원"
+      case .other(let v): return v
       }
     }
   }
@@ -342,7 +353,8 @@ public struct AuctionDetail: Sendable {
   }
   
   /// 목록 내역
-  public struct SalesItemDetail: Sendable {
+  public struct SalesItemDetail: Sendable, Identifiable {
+    public var id: Int { self.sequence }
     /// 목록 번호
     public let sequence: Int
     /// 목록 구분

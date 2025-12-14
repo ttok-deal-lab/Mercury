@@ -21,21 +21,7 @@ struct AuctionDetailAbstractInfoView: View {
         .padding(.bottom, 16)
       
       AuctionDetailAbstractTopCardView(auctionDetailInfo: auctionDetailInfo)
-      
-      dividerView().padding(.top, 20)
-      
-      
-      
     }
     .padding(20)
-   
-  }
-  
-  // MARK: - SubView methods
-  
-  private func dividerView(height: CGFloat = 10) -> some View {
-    Divider()
-      .frame(height: height)
-      .foregroundStyle(Asset.Colors.neutralWeak.color)
   }
 }

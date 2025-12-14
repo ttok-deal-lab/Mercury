@@ -68,6 +68,7 @@ public extension BaseAPI {
       /// 401이면 갱신 해야 함.
       return try JSONDecoder().decode(T.self, from: data)
     } catch {
+      print("error from request: \(error)")
       throw error.toMercuryError()
     }
   }
