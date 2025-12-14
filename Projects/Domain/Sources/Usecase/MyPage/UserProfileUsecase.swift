@@ -29,7 +29,6 @@ actor UerProfileFetcher {
   
   func fetchProfile() async throws  -> UserProfileInfo {
     let fetchUserProfile = try await repository.fetchUserProfile()
-    print("fetchUserProfile : ", fetchUserProfile)
     return fetchUserProfile
   }
 }

@@ -10,14 +10,16 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum L10n {
+  /// 매물번호 %@
+  public static func auctionDetailSalesNumber(_ p1: Any) -> String {
+    return L10n.tr("Localizable", "auction_detail_sales_number", String(describing: p1), fallback: "매물번호 %@")
+  }
   /// 경매상태
   public static let auctionFilterAuctionStatus = L10n.tr("Localizable", "auction_filter_auction_status", fallback: "경매상태")
   /// 낙찰
   public static let auctionFilterBidWon = L10n.tr("Localizable", "auction_filter_bidWon", fallback: "낙찰")
   /// 건물용도
   public static let auctionFilterBuildingUsage = L10n.tr("Localizable", "auction_filter_building_usage", fallback: "건물용도")
-  /// 인증매물
-  public static let auctionFilterCertified = L10n.tr("Localizable", "auction_filter_certified", fallback: "인증매물")
   /// %1$@ 외 %2$@
   public static func auctionFilterMultiSelect(_ p1: Any, _ p2: Any) -> String {
     return L10n.tr("Localizable", "auction_filter_multi_select", String(describing: p1), String(describing: p2), fallback: "%1$@ 외 %2$@")
@@ -44,12 +46,20 @@ public enum L10n {
   public static let auctionSortByPriceHigher = L10n.tr("Localizable", "auction_sort_by_price_higher", fallback: "가격 높은 순")
   /// 가격 낮은 순
   public static let auctionSortByPriceLower = L10n.tr("Localizable", "auction_sort_by_price_lower", fallback: "가격 낮은 순")
+  /// 앱 버전
+  public static let commonAppVersion = L10n.tr("Localizable", "common_app_version", fallback: "앱 버전")
   /// 취소
   public static let commonCancel = L10n.tr("Localizable", "common_cancel", fallback: "취소")
+  /// 인증매물
+  public static let commonCertifiedAuction = L10n.tr("Localizable", "common_certified_auction", fallback: "인증매물")
   /// 닫기
   public static let commonClose = L10n.tr("Localizable", "common_close", fallback: "닫기")
   /// 확인
   public static let commonConfirm = L10n.tr("Localizable", "common_confirm", fallback: "확인")
+  /// 유찰 %@회
+  public static func commonFailedBidCount(_ p1: Any) -> String {
+    return L10n.tr("Localizable", "common_failed_bid_count", String(describing: p1), fallback: "유찰 %@회")
+  }
   /// 아니오
   public static let commonNo = L10n.tr("Localizable", "common_no", fallback: "아니오")
   /// %@원
@@ -64,6 +74,28 @@ public enum L10n {
   public static let settingLogin = L10n.tr("Localizable", "setting_login", fallback: "로그인")
   /// 로그아웃
   public static let settingLogout = L10n.tr("Localizable", "setting_logout", fallback: "로그아웃")
+  /// 알림
+  public static let settingNoti = L10n.tr("Localizable", "setting_noti", fallback: "알림")
+  /// 1:1 문의
+  public static let settingChat = L10n.tr("Localizable", "setting_chat", fallback: "1:1 문의")
+  /// 알림 수신에 동의했어요.
+  public static let settingNotiAgree = L10n.tr("Localizable", "setting_noti_agree", fallback: "알림 수신에 동의했어요.")
+  /// 알림 수신을 거부했어요.
+  public static let settingNotiDecline = L10n.tr("Localizable", "setting_noti_decline", fallback: "알림 수신을 거부했어요.")
+  /// 중요한 정보를 알림으로 전달드려요.
+  public static let settingNotiDescription = L10n.tr("Localizable", "setting_noti_description", fallback: "중요한 정보를 알림으로 전달드려요.")
+  /// 알림 설정 관리
+  public static let settingNotificationManage = L10n.tr("Localizable", "setting_notification_manage", fallback: "알림 설정 관리")
+  /// 오픈소스 라이선스 보기
+  public static let settingOpenLicense = L10n.tr("Localizable", "setting_open_license", fallback: "오픈소스 라이선스 보기")
+  /// 최근 본 매물
+  public static let settingRecentViewSales = L10n.tr("Localizable", "setting_recent_view_sales", fallback: "최근 본 매물")
+  /// 탈퇴하기
+  public static let settingSignout = L10n.tr("Localizable", "setting_signout", fallback: "탈퇴하기")
+  /// 서비스 약관
+  public static let settingTerms = L10n.tr("Localizable", "setting_terms", fallback: "서비스 약관")
+  /// 업데이트하기
+  public static let settingUpdate = L10n.tr("Localizable", "setting_update", fallback: "업데이트하기")
   /// 홈
   public static let tabHome = L10n.tr("Localizable", "tab_home", fallback: "홈")
   /// 관심

@@ -17,14 +17,7 @@ public final class MyPageModelData {
   
   // MARK: - internal property
   
-  var userProfile: UserProfileInfo = .init(
-    id: 0,
-    oauthId: "",
-    provider: .kakao,
-    email: "",
-    name: "Unknown",
-    status: .inactive
-  )
+  var userProfile: UserProfileInfo?
   
   // MARK: - private property
   private var userProfileUsecasable: UserProfileUsecasable

@@ -15,7 +15,7 @@ import Router
 
 public struct SettingView: View {
   
-  private let items: [String] = SettingItemType.allCases.map(\.rawValue)
+  private let items: [SettingItemType] = SettingItemType.allCases
   private var version: String = "1.20.1"
   private var isNeedUpdate: Bool = true
   @Inject private var accessTokenManager: AccessTokenManagable
@@ -29,7 +29,7 @@ public struct SettingView: View {
   public var body: some View {
     ZStack {
       VStack(alignment: .leading, spacing: 0) {
-        MercuryNavigationBar("설정") {
+        MercuryNavigationBar(L10n.tabSetting) {
           Button {
             navigationStream.send(.pop)
           } label: {
@@ -39,9 +39,9 @@ public struct SettingView: View {
         
         ForEach(items, id: \.self) { item in
           
-          if item == SettingItemType.terms.rawValue {
+          if item == .terms {
             MercuryMenuItemView(
-              item: item,
+              item: item.title,
               left: .textLabel,
               rightView: {
                 Asset.Images.arrowRightNoShaftGray.image
@@ -51,7 +51,7 @@ public struct SettingView: View {
               .padding(.bottom, 10)
           } else {
             MercuryMenuItemView(
-              item: item,
+              item: item.title,
               left: .textLabel,
               rightView: {
                 Asset.Images.arrowRightNoShaftGray.image
@@ -64,10 +64,10 @@ public struct SettingView: View {
         
         VStack(alignment: .leading, spacing: 0) {
           HStack() {
-            Text("앱 버전 \(version)")
+            Text("\(L10n.appVersion) \(version)")
               .fonts(.bodySmallMedium)
               .foregroundStyle(Asset.Colors.neutralSubtler.color)
-            Text("업데이트하기")
+            Text(L10n.updateApp)
               .fonts(.bodySmallMedium)
               .foregroundStyle(Asset.Colors.neutralSubtler.color)
               .mercuryUnderLine()
@@ -85,7 +85,7 @@ public struct SettingView: View {
               }
           }
           
-          Text("오픈소스 라이선스 보기")
+          Text("\(L10n.openLicense)")
             .fonts(.bodySmallMedium)
             .foregroundStyle(Asset.Colors.neutralSubtler.color)
             .mercuryUnderLine()
@@ -105,25 +105,24 @@ public struct SettingView: View {
     .navigationBarBackButtonHidden()
   }
   
-  private func onTapItem(_ item: String) {
-    guard let item = SettingItemType(rawValue: item) else { return }
+  private func onTapItem(_ item: SettingItemType) {
     switch item {
     case .notification:
       navigationStream.send(.push(.setting(.init(route: .notification))))
     case .terms:
       print("serviceAgreement Tapped")
       navigationStream.send(.push(.terms(.init(route: .terms))))
-    case .logout:
+    case .settingLogout:
       // TODO: 모달 띄우기
       MercuryAlert.shared
         .present(
           type:
               .cancallable(
                 information: .init(
-                  title: "로그아웃 하시겠어요?",
+                  title: "\(L10n.settingLogout) 하시겠어요?",
                   description: "",
-                  confirmButtonTitle: "네",
-                  cancelButtonTitle: "아니요",
+                  confirmButtonTitle: L10n.commonYes,
+                  cancelButtonTitle: L10n.commonNo,
                   onConfirm: {
                     accessTokenManager.removeAccessToken()
                     navigationStream.send(.popToRoot)
@@ -135,7 +134,6 @@ public struct SettingView: View {
       
     case .signOut:
       print("SignOut Tapped")
-      
     }
   }
 }

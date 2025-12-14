@@ -20,7 +20,7 @@ struct RecentlySalesView: View {
   
     var body: some View {
       VStack {
-        MercuryNavigationBar("최근 본 매물") {
+        MercuryNavigationBar(L10n.settingRecentViewSales) {
           Button {
             navigationStream.send(.pop)
           } label: {

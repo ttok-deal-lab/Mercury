@@ -17,19 +17,19 @@ struct UserProfileView: View {
     var body: some View {
       VStack(spacing: 0){
         HStack {
-          Text(modelData.userProfile.name)
+          Text(modelData.userProfile?.name ?? "")
             .fonts(.titleLargeBold)
           Spacer()
         }
         .padding(.bottom, 6)
         
         HStack(spacing: 0) {
-          modelData.userProfile.provider.toImage()
+          modelData.userProfile?.provider.toImage()
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 18, height: 18)
             .padding(.trailing, 6)
-          Text("\(modelData.userProfile.provider.toText())로 로그인")
+          Text("\(modelData.userProfile?.provider.toText() ?? "")로 \(L10n.settingLogin)")
           Spacer()
         }
       }

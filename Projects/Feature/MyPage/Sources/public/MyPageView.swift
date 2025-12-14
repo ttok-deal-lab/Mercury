@@ -13,9 +13,17 @@ import Router
 import UIComponent
 import Domain
 
-enum MyPageItemType: String, CaseIterable {
-  case recentlySales = "최근 본 매물"
-  case chat = "1:1 문의"
+enum MyPageItemType: CaseIterable {
+  case recentlySales
+  case chat
+  
+  var title: String {
+    switch self {
+    case .recentlySales: L10n.settingRecentViewSales
+    case .chat: L10n.settingChat
+    }
+  }
+  
 }
 
 public struct MyPageView: View {
@@ -23,7 +31,7 @@ public struct MyPageView: View {
   @State private var error: MercuryError?
   @State private var hasFetched = false
   @Inject private var accessTokenManager: AccessTokenManagable
-  private var items: [String] = MyPageItemType.allCases.map(\.rawValue)
+  private var items: [MyPageItemType] = MyPageItemType.allCases
   private var icons: [Image] = [Asset.Images.home.image, Asset.Images.chat.image]
   
   private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
@@ -46,13 +54,13 @@ public struct MyPageView: View {
             Asset.Images.settingBlack.image
               .padding(.vertical, 16)
           }
-      })
+        })
       UserProfileView(modelData: $modelData)
         .padding(.bottom, 20)
       Divider()
       ForEach (items, id:\.self) { item in
         MercuryMenuItemView(
-          item: item,
+          item: item.title,
           icon: icons[items.firstIndex(of: item) ?? 0],
           left: .iconLabel,
           rightView: {
@@ -66,7 +74,7 @@ public struct MyPageView: View {
       
     } //: VStack
     .alert(error: $error)
-    .task(priority: .high) {
+    .task {
       if hasFetched { return }
       hasFetched = true
       do {
@@ -77,8 +85,7 @@ public struct MyPageView: View {
     }
   }
   
-  private func onTapItem(item: String) {
-    guard let item = MyPageItemType(rawValue: item) else { return }
+  private func onTapItem(item: MyPageItemType) {
     switch item {
     case .recentlySales:
       navigationStream.send(.push(.mypage(.init(route: .recentlySales))))

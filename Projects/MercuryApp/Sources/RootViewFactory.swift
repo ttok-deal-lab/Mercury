@@ -14,7 +14,7 @@ import AuctionDetail
 import Onboard
 import Domain
 import Infrastructure
-import Router
+import MyPage
 
 import PulseUI
 

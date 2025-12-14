@@ -6,10 +6,20 @@
 //
 
 import Foundation
+import UIComponent
 
-enum SettingItemType: String, CaseIterable {
-  case notification = "알림 설정 관리"
-  case terms = "서비스 약관"
-  case logout = "로그아웃"
-  case signOut = "탈퇴하기"
+enum SettingItemType: CaseIterable {
+//  case notification // MARK: - 1차 MVP 이후
+  case terms
+  case settingLogout
+  case signOut
+  
+  var title: String {
+    switch self {
+//    case .notification: L10n.settingNotificationManage
+    case .terms: L10n.settingTerms
+    case .settingLogout: L10n.settingLogout
+    case .signOut: L10n.settingSignout
+    }
+  }
 }

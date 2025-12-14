@@ -22,7 +22,7 @@ public struct NotificationView: View {
   
   public var body: some View {
     VStack(spacing: 0) {
-      MercuryNavigationBar("알림 설정 관리") {
+      MercuryNavigationBar(L10n.settingNoti) {
         Button {
           navigationStream.send(.pop)
         } label: {
@@ -31,22 +31,36 @@ public struct NotificationView: View {
       }
       
       MercuryMenuItemView(
-        item: "알림",
-        description: "중요한 정보를 알림으로 전달드려요.",
+        item: L10n.settingNoti,
+        description: L10n.settingNotiDescription,
         left: .description,
         rightView: {
           if #available(iOS 26.0, *) {
             Toggle("", isOn: $isNotificationOn)
+              .onChange(of: isNotificationOn) {
+                toggleNotofication(isNotificationOn)
+              }
               .labelsHidden()
               .glassEffect()
           } else {
             Toggle("", isOn: $isNotificationOn)
+              .onChange(of: isNotificationOn) {
+                toggleNotofication(isNotificationOn)
+              }
               .labelsHidden()
           }
         })
       Spacer()
     }
     .navigationBarBackButtonHidden()
+  }
+  
+  private func toggleNotofication(_ isToggleOn: Bool) {
+    if isToggleOn {
+      MercuryToast.shared.present(title: L10n.settingNotiAgree, toastType: .common)
+    } else {
+      MercuryToast.shared.present(title: L10n.settingNotiDecline, toastType: .urgent)
+    }
   }
 }
 

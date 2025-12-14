@@ -41,17 +41,10 @@ public final class UserProfileRepository: UserProfileRepositoriable {
   }
   
   public func userProfile(userId: Int) async throws {
-    guard let accessToken =  await self.localStorageUsecase.getModel(
-      forKey: .signInTokenInfo,
-      as: UserAccessToken.self)
-    else {
-      return
-    }
-    
     let userProfileInfoDTO = try await UserProfileAPI.userProfile(
       userID: userId
     ).request(UserProfileInfoDTO.self)
     self.userProfileManager.setUserProfile(userProfileInfoDTO.toUserProfileInfo())
   }
-
+  
 }

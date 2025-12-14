@@ -27,7 +27,7 @@ struct TermsView: View {
   
   var body: some View {
     VStack(spacing: 0) {
-      MercuryNavigationBar("서비스 약관") {
+      MercuryNavigationBar(L10n.settingTerms) {
         Button {
           navigationStream.send(.pop)
         } label: {

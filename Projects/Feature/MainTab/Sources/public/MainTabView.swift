@@ -29,16 +29,19 @@ public struct MainTabView<
   
   private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   private let auctionListUsecase: AuctionSalesListUsecasable
+  private let userProfileUsecase: UserProfileUsecasable
   
   // MARK: - life cycle
   
   public init(
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
     localStorageUsecase: LocalStorageUsecasable,
-    auctionListUsecase: AuctionSalesListUsecasable
+    auctionListUsecase: AuctionSalesListUsecasable,
+    userProfileUsecase: UserProfileUsecasable
   ) {
     self.navigationStream = navigationStream
     self.auctionListUsecase = auctionListUsecase
+    self.userProfileUsecase = userProfileUsecase
     self.modelData = MainTabModelData(localStorageUsecase: localStorageUsecase)
   }
   
@@ -76,7 +79,10 @@ public struct MainTabView<
         }
         .tag(Tab.interest)
       
-      MyPageView(navigationStream: navigationStream)
+      MyPageView(
+        navigationStream: navigationStream,
+        userProfileUseCase: userProfileUsecase
+      )
         .tabItem {
           Tab.setting.iconView(isSelected: selection == .setting)
         }
