@@ -26,7 +26,7 @@ enum AuctionFilterType: Identifiable, CaseIterable {
   
   var defaultTitle: String {
     switch self {
-    case .certified: return L10n.auctionFilterCertified
+    case .certified: return L10n.commonCertifiedAuction
     case .buildingUsage: return L10n.auctionFilterBuildingUsage
     case .auctionStatus: return L10n.auctionFilterAuctionStatus
     case .price: return L10n.auctionFilterPrice

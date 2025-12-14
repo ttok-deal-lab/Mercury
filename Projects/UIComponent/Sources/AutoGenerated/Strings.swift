@@ -10,14 +10,20 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum L10n {
+  /// 유찰 %@회
+  public static func auctionDetailFailedAuction(_ p1: Any) -> String {
+    return L10n.tr("Localizable", "auction_detail_failed_auction", String(describing: p1), fallback: "유찰 %@회")
+  }
+  /// 매물번호 %@
+  public static func auctionDetailSalesNumber(_ p1: Any) -> String {
+    return L10n.tr("Localizable", "auction_detail_sales_number", String(describing: p1), fallback: "매물번호 %@")
+  }
   /// 경매상태
   public static let auctionFilterAuctionStatus = L10n.tr("Localizable", "auction_filter_auction_status", fallback: "경매상태")
   /// 낙찰
   public static let auctionFilterBidWon = L10n.tr("Localizable", "auction_filter_bidWon", fallback: "낙찰")
   /// 건물용도
   public static let auctionFilterBuildingUsage = L10n.tr("Localizable", "auction_filter_building_usage", fallback: "건물용도")
-  /// 인증매물
-  public static let auctionFilterCertified = L10n.tr("Localizable", "auction_filter_certified", fallback: "인증매물")
   /// %1$@ 외 %2$@
   public static func auctionFilterMultiSelect(_ p1: Any, _ p2: Any) -> String {
     return L10n.tr("Localizable", "auction_filter_multi_select", String(describing: p1), String(describing: p2), fallback: "%1$@ 외 %2$@")
@@ -46,6 +52,8 @@ public enum L10n {
   public static let auctionSortByPriceLower = L10n.tr("Localizable", "auction_sort_by_price_lower", fallback: "가격 낮은 순")
   /// 취소
   public static let commonCancel = L10n.tr("Localizable", "common_cancel", fallback: "취소")
+  /// 인증매물
+  public static let commonCertifiedAuction = L10n.tr("Localizable", "common_certified_auction", fallback: "인증매물")
   /// 닫기
   public static let commonClose = L10n.tr("Localizable", "common_close", fallback: "닫기")
   /// 확인
@@ -60,6 +68,12 @@ public enum L10n {
   public static let commonYes = L10n.tr("Localizable", "common_yes", fallback: "네")
   /// 서울 관악구
   public static let homeDefaultArea = L10n.tr("Localizable", "home_default_area", fallback: "서울 관악구")
+  /// 알림 설정 관리
+  public static let mypageSettingNotification = L10n.tr("Localizable", "mypage_setting_notification", fallback: "알림 설정 관리")
+  /// 탈퇴하기
+  public static let mypageSettingSignout = L10n.tr("Localizable", "mypage_setting_signout", fallback: "탈퇴하기")
+  /// 서비스 약관
+  public static let mypageSettingTerms = L10n.tr("Localizable", "mypage_setting_terms", fallback: "서비스 약관")
   /// 로그인
   public static let settingLogin = L10n.tr("Localizable", "setting_login", fallback: "로그인")
   /// 로그아웃

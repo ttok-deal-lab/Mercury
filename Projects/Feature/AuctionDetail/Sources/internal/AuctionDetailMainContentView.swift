@@ -15,7 +15,6 @@ import Router
 
 struct AuctionDetailMainContentView<MapView: MapViewable>: View {
   @Binding var modelData: AuctionDetailModelData
-  @State private var isShowFullMap = false // 지도 상호작용 상태
   
   var body: some View {
     if let auctionDetailItem = modelData.auctionDetailItem {
@@ -34,15 +33,19 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
       
       ScrollView(.vertical) {
         VStack(spacing: .zero) {
+          // 사진 Pager
           AuctionDetailPicturesPagerView(height: 216, auctionDetailInfo: auctionDetailItem)
+          // 요약정보
           AuctionDetailAbstractInfoView(auctionDetailInfo: auctionDetailItem)
           
           dividerView()
           
+          // 경매정보 | 권리분석 | 건물정보
           AuctionDetailTabPagerContainerView(auctionDetailInfo: auctionDetailItem)
           
           dividerView()
           
+          // 경매 히스토리
           AuctionDetailHistoryView(
             auctionStartDateText: auctionDetailItem.salesOpenDate.toKoreanDateString(),
             distributionDeadlineText: auctionDetailItem.distributionRequiredDeadlineDate.toKoreanDateString(),
@@ -50,37 +53,27 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
             salesDetails: modelData.sortedSalesDetailByTime()
           )
           
-          Button {
-            isShowFullMap = true
-          } label: {
-            MapView(targetLongitude: 127.108678, targetLatitude: 37.402001)
-              .frame(maxWidth: .infinity)
-              .frame(height: 120)
-              .clipShape(RoundedRectangle(cornerRadius: 12))
-              .padding(.horizontal, 20)
-          }
+          dividerView()
+          
+          // 등기부 현황
+          AuctionDetailRegisterStatusView()
+          
+          dividerView()
+          
+          // 법원정보
+          AuctionDetailCourtInfoView<MapView>(
+            auctionDetailItem: auctionDetailItem,
+            courtLongitude: 127.108678, // 아직 위경도 안내려줌
+            courtLatitude: 37.402001
+          )
+          
+          dividerView()
+          
+          // 건물 상세내역
+          AuctionDetailSalesBuildingDetailView(salesItems: auctionDetailItem.salesItemDetails)
         }
       }
     }
-    .fullScreenCover(isPresented: $isShowFullMap, content: {
-      MapView(targetLongitude: 127.108678, targetLatitude: 37.402001)
-        .ignoresSafeArea()
-        .overlay(alignment: .topTrailing) {
-          Button {
-            isShowFullMap = false
-          } label: {
-            Asset.Images.close.image
-              .resizable()
-              .frame(width: 30, height: 30)
-              .foregroundStyle(.black)
-              .padding(4)
-              .background(.white)
-              .clipShape(Circle())
-              .shadows(.shadowHighest)
-          }
-          .padding(.trailing, 15)
-        }
-    })
     .navigationBarBackButtonHidden()
     .toolbarVisibility(.hidden, for: .navigationBar)
     .alert(error: $modelData.error)

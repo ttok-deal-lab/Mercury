@@ -45,16 +45,6 @@ struct AuctionDetailHistoryView: View {
       .padding(.bottom, 20)
 
       historyCard(items: items)
-        .overlay(alignment: .bottom) {
-          if !isExpanded {
-            LinearGradient(colors: [
-              Color.white.opacity(0.01),
-              Color.white
-            ], startPoint: .top, endPoint: .bottom)
-            .frame(height: 24, alignment: .bottom)
-            .zIndex(1)
-          }
-        }
 
       AuctionDetailHistoryExpandButton(isExpanded: isExpanded, isEnabled: items.count > 1) {
         withAnimation(.snappy) {
@@ -97,10 +87,20 @@ struct AuctionDetailHistoryView: View {
     }
     .background(
       RoundedRectangle(cornerRadius: 8, style: .continuous)
+        .inset(by: 0.5)
         .fill(Asset.Colors.neutralLight.color)
         .stroke(Asset.Colors.gray150.color, lineWidth: 1)
-        .zIndex(0)
     )
+    .overlay(alignment: .bottom) {
+      if !isExpanded {
+        LinearGradient(colors: [
+          Color.white.opacity(0.01),
+          Color.white
+        ], startPoint: .top, endPoint: .bottom)
+        .frame(height: 24, alignment: .bottom)
+        .zIndex(1)
+      }
+    }
     .animation(.snappy, value: isExpanded)
   }
 
