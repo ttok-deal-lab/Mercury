@@ -8,10 +8,10 @@
 import Foundation
 
 
-public class UserProfileUsecase: UserProfileUsecasable {
+public class MyPageUsecase: MyPageUsecasable {
   private let fetcher: UerProfileFetcher
   
-  public init(repository: UserProfileRepositoriable) {
+  public init(repository: MyPageRepositoriable) {
     self.fetcher = UerProfileFetcher(repository: repository)
   }
   
@@ -21,9 +21,9 @@ public class UserProfileUsecase: UserProfileUsecasable {
 }
 
 actor UerProfileFetcher {
-  let repository: UserProfileRepositoriable
+  let repository: MyPageRepositoriable
   
-  init(repository: UserProfileRepositoriable) {
+  init(repository: MyPageRepositoriable) {
     self.repository = repository
   }
   

@@ -11,5 +11,5 @@ import Combine
 import Domain
 
 public protocol MyPageViewable where Self: View {
-  init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>, userProfileUseCase: UserProfileUsecasable)
+  init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>, userProfileUseCase: MyPageUsecasable)
 }

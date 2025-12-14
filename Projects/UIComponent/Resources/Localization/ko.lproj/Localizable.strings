@@ -24,6 +24,10 @@
 "setting_recent_view_sales" = "최근 본 매물";
 "setting_update" = "업데이트하기";
 "setting_open_license" = "오픈소스 라이선스 보기";
+"mypage_login_google" = "구글로 로그인";
+"mypage_login_apple" = "애플로 로그인";
+"mypage_login_kakao" = "카카오로 로그인";
+"mypage_login_naver" = "네이버로 로그인";
 "auction_item" = "상품 ";
 "auction_sort_by_latest_registration" = "최신 등록순";
 "auction_sort_by_most_interested" = "관심 많은 순";

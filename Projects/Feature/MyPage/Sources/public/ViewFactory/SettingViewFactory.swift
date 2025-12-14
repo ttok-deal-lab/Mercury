@@ -9,14 +9,13 @@ import Foundation
 import SwiftUI
 import Combine
 
+import Domain
 import Router
 
+
 public struct SettingViewFactory: ViewFactory {
-  private let modelData: MyPageModelData
   
-  public init(modelData: MyPageModelData) {
-    self.modelData = modelData
-  }
+  public init() { }
   
   public func makeView(
     _ settingRouter: SettingRoute,

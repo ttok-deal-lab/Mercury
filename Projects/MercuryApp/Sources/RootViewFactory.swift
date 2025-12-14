@@ -40,25 +40,16 @@ struct RootViewFactory: ViewFactory {
     case .networkConsole:
       ConsoleView()
     case .setting(let settingStep):
-      SettingViewFactory(
-        modelData: MyPageModelData(
-          userProfileUsecasable: UserProfileUsecase(
-            repository: UserProfileRepository()
-          )
-        )
-      ).makeView(settingStep, navigationStream: navigationStream)
+      SettingViewFactory()
+        .makeView(settingStep, navigationStream: navigationStream)
     case .terms(let agreementStep):
-      TermsViewFactory(
-        modelData: MyPageModelData(
-          userProfileUsecasable: UserProfileUsecase(repository: UserProfileRepository())
-        )
-      ).makeView(agreementStep, navigationStream: navigationStream)
+      TermsViewFactory()
+        .makeView(agreementStep, navigationStream: navigationStream)
     case .mypage(let myPageStep):
       MyPageViewFactory(
-        modelData: MyPageModelData(
-          userProfileUsecasable: UserProfileUsecase(repository: UserProfileRepository())
-        )
-      ).makeView(myPageStep, navigationStream: navigationStream)
+        mypageUsecasable: MyPageUsecase(repository: MyPageRepository())
+      )
+      .makeView(myPageStep, navigationStream: navigationStream)
     }
   }
 }

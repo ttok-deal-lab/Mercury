@@ -9,13 +9,14 @@ import Foundation
 import SwiftUI
 import Combine
 
+import Domain
 import Router
 
 public struct MyPageViewFactory: ViewFactory {
-  private let modelData: MyPageModelData
+  private let mypageUsecasable: MyPageUsecasable
   
-  public init(modelData: MyPageModelData) {
-    self.modelData = modelData
+  public init(mypageUsecasable: MyPageUsecasable) {
+    self.mypageUsecasable = mypageUsecasable
   }
   
   public func makeView(
@@ -25,6 +26,8 @@ public struct MyPageViewFactory: ViewFactory {
     switch mypageRouter.route {
     case .recentlySales:
       RecentlySalesView(navigationStream: navigationStream)
+    case .chat:
+      EmptyView()
     }
   }
 }

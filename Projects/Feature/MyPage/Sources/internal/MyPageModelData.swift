@@ -20,11 +20,11 @@ public final class MyPageModelData {
   var userProfile: UserProfileInfo?
   
   // MARK: - private property
-  private var userProfileUsecasable: UserProfileUsecasable
+  private var userProfileUsecasable: MyPageUsecasable
   
   // MARK: - life cycle
   
-  public init(userProfileUsecasable: UserProfileUsecasable) {
+  public init(userProfileUsecasable: MyPageUsecasable) {
     self.userProfileUsecasable = userProfileUsecasable
   }
   

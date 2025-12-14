@@ -12,11 +12,8 @@ import Combine
 import Router
 
 public struct TermsViewFactory: ViewFactory {
-  private let modelData: MyPageModelData
   
-  public init(modelData: MyPageModelData) {
-    self.modelData = modelData
-  }
+  public init() { }
   
   public func makeView(
     _ agreementRouter: TermsRoute,

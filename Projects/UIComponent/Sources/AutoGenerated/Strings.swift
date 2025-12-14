@@ -70,14 +70,22 @@ public enum L10n {
   public static let commonYes = L10n.tr("Localizable", "common_yes", fallback: "네")
   /// 서울 관악구
   public static let homeDefaultArea = L10n.tr("Localizable", "home_default_area", fallback: "서울 관악구")
+  /// 애플로 로그인
+  public static let mypageLoginApple = L10n.tr("Localizable", "mypage_login_apple", fallback: "애플로 로그인")
+  /// 구글로 로그인
+  public static let mypageLoginGoogle = L10n.tr("Localizable", "mypage_login_google", fallback: "구글로 로그인")
+  /// 카카오로 로그인
+  public static let mypageLoginKakao = L10n.tr("Localizable", "mypage_login_kakao", fallback: "카카오로 로그인")
+  /// 네이버로 로그인
+  public static let mypageLoginNaver = L10n.tr("Localizable", "mypage_login_naver", fallback: "네이버로 로그인")
+  /// 1:1 문의
+  public static let settingChat = L10n.tr("Localizable", "setting_chat", fallback: "1:1 문의")
   /// 로그인
   public static let settingLogin = L10n.tr("Localizable", "setting_login", fallback: "로그인")
   /// 로그아웃
   public static let settingLogout = L10n.tr("Localizable", "setting_logout", fallback: "로그아웃")
   /// 알림
   public static let settingNoti = L10n.tr("Localizable", "setting_noti", fallback: "알림")
-  /// 1:1 문의
-  public static let settingChat = L10n.tr("Localizable", "setting_chat", fallback: "1:1 문의")
   /// 알림 수신에 동의했어요.
   public static let settingNotiAgree = L10n.tr("Localizable", "setting_noti_agree", fallback: "알림 수신에 동의했어요.")
   /// 알림 수신을 거부했어요.

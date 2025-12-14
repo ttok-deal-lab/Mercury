@@ -16,7 +16,7 @@ public struct MyPageViewWrapperView: View, MyPageViewable {
   
   let hostView: MyPageView
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>, userProfileUseCase: UserProfileUsecasable) {
+  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>, userProfileUseCase: MyPageUsecasable) {
     self.hostView = MyPageView(navigationStream: navigationStream, userProfileUsecase: userProfileUseCase)
   }
   

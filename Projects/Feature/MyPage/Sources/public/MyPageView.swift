@@ -38,7 +38,7 @@ public struct MyPageView: View {
   
   public init(
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
-    userProfileUsecase: UserProfileUsecasable
+    userProfileUsecase: MyPageUsecasable
   ) {
     self.navigationStream = navigationStream
     self.modelData = MyPageModelData(userProfileUsecasable: userProfileUsecase)

@@ -29,7 +29,7 @@ public struct MainTabView<
   
   private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   private let auctionListUsecase: AuctionSalesListUsecasable
-  private let userProfileUsecase: UserProfileUsecasable
+  private let userProfileUsecase: MyPageUsecasable
   
   // MARK: - life cycle
   
@@ -37,7 +37,7 @@ public struct MainTabView<
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
     localStorageUsecase: LocalStorageUsecasable,
     auctionListUsecase: AuctionSalesListUsecasable,
-    userProfileUsecase: UserProfileUsecasable
+    userProfileUsecase: MyPageUsecasable
   ) {
     self.navigationStream = navigationStream
     self.auctionListUsecase = auctionListUsecase

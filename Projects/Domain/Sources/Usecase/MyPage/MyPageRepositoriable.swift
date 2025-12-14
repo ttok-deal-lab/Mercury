@@ -9,6 +9,6 @@ import Foundation
 
 import Combine
 
-public protocol UserProfileRepositoriable {
+public protocol MyPageRepositoriable {
   func fetchUserProfile() async throws -> UserProfileInfo
 }

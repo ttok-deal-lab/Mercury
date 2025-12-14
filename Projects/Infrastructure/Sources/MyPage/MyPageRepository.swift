@@ -15,7 +15,7 @@ enum UserProfileError: Error {
   case missingUserId
 }
 
-public final class UserProfileRepository: UserProfileRepositoriable {
+public final class MyPageRepository: MyPageRepositoriable {
   @LazyInject private var userProfileManager: UserProfileManagable
   private var signininformationManager = MercuryContainer.shared.resolve(SignInInformationReadable.self)
   

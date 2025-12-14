@@ -26,7 +26,7 @@ public struct MainTabViewWrapperView: View, MainTabViewable {
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
     localStorageUsecase: LocalStorageUsecasable,
     auctionListUsecase: AuctionSalesListUsecasable,
-    userProfileUsecase: UserProfileUsecasable
+    userProfileUsecase: MyPageUsecasable
   ) {
     hostView = MainTabView(
       navigationStream: navigationStream,

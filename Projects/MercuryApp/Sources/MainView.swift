@@ -47,7 +47,7 @@ struct MainView: View {
           navigationStream: coordinator.eventSubject,
           localStorageUsecase: LocalStorageUsecase(repository: UserDefaultsStoreRepository()),
           auctionListUsecase: AuctionSalesListUsecase(repository: AuctionSalesListRepository()),
-          userProfileUsecase: UserProfileUsecase(repository: UserProfileRepository())
+          userProfileUsecase: MyPageUsecase(repository: MyPageRepository())
         )
         .navigationDestination(for: FeatureRoute.self) { route in
           RootViewFactory().makeView(route, navigationStream: coordinator.eventSubject)
