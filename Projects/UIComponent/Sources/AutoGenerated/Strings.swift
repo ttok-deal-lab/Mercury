@@ -10,10 +10,6 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum L10n {
-  /// 유찰 %@회
-  public static func auctionDetailFailedAuction(_ p1: Any) -> String {
-    return L10n.tr("Localizable", "auction_detail_failed_auction", String(describing: p1), fallback: "유찰 %@회")
-  }
   /// 매물번호 %@
   public static func auctionDetailSalesNumber(_ p1: Any) -> String {
     return L10n.tr("Localizable", "auction_detail_sales_number", String(describing: p1), fallback: "매물번호 %@")
@@ -58,6 +54,10 @@ public enum L10n {
   public static let commonClose = L10n.tr("Localizable", "common_close", fallback: "닫기")
   /// 확인
   public static let commonConfirm = L10n.tr("Localizable", "common_confirm", fallback: "확인")
+  /// 유찰 %@회
+  public static func commonFailedBidCount(_ p1: Any) -> String {
+    return L10n.tr("Localizable", "common_failed_bid_count", String(describing: p1), fallback: "유찰 %@회")
+  }
   /// 아니오
   public static let commonNo = L10n.tr("Localizable", "common_no", fallback: "아니오")
   /// %@원

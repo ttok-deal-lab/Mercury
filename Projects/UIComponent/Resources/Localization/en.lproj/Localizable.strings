@@ -5,6 +5,7 @@
 "common_no" = "no";
 "common_won" = "%@won";
 "common_certified_auction" = "Certified Item";
+"common_failed_bid_count" = "%@ Fail Bid";
 "tab_home" = "HOME";
 "tab_interest" = "INTEREST";
 "tab_setting" = "SETTING";

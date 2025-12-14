@@ -46,7 +46,7 @@ struct AuctionDetailDTO: Decodable, Sendable {
     case courtCode, courtTeam, salesDetails, salesPictures
     case salesBuildings, salesItemDetails, conditionReport
     case appraisalDocumentUrl, appraisalDocuments, nearbySalesStats
-    case soldOut = "isSoldOut"  // 매핑 필요
+    case soldOut = "isSoldOut"  
   }
   
   func toEntity() -> AuctionDetail {

@@ -8,6 +8,12 @@
 import Foundation
 
 public extension String {
+  
+  var toKoreanCurrency: String {
+    guard let intValue = Int(self.replacingOccurrences(of: ",", with: "")) else { return self }
+    return intValue.toKoreanCurrency()
+  }
+  
   func toKoreanDate() -> Date {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"

@@ -28,12 +28,12 @@ struct AuctionSalesItemView: View {
         .overlay {
           VStack(spacing: .zero) {
             HStack(spacing: .zero) {
-              Text("D\(item.salesLeftDays >= 0 ? "+" : "-")\(abs(item.salesLeftDays))")
+              Text(item.isSoldOut ? "매각" : "D\(item.salesLeftDays >= 0 ? "+" : "-")\(abs(item.salesLeftDays))")
                 .fonts(.captionLargeMedium)
                 .foregroundStyle(Asset.Colors.neutralWhite.color)
                 .padding(.horizontal, 6)
                 .padding(.vertical, 3)
-                .background(Asset.Colors.neutral.color)
+                .background(item.isSoldOut ? Asset.Colors.neutralSubtler.color : Asset.Colors.neutral.color)
                 .clipShape(RoundedRectangle(cornerRadius: 4))
               Spacer()
             }
@@ -44,7 +44,7 @@ struct AuctionSalesItemView: View {
         }
         
         VStack(alignment: .leading, spacing: 2) {
-          Text(L10n.commonWon(item.appraisalPrice))
+          Text(item.appraisalPrice.toKoreanCurrency)
             .foregroundStyle(Asset.Colors.neutral.color)
             .fonts(.bodyLargeBold)
           
@@ -67,7 +67,7 @@ struct AuctionSalesItemView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 4))
             }
             
-            Text("유찰 \(item.failBidCount)회")
+            Text(L10n.commonFailedBidCount(item.failBidCount))
               .fonts(.captionLargeMedium)
               .foregroundStyle(Asset.Colors.neutralSubtler.color)
               .padding(.vertical, 3)

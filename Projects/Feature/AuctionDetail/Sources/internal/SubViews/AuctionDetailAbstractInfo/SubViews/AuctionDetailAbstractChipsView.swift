@@ -35,7 +35,7 @@ struct AuctionDetailAbstractChipsView: View {
       .clipShape(RoundedRectangle(cornerRadius: 8))
       
       // 유찰 n회
-      Text(L10n.auctionDetailFailedAuction(2))
+      Text(L10n.commonFailedBidCount(2))
         .fonts(.bodyMicroMedium)
         .foregroundStyle(Asset.Colors.neutralSubtler.color)
         .padding(.horizontal, 6)

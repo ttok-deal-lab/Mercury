@@ -38,11 +38,13 @@ struct AuctionSalesItemDTO: Decodable, Sendable {
   let salesPicture: [SalesPictureDTO]
   let registerDate: String
   let verified: Bool
+  let isSoldOut: Bool
   
   enum CodingKeys: String, CodingKey {
     case id, caseNumber, salesAddress, salesCategories
     case salesDateTime, appraisalPrice, salesPicture
     case failBidCount, zzimCount, registerDate, verified
+    case isSoldOut
   }
   
   init(from decoder: Decoder) throws {
@@ -59,6 +61,7 @@ struct AuctionSalesItemDTO: Decodable, Sendable {
     verified = try container.decode(Bool.self, forKey: .verified)
     salesDateTime = try container.decode(String.self, forKey: .salesDateTime)
     registerDate = try container.decode(String.self, forKey: .registerDate)
+    isSoldOut = try container.decode(Bool.self, forKey: .isSoldOut)
   }
 }
 
@@ -75,7 +78,8 @@ extension AuctionSalesItemDTO {
       failBidCount: failBidCount,
       zzimCount: zzimCount,
       registerDate: registerDate.toKoreanDate(),
-      verified: verified
+      verified: verified,
+      isSoldOut: isSoldOut
     )
   }
 }
