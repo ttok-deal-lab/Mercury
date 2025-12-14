@@ -24,6 +24,14 @@ enum MyPageItemType: CaseIterable {
     }
   }
   
+  var icon: Image {
+    switch self {
+    case .recentlySales:
+      Asset.Images.home.image
+    case .chat:
+      Asset.Images.chat.image
+    }
+  }
 }
 
 public struct MyPageView: View {
@@ -32,7 +40,6 @@ public struct MyPageView: View {
   @State private var hasFetched = false
   @Inject private var accessTokenManager: AccessTokenManagable
   private var items: [MyPageItemType] = MyPageItemType.allCases
-  private var icons: [Image] = [Asset.Images.home.image, Asset.Images.chat.image]
   
   private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
@@ -61,7 +68,7 @@ public struct MyPageView: View {
       ForEach (items, id:\.self) { item in
         MercuryMenuItemView(
           item: item.title,
-          icon: icons[items.firstIndex(of: item) ?? 0],
+          icon: item.icon,
           left: .iconLabel,
           rightView: {
             Asset.Images.arrowRightNoShaftGray.image
