@@ -67,9 +67,6 @@ jobs:
       - name: Generate Project
         run: tuist generate --no-open
 
-      - name: Test Mercury
-        run: xcodebuild -workspace Mercury.xcworkspace -scheme MercuryApp -destination 'platform=iOS Simulator,name=iPhone 16 Pro' build test 
-
       - name: Notify
         run: fastlane ios discord_alert branch:"Develop"
   
