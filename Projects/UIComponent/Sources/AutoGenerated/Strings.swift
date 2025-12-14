@@ -78,6 +78,8 @@ public enum L10n {
   public static let mypageLoginKakao = L10n.tr("Localizable", "mypage_login_kakao", fallback: "카카오로 로그인")
   /// 네이버로 로그인
   public static let mypageLoginNaver = L10n.tr("Localizable", "mypage_login_naver", fallback: "네이버로 로그인")
+  /// 로그아웃 하시겠어요?
+  public static let settingAlertLogout = L10n.tr("Localizable", "setting_alert_logout", fallback: "로그아웃 하시겠어요?")
   /// 1:1 문의
   public static let settingChat = L10n.tr("Localizable", "setting_chat", fallback: "1:1 문의")
   /// 로그인

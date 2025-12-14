@@ -64,10 +64,10 @@ public struct SettingView: View {
         
         VStack(alignment: .leading, spacing: 0) {
           HStack() {
-            Text("\(L10n.appVersion) \(version)")
+            Text("\(L10n.commonAppVersion) \(version)")
               .fonts(.bodySmallMedium)
               .foregroundStyle(Asset.Colors.neutralSubtler.color)
-            Text(L10n.updateApp)
+            Text(L10n.settingUpdate)
               .fonts(.bodySmallMedium)
               .foregroundStyle(Asset.Colors.neutralSubtler.color)
               .mercuryUnderLine()
@@ -85,7 +85,7 @@ public struct SettingView: View {
               }
           }
           
-          Text("\(L10n.openLicense)")
+          Text("\(L10n.settingOpenLicense)")
             .fonts(.bodySmallMedium)
             .foregroundStyle(Asset.Colors.neutralSubtler.color)
             .mercuryUnderLine()
@@ -107,10 +107,10 @@ public struct SettingView: View {
   
   private func onTapItem(_ item: SettingItemType) {
     switch item {
-    case .notification:
-      navigationStream.send(.push(.setting(.init(route: .notification))))
+      // MARK: - 1차 MVP 이후
+//    case .notification:
+//      navigationStream.send(.push(.setting(.init(route: .notification))))
     case .terms:
-      print("serviceAgreement Tapped")
       navigationStream.send(.push(.terms(.init(route: .terms))))
     case .settingLogout:
       // TODO: 모달 띄우기
@@ -119,7 +119,7 @@ public struct SettingView: View {
           type:
               .cancallable(
                 information: .init(
-                  title: "\(L10n.settingLogout) 하시겠어요?",
+                  title: "\(L10n.settingAlertLogout)",
                   description: "",
                   confirmButtonTitle: L10n.commonYes,
                   cancelButtonTitle: L10n.commonNo,

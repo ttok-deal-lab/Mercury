@@ -12,6 +12,7 @@
 "tab_setting" = "SETTING";
 "home_default_area" = "Seoul Guanak-gu";
 "setting_logout" = "Logout";
+"setting_alert_logout" = "Would you like to log out?";
 "setting_login" = "Login";
 "setting_noti" = "Notification";
 "setting_chat" = "1:1 chat";

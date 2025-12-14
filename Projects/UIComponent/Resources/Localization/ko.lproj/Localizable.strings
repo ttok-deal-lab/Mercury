@@ -12,6 +12,7 @@
 "tab_setting" = "설정";
 "home_default_area" = "서울 관악구";
 "setting_logout" = "로그아웃";
+"setting_alert_logout" = "로그아웃 하시겠어요?";
 "setting_login" = "로그인";
 "setting_noti" = "알림";
 "setting_chat" = "1:1 문의";
