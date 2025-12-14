@@ -18,6 +18,7 @@ public struct InfinitePager<Item, Content>: View where Item: Identifiable & Equa
 
   @State private var visibleID: Int? = nil
   @State private var isReady: Bool = false
+  @State private var currentIndex: Int = 0
 
   private var wrapped: [Item] {
     guard let first = items.first, let last = items.last else { return items }
@@ -71,12 +72,14 @@ public struct InfinitePager<Item, Content>: View where Item: Identifiable & Equa
         let clamped = index.clamped(to: 0...(items.count - 1))
         DispatchQueue.main.async {
           visibleID = realToWrappedID(clamped)
+          currentIndex = clamped
         }
       }
       .onChange(of: index) { _, newValue in
         guard !items.isEmpty else { return }
 
         let clamped = newValue.clamped(to: 0...(items.count - 1))
+        currentIndex = clamped
         let targetID = realToWrappedID(clamped)
         guard visibleID != targetID else { return }
 
@@ -91,6 +94,9 @@ public struct InfinitePager<Item, Content>: View where Item: Identifiable & Equa
         let newReal = wrappedIDToReal(newID)
         if index != newReal {
           index = newReal
+        }
+        if currentIndex != newReal {
+          currentIndex = newReal
         }
 
         if newID == 0 {
@@ -111,7 +117,7 @@ public struct InfinitePager<Item, Content>: View where Item: Identifiable & Equa
       }
       .overlay(alignment: .bottomTrailing) {
         if showsIndicator, items.count > 1 {
-          PageIndicator(totalCount: items.count, realIndex: $index)
+          PageIndicator(totalCount: items.count, realIndex: $currentIndex)
             .padding(.horizontal, 12)
             .padding(.vertical, 14)
         }
