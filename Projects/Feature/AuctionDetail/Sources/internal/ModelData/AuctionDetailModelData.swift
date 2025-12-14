@@ -41,6 +41,12 @@ public final class AuctionDetailModelData {
     }
   }
   
+  // MARK: - internal methods
+  
+  func sortedSalesDetailByTime() -> [AuctionDetail.SalesDetail] {
+    self.auctionDetailItem?.salesDetails.sorted { $0.timeStamp <= $1.timeStamp } ?? []
+  }
+  
   // MARK: - private methods
   
   private func fetchAuctionDetailItem() async throws -> AuctionDetail {

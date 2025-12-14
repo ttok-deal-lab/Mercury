@@ -22,7 +22,8 @@ struct AuctionDetailAbstractChipsView: View {
           .renderingMode(.template)
           .foregroundStyle(.white)
           .frame(width: 16, height: 16)
-        Text("인증매물")
+        // 인증매물
+        Text(L10n.commonCertifiedAuction)
           .foregroundStyle(Asset.Colors.neutralWhite.color)
           .fonts(.bodyMicroMedium)
       }
@@ -33,7 +34,8 @@ struct AuctionDetailAbstractChipsView: View {
       }
       .clipShape(RoundedRectangle(cornerRadius: 8))
       
-      Text("유찰 2회")
+      // 유찰 n회
+      Text(L10n.commonFailedBidCount(2))
         .fonts(.bodyMicroMedium)
         .foregroundStyle(Asset.Colors.neutralSubtler.color)
         .padding(.horizontal, 6)

@@ -25,12 +25,13 @@ struct AuctionDetailTabRightsAnalysisView: View {
     let selected = items.isEmpty ? nil : items[safeIndex]
 
     VStack(alignment: .leading, spacing: 12) {
-      HStack(spacing: 6) {
-        Text("점유 관계")
-          .font(.system(size: 20, weight: .semibold))
+      HStack(spacing: 4) {
+        Text("임차인")
+          .fonts(.titleMediumBold)
+          .foregroundStyle(Asset.Colors.neutral.color)
         Text("\(items.count)")
-          .font(.system(size: 20, weight: .semibold))
-          .foregroundStyle(.blue)
+          .fonts(.titleMediumBold)
+          .foregroundStyle(Asset.Colors.primary.color)
       }
 
       if items.isEmpty {
@@ -76,14 +77,13 @@ private struct OccupantChipRow: View {
 
   var body: some View {
     ScrollView(.horizontal) {
-      HStack(spacing: 10) {
+      HStack(spacing: 16) {
         ForEach(items.indices, id: \.self) { i in
           let item = items[i]
           OccupantChip(
             title: item.occupant,
             statusText: item.relation.displayName,
-            isSelected: i == selectedIndex,
-            badgeColor: item.relation.badgeColor
+            isSelected: i == selectedIndex
           ) {
             withAnimation(.snappy) { selectedIndex = i }
           }
@@ -100,7 +100,6 @@ private struct OccupantChip: View {
   let title: String
   let statusText: String
   let isSelected: Bool
-  let badgeColor: Color
   let onTap: () -> Void
 
   var body: some View {
@@ -108,8 +107,8 @@ private struct OccupantChip: View {
       HStack(spacing: 10) {
         HStack(spacing: 6) {
           Text(title)
-            .font(.system(size: 14, weight: .semibold))
-            .foregroundStyle(isSelected ? .blue : .primary)
+            .fonts(.bodyMediumBold)
+            .foregroundStyle(Asset.Colors.neutral.color)
 
           if isSelected {
             Image(systemName: "checkmark")
@@ -117,20 +116,23 @@ private struct OccupantChip: View {
               .foregroundStyle(.blue)
           }
         }
-
+        
+        Spacer()
         Text(statusText)
-          .font(.system(size: 13, weight: .semibold))
-          .foregroundStyle(isSelected ? badgeColor : .secondary)
+          .fonts(.bodyMediumBold)
+          .foregroundStyle(isSelected ? Asset.Colors.primary.color : Asset.Colors.neutralSubtler.color)
       }
-      .padding(.horizontal, 14)
-      .padding(.vertical, 12)
-      .background(RoundedRectangle(cornerRadius: 12).fill(Color.white))
-      .overlay(
-        RoundedRectangle(cornerRadius: 12)
-          .stroke(isSelected ? Color.blue : Color.gray.opacity(0.25), lineWidth: isSelected ? 1.5 : 1)
-      )
+      .padding(16)
+      .shadows(.shadowMedium)
     }
-    .buttonStyle(.plain)
+    .frame(width: 210, height: 54)
+    .overlay(
+      RoundedRectangle(cornerRadius: 8)
+        .stroke(
+          isSelected ? Asset.Colors.primary.color : Asset.Colors.neutralMuted.color,
+          lineWidth: 1
+        )
+    )
   }
 }
 
@@ -138,70 +140,85 @@ private struct OccupantDetailCard: View {
   let item: AuctionDetail.ConditionReport.OccupationRelationReport
 
   var body: some View {
-    VStack(alignment: .leading, spacing: 10) {
+    VStack(alignment: .leading, spacing: .zero) {
+      
       HStack(alignment: .top) {
         VStack(alignment: .leading, spacing: 4) {
           Text(item.occupant)
-            .font(.system(size: 18, weight: .semibold))
+            .fonts(.titleMediumBold)
+            .foregroundStyle(Asset.Colors.neutral.color)
 
           if !item.occupiedPart.isEmpty {
             Text(item.occupiedPart)
-              .font(.system(size: 13))
-              .foregroundStyle(.secondary)
+              .fonts(.bodyMicroMedium)
+              .foregroundStyle(Asset.Colors.neutralSubtler.color)
           }
         }
 
         Spacer()
 
         Text(item.relation.displayName)
-          .font(.system(size: 14, weight: .semibold))
-          .foregroundStyle(item.relation.badgeColor)
+          .fonts(.titleMediumBold)
+          .foregroundStyle(Asset.Colors.primary.color)
       }
+      .padding(16)
 
-      Divider().opacity(0.15)
-
-      VStack(spacing: 10) {
-        DetailRow(title: "대항력", value: "Mock", valueStyle: .mock)
+      VStack(spacing: 12) {
+        DetailRow(title: "대항력", value: "Mock", displayType: .titler, valueStyle: .mock)
         DetailRow(title: "ㄴ 전입신고일", value: item.movedAt.formattedKRDate)
         DetailRow(title: "ㄴ 점유상태", value: "Mock", valueStyle: .mock)
 
-        DetailRow(title: "우선변제권", value: "Mock", valueStyle: .mock)
+        DetailRow(title: "우선변제권", value: "Mock", displayType: .titler, valueStyle: .mock)
         DetailRow(title: "ㄴ 확정일자", value: item.confirmedAt.formattedKRDate)
 
-        DetailRow(title: "배당요구", value: "Mock", valueStyle: .mock)
+        DetailRow(title: "배당요구", value: "Mock", displayType: .titler, valueStyle: .mock)
         DetailRow(title: "ㄴ 배당요구일", value: "Mock", valueStyle: .mock)
-        DetailRow(title: "ㄴ 보증금", value: item.deposit.formattedWon)
-        DetailRow(title: "ㄴ 월세", value: item.rental.formattedWon)
+        DetailRow(title: "ㄴ 보증금", value: item.deposit.toKoreanWon)
+        DetailRow(title: "ㄴ 월세", value: item.rental.toKoreanWon)
       }
-      .padding(.top, 2)
+      .padding(16)
+      .background(Asset.Colors.neutralLight.color)
     }
-    .padding(16)
-    .background(RoundedRectangle(cornerRadius: 14).fill(Color.white))
     .overlay(
-      RoundedRectangle(cornerRadius: 14)
-        .stroke(Color.gray.opacity(0.18), lineWidth: 1)
+      RoundedRectangle(cornerRadius: 8)
+        .stroke(
+          Asset.Colors.gray150.color,
+          lineWidth: 1
+        )
     )
   }
 }
 
 private enum DetailValueStyle { case normal, mock }
+private enum DetailRowDisplayType {
+  case titler
+  case subtler
+  
+  var font: MercuryFont {
+    switch self {
+    case .titler: .bodySmallBold
+    case .subtler: .bodySmallMedium
+    }
+  }
+}
 
 private struct DetailRow: View {
   let title: String
   let value: String
+  var displayType: DetailRowDisplayType = .subtler
   var valueStyle: DetailValueStyle = .normal
 
   var body: some View {
     HStack(alignment: .firstTextBaseline) {
       Text(title)
-        .font(.system(size: 13))
-        .foregroundStyle(.secondary)
+        .fonts(displayType.font)
+        .foregroundStyle(Asset.Colors.neutralSubtler.color)
 
-      Spacer(minLength: 12)
+      Spacer()
 
       Text(value)
-        .font(.system(size: 13, weight: .semibold))
-        .foregroundStyle(valueStyle == .mock ? Color.orange : Color.primary)
+        .fonts(displayType.font)
+        .foregroundStyle(valueStyle == .mock ? Color.orange : Asset.Colors.neutralSubtler.color)
         .multilineTextAlignment(.trailing)
     }
   }
@@ -216,11 +233,6 @@ private extension AuctionDetail.ConditionReport.OccupationRelationReport.Occupan
     case .other(let v): v
     }
   }
-  var badgeColor: Color {
-    switch self {
-    case .tenant: return .blue default: return .gray
-    }
-  }
 }
 
 private extension Date {
@@ -230,15 +242,5 @@ private extension Date {
     f.timeZone = TimeZone(identifier: "Asia/Seoul")
     f.dateFormat = "yyyy.MM.dd"
     return f.string(from: self)
-  }
-}
-
-private extension Int {
-  var formattedWon: String {
-    let f = NumberFormatter()
-    f.locale = Locale(identifier: "ko_KR")
-    f.numberStyle = .decimal
-    let number = f.string(from: NSNumber(value: self)) ?? "\(self)"
-    return "\(number)원"
   }
 }

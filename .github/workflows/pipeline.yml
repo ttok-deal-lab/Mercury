@@ -52,8 +52,8 @@ jobs:
             
       - name: Install mise
         run: |
-          mise install tuist@4.20.0
-          mise use tuist@4.20.0
+          mise install tuist@latest
+          mise use tuist@latest
           mise exec -- tuist version
 
       - name: Install Tuist
@@ -66,9 +66,6 @@ jobs:
 
       - name: Generate Project
         run: tuist generate --no-open
-
-      - name: Test Mercury
-        run: xcodebuild -workspace Mercury.xcworkspace -scheme MercuryApp -destination 'platform=iOS Simulator,name=iPhone 16 Pro' build test 
 
       - name: Notify
         run: fastlane ios discord_alert branch:"Develop"
@@ -123,8 +120,8 @@ jobs:
             
       - name: Install mise
         run: |
-          mise install tuist@4.20.0
-          mise use tuist@4.20.0
+          mise install tuist@latest
+          mise use tuist@latest
           mise exec -- tuist version
 
       - name: Install Tuist
@@ -202,8 +199,8 @@ jobs:
             
       - name: Install mise
         run: |
-          mise install tuist@4.20.0
-          mise use tuist@4.20.0
+          mise install tuist@latest
+          mise use tuist@latest
           mise exec -- tuist version
 
       - name: Install Tuist

@@ -53,7 +53,7 @@ struct AuctionDetailAbstractTitleInfoView: View {
       UIPasteboard.general.string = auctionDetailInfo.salesNumber
     } label: {
       HStack(spacing: 2) {
-        Text("매물번호 \(auctionDetailInfo.salesNumber)")
+        Text(L10n.auctionDetailSalesNumber(auctionDetailInfo.salesNumber))
           .fonts(.bodyMiniMedium)
           .foregroundStyle(Asset.Colors.neutralSubtler.color)
         
