@@ -43,8 +43,10 @@ public struct AuctionSalesItem: Identifiable {
   public let verified: Bool
   /// 매각까지 남은 기간
   public let salesLeftDays: Int
+  /// 매각여부
+  public let isSoldOut: Bool
   
-  public init(id: Int, caseNumber: String, salesAddress: String, salesCategories: [AuctionSalesCategory], salesDateTime: Date, appraisalPrice: String, salesPictures: [SalesPicture], failBidCount: Int, zzimCount: Int, registerDate: Date, verified: Bool) {
+  public init(id: Int, caseNumber: String, salesAddress: String, salesCategories: [AuctionSalesCategory], salesDateTime: Date, appraisalPrice: String, salesPictures: [SalesPicture], failBidCount: Int, zzimCount: Int, registerDate: Date, verified: Bool, isSoldOut: Bool) {
     self.id = id
     self.caseNumber = caseNumber
     self.salesAddress = salesAddress
@@ -62,5 +64,6 @@ public struct AuctionSalesItem: Identifiable {
       return days
     }()
     self.salesLeftDays = leftDays
+    self.isSoldOut = isSoldOut
   }
 }

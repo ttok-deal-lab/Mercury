@@ -17,7 +17,7 @@ enum AuctionDetailTabTitles: String, CaseIterable, Identifiable, Hashable {
   var id: Self { self }
 }
 
-struct AuctionDetailTabPagerContainer: View {
+struct AuctionDetailTabPagerContainerView: View {
   @State private var selected: AuctionDetailTabTitles = .auction
   let auctionDetailInfo: AuctionDetail
   
@@ -25,7 +25,6 @@ struct AuctionDetailTabPagerContainer: View {
     UnderlineTabPager(
       tabs: AuctionDetailTabTitles.allCases,
       selected: $selected,
-      spacing: 0,
       title: { $0.rawValue }
     ) { tab in
       switch tab {
@@ -34,7 +33,22 @@ struct AuctionDetailTabPagerContainer: View {
       case .rights:
         AuctionDetailTabRightsAnalysisView(report: auctionDetailInfo.conditionReport)
       case .building:
-        Color.yellow
+        AuctionDetailTabBuildingInfoView(
+          info: .init( // 백엔드 데이터가 없다. 대충 낋여본다
+            isIllegalBuilding: "-",
+            totalFloorAreaText: "110.52㎡ (33평)",
+            householdText: "1동 | 63세대 | 19층",
+            completionDateText: "1996년 10월 29일",
+            floorAreaRatioText: "160%",
+            usageText: "주거",
+            structureText: "콘크리트",
+            parkingTypeText: "기계식",
+            elevatorText: "있음"
+          ),
+          onTapLandInfo: {
+            print("토지정보 바로보기 tapped")
+          }
+        )
       }
     }
   }
