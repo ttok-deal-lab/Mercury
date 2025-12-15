@@ -26,6 +26,8 @@ public struct TermsViewFactory: ViewFactory {
       AgreementView(navigationStream: navigationStream)
     case .privacy:
       PrivacyView(navigationStream: navigationStream)
+    case .servicePolicy:
+      EmptyView()
     }
   }
 }
