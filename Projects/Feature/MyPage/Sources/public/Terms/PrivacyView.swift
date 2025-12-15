@@ -18,19 +18,19 @@ struct PrivacyView: View {
   init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
     self.navigationStream = navigationStream
   }
-    var body: some View {
-      VStack(spacing: 0) {
-        MercuryNavigationBar(nil) {
-          Button {
-            navigationStream.send(.pop)
-          } label: {
-            Asset.Images.arrowLeftNoShaft.image
-          }
+  var body: some View {
+    VStack(spacing: 0) {
+      MercuryNavigationBar(nil) {
+        Button {
+          navigationStream.send(.pop)
+        } label: {
+          Asset.Images.arrowLeftNoShaft.image
         }
-        Text("Privacy View")
-        Spacer()
       }
-      .navigationBarBackButtonHidden()
+      Text("Privacy View")
+      Spacer()
     }
+    .navigationBarBackButtonHidden()
+  }
 }
 

@@ -18,6 +18,7 @@ public struct TermsRoute: Hashable {
     case terms
     case agreement
     case privacy
+    case servicePolicy
   }
   
   public func hash(into hasher: inout Hasher) {

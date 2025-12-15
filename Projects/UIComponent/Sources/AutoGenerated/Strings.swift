@@ -78,6 +78,8 @@ public enum L10n {
   public static let mypageLoginKakao = L10n.tr("Localizable", "mypage_login_kakao", fallback: "카카오로 로그인")
   /// 네이버로 로그인
   public static let mypageLoginNaver = L10n.tr("Localizable", "mypage_login_naver", fallback: "네이버로 로그인")
+  /// 회원 이용약관
+  public static let settingAgreement = L10n.tr("Localizable", "setting_agreement", fallback: "회원 이용약관")
   /// 로그아웃 하시겠어요?
   public static let settingAlertLogout = L10n.tr("Localizable", "setting_alert_logout", fallback: "로그아웃 하시겠어요?")
   /// 1:1 문의
@@ -98,8 +100,12 @@ public enum L10n {
   public static let settingNotificationManage = L10n.tr("Localizable", "setting_notification_manage", fallback: "알림 설정 관리")
   /// 오픈소스 라이선스 보기
   public static let settingOpenLicense = L10n.tr("Localizable", "setting_open_license", fallback: "오픈소스 라이선스 보기")
+  /// 개인정보처리방침
+  public static let settingPrivacyPolicy = L10n.tr("Localizable", "setting_privacy policy", fallback: "개인정보처리방침")
   /// 최근 본 매물
   public static let settingRecentViewSales = L10n.tr("Localizable", "setting_recent_view_sales", fallback: "최근 본 매물")
+  /// 서비스 운영정책
+  public static let settingServiceOperationPolicy = L10n.tr("Localizable", "setting_service_operation_policy", fallback: "서비스 운영정책")
   /// 탈퇴하기
   public static let settingSignout = L10n.tr("Localizable", "setting_signout", fallback: "탈퇴하기")
   /// 서비스 약관

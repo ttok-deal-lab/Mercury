@@ -19,6 +19,9 @@
 "setting_noti_description" = "중요한 정보를 알림으로 전달드려요.";
 "setting_notification_manage" = "알림 설정 관리";
 "setting_terms" = "서비스 약관";
+"setting_agreement" = "회원 이용약관";
+"setting_privacy policy" = "개인정보처리방침";
+"setting_service_operation_policy" = "서비스 운영정책";
 "setting_signout" = "탈퇴하기";
 "setting_noti_agree" = "알림 수신에 동의했어요.";
 "setting_noti_decline" = "알림 수신을 거부했어요.";
