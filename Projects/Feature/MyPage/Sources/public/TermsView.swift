@@ -11,26 +11,9 @@ import Combine
 import UIComponent
 import Router
 
-enum TermItemType: CaseIterable {
-  case agreement
-  case privacy
-  case servicePolicy
-  
-  var title: String {
-    switch self {
-    case .agreement:
-      L10n.settingAgreement
-    case .privacy:
-      L10n.settingPrivacyPolicy
-    case .servicePolicy:
-      L10n.settingServiceOperationPolicy
-    }
-  }
-}
-
 struct TermsView: View {
   
-  private let items: [TermItemType] = TermItemType.allCases
+  private let items: [TermsDetailRoute] = TermsDetailRoute.allCases
   private let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
   public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
@@ -60,17 +43,20 @@ struct TermsView: View {
     .navigationBarBackButtonHidden()
   }
   
-  private func onTap(_ item: TermItemType) {
-    switch item {
-    case .agreement:
-      navigationStream.send(.push(.terms(.init(route: .agreement))))
-    case .privacy:
-      navigationStream.send(.push(.terms(.init(route: .privacy))))
-    case .servicePolicy:
-      navigationStream.send(.push(.terms(.init(route: .servicePolicy))))
-    }
+  private func onTap(_ item: TermsDetailRoute) {
+    navigationStream.send(.push(.terms(.init(route: .termsDetail(detailItemType: item)))))   
   }
 }
 
-
-
+extension TermsDetailRoute {
+  var title: String {
+    switch self {
+    case .memberAgreement:
+      L10n.settingAgreement
+    case .pivacyPolicy:
+      L10n.settingPrivacyPolicy
+    case .servicewPolicy:
+      L10n.settingServiceOperationPolicy
+    }
+  }
+}

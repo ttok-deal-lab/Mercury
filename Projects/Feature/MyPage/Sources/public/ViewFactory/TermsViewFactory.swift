@@ -20,14 +20,11 @@ public struct TermsViewFactory: ViewFactory {
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   ) -> some View {
     switch agreementRouter.route {
-    case .terms:
+    case .termsList:
       TermsView(navigationStream: navigationStream)
-    case .agreement:
-      AgreementView(navigationStream: navigationStream)
-    case .privacy:
-      PrivacyView(navigationStream: navigationStream)
-    case .servicePolicy:
-      EmptyView()
+    case .termsDetail(let detailItemType):
+      TermsDetailView(navigationStream: navigationStream,
+                      route: detailItemType)
     }
   }
 }
