@@ -10,8 +10,9 @@ import Foundation
 import Networking
 
 enum AuctionAPI: BaseAPI {
-  case auctionSearchList(keyword: String?, region: String?, district: String?, buildType: String?, auctionFailCount: String?, varificationStatus: String?, minimumPrice: Int?, maximumPrice: Int?, nextCursor: String?, sort: String?)
+  case auctionSearchList(keyword: String?, region: String?, district: String?, buildType: String?, auctionFailCount: Int?, varificationStatus: String?, minimumPrice: Int?, maximumPrice: Int?, nextCursor: String?, sort: String?)
   case auctionDetail(_ auctionID: Int)
+  case auctionSearchFilter
   
   var baseURL: String {
     RestAPIDefine.base(.common)
@@ -19,15 +20,17 @@ enum AuctionAPI: BaseAPI {
   
   var domain: String? {
     switch self {
-    case .auctionSearchList: nil
+    case .auctionSearchList: "api/v2/"
     case .auctionDetail: "v2/courts/"
+    case .auctionSearchFilter: "api/v1/"
     }
   }
   
   var path: String {
     switch self {
-    case .auctionSearchList: "api/v2/search"
+    case .auctionSearchList: "search"
     case .auctionDetail(let auctionID): "sales/\(auctionID)"
+    case .auctionSearchFilter: "search/filters"
     }
   }
   
@@ -35,6 +38,7 @@ enum AuctionAPI: BaseAPI {
     switch self {
     case .auctionSearchList: .get
     case .auctionDetail: .get
+    case .auctionSearchFilter: .get
     }
   }
   
@@ -95,6 +99,8 @@ enum AuctionAPI: BaseAPI {
       
       return params
     case .auctionDetail:
+      return nil
+    case .auctionSearchFilter:
       return nil
     }
   }

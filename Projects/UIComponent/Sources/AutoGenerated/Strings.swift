@@ -46,6 +46,8 @@ public enum L10n {
   public static let auctionSortByPriceHigher = L10n.tr("Localizable", "auction_sort_by_price_higher", fallback: "가격 높은 순")
   /// 가격 낮은 순
   public static let auctionSortByPriceLower = L10n.tr("Localizable", "auction_sort_by_price_lower", fallback: "가격 낮은 순")
+  /// 앱 버전
+  public static let commonAppVersion = L10n.tr("Localizable", "common_app_version", fallback: "앱 버전")
   /// 취소
   public static let commonCancel = L10n.tr("Localizable", "common_cancel", fallback: "취소")
   /// 인증매물
@@ -68,16 +70,48 @@ public enum L10n {
   public static let commonYes = L10n.tr("Localizable", "common_yes", fallback: "네")
   /// 서울 관악구
   public static let homeDefaultArea = L10n.tr("Localizable", "home_default_area", fallback: "서울 관악구")
-  /// 알림 설정 관리
-  public static let mypageSettingNotification = L10n.tr("Localizable", "mypage_setting_notification", fallback: "알림 설정 관리")
-  /// 탈퇴하기
-  public static let mypageSettingSignout = L10n.tr("Localizable", "mypage_setting_signout", fallback: "탈퇴하기")
-  /// 서비스 약관
-  public static let mypageSettingTerms = L10n.tr("Localizable", "mypage_setting_terms", fallback: "서비스 약관")
+  /// 애플로 로그인
+  public static let mypageLoginApple = L10n.tr("Localizable", "mypage_login_apple", fallback: "애플로 로그인")
+  /// 구글로 로그인
+  public static let mypageLoginGoogle = L10n.tr("Localizable", "mypage_login_google", fallback: "구글로 로그인")
+  /// 카카오로 로그인
+  public static let mypageLoginKakao = L10n.tr("Localizable", "mypage_login_kakao", fallback: "카카오로 로그인")
+  /// 네이버로 로그인
+  public static let mypageLoginNaver = L10n.tr("Localizable", "mypage_login_naver", fallback: "네이버로 로그인")
+  /// 회원 이용약관
+  public static let settingAgreement = L10n.tr("Localizable", "setting_agreement", fallback: "회원 이용약관")
+  /// 로그아웃 하시겠어요?
+  public static let settingAlertLogout = L10n.tr("Localizable", "setting_alert_logout", fallback: "로그아웃 하시겠어요?")
+  /// 1:1 문의
+  public static let settingChat = L10n.tr("Localizable", "setting_chat", fallback: "1:1 문의")
   /// 로그인
   public static let settingLogin = L10n.tr("Localizable", "setting_login", fallback: "로그인")
   /// 로그아웃
   public static let settingLogout = L10n.tr("Localizable", "setting_logout", fallback: "로그아웃")
+  /// 알림
+  public static let settingNoti = L10n.tr("Localizable", "setting_noti", fallback: "알림")
+  /// 알림 수신에 동의했어요.
+  public static let settingNotiAgree = L10n.tr("Localizable", "setting_noti_agree", fallback: "알림 수신에 동의했어요.")
+  /// 알림 수신을 거부했어요.
+  public static let settingNotiDecline = L10n.tr("Localizable", "setting_noti_decline", fallback: "알림 수신을 거부했어요.")
+  /// 중요한 정보를 알림으로 전달드려요.
+  public static let settingNotiDescription = L10n.tr("Localizable", "setting_noti_description", fallback: "중요한 정보를 알림으로 전달드려요.")
+  /// 알림 설정 관리
+  public static let settingNotificationManage = L10n.tr("Localizable", "setting_notification_manage", fallback: "알림 설정 관리")
+  /// 오픈소스 라이선스 보기
+  public static let settingOpenLicense = L10n.tr("Localizable", "setting_open_license", fallback: "오픈소스 라이선스 보기")
+  /// 개인정보처리방침
+  public static let settingPrivacyPolicy = L10n.tr("Localizable", "setting_privacy policy", fallback: "개인정보처리방침")
+  /// 최근 본 매물
+  public static let settingRecentViewSales = L10n.tr("Localizable", "setting_recent_view_sales", fallback: "최근 본 매물")
+  /// 서비스 운영정책
+  public static let settingServiceOperationPolicy = L10n.tr("Localizable", "setting_service_operation_policy", fallback: "서비스 운영정책")
+  /// 탈퇴하기
+  public static let settingSignout = L10n.tr("Localizable", "setting_signout", fallback: "탈퇴하기")
+  /// 서비스 약관
+  public static let settingTerms = L10n.tr("Localizable", "setting_terms", fallback: "서비스 약관")
+  /// 업데이트하기
+  public static let settingUpdate = L10n.tr("Localizable", "setting_update", fallback: "업데이트하기")
   /// 홈
   public static let tabHome = L10n.tr("Localizable", "tab_home", fallback: "홈")
   /// 관심

@@ -46,7 +46,8 @@ struct MainView: View {
         MainTabViewWrapperView(
           navigationStream: coordinator.eventSubject,
           localStorageUsecase: LocalStorageUsecase(repository: UserDefaultsStoreRepository()),
-          auctionListUsecase: AuctionSalesListUsecase(repository: AuctionSalesListRepository())
+          auctionListUsecase: AuctionSalesListUsecase(repository: AuctionSalesListRepository()),
+          auctionSearchFilterUsecase: AuctionSearchFilterUsecase(repository: AuctionSearchFilterRepository())
         )
         .navigationDestination(for: FeatureRoute.self) { route in
           RootViewFactory().makeView(route, navigationStream: coordinator.eventSubject)

@@ -16,18 +16,22 @@ public final class AuctionSalesListRepository: AuctionSalesListRepositorable {
     
   }
   
-  public func fetchAuctionSales(cursor: String?, size: Int) async throws -> AuctionSales {
+  public func fetchAuctionSales(
+    filter: ApplyingAuctionSearchFilter?,
+    cursor: String?,
+    size: Int
+  ) async throws -> AuctionSales {
     let auctionSalesItemDTO = try await AuctionAPI.auctionSearchList(
-      keyword: nil,
-      region: nil,
-      district: nil,
-      buildType: nil,
-      auctionFailCount: nil,
-      varificationStatus: nil,
-      minimumPrice: nil,
-      maximumPrice: nil,
+      keyword: filter?.keyword,
+      region: filter?.regionCode,
+      district: filter?.districtCode,
+      buildType: filter?.buildType,
+      auctionFailCount: filter?.auctionFailCount,
+      varificationStatus: filter?.varificationStatus,
+      minimumPrice: filter?.minimumPrice,
+      maximumPrice: filter?.maximumPrice,
       nextCursor: cursor,
-      sort: nil
+      sort: filter?.sort
     ).request(AuctionSalesDTO.self)
     let auctionItems = auctionSalesItemDTO.toEntity()
     return auctionItems

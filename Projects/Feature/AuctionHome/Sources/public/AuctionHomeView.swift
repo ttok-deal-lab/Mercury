@@ -16,21 +16,26 @@ import Domain
 public struct AuctionHomeView: View {
   @State private var modelData: AuctionHomeModelData
   @State private var error: MercuryError?
+  @State private var isShowFilterArea: Bool = false
   private let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
   public init(
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
-    auctionListUsecase: AuctionSalesListUsecasable
+    auctionListUsecase: AuctionSalesListUsecasable,
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
   ) {
     self.navigationStream = navigationStream
-    self.modelData = AuctionHomeModelData(auctionListUsecase: auctionListUsecase)
+    self.modelData = AuctionHomeModelData(
+      auctionListUsecase: auctionListUsecase,
+      auctionSearchFilterUsecase: auctionSearchFilterUsecase
+    )
   }
   
   public var body: some View {
     VStack(spacing: .zero) {
       AuctionHomeNavigationView(
         onSelectArea: { areaName in
-          print(areaName)
+          isShowFilterArea = true
         },
         onTapSearch: {
           print("search")
@@ -90,6 +95,9 @@ public struct AuctionHomeView: View {
         }
       }
     }
+    .sheet(isPresented: $isShowFilterArea, content: {
+      AuctionFilterLocationView(modelData: $modelData)
+    })
   }
   
   private func shouldTriggerLoadMore(at index: Int) -> Bool {

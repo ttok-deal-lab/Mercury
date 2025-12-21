@@ -16,8 +16,16 @@ public struct AuctionHomeViewWrapperView: View, AuctionHomeViewable {
   
   let hostView: AuctionHomeView
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>, auctionListUsecase: AuctionSalesListUsecasable) {
-    self.hostView = AuctionHomeView(navigationStream: navigationStream, auctionListUsecase: auctionListUsecase)
+  public init(
+    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
+    auctionListUsecase: AuctionSalesListUsecasable,
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
+  ) {
+    self.hostView = AuctionHomeView(
+      navigationStream: navigationStream,
+      auctionListUsecase: auctionListUsecase,
+      auctionSearchFilterUsecase: auctionSearchFilterUsecase
+    )
   }
   
   public var body: some View {

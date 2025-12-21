@@ -29,16 +29,19 @@ public struct MainTabView<
   
   private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   private let auctionListUsecase: AuctionSalesListUsecasable
+  private let auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
   
   // MARK: - life cycle
   
   public init(
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
     localStorageUsecase: LocalStorageUsecasable,
-    auctionListUsecase: AuctionSalesListUsecasable
+    auctionListUsecase: AuctionSalesListUsecasable,
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
   ) {
     self.navigationStream = navigationStream
     self.auctionListUsecase = auctionListUsecase
+    self.auctionSearchFilterUsecase = auctionSearchFilterUsecase
     self.modelData = MainTabModelData(localStorageUsecase: localStorageUsecase)
   }
   
@@ -63,7 +66,8 @@ public struct MainTabView<
     TabView(selection: $selection) {
       AuctionHomeView(
         navigationStream: navigationStream,
-        auctionListUsecase: auctionListUsecase
+        auctionListUsecase: auctionListUsecase,
+        auctionSearchFilterUsecase: auctionSearchFilterUsecase
       )
       .tabItem {
         Tab.home.iconView(isSelected: selection == .home)
