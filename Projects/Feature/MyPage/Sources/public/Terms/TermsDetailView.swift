@@ -13,23 +13,19 @@ import UIComponent
 import Router
 
 struct TermsDetailView: View {
-  
-  private let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+  @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var isLoading = true
   private var route: TermsDetailRoute
   
-  init(
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>,Never>,
-    route: TermsDetailRoute ) {
-      self.navigationStream = navigationStream
-      self.route = route
-    }
+  init(route: TermsDetailRoute) {
+    self.route = route
+  }
   
   var body: some View {
     VStack(spacing: 0) {
       MercuryNavigationBar(nil) {
         Button {
-          navigationStream.send(.pop)
+          coordinator.pop()
         } label: {
           Asset.Images.arrowLeftNoShaft.image
         }

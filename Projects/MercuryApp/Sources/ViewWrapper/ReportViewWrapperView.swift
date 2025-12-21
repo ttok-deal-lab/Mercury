@@ -15,8 +15,8 @@ public struct ReportViewWrapperView: View, ReportViewable {
   
   let hostView: ReportView
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.hostView = ReportView(navigationStream: navigationStream)
+  public init() {
+    self.hostView = ReportView()
   }
   
   public var body: some View {

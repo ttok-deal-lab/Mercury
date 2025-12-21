@@ -9,5 +9,5 @@ import SwiftUI
 import Combine
 
 public protocol ReportViewable where Self: View {
-  init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>)
+  init()
 }

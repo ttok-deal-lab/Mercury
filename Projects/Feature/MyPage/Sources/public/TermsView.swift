@@ -12,19 +12,16 @@ import UIComponent
 import Router
 
 struct TermsView: View {
-  
+  @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   private let items: [TermsDetailRoute] = TermsDetailRoute.allCases
-  private let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.navigationStream = navigationStream
-  }
+  public init() { }
   
   var body: some View {
     VStack(spacing: 0) {
       MercuryNavigationBar(L10n.settingTerms) {
         Button {
-          navigationStream.send(.pop)
+          coordinator.pop()
         } label: {
           Asset.Images.arrowLeft.image
         }
@@ -34,17 +31,13 @@ struct TermsView: View {
         MercuryMenuItemView(item: item.title, left: .textLabel, rightView: {
           Asset.Images.arrowRightNoShaftGray.image
         }) {
-          onTap(item)
+          coordinator.push(.terms(TermsRoute(route: .termsDetail(detailItemType: item))))
         }
       }
       
       Spacer()
     }
     .navigationBarBackButtonHidden()
-  }
-  
-  private func onTap(_ item: TermsDetailRoute) {
-    navigationStream.send(.push(.terms(.init(route: .termsDetail(detailItemType: item)))))   
   }
 }
 
