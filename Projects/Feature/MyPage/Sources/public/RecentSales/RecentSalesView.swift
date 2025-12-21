@@ -14,33 +14,33 @@ import UIComponent
 import Router
 
 struct RecentSalesView: View {
+  @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @Query var recentSales: [SDAuctionItem]
-  private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
-  init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.navigationStream = navigationStream
+  init() {
+    
   }
   
-    var body: some View {
-      VStack {
-        MercuryNavigationBar(L10n.settingRecentViewSales) {
-          Button {
-            navigationStream.send(.pop)
-          } label: {
-            Asset.Images.arrowLeft.image
-          }
+  var body: some View {
+    VStack {
+      MercuryNavigationBar(L10n.settingRecentViewSales) {
+        Button {
+          coordinator.pop()
+        } label: {
+          Asset.Images.arrowLeft.image
         }
-        
-        ScrollView(.vertical) {
-          LazyVStack(spacing: .zero) {
-            ForEach(recentSales, id: \.id) { sales in
-              Text("\(sales.salesId)")
-            }
-          }
-        }
-        Spacer()
       }
-      .navigationBarBackButtonHidden()
+      
+      ScrollView(.vertical) {
+        LazyVStack(spacing: .zero) {
+          ForEach(recentSales, id: \.id) { sales in
+            Text("\(sales.salesId)")
+          }
+        }
+      }
+      Spacer()
     }
+    .navigationBarBackButtonHidden()
+  }
 }
 

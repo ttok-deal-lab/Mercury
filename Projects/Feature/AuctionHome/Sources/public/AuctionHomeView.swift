@@ -15,18 +15,19 @@ import AppFoundation
 import Domain
 
 public struct AuctionHomeView: View {
+  @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var modelData: AuctionHomeModelData
   @State private var error: MercuryError?
-  private let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+  @State private var isShowFilterArea: Bool = false
   
   public init(
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>,Never>,
     auctionListUsecase: AuctionSalesListUsecasable,
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
     modelContext: ModelContext
   ) {
-    self.navigationStream = navigationStream
     self.modelData = AuctionHomeModelData(
       auctionListUsecase: auctionListUsecase,
+      auctionSearchFilterUsecase: auctionSearchFilterUsecase,
       modelContext: modelContext
     )
   }
@@ -35,7 +36,7 @@ public struct AuctionHomeView: View {
     VStack(spacing: .zero) {
       AuctionHomeNavigationView(
         onSelectArea: { areaName in
-          print(areaName)
+          isShowFilterArea = true
         },
         onTapSearch: {
           print("search")
@@ -55,8 +56,7 @@ public struct AuctionHomeView: View {
           
           ForEach(modelData.auctionSalesItems) { item in
             Button {
-              navigationStream.send(.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id)))))
-              modelData.saveRecentItem(item)
+              coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
             } label: {
               AuctionSalesItemView(item: item, onZzim: {
                 // 찜 했을때의 액션
@@ -96,6 +96,9 @@ public struct AuctionHomeView: View {
         }
       }
     }
+    .sheet(isPresented: $isShowFilterArea, content: {
+      AuctionFilterLocationView(modelData: $modelData)
+    })
   }
   
   private func shouldTriggerLoadMore(at index: Int) -> Bool {

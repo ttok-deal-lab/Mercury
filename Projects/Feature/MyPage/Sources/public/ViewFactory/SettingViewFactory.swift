@@ -17,15 +17,12 @@ public struct SettingViewFactory: ViewFactory {
   
   public init() { }
   
-  public func makeView(
-    _ settingRouter: SettingRoute,
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
-  ) -> some View {
+  public func makeView(_ settingRouter: SettingRoute) -> some View {
     switch settingRouter.route {
     case .setting:
-      SettingView(navigationStream: navigationStream)
+      SettingView()
     case .notification:
-      NotificationView(navigationStream: navigationStream)
+      NotificationView()
     case .version:
       EmptyView()
     case .signOut:

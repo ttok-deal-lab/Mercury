@@ -15,11 +15,8 @@ import Router
 
 public struct ReportView: View {
   @StateObject private var modelData = ReportModelData()
-  private let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.navigationStream = navigationStream
-  }
+  public init() { }
   
   public var body: some View {
     VStack {

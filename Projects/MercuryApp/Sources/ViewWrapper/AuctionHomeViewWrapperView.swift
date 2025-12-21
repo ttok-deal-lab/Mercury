@@ -16,14 +16,13 @@ import Domain
 public struct AuctionHomeViewWrapperView: View, AuctionHomeViewable {
   let hostView: AuctionHomeView
   
-  public init(
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
-    auctionListUsecase: AuctionSalesListUsecasable,
+  public init(auctionListUsecase: AuctionSalesListUsecasable,
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
     modelContext: ModelContext
   ) {
     self.hostView = AuctionHomeView(
-      navigationStream: navigationStream,
       auctionListUsecase: auctionListUsecase,
+      auctionSearchFilterUsecase: auctionSearchFilterUsecase,
       modelContext: modelContext
     )
   }

@@ -14,16 +14,14 @@ import UIComponent
 import Router
 
 public struct SettingView: View {
-  
+  @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   private let items: [SettingItemType] = SettingItemType.allCases
   private var version: String = "1.20.1"
   private var isNeedUpdate: Bool = true
   @Inject private var accessTokenManager: AccessTokenManagable
   
-  private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
-  
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.navigationStream = navigationStream
+  public init() {
+    
   }
   
   public var body: some View {
@@ -31,7 +29,7 @@ public struct SettingView: View {
       VStack(alignment: .leading, spacing: 0) {
         MercuryNavigationBar(L10n.tabSetting) {
           Button {
-            navigationStream.send(.pop)
+            coordinator.pop()
           } label: {
             Asset.Images.arrowLeft.image
           }
@@ -111,7 +109,8 @@ public struct SettingView: View {
 //    case .notification:
 //      navigationStream.send(.push(.setting(.init(route: .notification))))
     case .terms:
-      navigationStream.send(.push(.terms(.init(route: .termsList))))
+//      navigationStream.send(.push(.terms(.init(route: .termsList))))
+      coordinator.push(.terms(TermsRoute(route: .termsList)))
     case .settingLogout:
       // TODO: 모달 띄우기
       MercuryAlert.shared
@@ -125,7 +124,7 @@ public struct SettingView: View {
                   cancelButtonTitle: L10n.commonNo,
                   onConfirm: {
                     accessTokenManager.removeAccessToken()
-                    navigationStream.send(.popToRoot)
+                    coordinator.popToRoot()
                   },
                   onCancel: { }
                 )

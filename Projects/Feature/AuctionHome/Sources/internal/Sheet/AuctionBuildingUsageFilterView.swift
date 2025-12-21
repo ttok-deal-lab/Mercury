@@ -37,7 +37,7 @@ struct AuctionBuildingUsageFilterView: View {
     }
     .onChange(of: selectedChipTitles) { _, selectedChipTitles in
       let usageType = chipsToBuildingUsageType()
-      modelData.filterBuildingUsage(usageType: usageType)
+//      modelData.filterBuildingUsage(usageType: usageType)
     }
   }
   

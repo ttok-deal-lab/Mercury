@@ -12,19 +12,16 @@ import UIComponent
 import Router
 
 public struct NotificationView: View {
-  
+  @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State var isNotificationOn: Bool = false
-  private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.navigationStream = navigationStream
-  }
+  public init() { }
   
   public var body: some View {
     VStack(spacing: 0) {
       MercuryNavigationBar(L10n.settingNoti) {
         Button {
-          navigationStream.send(.pop)
+          coordinator.pop()
         } label: {
           Asset.Images.arrowLeft.image
         }

@@ -23,15 +23,13 @@ public struct AuctionDetailViewFactory<MapView: MapViewable>: ViewFactory {
   }
   
   public func makeView(
-    _ auctionRoute: AuctionDetailRoute,
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+    _ auctionRoute: AuctionDetailRoute
   ) -> some View {
     switch auctionRoute.route {
     case .auctionDetail(let auctionID):
       AuctionDetailView<MapView>(
         auctionID: auctionID,
-        auctionDetailUsecase: self.auctionDetailUsecase,
-        navigationStream: navigationStream
+        auctionDetailUsecase: self.auctionDetailUsecase
       )
     }
   }
