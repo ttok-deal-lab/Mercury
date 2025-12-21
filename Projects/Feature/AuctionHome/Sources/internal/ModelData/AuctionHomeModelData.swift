@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 
 import AppFoundation
 import Domain
@@ -14,9 +15,8 @@ import Domain
 @Observable
 @MainActor
 final class AuctionHomeModelData {
-  
+  private var modelContext: ModelContext
   // MARK: - internal properties
-  
   var auctionSalesItems: [AuctionSalesItem] = []
   var isLoading: Bool = false
   var isLoadingForPaging: Bool = false
@@ -36,8 +36,10 @@ final class AuctionHomeModelData {
   
   // MARK: - life cycle
   
-  init(auctionListUsecase: AuctionSalesListUsecasable) {
+  init(auctionListUsecase: AuctionSalesListUsecasable,
+       modelContext: ModelContext) {
     self.auctionListUsecase = auctionListUsecase
+    self.modelContext = modelContext
   }
   
   // MARK: - private methods
@@ -129,4 +131,29 @@ final class AuctionHomeModelData {
     }
   }
   
+  func saveRecentItem(_ item: AuctionSalesItem) {
+    // Entity -> SwiftData Model 로 변환
+    let recentItem = SDAuctionItem(
+      salesId: item.id,
+      caseNumber: item.caseNumber,
+      salesAddress: item.salesAddress,
+      salesCategories: item.salesCategories,
+      salesDateTime: item.salesDateTime,
+      appraisalPrice: item.appraisalPrice,
+      failBidCount: item.failBidCount,
+      zzimCount: item.zzimCount,
+      registerDate: item.registerDate,
+      verified: item.verified,
+      isSoldOut: item.isSoldOut,
+      createdAt: Date.now
+    )
+    
+    // 중복 제거
+    let id = item.id
+    try? modelContext.delete(model: SDAuctionItem.self, where: #Predicate { $0.salesId == id})
+    
+    modelContext.insert(recentItem)
+    try? modelContext.save()
+    // 저장
+  }
 }

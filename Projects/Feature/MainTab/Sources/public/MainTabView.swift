@@ -22,6 +22,7 @@ public struct MainTabView<
   SignInView: SignInViewable
 >: View {
   @Environment(NetworkMonitor.self) var networkMonitor
+  @Environment(\.modelContext) private var modelContext
   @State private var isShowNetworkDisconnect: Bool = false
   @State private var modelData: MainTabModelData
   @State private var selection: Tab = .home
@@ -66,7 +67,8 @@ public struct MainTabView<
     TabView(selection: $selection) {
       AuctionHomeView(
         navigationStream: navigationStream,
-        auctionListUsecase: auctionListUsecase
+        auctionListUsecase: auctionListUsecase,
+        modelContext: modelContext
       )
       .tabItem {
         Tab.home.iconView(isSelected: selection == .home)

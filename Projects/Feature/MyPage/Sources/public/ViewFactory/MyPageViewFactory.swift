@@ -25,7 +25,7 @@ public struct MyPageViewFactory: ViewFactory {
   ) -> some View {
     switch mypageRouter.route {
     case .recentlySales:
-      RecentlySalesView(navigationStream: navigationStream)
+      RecentSalesView(navigationStream: navigationStream)
     case .chat:
       EmptyView()
     }
