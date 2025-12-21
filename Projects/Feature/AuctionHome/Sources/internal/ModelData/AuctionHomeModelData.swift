@@ -7,15 +7,15 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 
 import AppFoundation
 import Domain
 
 @Observable
 final class AuctionHomeModelData {
-  
+  private var modelContext: ModelContext
   // MARK: - internal properties
-  
   var auctionSalesItems: [AuctionSalesItem] = []
   var auctionSearchFilter: AuctionSearchFilter?
   
@@ -42,7 +42,8 @@ final class AuctionHomeModelData {
   
   init(
     auctionListUsecase: AuctionSalesListUsecasable,
-    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
+    modelContext: ModelContext
   ) {
     self.auctionListUsecase = auctionListUsecase
     self.auctionSearchFilterUsecase = auctionSearchFilterUsecase
@@ -54,6 +55,7 @@ final class AuctionHomeModelData {
         print("fetch filters err ~> \(error)")
       }
     }
+    self.modelContext = modelContext
   }
   
   // MARK: - private methods
@@ -95,31 +97,6 @@ final class AuctionHomeModelData {
       self.auctionSalesItems = currentAuctionSalesItems + auctionSalesItems
     } catch {
       throw error
-    }
-  }
-  
-  // 필터 가져오기
-  func fetchSearchFilters() async throws {
-    let filters = try await auctionSearchFilterUsecase.fetchAuctionSearchFilters()
-    self.auctionSearchFilter = filters
-  }
-  
-  // 필터링: 상위지역
-  func filterRegion(region: Region) {
-    Task {
-      self.applyingAuctionSearchFilter.regionCode = region.code
-      self.applyingAuctionSearchFilter.districtCode = nil
-      
-      try await loadAuctionSalesList()
-    }
-  }
-  
-  // 필터링: 하위지역
-  func filterDistrict(district: District) {
-    Task {
-      self.applyingAuctionSearchFilter.districtCode = district.code
-      
-      try await loadAuctionSalesList()
     }
   }
   

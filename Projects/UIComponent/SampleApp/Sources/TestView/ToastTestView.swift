@@ -15,7 +15,7 @@ struct ToastTestView: View {
   var body: some View {
     VStack {
       Button {
-        MercuryToast.shared.present(title: "asdf!", tintType: .common)
+        MercuryToast.shared.present(title: "asdf!", toastType: .common)
       } label: {
         Text("show toast")
       }

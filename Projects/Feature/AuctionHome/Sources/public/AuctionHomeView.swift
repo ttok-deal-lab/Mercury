@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import SwiftData
 
 import Router
 import UIComponent
@@ -20,14 +21,16 @@ public struct AuctionHomeView: View {
   private let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
   public init(
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
+    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>,Never>,
     auctionListUsecase: AuctionSalesListUsecasable,
-    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
+    modelContext: ModelContext
   ) {
     self.navigationStream = navigationStream
     self.modelData = AuctionHomeModelData(
       auctionListUsecase: auctionListUsecase,
-      auctionSearchFilterUsecase: auctionSearchFilterUsecase
+      auctionSearchFilterUsecase: auctionSearchFilterUsecase,
+      modelContext: modelContext
     )
   }
   
@@ -56,6 +59,7 @@ public struct AuctionHomeView: View {
           ForEach(modelData.auctionSalesItems) { item in
             Button {
               navigationStream.send(.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id)))))
+              modelData.saveRecentItem(item)
             } label: {
               AuctionSalesItemView(item: item, onZzim: {
                // 찜 했을때의 액션

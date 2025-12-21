@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 
+import Domain
 import Router
 import MyPage
 
@@ -15,8 +16,8 @@ public struct MyPageViewWrapperView: View, MyPageViewable {
   
   let hostView: MyPageView
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.hostView = MyPageView(navigationStream: navigationStream)
+  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>, userProfileUseCase: MyPageUsecasable) {
+    self.hostView = MyPageView(navigationStream: navigationStream, userProfileUsecase: userProfileUseCase)
   }
   
   public var body: some View {

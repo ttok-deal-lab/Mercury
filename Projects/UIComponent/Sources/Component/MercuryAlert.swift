@@ -159,13 +159,15 @@ public struct MercuryAlertView: View {
         }
         .padding(.horizontal, 24)
         
-        HStack(spacing: .zero) {
-          Text(information.description)
-            .foregroundStyle(Asset.Colors.neutralSubtler.color)
-            .fonts(.bodyMediumMedium)
-          Spacer()
+        if information.description != "" {
+          HStack(spacing: .zero) {
+            Text(information.description)
+              .foregroundStyle(Asset.Colors.neutralSubtler.color)
+              .fonts(.bodyMediumMedium)
+            Spacer()
+          }
+          .padding(.horizontal, 24)
         }
-        .padding(.horizontal, 24)
       }
       .padding(.bottom, 24)
       

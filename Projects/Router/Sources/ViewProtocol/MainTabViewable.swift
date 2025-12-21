@@ -15,6 +15,6 @@ public protocol MainTabViewable where Self: View {
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
     localStorageUsecase: LocalStorageUsecasable,
     auctionListUsecase: AuctionSalesListUsecasable,
-    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
-  )
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable, 
+    userProfileUsecase: MyPageUsecasable)
 }

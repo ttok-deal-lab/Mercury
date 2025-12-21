@@ -14,6 +14,7 @@ import AuctionDetail
 import Onboard
 import Domain
 import Infrastructure
+import MyPage
 
 import PulseUI
 
@@ -38,6 +39,17 @@ struct RootViewFactory: ViewFactory {
       .makeView(auctionStep, navigationStream: navigationStream)
     case .networkConsole:
       ConsoleView()
+    case .setting(let settingStep):
+      SettingViewFactory()
+        .makeView(settingStep, navigationStream: navigationStream)
+    case .terms(let agreementStep):
+      TermsViewFactory()
+        .makeView(agreementStep, navigationStream: navigationStream)
+    case .mypage(let myPageStep):
+      MyPageViewFactory(
+        mypageUsecasable: MyPageUsecase(repository: MyPageRepository())
+      )
+      .makeView(myPageStep, navigationStream: navigationStream)
     }
   }
 }

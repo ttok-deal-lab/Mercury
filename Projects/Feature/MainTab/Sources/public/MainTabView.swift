@@ -22,6 +22,7 @@ public struct MainTabView<
   SignInView: SignInViewable
 >: View {
   @Environment(NetworkMonitor.self) var networkMonitor
+  @Environment(\.modelContext) private var modelContext
   @State private var isShowNetworkDisconnect: Bool = false
   @State private var modelData: MainTabModelData
   @State private var selection: Tab = .home
@@ -30,6 +31,7 @@ public struct MainTabView<
   private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   private let auctionListUsecase: AuctionSalesListUsecasable
   private let auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
+  private let userProfileUsecase: MyPageUsecasable
   
   // MARK: - life cycle
   
@@ -37,11 +39,13 @@ public struct MainTabView<
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
     localStorageUsecase: LocalStorageUsecasable,
     auctionListUsecase: AuctionSalesListUsecasable,
-    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
+    userProfileUsecase: MyPageUsecasable
   ) {
     self.navigationStream = navigationStream
     self.auctionListUsecase = auctionListUsecase
     self.auctionSearchFilterUsecase = auctionSearchFilterUsecase
+    self.userProfileUsecase = userProfileUsecase
     self.modelData = MainTabModelData(localStorageUsecase: localStorageUsecase)
   }
   
@@ -66,8 +70,7 @@ public struct MainTabView<
     TabView(selection: $selection) {
       AuctionHomeView(
         navigationStream: navigationStream,
-        auctionListUsecase: auctionListUsecase,
-        auctionSearchFilterUsecase: auctionSearchFilterUsecase
+        auctionListUsecase: auctionListUsecase
       )
       .tabItem {
         Tab.home.iconView(isSelected: selection == .home)
@@ -80,7 +83,10 @@ public struct MainTabView<
         }
         .tag(Tab.interest)
       
-      MyPageView(navigationStream: navigationStream)
+      MyPageView(
+        navigationStream: navigationStream,
+        userProfileUseCase: userProfileUsecase
+      )
         .tabItem {
           Tab.setting.iconView(isSelected: selection == .setting)
         }

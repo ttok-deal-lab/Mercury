@@ -13,19 +13,28 @@ import Router
 import Domain
 
 @Observable
-final class MyPageModelData {
-  private var userInfoManager = MercuryContainer.shared.resolve(UserInfoManagable.self)
-  var userInfo: UserInformation?
+public final class MyPageModelData {
   
-  private var store = Set<AnyCancellable>()
+  // MARK: - internal property
   
-  init() {
-    userInfoManager.userInfoStream.sink { [weak self] userInfo in
-      Task { @MainActor [weak self] in
-        self?.userInfo = userInfo
-      }
+  var userProfile: UserProfileInfo?
+  
+  // MARK: - private property
+  private var userProfileUsecasable: MyPageUsecasable
+  
+  // MARK: - life cycle
+  
+  public init(userProfileUsecasable: MyPageUsecasable) {
+    self.userProfileUsecasable = userProfileUsecasable
+  }
+  
+  func fetchProfile() async throws {
+    do {
+      let userProfile = try await userProfileUsecasable.fetchUserProfile()
+      self.userProfile = userProfile
+    } catch {
+      throw error
     }
-    .store(in: &store)
   }
 }
 

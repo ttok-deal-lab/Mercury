@@ -27,7 +27,7 @@ public class ServiceSignInUsecase: ServiceSignInUsecasable {
 
 public typealias OauthSignInToken = String
 
-public enum OauthProvider: String, Identifiable, CaseIterable {
+public enum OauthProvider: String, Identifiable, CaseIterable, Codable {
   public var id: String {
     return self.rawValue
   }

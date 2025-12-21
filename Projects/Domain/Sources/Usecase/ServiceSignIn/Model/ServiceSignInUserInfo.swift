@@ -18,6 +18,7 @@ public struct UserInformation {
   public let name: String
   public let status: UserStatus?
   
+  
   public init(id: Int, email: String, name: String, status: UserStatus?) {
     self.id = id
     self.email = email
