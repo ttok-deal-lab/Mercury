@@ -11,5 +11,5 @@ import Combine
 import Domain
 
 public protocol MainTabViewable where Self: View {
-  init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>, localStorageUsecase: LocalStorageUsecasable, auctionListUsecase: AuctionSalesListUsecasable)
+  init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>, localStorageUsecase: LocalStorageUsecasable, auctionListUsecase: AuctionSalesListUsecasable, userProfileUsecase: MyPageUsecasable)
 }

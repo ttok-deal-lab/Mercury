@@ -53,6 +53,7 @@ public final class OnboardingModelData {
   func oauthSignIn(_ oauthProvider: OauthProvider) async throws {
     let oauthSignInProvider = oauthSignInProviderFactory.createProvider(provider: oauthProvider)
     let oauthSignInToken = try await oauthSignInProvider.signIn()
+    print("oauthSignInToken: ", oauthSignInToken)
     try await serviceSignIn(provider: oauthProvider, oauthSignInToken: oauthSignInToken)
   }
   

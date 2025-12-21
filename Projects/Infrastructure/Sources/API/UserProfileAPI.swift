@@ -7,13 +7,15 @@
 
 import Foundation
 
+import AppFoundation
+import Domain
 import Networking
 
-enum UserInfoAPI {
-  case userInfo(userID: Int)
+enum UserProfileAPI {
+  case userProfile(userID: Int)
 }
 
-extension UserInfoAPI: BaseAPI {
+extension UserProfileAPI: BaseAPI {
   var baseURL: String {
     RestAPIDefine.base(.auth)
   }
@@ -24,15 +26,22 @@ extension UserInfoAPI: BaseAPI {
   
   var path: String {
     switch self {
-    case let .userInfo(userID):
+    case let .userProfile(userID):
       "\(userID)"
     }
   }
   
   var method: Networking.HTTPMethod {
     switch self {
-    case .userInfo:
+    case .userProfile:
       return .get
+    }
+  }
+  
+  var headers: [String : String]? {
+    switch self {
+    case .userProfile(_):
+      return ["Authorization" : MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
     }
   }
   
