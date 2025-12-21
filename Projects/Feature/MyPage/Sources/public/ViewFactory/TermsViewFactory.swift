@@ -23,8 +23,10 @@ public struct TermsViewFactory: ViewFactory {
     case .termsList:
       TermsView(navigationStream: navigationStream)
     case .termsDetail(let detailItemType):
-      TermsDetailView(navigationStream: navigationStream,
-                      route: detailItemType)
+      TermsDetailView(
+        navigationStream: navigationStream,
+        route: detailItemType
+      )
     }
   }
 }
