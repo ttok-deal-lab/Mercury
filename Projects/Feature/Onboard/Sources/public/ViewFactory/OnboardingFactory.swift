@@ -25,14 +25,15 @@ public struct OnboardingFactory: ViewFactory {
   }
   
   public func makeView(
-    _ onboardRouter: OnboardRoute,
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+    _ onboardRouter: OnboardRoute
   ) -> some View {
     switch onboardRouter.route {
     case .permissionRequest:
       PermissionRequestView(
-        modelData: OnboardingModelData(serviceSignInUsecasable: self.serviceSignInUsecasable, locationUsecasable: self.locationUsecasable),
-        navigationStream: navigationStream
+        modelData: OnboardingModelData(
+          serviceSignInUsecasable: self.serviceSignInUsecasable,
+          locationUsecasable: self.locationUsecasable
+        )
       )
     }
   }

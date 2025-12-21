@@ -45,9 +45,8 @@ private enum Permission: CaseIterable {
 }
 
 public struct PermissionRequestView: View {
-  
+  @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @Bindable var modelData: OnboardingModelData
-  var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
   public var body: some View {
     VStack(alignment: .leading, spacing: .zero) {
@@ -76,7 +75,7 @@ public struct PermissionRequestView: View {
             
             MercuryButton("확인") {
               modelData.requestUserPermission()
-              navigationStream.send(.pop)
+              coordinator.pop()
             }
           }
           .padding(20)

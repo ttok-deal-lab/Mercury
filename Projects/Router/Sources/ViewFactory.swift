@@ -9,13 +9,9 @@ import SwiftUI
 import Combine
 
 public protocol ViewFactory {
-  associatedtype NavigationContext: Hashable
   associatedtype ScreenRoute: Hashable
   associatedtype ViewType: View
   
   @ViewBuilder
-  func makeView(
-    _ route: ScreenRoute,
-    navigationStream: PassthroughSubject<NavigationEvent<NavigationContext>, Never>
-  ) -> ViewType
+  func makeView(_ route: ScreenRoute) -> ViewType
 }

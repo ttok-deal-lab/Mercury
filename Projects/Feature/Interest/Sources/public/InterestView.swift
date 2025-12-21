@@ -15,11 +15,8 @@ import Router
 
 public struct InterestView: View {
   @State private var modelData = InterestModelData()
-  private let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.navigationStream = navigationStream
-  }
+  public init() { }
   
   public var body: some View {
     VStack {

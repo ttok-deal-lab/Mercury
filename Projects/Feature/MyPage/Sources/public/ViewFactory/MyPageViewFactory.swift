@@ -20,12 +20,11 @@ public struct MyPageViewFactory: ViewFactory {
   }
   
   public func makeView(
-    _ mypageRouter: MyPageRoute,
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+    _ mypageRouter: MyPageRoute
   ) -> some View {
     switch mypageRouter.route {
     case .recentlySales:
-      RecentSalesView(navigationStream: navigationStream)
+      RecentSalesView()
     case .chat:
       EmptyView()
     }

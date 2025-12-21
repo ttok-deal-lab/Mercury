@@ -47,6 +47,7 @@ final class AuctionHomeModelData {
   ) {
     self.auctionListUsecase = auctionListUsecase
     self.auctionSearchFilterUsecase = auctionSearchFilterUsecase
+    self.modelContext = modelContext
     
     Task {
       do {
@@ -99,5 +100,30 @@ final class AuctionHomeModelData {
       throw error
     }
   }
+  
+  // 필터 가져오기
+   func fetchSearchFilters() async throws {
+     let filters = try await auctionSearchFilterUsecase.fetchAuctionSearchFilters()
+     self.auctionSearchFilter = filters
+   }
+   
+   // 필터링: 상위지역
+   func filterRegion(region: Region) {
+     Task {
+       self.applyingAuctionSearchFilter.regionCode = region.code
+       self.applyingAuctionSearchFilter.districtCode = nil
+       
+       try await loadAuctionSalesList()
+     }
+   }
+   
+   // 필터링: 하위지역
+   func filterDistrict(district: District) {
+     Task {
+       self.applyingAuctionSearchFilter.districtCode = district.code
+       
+       try await loadAuctionSalesList()
+     }
+   }
   
 }

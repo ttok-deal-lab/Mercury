@@ -35,19 +35,14 @@ enum MyPageItemType: CaseIterable {
 }
 
 public struct MyPageView: View {
+  @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var modelData: MyPageModelData
   @State private var error: MercuryError?
   @State private var hasFetched = false
   @Inject private var accessTokenManager: AccessTokenManagable
   private var items: [MyPageItemType] = MyPageItemType.allCases
   
-  private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
-  
-  public init(
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
-    userProfileUsecase: MyPageUsecasable
-  ) {
-    self.navigationStream = navigationStream
+  public init(userProfileUsecase: MyPageUsecasable) {
     self.modelData = MyPageModelData(userProfileUsecasable: userProfileUsecase)
   }
   
@@ -56,7 +51,7 @@ public struct MyPageView: View {
       MercuryNavigationBar(
         rightButtons: {
           Button {
-            navigationStream.send(.push(.setting(.init(route: .setting))))
+            coordinator.push(.setting(SettingRoute(route: .setting)))
           } label: {
             Asset.Images.settingBlack.image
               .padding(.vertical, 16)
@@ -95,7 +90,7 @@ public struct MyPageView: View {
   private func onTapItem(item: MyPageItemType) {
     switch item {
     case .recentlySales:
-      navigationStream.send(.push(.mypage(.init(route: .recentlySales))))
+      coordinator.push(.mypage(MyPageRoute(route: .recentlySales)))
     case .chat:
       EmptyView()
       // Mail 연결

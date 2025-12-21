@@ -15,16 +15,12 @@ public struct TermsViewFactory: ViewFactory {
   
   public init() { }
   
-  public func makeView(
-    _ agreementRouter: TermsRoute,
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
-  ) -> some View {
+  public func makeView(_ agreementRouter: TermsRoute) -> some View {
     switch agreementRouter.route {
     case .termsList:
-      TermsView(navigationStream: navigationStream)
+      TermsView()
     case .termsDetail(let detailItemType):
-      TermsDetailView(navigationStream: navigationStream,
-                      route: detailItemType)
+      TermsDetailView(route: detailItemType)
     }
   }
 }

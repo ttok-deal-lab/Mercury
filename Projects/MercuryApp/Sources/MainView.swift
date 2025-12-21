@@ -16,7 +16,7 @@ import Domain
 import Infrastructure
 
 struct MainView: View {
-  @State private var coordinator = NavigationCoordinator<FeatureRoute>()
+  @StateObject private var coordinator = NavigationCoordinator<FeatureRoute>()
   @State private var isSplashDone  = false
   @State private var isUserLoggedIn = false
   
@@ -25,9 +25,10 @@ struct MainView: View {
       currentView()
     }
     .shake(onPresent: {
-      self.coordinator.eventSubject.send(.presentFullScreen(.networkConsole))
+      self.coordinator.presentFullScreen(.networkConsole)
     })
     .animation(.easeInOut(duration: DesignDefine.transitionOpacityDuration), value: isSplashDone)
+    .environmentObject(coordinator)
   }
 
   @ViewBuilder
@@ -42,20 +43,20 @@ struct MainView: View {
         isUserLoggedIn = true
       })
     } else {
-      NavigationStack(path: $coordinator.navigationPath) {
+      NavigationStack(path: $coordinator.rootStack) {
         MainTabViewWrapperView(
-          navigationStream: coordinator.eventSubject,
           localStorageUsecase: LocalStorageUsecase(repository: UserDefaultsStoreRepository()),
           auctionListUsecase: AuctionSalesListUsecase(repository: AuctionSalesListRepository()),
-          userProfileUsecase: MyPageUsecase(repository: MyPageRepository()),
-          auctionSearchFilterUsecase: AuctionSearchFilterUsecase(repository: AuctionSearchFilterRepository())
+          auctionSearchFilterUsecase: AuctionSearchFilterUsecase(repository: AuctionSearchFilterRepository()),
+          userProfileUsecase: MyPageUsecase(repository: MyPageRepository())
         )
         .navigationDestination(for: FeatureRoute.self) { route in
-          RootViewFactory().makeView(route, navigationStream: coordinator.eventSubject)
+          RootViewFactory().makeView(route)
         }
       }
       .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
         fullScreenCoverContent()
+          .environmentObject(coordinator)
       }
       .toast(isPresented: isUserLoggedIn, text: "로그인 되었습니다!")
     }
@@ -64,10 +65,10 @@ struct MainView: View {
   @ViewBuilder
   private func fullScreenCoverContent() -> some View {
     if let route = coordinator.fullScreenRoute {
-      NavigationStack(path: $coordinator.fullScreenPath) {
-        RootViewFactory().makeView(route, navigationStream: coordinator.eventSubject)
+      NavigationStack(path: $coordinator.fullScreenStack) {
+        RootViewFactory().makeView(route)
           .navigationDestination(for: FeatureRoute.self) { route in
-            RootViewFactory().makeView(route, navigationStream: coordinator.eventSubject)
+            RootViewFactory().makeView(route)
           }
       }
     }
