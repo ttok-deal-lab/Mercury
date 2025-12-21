@@ -16,6 +16,7 @@ public struct MyPageRoute: Hashable {
   
   public enum Route: Hashable {
     case recentlySales
+    case chat
   }
   
   public func hash(into hasher: inout Hasher) {

@@ -11,14 +11,9 @@ import Combine
 import UIComponent
 import Router
 
-enum TermItemType: String, CaseIterable {
-  case agreement = "회원 이용약관"
-  case privacy = "개인정보처리방침"
-}
-
 struct TermsView: View {
   
-  private let items: [String] = TermItemType.allCases.map(\.rawValue)
+  private let items: [TermsDetailRoute] = TermsDetailRoute.allCases
   private let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
   public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
@@ -36,7 +31,7 @@ struct TermsView: View {
       }
       
       ForEach(items, id: \.self) { item in
-        MercuryMenuItemView(item: item, left: .textLabel, rightView: {
+        MercuryMenuItemView(item: item.title, left: .textLabel, rightView: {
           Asset.Images.arrowRightNoShaftGray.image
         }) {
           onTap(item)
@@ -48,16 +43,20 @@ struct TermsView: View {
     .navigationBarBackButtonHidden()
   }
   
-  private func onTap(_ item: String) {
-    guard let item = TermItemType(rawValue: item) else { return }
-    switch item {
-    case .agreement:
-      navigationStream.send(.push(.terms(.init(route: .agreement))))
-    case .privacy:
-      navigationStream.send(.push(.terms(.init(route: .privacy))))
-    }
+  private func onTap(_ item: TermsDetailRoute) {
+    navigationStream.send(.push(.terms(.init(route: .termsDetail(detailItemType: item)))))
   }
 }
 
-
-
+extension TermsDetailRoute {
+  var title: String {
+    switch self {
+    case .memberAgreement:
+      L10n.settingAgreement
+    case .pivacyPolicy:
+      L10n.settingPrivacyPolicy
+    case .servicewPolicy:
+      L10n.settingServiceOperationPolicy
+    }
+  }
+}

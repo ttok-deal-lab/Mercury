@@ -12,13 +12,16 @@
 "tab_setting" = "SETTING";
 "home_default_area" = "Seoul Guanak-gu";
 "setting_logout" = "Logout";
-"setting_alert_logout" = "Would you like to log out?";
+"setting_alert_logout" = "Would you like to logout?";
 "setting_login" = "Login";
 "setting_noti" = "Notification";
 "setting_chat" = "1:1 chat";
 "setting_noti_description" = "We'll send you important information via notifications.";
 "setting_notification_manage" = "Notification management";
 "setting_terms" = "Service terms";
+"setting_agreement" = "Member Terms and Conditions";
+"setting_privacy policy" = "Privacy policy";
+"setting_service_operation_policy" = "Service operation policy";
 "setting_signout" = "sign out";
 "setting_noti_agree" = "Agree to receive notifications.";
 "setting_noti_decline" = "Decline to receive notifications.";

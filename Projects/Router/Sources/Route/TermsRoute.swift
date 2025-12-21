@@ -15,12 +15,24 @@ public struct TermsRoute: Hashable {
   }
   
   public enum Route: Hashable {
-    case terms
-    case agreement
-    case privacy
+    case termsList
+    case termsDetail(detailItemType: TermsDetailRoute)
   }
   
   public func hash(into hasher: inout Hasher) {
     hasher.combine(route)
+  }
+}
+
+
+public enum TermsDetailRoute: CaseIterable {
+  case memberAgreement
+  case pivacyPolicy
+  case servicewPolicy
+}
+
+public extension TermsDetailRoute {
+  func toURL(urlString: String) -> URL? {
+    return URL(string: urlString)
   }
 }

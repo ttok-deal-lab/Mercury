@@ -111,7 +111,7 @@ public struct SettingView: View {
 //    case .notification:
 //      navigationStream.send(.push(.setting(.init(route: .notification))))
     case .terms:
-      navigationStream.send(.push(.terms(.init(route: .terms))))
+      navigationStream.send(.push(.terms(.init(route: .termsList))))
     case .settingLogout:
       // TODO: 모달 띄우기
       MercuryAlert.shared
