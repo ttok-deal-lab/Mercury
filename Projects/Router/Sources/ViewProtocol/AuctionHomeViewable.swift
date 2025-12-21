@@ -12,5 +12,9 @@ import SwiftUI
 import Domain
 
 public protocol AuctionHomeViewable where Self: View {
-  init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>, auctionListUsecase: AuctionSalesListUsecasable, modelContext: ModelContext)
+  init(
+    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
+    auctionListUsecase: AuctionSalesListUsecasable,
+    modelContext: ModelContext
+  )
 }

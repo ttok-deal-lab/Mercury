@@ -36,8 +36,10 @@ final class AuctionHomeModelData {
   
   // MARK: - life cycle
   
-  init(auctionListUsecase: AuctionSalesListUsecasable,
-       modelContext: ModelContext) {
+  init(
+    auctionListUsecase: AuctionSalesListUsecasable,
+    modelContext: ModelContext
+  ) {
     self.auctionListUsecase = auctionListUsecase
     self.modelContext = modelContext
   }
@@ -66,7 +68,7 @@ final class AuctionHomeModelData {
     self.auctionSalesItems = sortedItems
     self.isLoading = false
   }
-
+  
   // MARK: - internal methods
   
   func filterBuildingUsage(usageType: [AuctionBuildingUsageType]) {
@@ -132,7 +134,7 @@ final class AuctionHomeModelData {
   }
   
   func saveRecentItem(_ item: AuctionSalesItem) {
-    // Entity -> SwiftData Model 로 변환
+    // entity to SD Model
     let recentItem = SDAuctionItem(
       salesId: item.id,
       caseNumber: item.caseNumber,
@@ -154,6 +156,5 @@ final class AuctionHomeModelData {
     
     modelContext.insert(recentItem)
     try? modelContext.save()
-    // 저장
   }
 }

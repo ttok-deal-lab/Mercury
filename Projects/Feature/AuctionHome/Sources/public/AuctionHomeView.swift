@@ -20,8 +20,7 @@ public struct AuctionHomeView: View {
   private let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
   
   public init(
-    navigationStream: PassthroughSubject<
-    NavigationEvent<FeatureRoute>,Never>,
+    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>,Never>,
     auctionListUsecase: AuctionSalesListUsecasable,
     modelContext: ModelContext
   ) {
@@ -60,7 +59,7 @@ public struct AuctionHomeView: View {
               modelData.saveRecentItem(item)
             } label: {
               AuctionSalesItemView(item: item, onZzim: {
-               // 찜 했을때의 액션
+                // 찜 했을때의 액션
               })
             }
           }
