@@ -20,10 +20,11 @@ struct TermsDetailView: View {
   
   init(
     navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>,Never>,
-    route: TermsDetailRoute ) {
-      self.navigationStream = navigationStream
-      self.route = route
-    }
+    route: TermsDetailRoute
+  ) {
+    self.navigationStream = navigationStream
+    self.route = route
+  }
   
   var body: some View {
     VStack(spacing: 0) {
@@ -58,5 +59,5 @@ struct TermsDetailView: View {
     }
   }
 }
-  
-  
+
+

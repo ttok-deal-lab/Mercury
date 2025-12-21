@@ -44,7 +44,7 @@ struct TermsView: View {
   }
   
   private func onTap(_ item: TermsDetailRoute) {
-    navigationStream.send(.push(.terms(.init(route: .termsDetail(detailItemType: item)))))   
+    navigationStream.send(.push(.terms(.init(route: .termsDetail(detailItemType: item)))))
   }
 }
 
