@@ -10,7 +10,7 @@
 "tab_home" = "HOME";
 "tab_interest" = "INTEREST";
 "tab_setting" = "SETTING";
-"home_default_area" = "Seoul Guanak-gu";
+"home_default_area" = "ALL";
 "setting_logout" = "Logout";
 "setting_alert_logout" = "Would you like to logout?";
 "setting_login" = "Login";

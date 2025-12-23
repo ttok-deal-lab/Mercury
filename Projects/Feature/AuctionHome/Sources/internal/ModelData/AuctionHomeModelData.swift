@@ -14,8 +14,9 @@ import Domain
 
 @Observable
 final class AuctionHomeModelData {
-  private var modelContext: ModelContext
-  // MARK: - internal properties
+  
+  // MARK: - Internal Properties
+  
   var auctionSalesItems: [AuctionSalesItem] = []
   var auctionSearchFilter: AuctionSearchFilter?
   
@@ -32,22 +33,19 @@ final class AuctionHomeModelData {
   var currentSort: AuctionSortType = .recentRegistration
   var filteredItemCount: Int = .zero
   
-  // MARK: - private properties
+  // MARK: - Private Properties
   
   private let auctionListUsecase: AuctionSalesListUsecasable
   private let auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
   
-  
-  // MARK: - life cycle
+  // MARK: - Initialize
   
   init(
     auctionListUsecase: AuctionSalesListUsecasable,
-    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
-    modelContext: ModelContext
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
   ) {
     self.auctionListUsecase = auctionListUsecase
     self.auctionSearchFilterUsecase = auctionSearchFilterUsecase
-    self.modelContext = modelContext
     
     Task {
       do {
@@ -56,13 +54,12 @@ final class AuctionHomeModelData {
         print("fetch filters err ~> \(error)")
       }
     }
-    self.modelContext = modelContext
   }
   
-  // MARK: - private methods
+  // MARK: - Private Methods
   
-  // MARK: - internal methods
-
+  // MARK: - Internal Methods
+  
   // 초기 경매물건 리스트 불러오기
   func loadAuctionSalesList() async throws {
     self.isLoading = true
@@ -102,28 +99,28 @@ final class AuctionHomeModelData {
   }
   
   // 필터 가져오기
-   func fetchSearchFilters() async throws {
-     let filters = try await auctionSearchFilterUsecase.fetchAuctionSearchFilters()
-     self.auctionSearchFilter = filters
-   }
-   
-   // 필터링: 상위지역
-   func filterRegion(region: Region) {
-     Task {
-       self.applyingAuctionSearchFilter.regionCode = region.code
-       self.applyingAuctionSearchFilter.districtCode = nil
-       
-       try await loadAuctionSalesList()
-     }
-   }
-   
-   // 필터링: 하위지역
-   func filterDistrict(district: District) {
-     Task {
-       self.applyingAuctionSearchFilter.districtCode = district.code
-       
-       try await loadAuctionSalesList()
-     }
-   }
+  func fetchSearchFilters() async throws {
+    let filters = try await auctionSearchFilterUsecase.fetchAuctionSearchFilters()
+    self.auctionSearchFilter = filters
+  }
+  
+  // 필터링: 상위지역
+  func filterRegion(region: Region) {
+    Task {
+      self.applyingAuctionSearchFilter.regionCode = region.code
+      self.applyingAuctionSearchFilter.districtCode = nil
+      
+      try await loadAuctionSalesList()
+    }
+  }
+  
+  // 필터링: 하위지역
+  func filterDistrict(district: District) {
+    Task {
+      self.applyingAuctionSearchFilter.districtCode = district.code
+      
+      try await loadAuctionSalesList()
+    }
+  }
   
 }

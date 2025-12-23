@@ -22,13 +22,11 @@ public struct AuctionHomeView: View {
   
   public init(
     auctionListUsecase: AuctionSalesListUsecasable,
-    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
-    modelContext: ModelContext
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
   ) {
     self.modelData = AuctionHomeModelData(
       auctionListUsecase: auctionListUsecase,
       auctionSearchFilterUsecase: auctionSearchFilterUsecase,
-      modelContext: modelContext
     )
   }
   
@@ -58,12 +56,12 @@ public struct AuctionHomeView: View {
             Button {
               coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
             } label: {
-              AuctionSalesItemView(item: item, onZzim: {
-               // 찜 했을때의 액션
-              })
+              AuctionSalesItemView(item: item) {
+                // 찜 했을때의 액션
+              }
             }
           }
-          
+
           if !modelData.auctionSalesItems.isEmpty {
             loadMoreView()
           }
@@ -73,9 +71,7 @@ public struct AuctionHomeView: View {
               .frame(width: 50, height: 50)
           }
         }
-        
         Spacer()
-        
       }
       .refreshable {
         do {
@@ -97,12 +93,13 @@ public struct AuctionHomeView: View {
       }
     }
     .sheet(isPresented: $isShowFilterArea, content: {
-      AuctionFilterLocationView(modelData: $modelData)
+      AuctionFilterLocationView(modelData: $modelData) {
+        isShowFilterArea = false
+      }
     })
   }
   
   private func shouldTriggerLoadMore(at index: Int) -> Bool {
-    print(index)
     let itemCount = modelData.auctionSalesItems.count
     guard itemCount >= 20 else { return false }
     

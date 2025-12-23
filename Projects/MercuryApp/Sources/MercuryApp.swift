@@ -13,7 +13,6 @@ import AppFoundation
 import Domain
 import Router
 import Onboard
-import SwiftData
 
 import GoogleSignIn
 import GoogleSignInSwift

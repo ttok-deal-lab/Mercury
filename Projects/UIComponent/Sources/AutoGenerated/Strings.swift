@@ -68,8 +68,8 @@ public enum L10n {
   }
   /// 네
   public static let commonYes = L10n.tr("Localizable", "common_yes", fallback: "네")
-  /// 서울 관악구
-  public static let homeDefaultArea = L10n.tr("Localizable", "home_default_area", fallback: "서울 관악구")
+  /// 전체
+  public static let homeDefaultArea = L10n.tr("Localizable", "home_default_area", fallback: "전체")
   /// 애플로 로그인
   public static let mypageLoginApple = L10n.tr("Localizable", "mypage_login_apple", fallback: "애플로 로그인")
   /// 구글로 로그인

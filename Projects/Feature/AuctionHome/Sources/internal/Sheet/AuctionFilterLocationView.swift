@@ -11,42 +11,59 @@ import UIComponent
 import Domain
 
 struct AuctionFilterLocationView: View {
-  @Binding var modelData: AuctionHomeModelData
   @State private var selectedRegion: Region?
+  @Binding var modelData: AuctionHomeModelData
+  
+  var onSelected: (() -> Void)
   
   var region: [Region]? {
     modelData.auctionSearchFilter?.regions
   }
   
   var body: some View {
-    ScrollView(.vertical) {
-      VStack(alignment: .leading, spacing: .zero) {
+    VStack(alignment: .leading, spacing: .zero) {
+      HStack(spacing: .zero) {
         Text("지역 선택")
           .fonts(.titleLargeBold)
           .foregroundStyle(Asset.Colors.neutral.color)
-          .padding(.top, 50)
-          .padding(.bottom, 16)
-          .padding(.horizontal, 20)
         
-        Rectangle()
-          .foregroundStyle(Asset.Colors.neutralLight.color)
-          .frame(height: 1)
-          .frame(maxWidth: .infinity)
+        Spacer()
         
-        HStack(spacing: .zero) {
-          RegionsSelectView(regions: region) {
-            self.selectedRegion = $0
-            modelData.filterRegion(region: $0)
-          }
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .padding(.vertical, 16)
- 
-          if let selectedRegion {
-            DistrictSelectView(districts: selectedRegion.districts) {
-              modelData.filterDistrict(district: $0)
+        Button {
+          onSelected()
+        } label: {
+          Text("적용")
+            .fonts(.bodyMediumMedium)
+            .foregroundStyle(Asset.Colors.neutral.color)
+        }
+
+      }
+      .padding(.top, 50)
+      .padding(.bottom, 16)
+      .padding(.horizontal, 20)
+      
+      Rectangle()
+        .foregroundStyle(Asset.Colors.neutralLight.color)
+        .frame(height: 1)
+        .frame(maxWidth: .infinity)
+      
+      ScrollView(.vertical) {
+        VStack(spacing: .zero) {
+          HStack(spacing: .zero) {
+            RegionsSelectView(regions: region) {
+              self.selectedRegion = $0
+              modelData.filterRegion(region: $0)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 16)
+            
+            if let selectedRegion {
+              DistrictSelectView(districts: selectedRegion.districts) {
+                modelData.filterDistrict(district: $0)
+              }
+              .frame(maxWidth: .infinity, alignment: .leading)
+              .padding(.vertical, 16)
+            }
           }
         }
       }
