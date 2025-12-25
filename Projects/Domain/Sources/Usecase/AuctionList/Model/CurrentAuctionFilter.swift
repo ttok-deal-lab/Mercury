@@ -14,7 +14,7 @@ public struct CurrentAuctionFilter {
   /// 하위 지역
   public var district: District?
   /// 건물 타입
-  public var buildType: String?
+  public var buildingTypeCodes: Set<String>?
   /// 유찰 횟수
   public var auctionFailCount: Int?
   /// 인증 여부
@@ -24,7 +24,7 @@ public struct CurrentAuctionFilter {
   /// 최소가격
   public var maximumPrice: Int?
   /// 정렬
-  public var sort: String?
+  public var sort: Option?
   
   public init() {
     

@@ -41,9 +41,9 @@ public struct AuctionHomeView: View {
         }
       )
       
-      AuctionFilterView(modelData: $modelData)
+      AuctionFilterView()
       
-      AuctionSortView(modelData: $modelData)
+      AuctionSortView()
       
       ScrollView(.vertical) {
         LazyVStack(spacing: .zero) {
@@ -74,11 +74,12 @@ public struct AuctionHomeView: View {
         await modelData.loadAuctionSalesList()
       }
     }
+    .environment(modelData)
     .alert(error: $modelData.error)
     .loading(modelData.isLoading)
     .onLoad {
       Task {
-        await modelData.loadAuctionSalesList()
+        await modelData.loadAuctionSalesList(withFilter: false)
       }
     }
     .sheet(isPresented: $isShowFilterArea, content: {

@@ -37,6 +37,10 @@ enum AuctionFilterType: Identifiable, CaseIterable {
   var isSingleToggle: Bool {
     self == .certified || self == .bidWon
   }
+  
+  var isExpandable: Bool {
+    self == .buildingUsage || self == .auctionStatus || self == .price
+  }
 }
 
 struct FilterItem: Identifiable {

@@ -25,13 +25,13 @@ public final class AuctionSalesListRepository: AuctionSalesListRepositorable {
       keyword: filter?.keyword,
       region: filter?.region?.code,
       district: filter?.district?.code,
-      buildType: filter?.buildType,
+      buildTypes: filter?.buildingTypeCodes.map { Array($0) },
       auctionFailCount: filter?.auctionFailCount,
       varificationStatus: filter?.varificationStatus,
       minimumPrice: filter?.minimumPrice,
       maximumPrice: filter?.maximumPrice,
       nextCursor: cursor,
-      sort: filter?.sort
+      sort: filter?.sort?.code
     ).request(AuctionSalesDTO.self)
     let auctionItems = auctionSalesItemDTO.toEntity()
     return auctionItems
