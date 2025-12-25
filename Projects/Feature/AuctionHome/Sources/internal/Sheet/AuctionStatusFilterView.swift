@@ -37,7 +37,7 @@ struct AuctionStatusFilterView: View {
     }
     .onChange(of: selectedChipTitles) { _, selectedChipTitles in
       let statusType = chipsToStatusType()
-      modelData.filterStatus(statusType: statusType)
+//      modelData.filterStatus(statusType: statusType)
     }
   }
   

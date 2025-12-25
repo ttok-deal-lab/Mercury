@@ -16,12 +16,12 @@ public final class AuctionSalesListUsecase: AuctionSalesListUsecasable {
     self.fetcher = AuctionSalesListFetcher(repository: repository)
   }
   
-  public func fetchAuctionSales() async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
-    return try await self.fetcher.fetchInitial()
+  public func fetchAuctionSales(filter: CurrentAuctionFilter?) async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
+    return try await self.fetcher.fetchInitial(filter: filter)
   }
   
-  public func fetchNextAuctionSales() async throws -> [AuctionSalesItem] {
-    return try await self.fetcher.fetchNext()
+  public func fetchNextAuctionSales(filter: CurrentAuctionFilter?) async throws -> [AuctionSalesItem] {
+    return try await self.fetcher.fetchNext(filter: filter)
   }
   
 }
@@ -38,27 +38,27 @@ actor AuctionSalesListFetcher {
     self.repository = repository
   }
   
-  func fetchInitial() async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
+  func fetchInitial(filter: CurrentAuctionFilter?) async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
     self.cursor = nil
-    self.hasNext = true
-    return try await fetch()
+    return try await fetch(filter: filter)
   }
   
-  func fetchNext() async throws -> [AuctionSalesItem] {
+  func fetchNext(filter: CurrentAuctionFilter?) async throws -> [AuctionSalesItem] {
     guard !isLoading else { return [] }
     guard hasNext else {
       return [] // 더 이상 데이터가 없음
     }
-    let fetchResult = try await fetch()
+    let fetchResult = try await fetch(filter: filter)
     return fetchResult.items
   }
   
-  private func fetch() async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
+  private func fetch(filter: CurrentAuctionFilter?) async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
     self.isLoading = true
     defer {
       self.isLoading = false
     }
     let fetchedAuctionSales = try await repository.fetchAuctionSales(
+      filter: filter,
       cursor: cursor,
       size: loadOnce
     )

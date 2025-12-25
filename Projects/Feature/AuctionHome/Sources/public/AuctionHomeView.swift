@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import SwiftData
 
 import Router
 import UIComponent
@@ -14,29 +15,29 @@ import AppFoundation
 import Domain
 
 public struct AuctionHomeView: View {
+  @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var modelData: AuctionHomeModelData
-  @State private var error: MercuryError?
-  private let navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+  @State private var isShowFilterArea: Bool = false
   
   public init(
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
-    auctionListUsecase: AuctionSalesListUsecasable
+    auctionListUsecase: AuctionSalesListUsecasable,
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
   ) {
-    self.navigationStream = navigationStream
-    self.modelData = AuctionHomeModelData(auctionListUsecase: auctionListUsecase)
+    self.modelData = AuctionHomeModelData(
+      auctionListUsecase: auctionListUsecase,
+      auctionSearchFilterUsecase: auctionSearchFilterUsecase,
+    )
   }
   
   public var body: some View {
     VStack(spacing: .zero) {
       AuctionHomeNavigationView(
-        onSelectArea: { areaName in
-          print(areaName)
+        applyingSearchFilter: $modelData.currentAuctionFilter,
+        onSelectArea: {
+          isShowFilterArea = true
         },
         onTapSearch: {
           print("search")
-        },
-        onTapNotification: {
-          print("notification")
         }
       )
       
@@ -50,11 +51,11 @@ public struct AuctionHomeView: View {
           
           ForEach(modelData.auctionSalesItems) { item in
             Button {
-              navigationStream.send(.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id)))))
+              coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
             } label: {
-              AuctionSalesItemView(item: item, onZzim: {
-               // 찜 했을때의 액션
-              })
+              AuctionSalesItemView(item: item) {
+                // 찜 했을때의 액션
+              }
             }
           }
           
@@ -67,33 +68,31 @@ public struct AuctionHomeView: View {
               .frame(width: 50, height: 50)
           }
         }
-        
         Spacer()
-        
       }
       .refreshable {
-        do {
-          try await modelData.loadAuctionSalesList()
-        } catch {
-          self.error = error.toMercuryError()
-        }
+        await modelData.loadAuctionSalesList()
       }
     }
-    .alert(error: $error)
+    .alert(error: $modelData.error)
     .loading(modelData.isLoading)
     .onLoad {
       Task {
-        do {
-          try await modelData.loadAuctionSalesList()
-        } catch {
-          self.error = error.toMercuryError()
-        }
+        await modelData.loadAuctionSalesList()
       }
     }
+    .sheet(isPresented: $isShowFilterArea, content: {
+      AuctionFilterLocationView(modelData: $modelData) {
+        Task {
+          await modelData.loadAuctionSalesList()
+          isShowFilterArea = false
+        }
+        
+      }
+    })
   }
   
   private func shouldTriggerLoadMore(at index: Int) -> Bool {
-    print(index)
     let itemCount = modelData.auctionSalesItems.count
     guard itemCount >= 20 else { return false }
     
@@ -105,11 +104,7 @@ public struct AuctionHomeView: View {
   private func loadMoreView() -> some View {
     Color.clear
       .task {
-        do {
-          try await modelData.loadMoreAuctionSales()
-        } catch {
-          self.error = error.toMercuryError()
-        }
+        await modelData.loadMoreAuctionSales()
       }
   }
 }

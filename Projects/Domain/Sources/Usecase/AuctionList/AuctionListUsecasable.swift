@@ -10,6 +10,6 @@ import Foundation
 import AppFoundation
 
 public protocol AuctionSalesListUsecasable: Sendable {
-  func fetchAuctionSales() async throws -> (auctionCount: Int?, items: [AuctionSalesItem])
-  func fetchNextAuctionSales() async throws -> [AuctionSalesItem]
+  func fetchAuctionSales(filter: CurrentAuctionFilter?) async throws -> (auctionCount: Int?, items: [AuctionSalesItem])
+  func fetchNextAuctionSales(filter: CurrentAuctionFilter?) async throws -> [AuctionSalesItem]
 }

@@ -11,13 +11,14 @@ import Combine
 import Domain
 import Router
 import MyPage
+import Infrastructure
 
 public struct MyPageViewWrapperView: View, MyPageViewable {
   
   let hostView: MyPageView
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>, userProfileUseCase: MyPageUsecasable) {
-    self.hostView = MyPageView(navigationStream: navigationStream, userProfileUsecase: userProfileUseCase)
+  public init() {
+    self.hostView = MyPageView(userProfileUsecase: MyPageUsecase(repository: MyPageRepository()))
   }
   
   public var body: some View {

@@ -10,5 +10,9 @@ import Foundation
 import AppFoundation
 
 public protocol AuctionSalesListRepositorable: Sendable {
-  func fetchAuctionSales(cursor: String?, size: Int) async throws -> AuctionSales
+  func fetchAuctionSales(
+    filter: CurrentAuctionFilter?,
+    cursor: String?,
+    size: Int
+  ) async throws -> AuctionSales
 }

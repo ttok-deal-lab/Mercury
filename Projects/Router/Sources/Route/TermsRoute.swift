@@ -24,7 +24,6 @@ public struct TermsRoute: Hashable {
   }
 }
 
-
 public enum TermsDetailRoute: CaseIterable {
   case memberAgreement
   case pivacyPolicy

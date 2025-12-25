@@ -22,8 +22,7 @@ struct RootViewFactory: ViewFactory {
   
   @ViewBuilder
   func makeView(
-    _ route: FeatureRoute,
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+    _ route: FeatureRoute
   ) -> some View {
     switch route {
     case .onboard(let signInStep):
@@ -31,25 +30,25 @@ struct RootViewFactory: ViewFactory {
         serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
         locationUsecasable: LocationUsecase()
       )
-      .makeView(signInStep, navigationStream: navigationStream)
+      .makeView(signInStep)
     case .auctionDetail(let auctionStep):
       AuctionDetailViewFactory<MapViewWrapperView>(
         auctionDetailUsecase: AuctionDetailUsecase(auctionDetailRepositorable: AuctionDetailRepository())
       )
-      .makeView(auctionStep, navigationStream: navigationStream)
+      .makeView(auctionStep)
     case .networkConsole:
       ConsoleView()
     case .setting(let settingStep):
       SettingViewFactory()
-        .makeView(settingStep, navigationStream: navigationStream)
+        .makeView(settingStep)
     case .terms(let agreementStep):
       TermsViewFactory()
-        .makeView(agreementStep, navigationStream: navigationStream)
+        .makeView(agreementStep)
     case .mypage(let myPageStep):
       MyPageViewFactory(
         mypageUsecasable: MyPageUsecase(repository: MyPageRepository())
       )
-      .makeView(myPageStep, navigationStream: navigationStream)
+      .makeView(myPageStep)
     }
   }
 }

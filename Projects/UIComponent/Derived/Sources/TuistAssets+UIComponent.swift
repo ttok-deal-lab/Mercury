@@ -104,6 +104,7 @@ public enum Asset {
     public static let filter = ImageAsset(name: "Filter")
     public static let graph = ImageAsset(name: "Graph")
     public static let invisible = ImageAsset(name: "Invisible")
+    public static let listNone = ImageAsset(name: "ListNone")
     public static let location = ImageAsset(name: "Location")
     public static let mapFill = ImageAsset(name: "Map-fill")
     public static let noti = ImageAsset(name: "Noti")

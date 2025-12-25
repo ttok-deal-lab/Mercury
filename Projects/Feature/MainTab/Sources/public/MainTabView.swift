@@ -21,27 +21,20 @@ public struct MainTabView<
   MyPageView: MyPageViewable,
   SignInView: SignInViewable
 >: View {
+  @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @Environment(NetworkMonitor.self) var networkMonitor
+  @Environment(\.modelContext) private var modelContext
   @State private var isShowNetworkDisconnect: Bool = false
   @State private var modelData: MainTabModelData
   @State private var selection: Tab = .home
   @Inject private var toast: Toastable
   
-  private var navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
-  private let auctionListUsecase: AuctionSalesListUsecasable
-  private let userProfileUsecase: MyPageUsecasable
   
   // MARK: - life cycle
   
   public init(
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>,
-    localStorageUsecase: LocalStorageUsecasable,
-    auctionListUsecase: AuctionSalesListUsecasable,
-    userProfileUsecase: MyPageUsecasable
+    localStorageUsecase: LocalStorageUsecasable
   ) {
-    self.navigationStream = navigationStream
-    self.auctionListUsecase = auctionListUsecase
-    self.userProfileUsecase = userProfileUsecase
     self.modelData = MainTabModelData(localStorageUsecase: localStorageUsecase)
   }
   
@@ -53,7 +46,7 @@ public struct MainTabView<
         tabView()
           .task {
             if modelData.isTabEnterFirst {
-              navigationStream.send(.presentFullScreen(.onboard(.init(route: .permissionRequest))))
+              coordinator.presentFullScreen(.onboard(OnboardRoute(route: .permissionRequest)))
             }
           }
       }
@@ -64,25 +57,19 @@ public struct MainTabView<
   
   private func tabView() -> some View {
     TabView(selection: $selection) {
-      AuctionHomeView(
-        navigationStream: navigationStream,
-        auctionListUsecase: auctionListUsecase
-      )
-      .tabItem {
-        Tab.home.iconView(isSelected: selection == .home)
-      }
-      .tag(Tab.home)
+      AuctionHomeView()
+        .tabItem {
+          Tab.home.iconView(isSelected: selection == .home)
+        }
+        .tag(Tab.home)
       
-      InterestView(navigationStream: navigationStream)
+      InterestView()
         .tabItem {
           Tab.interest.iconView(isSelected: selection == .interest)
         }
         .tag(Tab.interest)
       
-      MyPageView(
-        navigationStream: navigationStream,
-        userProfileUseCase: userProfileUsecase
-      )
+      MyPageView()
         .tabItem {
           Tab.setting.iconView(isSelected: selection == .setting)
         }

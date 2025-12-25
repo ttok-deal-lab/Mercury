@@ -7,111 +7,78 @@
 
 import Foundation
 import SwiftUI
+import SwiftData
 
 import AppFoundation
 import Domain
 
 @Observable
-@MainActor
 final class AuctionHomeModelData {
   
-  // MARK: - internal properties
+  // MARK: - Internal Properties
   
   var auctionSalesItems: [AuctionSalesItem] = []
+  var auctionSearchFilter: AuctionSearchFilter?
+  
+  var currentAuctionFilter: CurrentAuctionFilter = .init()
+  
   var isLoading: Bool = false
   var isLoadingForPaging: Bool = false
+  
   var totalAuctionCount: Int = .zero
-  var currentSort: AuctionSortType = .recentRegistration {
-    didSet {
-      Task { [weak self] in
-        self?.sort(with: self?.currentSort ?? .recentRegistration)
-      }
-    }
-  }
+  var currentSort: AuctionSortType = .recentRegistration
   var filteredItemCount: Int = .zero
   
-  // MARK: - private properties
+  var error: MercuryError?
+  
+  // MARK: - Private Properties
   
   private let auctionListUsecase: AuctionSalesListUsecasable
+  private let auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
   
-  // MARK: - life cycle
+  // MARK: - Initialize
   
-  init(auctionListUsecase: AuctionSalesListUsecasable) {
+  init(
+    auctionListUsecase: AuctionSalesListUsecasable,
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
+  ) {
     self.auctionListUsecase = auctionListUsecase
-  }
-  
-  // MARK: - private methods
-  
-  private func sort(with type: AuctionSortType) {
-    self.isLoading = true
-    var sortedItems: [AuctionSalesItem] = self.auctionSalesItems
-    sortedItems = self.auctionSalesItems.sorted(by: { lhsItem, rhsItem in
-      switch type {
-      case .recentRegistration:
-        return lhsItem.salesDateTime >= rhsItem.salesDateTime
-      case .mostInterested:
-        return lhsItem.zzimCount >= rhsItem.zzimCount
-      case .impendingDueDate:
-        return false // TODO: 백엔드 개발필요
-      case .lessBidding:
-        return lhsItem.failBidCount <= rhsItem.failBidCount
-      case .highPrice:
-        return lhsItem.appraisalPrice >= rhsItem.appraisalPrice
-      case .lowPrice:
-        return lhsItem.appraisalPrice <= rhsItem.appraisalPrice
+    self.auctionSearchFilterUsecase = auctionSearchFilterUsecase
+    
+    Task {
+      do {
+        try await fetchSearchFilters()
+      } catch {
+        self.error = error.toMercuryError()
       }
-    })
-    self.auctionSalesItems = sortedItems
-    self.isLoading = false
-  }
-
-  // MARK: - internal methods
-  
-  func filterBuildingUsage(usageType: [AuctionBuildingUsageType]) {
-    self.isLoading = true
-    defer {
-      self.isLoading = false
     }
-    
-    var filteredItem: [AuctionSalesItem] = self.auctionSalesItems
-    filteredItem = self.auctionSalesItems.filter { item in
-      return true // TODO: 백엔드 작업 후 진행
-    }
-    self.auctionSalesItems = filteredItem
   }
   
-  func filterStatus(statusType: [AuctionStatusType]) {
-    self.isLoading = true
-    defer {
-      self.isLoading = false
-    }
-    
-    var filteredItem: [AuctionSalesItem] = self.auctionSalesItems
-    filteredItem = self.auctionSalesItems.filter { item in
-      return true // TODO: 백엔드 작업 후 진행
-    }
-    self.auctionSalesItems = filteredItem
-  }
+  // MARK: - Private Methods
   
-  func loadAuctionSalesList() async throws {
+  // MARK: - Internal Methods
+  
+  // 초기 경매물건 리스트 불러오기
+  func loadAuctionSalesList() async {
     self.isLoading = true
     defer {
       self.isLoading = false
     }
     
     do {
-      let auctionSales = try await auctionListUsecase.fetchAuctionSales()
+      let auctionSales = try await auctionListUsecase.fetchAuctionSales(filter: self.currentAuctionFilter)
       if let auctionCount = auctionSales.auctionCount {
         self.totalAuctionCount = auctionCount
       }
       self.auctionSalesItems = auctionSales.items
       
     } catch {
-      throw error
+      self.error = error.toMercuryError()
     }
   }
   
-  func loadMoreAuctionSales() async throws {
+  // 경매물건 추가로 불러오기
+  func loadMoreAuctionSales() async {
     withAnimation {
       self.isLoadingForPaging = true
     }
@@ -122,11 +89,16 @@ final class AuctionHomeModelData {
     }
     let currentAuctionSalesItems = self.auctionSalesItems
     do {
-      let auctionSalesItems = try await auctionListUsecase.fetchNextAuctionSales()
+      let auctionSalesItems = try await auctionListUsecase.fetchNextAuctionSales(filter: self.currentAuctionFilter)
       self.auctionSalesItems = currentAuctionSalesItems + auctionSalesItems
     } catch {
-      throw error
+      self.error = error.toMercuryError()
     }
   }
   
+  // 필터 가져오기
+  func fetchSearchFilters() async throws {
+    let filters = try await auctionSearchFilterUsecase.fetchAuctionSearchFilters()
+    self.auctionSearchFilter = filters
+  }
 }
