@@ -10,7 +10,7 @@ import Foundation
 import Networking
 
 enum AuctionAPI: BaseAPI {
-  case auctionSearchList(keyword: String?, region: String?, district: String?, buildType: String?, auctionFailCount: Int?, varificationStatus: String?, minimumPrice: Int?, maximumPrice: Int?, nextCursor: String?, sort: String?)
+  case auctionSearchList(keyword: String?, region: String?, district: String?, buildTypes: [String]?, auctionFailCount: Int?, varificationStatus: String?, minimumPrice: Int?, maximumPrice: Int?, nextCursor: String?, sort: String?)
   case auctionDetail(_ auctionID: Int)
   case auctionSearchFilter
   
@@ -44,7 +44,7 @@ enum AuctionAPI: BaseAPI {
   
   var queryParam: [String : Any]? {
     switch self {
-    case let .auctionSearchList(keyword, region, district, buildType, auctionFailCount, varificationStatus, minimumPrice, maximumPrice, nextCursor, sort):
+    case let .auctionSearchList(keyword, region, district, buildTypes, auctionFailCount, varificationStatus, minimumPrice, maximumPrice, nextCursor, sort):
       var params: [String: Any] = [:]
       
       if let keyword = keyword {
@@ -61,10 +61,10 @@ enum AuctionAPI: BaseAPI {
         params["district"] = district
       }
       
-      if let buildType = buildType {
-        params["buildType"] = buildType
+      if let buildTypes = buildTypes, !buildTypes.isEmpty {
+        params["buildTypes"] = buildTypes.first! // TODO: 복수 선택일 경우 대응해야함
       } else {
-        params["buildType"] = "ALL"
+        params["buildTypes"] = "ALL"
       }
       
       if let auctionFailCount = auctionFailCount {

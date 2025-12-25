@@ -41,9 +41,9 @@ public struct AuctionHomeView: View {
         }
       )
       
-      AuctionFilterView(modelData: $modelData)
+      AuctionFilterView()
       
-      AuctionSortView(modelData: $modelData)
+      AuctionSortView()
       
       ScrollView(.vertical) {
         LazyVStack(spacing: .zero) {
@@ -53,9 +53,9 @@ public struct AuctionHomeView: View {
             Button {
               coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
             } label: {
-              AuctionSalesItemView(item: item) {
+              AuctionSalesItemView(item: item, onZzim: {
                 // 찜 했을때의 액션
-              }
+              })
             }
           }
           
@@ -74,11 +74,12 @@ public struct AuctionHomeView: View {
         await modelData.loadAuctionSalesList()
       }
     }
+    .environment(modelData)
     .alert(error: $modelData.error)
     .loading(modelData.isLoading)
     .onLoad {
       Task {
-        await modelData.loadAuctionSalesList()
+        await modelData.loadAuctionSalesList(withFilter: false)
       }
     }
     .sheet(isPresented: $isShowFilterArea, content: {

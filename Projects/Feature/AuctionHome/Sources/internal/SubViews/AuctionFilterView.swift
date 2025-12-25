@@ -10,19 +10,25 @@ import SwiftUI
 import AppFoundation
 import UIComponent
 
+fileprivate enum SheetType: String, Identifiable {
+  var id: Self { self }
+  
+  case buildingUsage
+  case auctionStatus
+  case price
+}
+
 struct AuctionFilterView: View {
-  @Binding var modelData: AuctionHomeModelData
-  @State private var isBuildingUsageFilterSheetShow: Bool = false
-  @State private var isAuctionStatusFilterSheetShow: Bool = false
-  @State private var isPriceFilterSheetShow: Bool = false
+  @Environment(AuctionHomeModelData.self) private var modelData
   @State private var filterItems: [FilterItem] = AuctionFilterType.allCases.map { FilterItem(type: $0) }
+  @State private var sheetType: SheetType?
   
   var body: some View {
     ScrollView(.horizontal) {
       HStack(spacing: 6) {
         ForEach($filterItems) { $item in
           Button {
-            toggle(item: &item)
+            tapFilter(item: &item)
           } label: {
             HStack(spacing: 4) {
               if let image = item.type.leftImage {
@@ -59,37 +65,56 @@ struct AuctionFilterView: View {
       .padding(.vertical, 12)
     }
     .scrollIndicators(.hidden)
-    .sheet(isPresented: $isBuildingUsageFilterSheetShow) {
-      AuctionBuildingUsageFilterView(modelData: $modelData) {
-        isBuildingUsageFilterSheetShow = false
+    .sheet(item: $sheetType) { type in
+      switch type {
+      case .buildingUsage:
+        AuctionBuildingUsageFilterView() {
+          self.sheetType = nil
+          if let index = self.filterItems.firstIndex(where: { $0.type == .buildingUsage }) {
+            self.setFilterItem(item: &self.filterItems[index])
+          }
+        }
+        .dynamicSheet()
+      case .auctionStatus:
+        AuctionStatusFilterView() {
+          self.sheetType = nil
+        }
+        .dynamicSheet()
+      case .price:
+        AuctionPriceFilterView() {
+          self.sheetType = nil
+        }
+        .dynamicSheet()
       }
-      .dynamicSheet()
-    }
-    .sheet(isPresented: $isAuctionStatusFilterSheetShow) {
-      AuctionStatusFilterView(modelData: $modelData) {
-        isAuctionStatusFilterSheetShow = false
-      }
-      .dynamicSheet()
-    }
-    .sheet(isPresented: $isPriceFilterSheetShow) {
-      AuctionPriceFilterView(modelData: $modelData) {
-        isPriceFilterSheetShow = false
-      }
-      .dynamicSheet()
     }
   }
   
-  private func toggle(item: inout FilterItem) {
+  private func tapFilter(item: inout FilterItem) {
     if item.type.isSingleToggle {
       item.selectedValues = item.isActive ? [] : [item.type.defaultTitle]
     }
     switch item.type {
     case .buildingUsage:
-      isBuildingUsageFilterSheetShow = true
+      self.sheetType = .buildingUsage
     case .auctionStatus:
-      isAuctionStatusFilterSheetShow = true
+      self.sheetType = .auctionStatus
     case .price:
-      isPriceFilterSheetShow = true
+      self.sheetType = .price
+    default:
+      break
+    }
+  }
+  
+  private func setFilterItem(item: inout FilterItem) {
+    guard !item.type.isSingleToggle else { return }
+    switch item.type {
+    case .buildingUsage:
+      let buildingTypeOptions = modelData.auctionSearchFilter?.buildingTypes ?? []
+      let selectedCodes: Set<String> = modelData.currentAuctionFilter.buildingTypeCodes ?? []
+      let selectedBuildings: [String] = buildingTypeOptions
+        .filter { option in selectedCodes.contains(option.code) }
+        .map { $0.displayName }
+      item.selectedValues = selectedBuildings
     default:
       break
     }
@@ -101,3 +126,4 @@ extension AuctionFilterType {
     return self == .certified ? Asset.Images.certified.image : nil
   }
 }
+

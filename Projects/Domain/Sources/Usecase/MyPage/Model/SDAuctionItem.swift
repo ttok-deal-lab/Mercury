@@ -15,22 +15,22 @@ final public class SDAuctionItem {
   
   public var caseNumber: String
   public var salesAddress: String
-//  public var salesCategories: [AuctionSalesCategory]
+  
   private var salesCategoryRawValues: [String]
   public var salesCategories: [AuctionSalesCategory] {
-      get {
-        // String -> Enum 변환
-        salesCategoryRawValues.compactMap { AuctionSalesCategory(rawValue: $0) }
-      }
-      set {
-        // Enum -> String 변환 후 저장
-        salesCategoryRawValues = newValue.map { $0.rawValue }
-      }
+    get {
+      // String -> Enum 변환
+      salesCategoryRawValues.compactMap { AuctionSalesCategory(rawValue: $0) }
     }
+    set {
+      // Enum -> String 변환 후 저장
+      salesCategoryRawValues = newValue.map { $0.rawValue }
+    }
+  }
   public var salesDateTime: Date
   public var appraisalPrice: String
   
-  // Relationship (Cascade: 부모 삭제 시 자식도 삭제)
+  // 부모 삭제 시 자식도 삭제
   @Relationship(deleteRule: .cascade) public var salesPictures: [SDSalesPicture]
   
   public var failBidCount: Int
@@ -39,7 +39,6 @@ final public class SDAuctionItem {
   public var verified: Bool
   public var isSoldOut: Bool
   
-  // 검색/정렬을 위한 메타데이터가 필요하다면 추가
   public var createdAt: Date
   
   public init(

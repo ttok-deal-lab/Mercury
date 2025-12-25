@@ -11,7 +11,7 @@ import AppFoundation
 import UIComponent
 
 struct AuctionSortView: View {
-  @Binding var modelData: AuctionHomeModelData
+  @Environment(AuctionHomeModelData.self) var modelData
   @State var isShowSortHandleView: Bool = false
   
   var body: some View {
@@ -20,52 +20,38 @@ struct AuctionSortView: View {
         Text(L10n.auctionItem)
           .fonts(.bodyMicroMedium)
           .foregroundStyle(Asset.Colors.neutral.color)
-        Text("\(modelData.totalAuctionCount)")
+        Text("\(modelData.filteredItemCount)")
           .fonts(.bodyMicroBold)
           .foregroundStyle(Asset.Colors.neutral.color)
         Spacer()
         
-        Button {
-          isShowSortHandleView = true
-        } label: {
-          HStack(spacing: 2) {
-            Text("\(modelData.currentSort.displayName)")
-              .foregroundStyle(Asset.Colors.neutral.color)
-              .fonts(.bodyMiniMedium)
-            Asset.Images.updown.image
-              .resizable()
-              .frame(width: 16, height: 16)
+        if let sortOptions = modelData.currentAuctionFilter.sort {
+          Button {
+            isShowSortHandleView = true
+          } label: {
+            HStack(spacing: 2) {
+              Text("\(sortOptions.displayName)")
+                .foregroundStyle(Asset.Colors.neutral.color)
+                .fonts(.bodyMiniMedium)
+              Asset.Images.updown.image
+                .resizable()
+                .frame(width: 16, height: 16)
+            }
           }
         }
       }
       .padding(.horizontal, 20)
       .padding(.vertical, 12)
       .sheet(isPresented: $isShowSortHandleView) {
-        AuctionSortHandlingView(modelData: $modelData, onComplete: {
-          isShowSortHandleView = false
+        AuctionSortHandlingView(onSortSelected: {
+          Task {
+            await modelData.loadAuctionSalesList()
+            isShowSortHandleView = false
+          }
         })
         .dynamicSheet()
       }
     }
     
-  }
-}
-
-extension AuctionSortType {
-  var displayName: String {
-    switch self {
-    case .recentRegistration:
-      L10n.auctionSortByLatestRegistration
-    case .mostInterested:
-      L10n.auctionSortByMostInterested
-    case .impendingDueDate:
-      L10n.auctionSortByImpendingDueDate
-    case .lessBidding:
-      L10n.auctionSortByLessBidding
-    case .highPrice:
-      L10n.auctionSortByPriceHigher
-    case .lowPrice:
-      L10n.auctionSortByPriceLower
-    }
   }
 }

@@ -18,15 +18,12 @@ final class AuctionHomeModelData {
   // MARK: - Internal Properties
   
   var auctionSalesItems: [AuctionSalesItem] = []
-  var auctionSearchFilter: AuctionSearchFilter?
+  private(set) var auctionSearchFilter: AuctionSearchFilter?
   
-  var currentAuctionFilter: CurrentAuctionFilter = .init()
+  var currentAuctionFilter = CurrentAuctionFilter()
   
   var isLoading: Bool = false
   var isLoadingForPaging: Bool = false
-  
-  var totalAuctionCount: Int = .zero
-  var currentSort: AuctionSortType = .recentRegistration
   var filteredItemCount: Int = .zero
   
   var error: MercuryError?
@@ -58,17 +55,19 @@ final class AuctionHomeModelData {
   
   // MARK: - Internal Methods
   
-  // 초기 경매물건 리스트 불러오기
-  func loadAuctionSalesList() async {
+  // 경매물건 불러오기
+  func loadAuctionSalesList(withFilter: Bool = true) async {
     self.isLoading = true
     defer {
       self.isLoading = false
     }
     
     do {
-      let auctionSales = try await auctionListUsecase.fetchAuctionSales(filter: self.currentAuctionFilter)
+      let auctionSales = try await auctionListUsecase.fetchAuctionSales(
+        filter: withFilter ? self.currentAuctionFilter : nil
+      )
       if let auctionCount = auctionSales.auctionCount {
-        self.totalAuctionCount = auctionCount
+        self.filteredItemCount = auctionCount
       }
       self.auctionSalesItems = auctionSales.items
       
@@ -100,5 +99,12 @@ final class AuctionHomeModelData {
   func fetchSearchFilters() async throws {
     let filters = try await auctionSearchFilterUsecase.fetchAuctionSearchFilters()
     self.auctionSearchFilter = filters
+    
+    if let defaultSort = filters.searchOptions.first {
+      self.currentAuctionFilter.sort = defaultSort
+    }
+    if let defaultRegion = filters.regions.first {
+      self.currentAuctionFilter.region = defaultRegion
+    }
   }
 }

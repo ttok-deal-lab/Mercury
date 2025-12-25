@@ -11,7 +11,6 @@ import UIComponent
 import Domain
 
 struct AuctionFilterLocationView: View {
-  //  @State private var selectedRegion: Region?
   @Binding var modelData: AuctionHomeModelData
   
   var onApplied: (() -> Void)

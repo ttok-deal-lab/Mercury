@@ -10,8 +10,8 @@ import SwiftUI
 import UIComponent
 
 struct AuctionStatusFilterView: View {
+  @Environment(AuctionHomeModelData.self) var modelData
   @State private var selectedChipTitles: Set<String> = []
-  @Binding var modelData: AuctionHomeModelData
   var onComplete: () -> Void
   
   var body: some View {
@@ -26,8 +26,7 @@ struct AuctionStatusFilterView: View {
       .padding(.horizontal, 20)
       
       ChipsContainerView(
-        selectedChipTitles: $selectedChipTitles,
-        items: AuctionStatusType.allCases.map { ChipsType(title: $0.title) }
+        selectedChipIDs: $selectedChipTitles, items: []
       )
       MercuryButton("\(modelData.filteredItemCount)개 매물 보기") {
         onComplete()
