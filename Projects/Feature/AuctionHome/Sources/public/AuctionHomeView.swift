@@ -53,9 +53,9 @@ public struct AuctionHomeView: View {
             Button {
               coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
             } label: {
-              AuctionSalesItemView(item: item) {
+              AuctionSalesItemView(item: item, onZzim: {
                 // 찜 했을때의 액션
-              }
+              })
             }
           }
           
