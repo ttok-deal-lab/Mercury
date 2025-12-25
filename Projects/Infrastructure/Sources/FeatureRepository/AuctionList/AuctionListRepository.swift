@@ -17,14 +17,14 @@ public final class AuctionSalesListRepository: AuctionSalesListRepositorable {
   }
   
   public func fetchAuctionSales(
-    filter: ApplyingAuctionSearchFilter?,
+    filter: CurrentAuctionFilter?,
     cursor: String?,
     size: Int
   ) async throws -> AuctionSales {
     let auctionSalesItemDTO = try await AuctionAPI.auctionSearchList(
       keyword: filter?.keyword,
-      region: filter?.regionCode,
-      district: filter?.districtCode,
+      region: filter?.region?.code,
+      district: filter?.district?.code,
       buildType: filter?.buildType,
       auctionFailCount: filter?.auctionFailCount,
       varificationStatus: filter?.varificationStatus,

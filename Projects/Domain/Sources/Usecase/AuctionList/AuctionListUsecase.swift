@@ -16,11 +16,11 @@ public final class AuctionSalesListUsecase: AuctionSalesListUsecasable {
     self.fetcher = AuctionSalesListFetcher(repository: repository)
   }
   
-  public func fetchAuctionSales(filter: ApplyingAuctionSearchFilter?) async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
+  public func fetchAuctionSales(filter: CurrentAuctionFilter?) async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
     return try await self.fetcher.fetchInitial(filter: filter)
   }
   
-  public func fetchNextAuctionSales(filter: ApplyingAuctionSearchFilter?) async throws -> [AuctionSalesItem] {
+  public func fetchNextAuctionSales(filter: CurrentAuctionFilter?) async throws -> [AuctionSalesItem] {
     return try await self.fetcher.fetchNext(filter: filter)
   }
   
@@ -38,12 +38,12 @@ actor AuctionSalesListFetcher {
     self.repository = repository
   }
   
-  func fetchInitial(filter: ApplyingAuctionSearchFilter?) async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
+  func fetchInitial(filter: CurrentAuctionFilter?) async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
     self.cursor = nil
     return try await fetch(filter: filter)
   }
   
-  func fetchNext(filter: ApplyingAuctionSearchFilter?) async throws -> [AuctionSalesItem] {
+  func fetchNext(filter: CurrentAuctionFilter?) async throws -> [AuctionSalesItem] {
     guard !isLoading else { return [] }
     guard hasNext else {
       return [] // 더 이상 데이터가 없음
@@ -52,7 +52,7 @@ actor AuctionSalesListFetcher {
     return fetchResult.items
   }
   
-  private func fetch(filter: ApplyingAuctionSearchFilter?) async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
+  private func fetch(filter: CurrentAuctionFilter?) async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
     self.isLoading = true
     defer {
       self.isLoading = false

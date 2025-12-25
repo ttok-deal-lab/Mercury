@@ -11,10 +11,10 @@ import UIComponent
 import Domain
 
 struct AuctionFilterLocationView: View {
-  @State private var selectedRegion: Region?
+  //  @State private var selectedRegion: Region?
   @Binding var modelData: AuctionHomeModelData
   
-  var onSelected: (() -> Void)
+  var onApplied: (() -> Void)
   
   var region: [Region]? {
     modelData.auctionSearchFilter?.regions
@@ -30,13 +30,13 @@ struct AuctionFilterLocationView: View {
         Spacer()
         
         Button {
-          onSelected()
+          onApplied()
         } label: {
           Text("적용")
             .fonts(.bodyMediumMedium)
             .foregroundStyle(Asset.Colors.neutral.color)
         }
-
+        
       }
       .padding(.top, 50)
       .padding(.bottom, 16)
@@ -50,17 +50,20 @@ struct AuctionFilterLocationView: View {
       ScrollView(.vertical) {
         VStack(spacing: .zero) {
           HStack(spacing: .zero) {
-            RegionsSelectView(regions: region) {
-              self.selectedRegion = $0
-              modelData.filterRegion(region: $0)
+            RegionsSelectView(
+              currentRegion: $modelData.currentAuctionFilter.region,
+              regions: region
+            ) { _ in 
+              modelData.currentAuctionFilter.district = nil
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 16)
             
-            if let selectedRegion {
-              DistrictSelectView(districts: selectedRegion.districts) {
-                modelData.filterDistrict(district: $0)
-              }
+            if let selectedRegion = modelData.currentAuctionFilter.region {
+              DistrictSelectView(
+                selectedDistrict: $modelData.currentAuctionFilter.district,
+                districts: selectedRegion.districts
+              )
               .frame(maxWidth: .infinity, alignment: .leading)
               .padding(.vertical, 16)
             }
@@ -72,7 +75,7 @@ struct AuctionFilterLocationView: View {
 }
 
 struct RegionsSelectView: View {
-  @State private var selected: Region?
+  @Binding var currentRegion: Region?
   let regions: [Region]?
   var completion: (Region) -> Void
   
@@ -80,14 +83,49 @@ struct RegionsSelectView: View {
     VStack(alignment: .leading, spacing: .zero) {
       ForEach(regions ?? []) { region in
         Button {
-          selected = region
+          currentRegion = region
           completion(region)
         } label: {
           HStack(spacing: .zero) {
             Text(region.displayName)
               .fonts(.bodyLargeMedium)
               .foregroundColor(
-                selected == region
+                currentRegion == region
+                ? .white
+                : Asset.Colors.neutral.color
+              )
+              .frame(height: 48)
+              .padding(.horizontal, 20)
+            
+            Spacer()
+          }
+        }
+        .background(
+          currentRegion == region
+          ? Asset.Colors.neutral.color
+          : .clear
+        )
+      }
+      Spacer()
+    }
+  }
+}
+
+struct DistrictSelectView: View {
+  @Binding var selectedDistrict: District?
+  let districts: [District]
+  
+  var body: some View {
+    VStack(alignment: .leading, spacing: .zero) {
+      ForEach(districts) { district in
+        Button {
+          selectedDistrict = district
+        } label: {
+          HStack(spacing: .zero) {
+            Text(district.displayName)
+              .fonts(.bodyLargeMedium)
+              .foregroundColor(
+                selectedDistrict == district
                 ? Color.white
                 : Asset.Colors.neutral.color
               )
@@ -97,7 +135,7 @@ struct RegionsSelectView: View {
           }
         }
         .background(
-          selected == region
+          selectedDistrict == district
           ? Asset.Colors.neutral.color
           : Color.clear
         )
@@ -107,38 +145,3 @@ struct RegionsSelectView: View {
   }
 }
 
-struct DistrictSelectView: View {
-  @State private var selected: District?
-  let districts: [District]
-  var completion: (District) -> Void
-  
-  var body: some View {
-    VStack(alignment: .leading, spacing: .zero) {
-      ForEach(districts) { district in
-        Button {
-          selected = district
-          completion(district)
-        } label: {
-          HStack(spacing: .zero) {
-            Text(district.displayName)
-              .fonts(.bodyLargeMedium)
-              .foregroundColor(
-                selected == district
-                ? Color.white
-                : Asset.Colors.neutral.color
-              )
-              .frame(height: 48)
-              .padding(.horizontal, 20)
-            Spacer()
-          }
-        }
-        .background(
-          selected == district
-          ? Asset.Colors.neutral.color
-          : Color.clear
-        )
-      }
-      Spacer()
-    }
-  }
-}

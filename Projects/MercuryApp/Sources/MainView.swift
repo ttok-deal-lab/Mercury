@@ -44,12 +44,7 @@ struct MainView: View {
       })
     } else {
       NavigationStack(path: $coordinator.rootStack) {
-        MainTabViewWrapperView(
-          localStorageUsecase: LocalStorageUsecase(repository: UserDefaultsStoreRepository()),
-          auctionListUsecase: AuctionSalesListUsecase(repository: AuctionSalesListRepository()),
-          auctionSearchFilterUsecase: AuctionSearchFilterUsecase(repository: AuctionSearchFilterRepository()),
-          userProfileUsecase: MyPageUsecase(repository: MyPageRepository())
-        )
+        MainTabViewWrapperView()
         .navigationDestination(for: FeatureRoute.self) { route in
           RootViewFactory().makeView(route)
         }

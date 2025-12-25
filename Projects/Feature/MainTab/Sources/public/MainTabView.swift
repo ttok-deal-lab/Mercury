@@ -29,21 +29,12 @@ public struct MainTabView<
   @State private var selection: Tab = .home
   @Inject private var toast: Toastable
   
-  private let auctionListUsecase: AuctionSalesListUsecasable
-  private let auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
-  private let userProfileUsecase: MyPageUsecasable
   
   // MARK: - life cycle
   
   public init(
-    localStorageUsecase: LocalStorageUsecasable,
-    auctionListUsecase: AuctionSalesListUsecasable,
-    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
-    userProfileUsecase: MyPageUsecasable
+    localStorageUsecase: LocalStorageUsecasable
   ) {
-    self.auctionListUsecase = auctionListUsecase
-    self.auctionSearchFilterUsecase = auctionSearchFilterUsecase
-    self.userProfileUsecase = userProfileUsecase
     self.modelData = MainTabModelData(localStorageUsecase: localStorageUsecase)
   }
   
@@ -66,15 +57,11 @@ public struct MainTabView<
   
   private func tabView() -> some View {
     TabView(selection: $selection) {
-      AuctionHomeView(
-        auctionListUsecase: auctionListUsecase,
-        auctionSearchFilterUsecase: auctionSearchFilterUsecase,
-        modelContext: modelContext
-      )
-      .tabItem {
-        Tab.home.iconView(isSelected: selection == .home)
-      }
-      .tag(Tab.home)
+      AuctionHomeView()
+        .tabItem {
+          Tab.home.iconView(isSelected: selection == .home)
+        }
+        .tag(Tab.home)
       
       InterestView()
         .tabItem {
@@ -82,9 +69,7 @@ public struct MainTabView<
         }
         .tag(Tab.interest)
       
-      MyPageView(
-        userProfileUseCase: userProfileUsecase
-      )
+      MyPageView()
         .tabItem {
           Tab.setting.iconView(isSelected: selection == .setting)
         }

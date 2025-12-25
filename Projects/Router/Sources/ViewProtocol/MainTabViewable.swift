@@ -11,10 +11,5 @@ import Combine
 import Domain
 
 public protocol MainTabViewable where Self: View {
-  init(
-    localStorageUsecase: LocalStorageUsecasable,
-    auctionListUsecase: AuctionSalesListUsecasable,
-    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable, 
-    userProfileUsecase: MyPageUsecasable
-  )
+  init()
 }

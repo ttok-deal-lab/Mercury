@@ -17,7 +17,6 @@ import Domain
 public struct AuctionHomeView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var modelData: AuctionHomeModelData
-  @State private var error: MercuryError?
   @State private var isShowFilterArea: Bool = false
   
   public init(
@@ -33,14 +32,12 @@ public struct AuctionHomeView: View {
   public var body: some View {
     VStack(spacing: .zero) {
       AuctionHomeNavigationView(
-        onSelectArea: { areaName in
+        applyingSearchFilter: $modelData.currentAuctionFilter,
+        onSelectArea: {
           isShowFilterArea = true
         },
         onTapSearch: {
           print("search")
-        },
-        onTapNotification: {
-          print("notification")
         }
       )
       
@@ -61,7 +58,7 @@ public struct AuctionHomeView: View {
               }
             }
           }
-
+          
           if !modelData.auctionSalesItems.isEmpty {
             loadMoreView()
           }
@@ -74,27 +71,23 @@ public struct AuctionHomeView: View {
         Spacer()
       }
       .refreshable {
-        do {
-          try await modelData.loadAuctionSalesList()
-        } catch {
-          self.error = error.toMercuryError()
-        }
+        await modelData.loadAuctionSalesList()
       }
     }
-    .alert(error: $error)
+    .alert(error: $modelData.error)
     .loading(modelData.isLoading)
     .onLoad {
       Task {
-        do {
-          try await modelData.loadAuctionSalesList()
-        } catch {
-          self.error = error.toMercuryError()
-        }
+        await modelData.loadAuctionSalesList()
       }
     }
     .sheet(isPresented: $isShowFilterArea, content: {
       AuctionFilterLocationView(modelData: $modelData) {
-        isShowFilterArea = false
+        Task {
+          await modelData.loadAuctionSalesList()
+          isShowFilterArea = false
+        }
+        
       }
     })
   }
@@ -111,11 +104,7 @@ public struct AuctionHomeView: View {
   private func loadMoreView() -> some View {
     Color.clear
       .task {
-        do {
-          try await modelData.loadMoreAuctionSales()
-        } catch {
-          self.error = error.toMercuryError()
-        }
+        await modelData.loadMoreAuctionSales()
       }
   }
 }
