@@ -10,7 +10,7 @@ import Foundation
 import Networking
 
 enum AuctionAPI: BaseAPI {
-  case auctionSearchList(keyword: String?, region: String?, district: String?, buildTypes: [String]?, auctionFailCount: Int?, varificationStatus: String?, minimumPrice: Int?, maximumPrice: Int?, nextCursor: String?, sort: String?)
+  case auctionSearchList(keyword: String?, region: String?, district: String?, buildTypes: [String]?, auctionFailCount: [String]?, varificationStatus: String?, minimumPrice: Int?, maximumPrice: Int?, nextCursor: String?, sort: String?)
   case auctionDetail(_ auctionID: Int)
   case auctionSearchFilter
   
@@ -67,8 +67,8 @@ enum AuctionAPI: BaseAPI {
         params["buildTypes"] = "ALL"
       }
       
-      if let auctionFailCount = auctionFailCount {
-        params["auctionFailCount"] = auctionFailCount
+      if let auctionFailCount = auctionFailCount, !auctionFailCount.isEmpty {
+        params["auctionFailCount"] = auctionFailCount.first!  // TODO: 복수 선택일 경우 대응해야함
       } else {
         params["auctionFailCount"] = "ALL"
       }

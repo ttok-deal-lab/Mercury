@@ -11,8 +11,24 @@ import UIComponent
 
 struct AuctionStatusFilterView: View {
   @Environment(AuctionHomeModelData.self) var modelData
-  @State private var selectedChipTitles: Set<String> = []
-  var onComplete: () -> Void
+  var onClosed: () -> Void
+  
+  @State private var reloadTask: Task<Void, Never>?
+  
+  var selectedAuctionStatusCodes: Binding<Set<String>> {
+    Binding(
+      get: { modelData.currentAuctionFilter.auctionFailCodes ?? []},
+      set: { newValue in
+        modelData.currentAuctionFilter.auctionFailCodes = newValue
+        reloadTask?.cancel()
+        reloadTask = Task {
+          try? await Task.sleep(nanoseconds: 300_000_000) // 0.3s
+          guard !Task.isCancelled else { return }
+          await modelData.loadAuctionSalesList()
+        }
+      }
+    )
+  }
   
   var body: some View {
     VStack(spacing: .zero) {
@@ -25,22 +41,18 @@ struct AuctionStatusFilterView: View {
       .padding(.vertical, 16)
       .padding(.horizontal, 20)
       
-      ChipsContainerView(
-        selectedChipIDs: $selectedChipTitles, items: []
-      )
+      if let auctionStatusTypes = modelData.auctionSearchFilter?.auctionFailOptions {
+        ChipsContainerView(
+          selectedChipIDs: selectedAuctionStatusCodes,
+          items: auctionStatusTypes.map { ChipsType(id: $0.code, title: $0.displayName)}
+        )
+      }
+      
       MercuryButton("\(modelData.filteredItemCount)개 매물 보기") {
-        onComplete()
+        onClosed()
       }
       .padding(.horizontal, 20)
       .padding(.vertical, 12)
     }
-    .onChange(of: selectedChipTitles) { _, selectedChipTitles in
-      let statusType = chipsToStatusType()
-//      modelData.filterStatus(statusType: statusType)
-    }
-  }
-  
-  private func chipsToStatusType() -> [AuctionStatusType] {
-    selectedChipTitles.compactMap { AuctionStatusType(rawValue: $0) }
   }
 }

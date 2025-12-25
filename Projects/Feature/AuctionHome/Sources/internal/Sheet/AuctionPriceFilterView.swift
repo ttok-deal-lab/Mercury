@@ -42,8 +42,4 @@ struct AuctionPriceFilterView: View {
     }
     
   }
-  
-  private func chipsToStatusType() -> [AuctionStatusType] {
-    selectedChipTitles.compactMap { AuctionStatusType(rawValue: $0) }
-  }
 }

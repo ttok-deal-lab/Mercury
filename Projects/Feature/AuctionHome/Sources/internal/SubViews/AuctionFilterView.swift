@@ -78,6 +78,9 @@ struct AuctionFilterView: View {
       case .auctionStatus:
         AuctionStatusFilterView() {
           self.sheetType = nil
+          if let index = self.filterItems.firstIndex(where: { $0.type == .auctionStatus }) {
+            self.setFilterItem(item: &self.filterItems[index])
+          }
         }
         .dynamicSheet()
       case .price:
@@ -115,6 +118,13 @@ struct AuctionFilterView: View {
         .filter { option in selectedCodes.contains(option.code) }
         .map { $0.displayName }
       item.selectedValues = selectedBuildings
+    case .auctionStatus:
+      let statusOptions = modelData.auctionSearchFilter?.auctionFailOptions ?? []
+      let selectedCodes: Set<String> = modelData.currentAuctionFilter.auctionFailCodes ?? []
+      let selectedStatuses: [String] = statusOptions
+        .filter { option in selectedCodes.contains(option.code) }
+        .map { $0.displayName }
+      item.selectedValues = selectedStatuses
     default:
       break
     }

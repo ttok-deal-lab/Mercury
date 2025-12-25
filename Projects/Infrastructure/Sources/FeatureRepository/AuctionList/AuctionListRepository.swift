@@ -26,7 +26,7 @@ public final class AuctionSalesListRepository: AuctionSalesListRepositorable {
       region: filter?.region?.code,
       district: filter?.district?.code,
       buildTypes: filter?.buildingTypeCodes.map { Array($0) },
-      auctionFailCount: filter?.auctionFailCount,
+      auctionFailCount: filter?.auctionFailCodes.map { Array($0) },
       varificationStatus: filter?.varificationStatus,
       minimumPrice: filter?.minimumPrice,
       maximumPrice: filter?.maximumPrice,
