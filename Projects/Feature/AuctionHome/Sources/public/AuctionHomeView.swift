@@ -14,12 +14,12 @@ import Domain
 import UIComponent
 import Router
 
-struct AuctionHomeView: View {
+public struct AuctionHomeView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var modelData: AuctionHomeModelData
   @State private var isShowFilterArea: Bool = false
   
-  init(
+  public init(
     auctionListUsecase: AuctionSalesListUsecasable,
     auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
     localStorageUsecase: LocalStorageUsecasable
@@ -27,12 +27,11 @@ struct AuctionHomeView: View {
     self.modelData = AuctionHomeModelData(
       localStorageUsecase: localStorageUsecase,
       auctionListUsecase: auctionListUsecase,
-      auctionSearchFilterUsecase: auctionSearchFilterUsecase,
       auctionSearchFilterUsecase: auctionSearchFilterUsecase
     )
   }
   
-  var body: some View {
+  public var body: some View {
     VStack(spacing: .zero) {
       AuctionHomeNavigationView(
         applyingSearchFilter: $modelData.currentAuctionFilter,
@@ -56,6 +55,9 @@ struct AuctionHomeView: View {
             Button {
               coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
               // UserDefault 에 id 값 추가
+              Task {
+                await modelData.saveRecentSales(id: item.id)
+              }
             } label: {
               AuctionSalesItemView(item: item, onZzim: {
                 // 찜 했을때의 액션

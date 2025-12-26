@@ -14,10 +14,6 @@ import Domain
 
 @Observable
 final class AuctionHomeModelData {
-  // MARK: - internal properties
-  var auctionSalesItems: [AuctionSalesItem] = []
-  var auctionSearchFilter: AuctionSearchFilter?
-  
   // MARK: - Internal Properties
   
   var auctionSalesItems: [AuctionSalesItem] = []
@@ -112,5 +108,23 @@ final class AuctionHomeModelData {
     if let defaultRegion = filters.regions.first {
       self.currentAuctionFilter.region = defaultRegion
     }
+  }
+  
+  func saveRecentSales(id: Int) async {
+    var recentSales: [RecentSalesInfo] = await localStorageUsecase.getModel(forKey: .recentViwedSales, as: [RecentSalesInfo].self) ?? []
+    let date = Date.now
+    
+    let newItem = RecentSalesInfo(id: id, date: date)
+    
+    if let index = recentSales.firstIndex(of: newItem) {
+      recentSales.remove(at: index)
+    }
+    recentSales.insert(newItem, at: 0)
+    
+    if recentSales.count > 50 { // 정책 정하기 전 임시 갯수 제한
+      recentSales.removeLast()
+    }
+    await localStorageUsecase.setModel(recentSales, forKey: .recentViwedSales)
+    
   }
 }
