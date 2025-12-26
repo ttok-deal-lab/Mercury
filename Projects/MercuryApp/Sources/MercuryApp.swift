@@ -42,7 +42,6 @@ struct MercuryApp: App {
           }
       }
     }
-    .modelContainer(for: [SDAuctionItem.self])
   }
 }
 

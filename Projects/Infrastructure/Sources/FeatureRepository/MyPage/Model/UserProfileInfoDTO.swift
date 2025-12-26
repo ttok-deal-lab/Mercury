@@ -7,7 +7,6 @@
 
 import Foundation
 
-import MyPage
 import Domain
 
 struct UserProfileInfoDTO: Codable {

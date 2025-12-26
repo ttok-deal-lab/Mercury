@@ -125,29 +125,4 @@ final class AuctionHomeModelData {
        try await loadAuctionSalesList()
      }
    }
-  
-  func saveRecentItem(_ item: AuctionSalesItem) {
-    // entity to SD Model
-    let recentItem = SDAuctionItem(
-      salesId: item.id,
-      caseNumber: item.caseNumber,
-      salesAddress: item.salesAddress,
-      salesCategories: item.salesCategories,
-      salesDateTime: item.salesDateTime,
-      appraisalPrice: item.appraisalPrice,
-      failBidCount: item.failBidCount,
-      zzimCount: item.zzimCount,
-      registerDate: item.registerDate,
-      verified: item.verified,
-      isSoldOut: item.isSoldOut,
-      createdAt: Date.now
-    )
-    
-    // 중복 제거
-    let id = item.id
-    try? modelContext.delete(model: SDAuctionItem.self, where: #Predicate { $0.salesId == id})
-    
-    modelContext.insert(recentItem)
-    try? modelContext.save()
-  }
 }

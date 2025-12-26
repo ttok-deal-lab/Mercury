@@ -15,11 +15,7 @@ import Router
 
 struct RecentSalesView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
-  @Query var recentSales: [SDAuctionItem]
-  
-  init() {
-    
-  }
+  @Query var recentSales: [AuctionSalesItem]
   
   var body: some View {
     VStack {
@@ -33,8 +29,12 @@ struct RecentSalesView: View {
       
       ScrollView(.vertical) {
         LazyVStack(spacing: .zero) {
-          ForEach(recentSales, id: \.id) { sales in
-            Text("\(sales.salesId)")
+          ForEach(recentSales, id: \.id) { item in
+            Button {
+              coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
+            } label: {
+              
+            }
           }
         }
       }

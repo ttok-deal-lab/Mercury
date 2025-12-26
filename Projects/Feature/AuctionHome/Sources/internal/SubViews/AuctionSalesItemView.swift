@@ -14,7 +14,7 @@ import UIComponent
 struct AuctionSalesItemView: View {
   let item: AuctionSalesItem
   let onZzim: () -> Void
-
+  
   var body: some View {
     VStack(spacing: .zero) {
       HStack(spacing: 16) {
