@@ -12,8 +12,5 @@ import SwiftUI
 import Domain
 
 public protocol AuctionHomeViewable where Self: View {
-  init(
-    auctionListUsecase: AuctionSalesListUsecasable,
-    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
-  )
+  init()
 }

@@ -8,32 +8,49 @@
 import SwiftUI
 
 import UIComponent
+import Domain
 
 struct AuctionHomeNavigationView: View {
-  @State private var currentArea: String = L10n.homeDefaultArea
-  private let onSelectArea: (String) -> Void
+  @Binding var applyingSearchFilter: CurrentAuctionFilter
+  private let onSelectArea: () -> Void
   private let onTapSearch: () -> Void
-  private let onTapNotification: () -> Void
   
   init(
-    onSelectArea: @escaping (_ areaName: String) -> Void,
+    applyingSearchFilter: Binding<CurrentAuctionFilter>,
+    onSelectArea: @escaping () -> Void,
     onTapSearch: @escaping () -> Void,
-    onTapNotification: @escaping () -> Void
   ) {
+    self._applyingSearchFilter = applyingSearchFilter
     self.onSelectArea = onSelectArea
     self.onTapSearch = onTapSearch
-    self.onTapNotification = onTapNotification
+  }
+  
+  var searchingRegionText: String? {
+    if let region = applyingSearchFilter.region {
+      if let district = applyingSearchFilter.district {
+        return region.displayName + " " + district.displayName
+      } else {
+        return region.displayName
+      }
+    }
+    return nil
   }
   
   var body: some View {
     HStack(spacing: .zero) {
       Button {
-        onSelectArea("\(currentArea)") // TODO: 필터 개발 필요
+        onSelectArea()
       } label: {
         HStack(spacing: 4) {
-          Text("\(currentArea)") // TODO: 필터 개발 필요
-            .fonts(.titleLargeBold)
-            .foregroundStyle(Asset.Colors.neutral.color)
+          if let searchingRegionText {
+            Text(searchingRegionText)
+              .fonts(.titleLargeBold)
+              .foregroundStyle(Asset.Colors.neutral.color)
+          } else {
+            Text(L10n.homeDefaultArea)
+              .fonts(.titleLargeBold)
+              .foregroundStyle(Asset.Colors.neutral.color)
+          }
           Asset.Images.arrowDownNoShaft.image
             .renderingMode(.template)
             .resizable()
@@ -47,16 +64,6 @@ struct AuctionHomeNavigationView: View {
           onTapSearch() // TODO: 검색 화면 개발 필요
         } label: {
           Asset.Images.search.image
-            .renderingMode(.template)
-            .resizable()
-            .foregroundStyle(Asset.Colors.neutral.color)
-            .frame(width: 28, height: 28)
-        }
-        
-        Button {
-          onTapNotification() // TODO: 알림 화면 개발 필요
-        } label: {
-          Asset.Images.notification.image
             .renderingMode(.template)
             .resizable()
             .foregroundStyle(Asset.Colors.neutral.color)

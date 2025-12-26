@@ -17,7 +17,6 @@ import Router
 struct AuctionHomeView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var modelData: AuctionHomeModelData
-  @State private var error: MercuryError?
   @State private var isShowFilterArea: Bool = false
   
   init(
@@ -28,6 +27,7 @@ struct AuctionHomeView: View {
     self.modelData = AuctionHomeModelData(
       localStorageUsecase: localStorageUsecase,
       auctionListUsecase: auctionListUsecase,
+      auctionSearchFilterUsecase: auctionSearchFilterUsecase,
       auctionSearchFilterUsecase: auctionSearchFilterUsecase
     )
   }
@@ -35,20 +35,18 @@ struct AuctionHomeView: View {
   var body: some View {
     VStack(spacing: .zero) {
       AuctionHomeNavigationView(
-        onSelectArea: { areaName in
+        applyingSearchFilter: $modelData.currentAuctionFilter,
+        onSelectArea: {
           isShowFilterArea = true
         },
         onTapSearch: {
           print("search")
-        },
-        onTapNotification: {
-          print("notification")
         }
       )
       
-      AuctionFilterView(modelData: $modelData)
+      AuctionFilterView()
       
-      AuctionSortView(modelData: $modelData)
+      AuctionSortView()
       
       ScrollView(.vertical) {
         LazyVStack(spacing: .zero) {
@@ -74,36 +72,32 @@ struct AuctionHomeView: View {
               .frame(width: 50, height: 50)
           }
         }
-        
         Spacer()
-        
       }
       .refreshable {
-        do {
-          try await modelData.loadAuctionSalesList()
-        } catch {
-          self.error = error.toMercuryError()
-        }
+        await modelData.loadAuctionSalesList()
       }
     }
-    .alert(error: $error)
+    .environment(modelData)
+    .alert(error: $modelData.error)
     .loading(modelData.isLoading)
     .onLoad {
       Task {
-        do {
-          try await modelData.loadAuctionSalesList()
-        } catch {
-          self.error = error.toMercuryError()
-        }
+        await modelData.loadAuctionSalesList(withFilter: false)
       }
     }
     .sheet(isPresented: $isShowFilterArea, content: {
-      AuctionFilterLocationView(modelData: $modelData)
+      AuctionFilterLocationView(modelData: $modelData) {
+        Task {
+          await modelData.loadAuctionSalesList()
+          isShowFilterArea = false
+        }
+        
+      }
     })
   }
   
   private func shouldTriggerLoadMore(at index: Int) -> Bool {
-    print(index)
     let itemCount = modelData.auctionSalesItems.count
     guard itemCount >= 20 else { return false }
     
@@ -115,11 +109,7 @@ struct AuctionHomeView: View {
   private func loadMoreView() -> some View {
     Color.clear
       .task {
-        do {
-          try await modelData.loadMoreAuctionSales()
-        } catch {
-          self.error = error.toMercuryError()
-        }
+        await modelData.loadMoreAuctionSales()
       }
   }
 }

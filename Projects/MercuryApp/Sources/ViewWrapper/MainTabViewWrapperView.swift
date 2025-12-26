@@ -11,6 +11,7 @@ import Combine
 import Router
 import MainTab
 import Domain
+import Infrastructure
 
 public struct MainTabViewWrapperView: View, MainTabViewable {
   
@@ -22,17 +23,9 @@ public struct MainTabViewWrapperView: View, MainTabViewable {
     SignInViewWrapperView
   >
   
-  public init(
-    localStorageUsecase: LocalStorageUsecasable,
-    auctionListUsecase: AuctionSalesListUsecasable,
-    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
-    userProfileUsecase: MyPageUsecasable
-  ) {
+  public init() {
     hostView = MainTabView(
-      localStorageUsecase: localStorageUsecase,
-      auctionListUsecase: auctionListUsecase,
-      auctionSearchFilterUsecase: auctionSearchFilterUsecase,
-      userProfileUsecase: userProfileUsecase
+      localStorageUsecase: LocalStorageUsecase(repository: UserDefaultsStoreRepository())
     )
   }
   

@@ -7,20 +7,15 @@
 
 import SwiftUI
 
-public struct ChipsType: Equatable {
-  let title: String
-  let priority: Int
-  
-  public init(
-    title: String,
-    priority: Int = 0
-  ) {
+public struct ChipsType: Hashable {
+  public let id: String
+  public let title: String
+  public let priority: Int
+
+  public init(id: String, title: String, priority: Int = 0) {
+    self.id = id
     self.title = title
     self.priority = priority
-  }
-  
-  public static func == (lhs: ChipsType, rhs: ChipsType) -> Bool {
-    lhs.title == rhs.title
   }
 }
 
@@ -57,43 +52,45 @@ public struct ChipsView: View {
 
 public struct ChipsContainerView: View {
   @State var totalHeight: CGFloat
-  @Binding var selectedChipTitles: Set<String>
+  @Binding var selectedChipIDs: Set<String>
   let verticalSpacing: CGFloat
   let horizontalSpacing: CGFloat
   let items: [ChipsType]
-  var sortedItems: [ChipsType] {
-    items.sorted(by: { $0.priority < $1.priority })
-  }
-  
+
+  var sortedItems: [ChipsType] { items.sorted { $0.priority < $1.priority } }
+
   public init(
-    selectedChipTitles: Binding<Set<String>>,
+    selectedChipIDs: Binding<Set<String>>,
     totalHeight: CGFloat = .zero,
     verticalSpacing: CGFloat = 8,
     horizontalSpacing: CGFloat = 8,
     items: [ChipsType]
   ) {
-    self._selectedChipTitles = selectedChipTitles
+    self._selectedChipIDs = selectedChipIDs
     self.totalHeight = totalHeight
     self.verticalSpacing = verticalSpacing
     self.horizontalSpacing = horizontalSpacing
     self.items = items
   }
-  
+
   public var body: some View {
     var width = CGFloat.zero
     var height = CGFloat.zero
-    
+
     GeometryReader { geomety in
       ZStack(alignment: .topLeading) {
-        ForEach(self.sortedItems, id: \.title) { item in
-          ChipsView(title: item.title, isSelected: selectedChipTitles.contains(item.title), onTap: {
-            if selectedChipTitles.contains(item.title) {
-              selectedChipTitles.remove(item.title)
-            } else {
-              selectedChipTitles.insert(item.title)
+        ForEach(sortedItems, id: \.id) { item in
+          ChipsView(
+            title: item.title,
+            isSelected: selectedChipIDs.contains(item.id),
+            onTap: {
+              if selectedChipIDs.contains(item.id) {
+                selectedChipIDs.remove(item.id)
+              } else {
+                selectedChipIDs.insert(item.id)
+              }
             }
-          })
-          .id(item.title)
+          )
           .alignmentGuide(.leading) { view in
             if abs(width - view.width) > geomety.size.width {
               width = 0
@@ -101,32 +98,24 @@ public struct ChipsContainerView: View {
               height -= verticalSpacing
             }
             let result = width
-            
             if item == sortedItems.last {
               width = 0
             } else {
               width -= view.width
               width -= horizontalSpacing
             }
-            
             return result
           }
           .alignmentGuide(.top) { _ in
             let result = height
-            
-            if item == sortedItems.last {
-              height = 0
-            }
+            if item == sortedItems.last { height = 0 }
             return result
           }
         }
       }
       .background(
         GeometryReader { geometry in
-          Color.clear
-            .onAppear {
-              self.totalHeight = geometry.size.height
-            }
+          Color.clear.onAppear { totalHeight = geometry.size.height }
         }
       )
     }
@@ -135,3 +124,4 @@ public struct ChipsContainerView: View {
     .padding(.horizontal, 20)
   }
 }
+

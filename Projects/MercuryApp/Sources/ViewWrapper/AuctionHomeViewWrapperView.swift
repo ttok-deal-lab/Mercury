@@ -7,25 +7,19 @@
 
 import Combine
 import SwiftUI
-import SwiftData
 
 import Router
 import AuctionHome
 import Domain
+import Infrastructure
 
 public struct AuctionHomeViewWrapperView: View, AuctionHomeViewable {
   let hostView: AuctionHomeView
   
-  public init(
-    auctionListUsecase: AuctionSalesListUsecasable,
-    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
-    localStorageusecase: LocalStorageUsecasable
-  ) {
+  public init() {
     self.hostView = AuctionHomeView(
-      auctionListUsecase: auctionListUsecase,
-      auctionSearchFilterUsecase: auctionSearchFilterUsecase,
-      localStorageUseCase: localStorageusecase
-      
+      auctionListUsecase: AuctionSalesListUsecase(repository: AuctionSalesListRepository()),
+      auctionSearchFilterUsecase: AuctionSearchFilterUsecase(repository: AuctionSearchFilterRepository())
     )
   }
   

@@ -10,8 +10,8 @@ import SwiftUI
 import UIComponent
 
 struct AuctionPriceFilterView: View {
+  @Environment(AuctionHomeModelData.self) var modelData
   @State private var selectedChipTitles: Set<String> = []
-  @Binding var modelData: AuctionHomeModelData
   @State var lowestPrice: Double = .zero
   @State var highestPrice: Double = 20_000
   var onComplete: () -> Void

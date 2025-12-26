@@ -77,7 +77,7 @@ public struct District: Identifiable, Equatable {
 
 // MARK: - Option (Domain)
 
-public struct Option {
+public struct Option: Hashable {
   public let code: String
   public let displayName: String
 
@@ -87,5 +87,13 @@ public struct Option {
   ) {
     self.code = code
     self.displayName = displayName
+  }
+  
+  public static func == (lhs: Option, rhs: Option) -> Bool {
+    lhs.code == rhs.code
+  }
+
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(code)
   }
 }

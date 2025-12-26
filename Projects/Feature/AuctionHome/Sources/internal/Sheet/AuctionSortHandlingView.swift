@@ -10,8 +10,8 @@ import SwiftUI
 import UIComponent
 
 struct AuctionSortHandlingView: View {
-  @Binding var modelData: AuctionHomeModelData
-  var onComplete: () -> Void
+  @Environment(AuctionHomeModelData.self) var modelData
+  var onSortSelected: () -> Void
   
   var body: some View {
     VStack(spacing: .zero) {
@@ -24,33 +24,32 @@ struct AuctionSortHandlingView: View {
       .padding(.vertical, 16)
       .padding(.horizontal, 20)
       
-      ForEach(AuctionSortType.allCases) { type in
-        Button {
-          modelData.currentSort = type
-          onComplete()
-        } label: {
-          HStack(spacing: .zero) {
-            Text(type.displayName)
-              .foregroundStyle(Asset.Colors.neutral.color)
-              .fonts(.bodyLargeMedium)
-
-            Spacer()
-            if modelData.currentSort == type {
-              Asset.Images.check.image
-                .resizable()
-                .frame(width: 20, height: 20)
+      if let searchOptions = modelData.auctionSearchFilter?.searchOptions {
+        ForEach(searchOptions, id: \.code) { type in
+          Button {
+            modelData.currentAuctionFilter.sort = type
+            onSortSelected()
+          } label: {
+            HStack(spacing: .zero) {
+              Text(type.displayName)
+                .foregroundStyle(Asset.Colors.neutral.color)
+                .fonts(.bodyLargeMedium)
+              
+              Spacer()
+              if let currentSort = modelData.currentAuctionFilter.sort,
+                 currentSort.code == type.code {
+                Asset.Images.check.image
+                  .resizable()
+                  .frame(width: 20, height: 20)
+              }
             }
+            .padding(.horizontal, 20)
+            .frame(height: 56)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .contentShape(Rectangle())
           }
-          .padding(.horizontal, 20)
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .contentShape(Rectangle())
         }
-        .frame(height: 56)
-        .buttonStyle(PressableBackgroundStyle(
-          pressedColor: Asset.Colors.neutralLight.color
-        ))
       }
-
     }
   }
 }

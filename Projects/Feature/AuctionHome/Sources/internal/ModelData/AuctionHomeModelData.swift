@@ -18,27 +18,26 @@ final class AuctionHomeModelData {
   var auctionSalesItems: [AuctionSalesItem] = []
   var auctionSearchFilter: AuctionSearchFilter?
   
-  private(set) var applyingAuctionSearchFilter: ApplyingAuctionSearchFilter = .init() {
-    didSet {
-      print("current filter: \(self.applyingAuctionSearchFilter)")
-    }
-  }
+  // MARK: - Internal Properties
+  
+  var auctionSalesItems: [AuctionSalesItem] = []
+  private(set) var auctionSearchFilter: AuctionSearchFilter?
+  
+  var currentAuctionFilter = CurrentAuctionFilter()
   
   var isLoading: Bool = false
   var isLoadingForPaging: Bool = false
-  
-  var totalAuctionCount: Int = .zero
-  var currentSort: AuctionSortType = .recentRegistration
   var filteredItemCount: Int = .zero
   
-  // MARK: - private properties
+  var error: MercuryError?
+  
+  // MARK: - Private Properties
   
   private let localStorageUsecase: LocalStorageUsecasable
   private let auctionListUsecase: AuctionSalesListUsecasable
   private let auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
   
-  
-  // MARK: - life cycle
+  // MARK: - Initialize
   
   init(
     localStorageUsecase: LocalStorageUsecasable,
@@ -53,36 +52,38 @@ final class AuctionHomeModelData {
       do {
         try await fetchSearchFilters()
       } catch {
-        print("fetch filters err ~> \(error)")
+        self.error = error.toMercuryError()
       }
     }
   }
   
-  // MARK: - private methods
+  // MARK: - Private Methods
   
-  // MARK: - internal methods
-
-  // 초기 경매물건 리스트 불러오기
-  func loadAuctionSalesList() async throws {
+  // MARK: - Internal Methods
+  
+  // 경매물건 불러오기
+  func loadAuctionSalesList(withFilter: Bool = true) async {
     self.isLoading = true
     defer {
       self.isLoading = false
     }
     
     do {
-      let auctionSales = try await auctionListUsecase.fetchAuctionSales(filter: self.applyingAuctionSearchFilter)
+      let auctionSales = try await auctionListUsecase.fetchAuctionSales(
+        filter: withFilter ? self.currentAuctionFilter : nil
+      )
       if let auctionCount = auctionSales.auctionCount {
-        self.totalAuctionCount = auctionCount
+        self.filteredItemCount = auctionCount
       }
       self.auctionSalesItems = auctionSales.items
       
     } catch {
-      throw error
+      self.error = error.toMercuryError()
     }
   }
   
   // 경매물건 추가로 불러오기
-  func loadMoreAuctionSales() async throws {
+  func loadMoreAuctionSales() async {
     withAnimation {
       self.isLoadingForPaging = true
     }
@@ -93,52 +94,23 @@ final class AuctionHomeModelData {
     }
     let currentAuctionSalesItems = self.auctionSalesItems
     do {
-      let auctionSalesItems = try await auctionListUsecase.fetchNextAuctionSales(filter: self.applyingAuctionSearchFilter)
+      let auctionSalesItems = try await auctionListUsecase.fetchNextAuctionSales(filter: self.currentAuctionFilter)
       self.auctionSalesItems = currentAuctionSalesItems + auctionSalesItems
     } catch {
-      throw error
+      self.error = error.toMercuryError()
     }
   }
   
   // 필터 가져오기
-   func fetchSearchFilters() async throws {
-     let filters = try await auctionSearchFilterUsecase.fetchAuctionSearchFilters()
-     self.auctionSearchFilter = filters
-   }
-   
-   // 필터링: 상위지역
-   func filterRegion(region: Region) {
-     Task {
-       self.applyingAuctionSearchFilter.regionCode = region.code
-       self.applyingAuctionSearchFilter.districtCode = nil
-       
-       try await loadAuctionSalesList()
-     }
-   }
-   
-   // 필터링: 하위지역
-   func filterDistrict(district: District) {
-     Task {
-       self.applyingAuctionSearchFilter.districtCode = district.code
-       
-       try await loadAuctionSalesList()
-     }
-   }
-  
-  func saveRecentSales(id: Int) async {
-    /// FIXME: -
-    var ids: Set<Int> = []
-    let isRecentViwedSalesExist = await localStorageUsecase.isKeyExist(forKey: .recentViwedSales)
+  func fetchSearchFilters() async throws {
+    let filters = try await auctionSearchFilterUsecase.fetchAuctionSearchFilters()
+    self.auctionSearchFilter = filters
     
-    if !isRecentViwedSalesExist {
-      // 키 없으면 바로 append
-      ids.insert(id)
-      await localStorageUsecase.set(ids, forKey: .recentViwedSales)
+    if let defaultSort = filters.searchOptions.first {
+      self.currentAuctionFilter.sort = defaultSort
     }
-    var recentViewdSalesIds: Set<Int>? = await localStorageUsecase.get(forKey: .recentViwedSales) ?? []
-    
-    // 있으면 불러와서 append 하고 다시 set
-    
-    
+    if let defaultRegion = filters.regions.first {
+      self.currentAuctionFilter.region = defaultRegion
+    }
   }
 }

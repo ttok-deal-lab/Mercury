@@ -1,0 +1,32 @@
+//
+//  CurrentAuctionFilter.swift
+//  AuctionHome
+//
+//  Created by 송하민 on 12/14/25.
+//
+
+/// 적용중인 필터
+public struct CurrentAuctionFilter {
+  /// 검색어
+  public var keyword: String?
+  /// 상위 지역
+  public var region: Region?
+  /// 하위 지역
+  public var district: District?
+  /// 건물 타입
+  public var buildingTypeCodes: Set<String>?
+  /// 유찰 횟수
+  public var auctionFailCount: Int?
+  /// 인증 여부
+  public var varificationStatus: String?
+  /// 최대가격
+  public var minimumPrice: Int?
+  /// 최소가격
+  public var maximumPrice: Int?
+  /// 정렬
+  public var sort: Option?
+  
+  public init() {
+    
+  }
+}

@@ -11,5 +11,5 @@ import Combine
 import Domain
 
 public protocol MyPageViewable where Self: View {
-  init(userProfileUseCase: MyPageUsecasable)
+  init()
 }
