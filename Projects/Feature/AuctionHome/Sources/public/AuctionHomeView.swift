@@ -14,25 +14,25 @@ import Domain
 import UIComponent
 import Router
 
-public struct AuctionHomeView: View {
+struct AuctionHomeView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var modelData: AuctionHomeModelData
   @State private var error: MercuryError?
   @State private var isShowFilterArea: Bool = false
   
-  public init(
+  init(
     auctionListUsecase: AuctionSalesListUsecasable,
     auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
-    modelContext: ModelContext
+    localStorageUsecase: LocalStorageUsecasable
   ) {
     self.modelData = AuctionHomeModelData(
+      localStorageUsecase: localStorageUsecase,
       auctionListUsecase: auctionListUsecase,
-      auctionSearchFilterUsecase: auctionSearchFilterUsecase,
-      modelContext: modelContext
+      auctionSearchFilterUsecase: auctionSearchFilterUsecase
     )
   }
   
-  public var body: some View {
+  var body: some View {
     VStack(spacing: .zero) {
       AuctionHomeNavigationView(
         onSelectArea: { areaName in

@@ -23,7 +23,6 @@ public struct MainTabView<
 >: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @Environment(NetworkMonitor.self) var networkMonitor
-  @Environment(\.modelContext) private var modelContext
   @State private var isShowNetworkDisconnect: Bool = false
   @State private var modelData: MainTabModelData
   @State private var selection: Tab = .home
@@ -68,8 +67,7 @@ public struct MainTabView<
     TabView(selection: $selection) {
       AuctionHomeView(
         auctionListUsecase: auctionListUsecase,
-        auctionSearchFilterUsecase: auctionSearchFilterUsecase,
-        modelContext: modelContext
+        auctionSearchFilterUsecase: auctionSearchFilterUsecase
       )
       .tabItem {
         Tab.home.iconView(isSelected: selection == .home)
