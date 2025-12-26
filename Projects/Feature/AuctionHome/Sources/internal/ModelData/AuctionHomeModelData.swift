@@ -14,7 +14,6 @@ import Domain
 
 @Observable
 final class AuctionHomeModelData {
-  private var modelContext: ModelContext
   // MARK: - internal properties
   var auctionSalesItems: [AuctionSalesItem] = []
   var auctionSearchFilter: AuctionSearchFilter?
@@ -34,6 +33,7 @@ final class AuctionHomeModelData {
   
   // MARK: - private properties
   
+  private let localStorageUsecase: LocalStorageUsecasable
   private let auctionListUsecase: AuctionSalesListUsecasable
   private let auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
   
@@ -41,13 +41,13 @@ final class AuctionHomeModelData {
   // MARK: - life cycle
   
   init(
+    localStorageUsecase: LocalStorageUsecasable,
     auctionListUsecase: AuctionSalesListUsecasable,
-    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
-    modelContext: ModelContext
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
   ) {
+    self.localStorageUsecase = localStorageUsecase
     self.auctionListUsecase = auctionListUsecase
     self.auctionSearchFilterUsecase = auctionSearchFilterUsecase
-    self.modelContext = modelContext
     
     Task {
       do {
@@ -56,7 +56,6 @@ final class AuctionHomeModelData {
         print("fetch filters err ~> \(error)")
       }
     }
-    self.modelContext = modelContext
   }
   
   // MARK: - private methods
@@ -125,4 +124,21 @@ final class AuctionHomeModelData {
        try await loadAuctionSalesList()
      }
    }
+  
+  func saveRecentSales(id: Int) async {
+    /// FIXME: -
+    var ids: Set<Int> = []
+    let isRecentViwedSalesExist = await localStorageUsecase.isKeyExist(forKey: .recentViwedSales)
+    
+    if !isRecentViwedSalesExist {
+      // 키 없으면 바로 append
+      ids.insert(id)
+      await localStorageUsecase.set(ids, forKey: .recentViwedSales)
+    }
+    var recentViewdSalesIds: Set<Int>? = await localStorageUsecase.get(forKey: .recentViwedSales) ?? []
+    
+    // 있으면 불러와서 append 하고 다시 set
+    
+    
+  }
 }

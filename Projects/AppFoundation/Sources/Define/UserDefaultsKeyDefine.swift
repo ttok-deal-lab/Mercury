@@ -16,4 +16,6 @@ public enum LocalStorageKey: String { // 추가만 하고 수정은 절대 불�
   case signInTokenInfo
   /// 로그인 유저 정보
   case signInUserInfo
+  /// 최근 본 매물
+  case recentViwedSales
 }

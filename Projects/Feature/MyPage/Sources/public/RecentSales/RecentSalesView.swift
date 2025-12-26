@@ -15,7 +15,9 @@ import Router
 
 struct RecentSalesView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
-  @Query var recentSales: [AuctionSalesItem]
+  private let modelData: RecentSalesModelData
+  private var recentSales: [AuctionSalesItem]
+  
   
   var body: some View {
     VStack {

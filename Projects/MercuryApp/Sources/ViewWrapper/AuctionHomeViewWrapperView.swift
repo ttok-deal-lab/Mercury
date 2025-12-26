@@ -16,14 +16,16 @@ import Domain
 public struct AuctionHomeViewWrapperView: View, AuctionHomeViewable {
   let hostView: AuctionHomeView
   
-  public init(auctionListUsecase: AuctionSalesListUsecasable,
+  public init(
+    auctionListUsecase: AuctionSalesListUsecasable,
     auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
-    modelContext: ModelContext
+    localStorageusecase: LocalStorageUsecasable
   ) {
     self.hostView = AuctionHomeView(
       auctionListUsecase: auctionListUsecase,
       auctionSearchFilterUsecase: auctionSearchFilterUsecase,
-      modelContext: modelContext
+      localStorageUseCase: localStorageusecase
+      
     )
   }
   
