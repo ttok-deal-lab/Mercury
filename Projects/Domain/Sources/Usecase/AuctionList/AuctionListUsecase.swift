@@ -63,6 +63,7 @@ actor AuctionSalesListFetcher {
       size: loadOnce
     )
     
+    print("nextCursor: \(String(describing: fetchedAuctionSales.nextCursor))")
     self.cursor = fetchedAuctionSales.nextCursor
     self.hasNext = self.cursor != nil
     

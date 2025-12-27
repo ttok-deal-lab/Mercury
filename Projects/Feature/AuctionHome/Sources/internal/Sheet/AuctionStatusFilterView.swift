@@ -22,7 +22,7 @@ struct AuctionStatusFilterView: View {
         modelData.currentAuctionFilter.auctionFailCodes = newValue
         reloadTask?.cancel()
         reloadTask = Task {
-          try? await Task.sleep(nanoseconds: 300_000_000) // 0.3s
+          try? await Task.sleep(nanoseconds: 500_000_000) // 0.5초
           guard !Task.isCancelled else { return }
           await modelData.loadAuctionSalesList()
         }

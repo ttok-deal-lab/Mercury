@@ -11,8 +11,13 @@ import UIComponent
 
 struct AuctionPriceFilterView: View {
   @Environment(AuctionHomeModelData.self) var modelData
-  @State private var priceRange: ClosedRange<Double> = 0...2_000_000_000
+  @State private var priceRange: ClosedRange<Double>
   @State private var isFirstEnter = true
+  
+  init(lowerPrice: Double, upperPrice: Double, onComplete: @escaping () -> Void) {
+    self._priceRange = State(initialValue: lowerPrice...upperPrice)
+    self.onComplete = onComplete
+  }
   
   var onComplete: () -> Void
   
@@ -44,9 +49,9 @@ struct AuctionPriceFilterView: View {
           isFirstEnter = false
           return
         }
-        try await Task.sleep(nanoseconds: 500_000_000)
         modelData.currentAuctionFilter.minimumPrice = Int(priceRange.lowerBound)
         modelData.currentAuctionFilter.maximumPrice = Int(priceRange.upperBound)
+        try await Task.sleep(nanoseconds: 500_000_000)
         await modelData.loadAuctionSalesList()
       } catch { }
     }

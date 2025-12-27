@@ -84,8 +84,14 @@ struct AuctionFilterView: View {
         }
         .dynamicSheet()
       case .price:
-        AuctionPriceFilterView() {
+        AuctionPriceFilterView(
+          lowerPrice: Double(modelData.currentAuctionFilter.minimumPrice ?? .zero),
+          upperPrice: Double(modelData.currentAuctionFilter.maximumPrice ?? 2_000_000_000)
+        ) {
           self.sheetType = nil
+          if let index = self.filterItems.firstIndex(where: { $0.type == .price }) {
+            self.setFilterItem(item: &self.filterItems[index])
+          }
         }
         .dynamicSheet()
       }
@@ -125,6 +131,33 @@ struct AuctionFilterView: View {
         .filter { option in selectedCodes.contains(option.code) }
         .map { $0.displayName }
       item.selectedValues = selectedStatuses
+    case .price:
+      let filterText: String = {
+        var returnValue: String = ""
+        var minPrice: Int? {
+          if let minPriceOrigin = modelData.currentAuctionFilter.minimumPrice, minPriceOrigin != .zero {
+            return minPriceOrigin
+          } else {
+            return nil
+          }
+        }
+        var maxPrice: Int? {
+          if let maxPriceOrigin = modelData.currentAuctionFilter.maximumPrice, maxPriceOrigin != .zero {
+            return maxPriceOrigin
+          } else {
+            return nil
+          }
+        }
+        if let minPrice, let maxPrice {
+          returnValue = minPrice.toKoreanFullWon+" 이상"+" "+maxPrice.toKoreanFullWon+" 이하"
+        } else if let minPrice {
+          returnValue = minPrice.toKoreanFullWon+" 이상"
+        } else if let maxPrice {
+          returnValue = maxPrice.toKoreanFullWon+" 이하"
+        }
+        return returnValue
+      }()
+      item.exclusiveValue = filterText
     default:
       break
     }
