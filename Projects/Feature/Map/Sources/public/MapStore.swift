@@ -17,7 +17,7 @@ public class MapStore {
   
   // MARK: - published property
   
-  public var error: MercuryError?
+  public var error: Error?
   public var isMapDraw: Bool = true
   public var isShowDeniedLocationAlert: Bool?
   public var userLocation: CLLocationCoordinate2D?
