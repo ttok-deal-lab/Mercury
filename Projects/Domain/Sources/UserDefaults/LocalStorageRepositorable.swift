@@ -8,10 +8,10 @@
 import AppFoundation
 
 public protocol LocalStorageRepositorable {
-  func isKeyExist(forKey key: LocalStorageKey) async -> Bool
-  func setModel<T: Codable>(_ value: T, forKey key: LocalStorageKey) async
-  func getModel<T: Codable>(forKey key: LocalStorageKey, as type: T.Type) async -> T?
-  func set<T>(_ value: T, forKey key: LocalStorageKey) async where T: Any
-  func get<T>(forKey key: LocalStorageKey) async -> T?
-  func remove(forKey key: LocalStorageKey) async
+  func isKeyExist(forKey key: String) async -> Bool
+  func setModel<T: Codable>(_ value: T, forKey key: String) async
+  func getModel<T: Codable>(forKey key: String, as type: T.Type) async -> T?
+  func set<T>(_ value: T, forKey key: String) async where T: Any
+  func get<T>(forKey key: String) async -> T?
+  func remove(forKey key: String) async
 }

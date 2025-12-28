@@ -20,10 +20,10 @@ final class CustomSplashModelData {
   init(onComplete: @escaping (Bool) -> Void, localStorageUsecasable: LocalStorageUsecasable) {
     Task { @MainActor [weak self] in
       guard let self else { return }
-      if let isAppFirstRun: Bool = await localStorageUsecasable.get(forKey: .isAppFirst) {
+      if let isAppFirstRun: Bool = await localStorageUsecasable.get(forKey: LocalStorageKey.isAppFirst.rawValue) {
         self.isAppFirstRun = isAppFirstRun
       } else {
-        await localStorageUsecasable.set(false, forKey: .isAppFirst)
+        await localStorageUsecasable.set(false, forKey: LocalStorageKey.isAppFirst.rawValue)
       }
       onComplete(self.signInInformation.accessToken != nil)
     }

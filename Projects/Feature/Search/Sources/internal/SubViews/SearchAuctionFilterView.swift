@@ -11,15 +11,15 @@ import AppFoundation
 import UIComponent
 import Domain
 
-struct AuctionFilterView: View {
-  @Environment(AuctionHomeModelData.self) private var modelData
+struct SearchAuctionFilterView: View {
+  @Environment(SearchModelData.self) private var modelData
   @State private var activeSheetItem: AuctionFilterType?
   
   var body: some View {
     ScrollView(.horizontal) {
       HStack(spacing: 6) {
         ForEach(AuctionFilterType.allCases) { type in
-          AuctionFilterButton(
+          SearchAuctionFilterButton(
             type: type,
             isActive: modelData.isFilterActive(type),
             title: modelData.displayTitle(for: type)
@@ -60,7 +60,7 @@ struct AuctionFilterView: View {
   
   private func refreshData() {
     Task {
-      await modelData.loadAuctionSalesList(withFilter: true)
+      await modelData.loadAuctionSalesList()
     }
   }
   

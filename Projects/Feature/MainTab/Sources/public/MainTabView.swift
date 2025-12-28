@@ -17,7 +17,6 @@ import Domain
 public struct MainTabView<
   AuctionHomeView: AuctionHomeViewable,
   InterestView: InterestViewable,
-  ReportView: ReportViewable,
   MyPageView: MyPageViewable,
   SignInView: SignInViewable
 >: View {

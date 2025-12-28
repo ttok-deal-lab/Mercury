@@ -15,6 +15,7 @@ import Onboard
 import Domain
 import Infrastructure
 import MyPage
+import Search
 
 import PulseUI
 
@@ -49,6 +50,13 @@ struct RootViewFactory: ViewFactory {
         mypageUsecasable: MyPageUsecase(repository: MyPageRepository())
       )
       .makeView(myPageStep)
+    case .search(let searchStep):
+      SearchViewFactory(
+        auctionSalesListUsecase: AuctionSalesListUsecase(repository: AuctionSalesListRepository()),
+        auctionSearchFilterUsecase: AuctionSearchFilterUsecase(repository: AuctionSearchFilterRepository()),
+        localStoargeUsecase: LocalStorageUsecase(repository: UserDefaultsStoreRepository())
+      )
+      .makeView(searchStep)
     }
   }
 }

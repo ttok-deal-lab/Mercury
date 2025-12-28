@@ -27,12 +27,12 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
       if let accessToken = accessToken {
         self.tokenInfoStream.send(accessToken)
         Task { [weak self] in
-          await self?.localStorageUsecase.setModel(accessToken, forKey: .signInTokenInfo)
+          await self?.localStorageUsecase.setModel(accessToken, forKey: LocalStorageKey.signInTokenInfo.rawValue)
         }
       } else {
         self.tokenInfoStream.send(nil)
         Task { [weak self] in
-          await self?.localStorageUsecase.remove(forKey: .signInTokenInfo)
+          await self?.localStorageUsecase.remove(forKey: LocalStorageKey.signInTokenInfo.rawValue)
         }
       }
     }
@@ -43,12 +43,12 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
       if let userInfo {
         userInfoStream.send(userInfo)
         Task { [weak self] in
-          await self?.localStorageUsecase.setModel(userInfo, forKey: .signInUserInfo)
+          await self?.localStorageUsecase.setModel(userInfo, forKey: LocalStorageKey.signInUserInfo.rawValue)
         }
       } else {
         userInfoStream.send(nil)
         Task { [weak self] in
-          await self?.localStorageUsecase.remove(forKey: .signInUserInfo)
+          await self?.localStorageUsecase.remove(forKey: LocalStorageKey.signInUserInfo.rawValue)
         }
       }
     }
@@ -73,8 +73,8 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
   
   private func tryAutoSignIn() {
     Task {
-      async let storedToken = localStorageUsecase.getModel(forKey: .signInTokenInfo, as: UserAccessToken.self)
-      async let storedUser = localStorageUsecase.getModel(forKey: .signInUserInfo, as: UserInformation.self)
+      async let storedToken = localStorageUsecase.getModel(forKey: LocalStorageKey.signInTokenInfo.rawValue, as: UserAccessToken.self)
+      async let storedUser = localStorageUsecase.getModel(forKey: LocalStorageKey.signInUserInfo.rawValue, as: UserInformation.self)
 
       if let token = await storedToken {
         self.accessToken = token

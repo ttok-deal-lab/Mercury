@@ -31,4 +31,16 @@ public struct CurrentAuctionFilter {
   public init() {
     
   }
+  
+  public mutating func clear() {
+    self.keyword = nil
+    self.region = nil
+    self.buildingTypeCodes = nil
+    self.auctionFailCodes = nil
+    self.minimumPrice = nil
+    self.maximumPrice = nil
+    self.sort = nil
+    self.isCertified = false
+    self.isBidWon = false
+  }
 }

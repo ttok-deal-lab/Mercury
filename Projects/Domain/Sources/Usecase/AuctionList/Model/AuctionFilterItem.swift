@@ -10,7 +10,7 @@ import SwiftUI
 
 import UIComponent
 
-enum AuctionFilterType: Identifiable, CaseIterable {
+public enum AuctionFilterType: Identifiable, CaseIterable {
   /// 인증매물
   case certified
   /// 건물용도
@@ -22,9 +22,9 @@ enum AuctionFilterType: Identifiable, CaseIterable {
   /// 낙찰
   case bidWon
   
-  var id: Self { self }
+  public var id: Self { self }
   
-  var defaultTitle: String {
+  public var defaultTitle: String {
     switch self {
     case .certified: return L10n.commonCertifiedAuction
     case .buildingUsage: return L10n.auctionFilterBuildingUsage
@@ -34,17 +34,17 @@ enum AuctionFilterType: Identifiable, CaseIterable {
     }
   }
   
-  var isSingleToggle: Bool {
+  public var isSingleToggle: Bool {
     self == .certified || self == .bidWon
   }
   
-  var isMultiSelectable: Bool {
+  public var isMultiSelectable: Bool {
     self == .buildingUsage || self == .auctionStatus
   }
   
 }
 
-extension AuctionFilterType {
+public extension AuctionFilterType {
   var leftImage: Image? {
     return self == .certified ? Asset.Images.certified.image : nil
   }
