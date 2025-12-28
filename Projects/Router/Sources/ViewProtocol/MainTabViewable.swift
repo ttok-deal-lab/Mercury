@@ -6,9 +6,6 @@
 //
 
 import SwiftUI
-import Combine
-
-import Domain
 
 public protocol MainTabViewable where Self: View {
   init()

@@ -14,5 +14,6 @@ public enum FeatureRoute: Hashable {
   case mypage(MyPageRoute)
   case setting(SettingRoute)
   case terms(TermsRoute)
+  case search(SearchRoute)
   case networkConsole
 }

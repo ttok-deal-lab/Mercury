@@ -10,7 +10,7 @@ import SwiftUI
 import UIComponent
 import Domain
 
-struct AuctionFilterButton: View {
+struct SearchAuctionFilterButton: View {
   let type: AuctionFilterType
   let isActive: Bool
   let title: String
