@@ -19,4 +19,8 @@ public final class AuctionDetailUsecase: AuctionDetailUsecasable {
     try await self.auctionDetailRepositorable.auctionDetail(auctionID: auctionID)
   }
   
+  public func fetchAuctionDetails(auctionIDs: [Int], size: Int) async throws -> [AuctionDetail] {
+    try await self.auctionDetailRepositorable.auctionDetails(auctionIDs: auctionIDs, size: size)
+  }
+  
 }

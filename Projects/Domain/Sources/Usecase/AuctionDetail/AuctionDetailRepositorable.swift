@@ -9,4 +9,5 @@ import Foundation
 
 public protocol AuctionDetailRepositorable: Sendable {
   func auctionDetail(auctionID: Int) async throws -> AuctionDetail
+  func auctionDetails(auctionIDs: [Int], size: Int) async throws -> [AuctionDetail]
 }
