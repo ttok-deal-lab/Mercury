@@ -11,6 +11,7 @@ import SwiftData
 
 import AppFoundation
 import Domain
+import UIComponent
 
 @Observable
 final class AuctionHomeModelData {
@@ -106,5 +107,79 @@ final class AuctionHomeModelData {
     if let defaultRegion = filters.regions.first {
       self.currentAuctionFilter.region = defaultRegion
     }
+  }
+}
+
+// 필터처리
+extension AuctionHomeModelData {
+  func isFilterActive(_ type: AuctionFilterType) -> Bool {
+    switch type {
+    case .certified:
+      return currentAuctionFilter.isCertified
+    case .buildingUsage:
+      return !(currentAuctionFilter.buildingTypeCodes?.isEmpty ?? true)
+    case .auctionStatus:
+      return !(currentAuctionFilter.auctionFailCodes?.isEmpty ?? true)
+    case .price:
+      return currentAuctionFilter.minimumPrice != nil || currentAuctionFilter.maximumPrice != nil
+    case .bidWon:
+      return currentAuctionFilter.isBidWon
+    }
+  }
+  
+  func displayTitle(for type: AuctionFilterType) -> String {
+    switch type {
+    case .buildingUsage:
+      let selectedCodes = currentAuctionFilter.buildingTypeCodes ?? []
+      if selectedCodes.isEmpty { return type.defaultTitle }
+      
+      let allOptions = auctionSearchFilter?.buildingTypes ?? []
+      let selectedNames = allOptions
+        .filter { selectedCodes.contains($0.code) }
+        .map { $0.displayName }
+      
+      if let firstName = selectedNames.first {
+        return selectedNames.count > 1
+          ? L10n.auctionFilterMultiSelect(firstName, selectedNames.count - 1)
+          : firstName
+      }
+      return type.defaultTitle
+      
+    case .auctionStatus:
+      let selectedCodes = currentAuctionFilter.auctionFailCodes ?? []
+      if selectedCodes.isEmpty { return type.defaultTitle }
+      
+      let allOptions = auctionSearchFilter?.auctionFailOptions ?? []
+      let selectedNames = allOptions
+        .filter { selectedCodes.contains($0.code) }
+        .map { $0.displayName }
+        
+      if let firstName = selectedNames.first {
+        return selectedNames.count > 1
+          ? L10n.auctionFilterMultiSelect(firstName, selectedNames.count - 1)
+          : firstName
+      }
+      return type.defaultTitle
+
+    case .price:
+      return makePriceString() ?? type.defaultTitle
+      
+    default:
+      return type.defaultTitle
+    }
+  }
+  
+  private func makePriceString() -> String? {
+    let min = currentAuctionFilter.minimumPrice
+    let max = currentAuctionFilter.maximumPrice
+    
+    if let min, min > 0, let max, max > 0 {
+      return "\(min.toKoreanFullWon) 이상 \(max.toKoreanFullWon) 이하"
+    } else if let min, min > 0 {
+      return "\(min.toKoreanFullWon) 이상"
+    } else if let max, max > 0 {
+      return "\(max.toKoreanFullWon) 이하"
+    }
+    return nil
   }
 }

@@ -17,14 +17,16 @@ public struct CurrentAuctionFilter {
   public var buildingTypeCodes: Set<String>?
   /// 유찰 횟수
   public var auctionFailCodes: Set<String>?
-  /// 인증 여부
-  public var varificationStatus: String?
   /// 최대가격
   public var minimumPrice: Int?
   /// 최소가격
   public var maximumPrice: Int?
   /// 정렬
   public var sort: Option?
+  /// 인증여부
+  public var isCertified: Bool = false
+  /// 낙찰여부
+  public var isBidWon: Bool = false
   
   public init() {
     

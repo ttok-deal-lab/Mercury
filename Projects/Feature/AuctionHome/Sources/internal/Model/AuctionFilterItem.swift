@@ -44,42 +44,17 @@ enum AuctionFilterType: Identifiable, CaseIterable {
   
 }
 
-struct FilterItem: Identifiable {
-  let type: AuctionFilterType
-  var selectedValues: [String] = []
-  var exclusiveValue: String? = nil
-  
-  var id: AuctionFilterType { type }
-  
-  var isActive: Bool {
-    !selectedValues.isEmpty || exclusiveValue != nil
+extension AuctionFilterType {
+  var leftImage: Image? {
+    return self == .certified ? Asset.Images.certified.image : nil
   }
   
   var isExpandable: Bool {
-    self.type == .buildingUsage || self.type == .auctionStatus || self.type == .price
-  }
-  
-  var displayTitle: String {
-    if type.isSingleToggle {
-      return type.defaultTitle
-    }
-    
-    if selectedValues.isEmpty && exclusiveValue == nil {
-      return type.defaultTitle
-    } else {
-      if type.isMultiSelectable {
-        if selectedValues.count == 1 {
-          return selectedValues.first!
-        } else {
-          return L10n.auctionFilterMultiSelect(selectedValues.first!, selectedValues.count - 1)
-        }
-      } else {
-        if let exclusiveValue {
-          return exclusiveValue
-        } else {
-          return type.defaultTitle
-        }
-      }
+    switch self {
+    case .buildingUsage, .auctionStatus, .price:
+      return true
+    case .certified, .bidWon:
+      return false
     }
   }
 }
