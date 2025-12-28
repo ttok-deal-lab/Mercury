@@ -7,71 +7,139 @@
 
 import SwiftUI
 
-public struct RangeSlider: View {
-  @Binding var lowerValue: Double
-  @Binding var upperValue: Double
-  public let range: ClosedRange<Double>
-  private let thumbSize: CGFloat = 30
+public struct PriceRangeSlider: View {
+  @Binding private var range: ClosedRange<Double>
+  private let bounds: ClosedRange<Double>
+  private let step: Double
   
-  public init(lowerValue: Binding<Double>, upperValue: Binding<Double>, range: ClosedRange<Double>) {
-    self._lowerValue = lowerValue
-    self._upperValue = upperValue
-    self.range = range
+  private let trackHeight: CGFloat = 8
+  private let thumbSize: CGFloat = 30
+  private let activeColor: Color = Asset.Colors.primary.color
+  private let inactiveColor: Color = Asset.Colors.neutralWeak.color
+  
+  public init(range: Binding<ClosedRange<Double>>, bounds: ClosedRange<Double>, step: Double = 1_000_000) {
+    self._range = range
+    self.bounds = bounds
+    self.step = step
   }
   
   public var body: some View {
-    GeometryReader { geometry in
-      let width = geometry.size.width
-      let height = geometry.size.height
-      let totalRange = range.upperBound - range.lowerBound
+    VStack(alignment: .leading, spacing: .zero) {
+      Text(currentRangeText)
+        .fonts(.bodyLargeMedium)
+        .foregroundStyle(Asset.Colors.neutral.color)
+        .padding(.bottom, 12)
       
-      let lowerRatio = (lowerValue - range.lowerBound) / totalRange
-      let upperRatio = (upperValue - range.lowerBound) / totalRange
-      
-      let lowerX = CGFloat(lowerRatio) * width
-      let upperX = CGFloat(upperRatio) * width
-      
-      ZStack {
-        Capsule()
-          .fill(Asset.Colors.neutralWeak.color)
-          .frame(height: 8)
-          .position(x: width / 2, y: height / 2)
-        
-        Capsule()
-          .fill(Asset.Colors.primary.color)
-          .frame(width: upperX - lowerX, height: 8)
-          .position(x: (upperX + lowerX) / 2, y: height / 2)
-        
-        Circle()
-          .fill(Asset.Colors.primaryLight.color)
-          .overlay(Circle().stroke(Asset.Colors.primary.color, lineWidth: 4))
-          .frame(width: thumbSize, height: thumbSize)
-          .position(x: lowerX, y: height / 2)
-          .gesture(
-            DragGesture()
-              .onChanged { value in
-                let ratio = max(0, min(1, value.location.x / width))
-                let newValue = range.lowerBound + Double(ratio) * totalRange
-                lowerValue = min(max(range.lowerBound, newValue), upperValue)
-              }
-          )
-        
-        Circle()
-          .fill(Asset.Colors.primaryLight.color)
-          .overlay(Circle().stroke(Asset.Colors.primary.color, lineWidth: 4))
-          .frame(width: thumbSize, height: thumbSize)
-          .position(x: upperX, y: height / 2)
-          .gesture(
-            DragGesture()
-              .onChanged { value in
-                let ratio = max(0, min(1, value.location.x / width))
-                let newValue = range.lowerBound + Double(ratio) * totalRange
-                upperValue = max(min(range.upperBound, newValue), lowerValue)
-              }
-          )
+      GeometryReader { geometry in
+        ZStack(alignment: .leading) {
+          Capsule()
+            .fill(inactiveColor)
+            .frame(height: trackHeight)
+          
+          Capsule()
+            .fill(activeColor)
+            .frame(height: trackHeight)
+            .offset(x: leftThumbOffset(in: geometry.size.width))
+            .frame(width: activeTrackWidth(in: geometry.size.width))
+          
+          SliderThumb(size: thumbSize, color: activeColor)
+            .offset(x: leftThumbOffset(in: geometry.size.width))
+            .gesture(
+              DragGesture()
+                .onChanged { value in
+                  handleDrag(value: value, isLeftThumb: true, width: geometry.size.width)
+                }
+            )
+          
+          SliderThumb(size: thumbSize, color: activeColor)
+            .offset(x: rightThumbOffset(in: geometry.size.width))
+            .gesture(
+              DragGesture()
+                .onChanged { value in
+                  handleDrag(value: value, isLeftThumb: false, width: geometry.size.width)
+                }
+            )
+        }
+        .frame(height: thumbSize)
       }
+      .frame(height: thumbSize)
+      
+      HStack {
+        Text(Int(bounds.lowerBound).toKoreanFullWon)
+        Spacer()
+        Text(Int(bounds.upperBound).toKoreanFullWon)
+      }
+      .fonts(.bodyMicroMedium)
+      .foregroundStyle(Asset.Colors.neutralSubtler.color)
+      .padding(.top, 14)
     }
-    .padding(.horizontal, thumbSize / 2)
-    .frame(height: 44)
+    .padding(.horizontal, 20)
+  }
+  
+  // MARK: - Logic Helpers
+  
+  private var currentRangeText: String {
+    if range.lowerBound == bounds.lowerBound && range.upperBound == bounds.upperBound {
+      return "전체"
+    } else if range.lowerBound == bounds.lowerBound {
+      return "\(Int(range.upperBound).toKoreanFullWon) 이하"
+    } else if range.upperBound == bounds.upperBound {
+      return "\(Int(range.lowerBound).toKoreanFullWon) 이상"
+    } else {
+      return "\(Int(range.lowerBound).toKoreanFullWon) ~ \(Int(range.upperBound).toKoreanFullWon)"
+    }
+  }
+  
+  private func leftThumbOffset(in width: CGFloat) -> CGFloat {
+    let percentage = (range.lowerBound - bounds.lowerBound) / (bounds.upperBound - bounds.lowerBound)
+    return CGFloat(percentage) * (width - thumbSize)
+  }
+  
+  private func rightThumbOffset(in width: CGFloat) -> CGFloat {
+    let percentage = (range.upperBound - bounds.lowerBound) / (bounds.upperBound - bounds.lowerBound)
+    return CGFloat(percentage) * (width - thumbSize)
+  }
+  
+  private func activeTrackWidth(in width: CGFloat) -> CGFloat {
+    let left = leftThumbOffset(in: width)
+    let right = rightThumbOffset(in: width)
+    return right - left + thumbSize
+  }
+  
+  // 드래그 처리
+  private func handleDrag(value: DragGesture.Value, isLeftThumb: Bool, width: CGFloat) {
+    let x = value.location.x
+    let percentage = x / (width - thumbSize)
+    let calculatedValue = bounds.lowerBound + (Double(percentage) * (bounds.upperBound - bounds.lowerBound))
+    
+    // 스텝 단위로 끊기 (스냅 효과)
+    let steppedValue = round(calculatedValue / step) * step
+    let clampedValue = min(max(steppedValue, bounds.lowerBound), bounds.upperBound)
+    
+    if isLeftThumb {
+      let newLower = min(clampedValue, range.upperBound)
+      range = newLower...range.upperBound
+    } else {
+      let newUpper = max(clampedValue, range.lowerBound)
+      range = range.lowerBound...newUpper
+    }
+  }
+}
+
+struct SliderThumb: View {
+  let size: CGFloat
+  let color: Color
+  
+  var body: some View {
+    ZStack {
+      Circle()
+        .fill(.white)
+        .frame(width: size, height: size)
+        .shadow(color: .black.opacity(0.15), radius: 3, x: 0, y: 2)
+      
+      Circle()
+        .strokeBorder(color, lineWidth: 4) // 파란색 테두리
+        .frame(width: size, height: size)
+    }
   }
 }

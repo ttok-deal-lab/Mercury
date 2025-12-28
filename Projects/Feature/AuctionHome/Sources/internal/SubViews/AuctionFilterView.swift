@@ -10,54 +10,20 @@ import SwiftUI
 import AppFoundation
 import UIComponent
 
-fileprivate enum SheetType: String, Identifiable {
-  var id: Self { self }
-  
-  case buildingUsage
-  case auctionStatus
-  case price
-}
-
 struct AuctionFilterView: View {
   @Environment(AuctionHomeModelData.self) private var modelData
-  @State private var filterItems: [FilterItem] = AuctionFilterType.allCases.map { FilterItem(type: $0) }
-  @State private var sheetType: SheetType?
+  @State private var activeSheetItem: AuctionFilterType?
   
   var body: some View {
     ScrollView(.horizontal) {
       HStack(spacing: 6) {
-        ForEach($filterItems) { $item in
-          Button {
-            tapFilter(item: &item)
-          } label: {
-            HStack(spacing: 4) {
-              if let image = item.type.leftImage {
-                image
-                  .resizable()
-                  .frame(width: 16, height: 16)
-              }
-              
-              Text(item.displayTitle)
-                .fonts(.bodyMiniMedium)
-                .foregroundStyle(item.isActive ? Asset.Colors.neutralWhite.color : Asset.Colors.neutral.color)
-              
-              if item.isExpandable {
-                Asset.Images.arrowDownNoShaft.image
-                  .renderingMode(.template)
-                  .resizable()
-                  .foregroundStyle(item.isActive ? Asset.Colors.neutralWhite.color : Asset.Colors.neutral.color)
-                  .frame(width: 16, height: 16)
-              }
-            }
-            .padding(.vertical, 8)
-            .padding(.horizontal, 12)
-            .overlay {
-              Capsule()
-                .stroke(style: .init(lineWidth: 1))
-                .foregroundStyle(item.isActive ? .clear : Asset.Colors.gray150.color)
-            }
-            .background(item.isActive ? Asset.Colors.neutral.color : .clear)
-            .clipShape(Capsule())
+        ForEach(AuctionFilterType.allCases) { type in
+          AuctionFilterButton(
+            type: type,
+            isActive: modelData.isFilterActive(type),
+            title: modelData.displayTitle(for: type)
+          ) {
+            handleTap(type)
           }
         }
       }
@@ -65,65 +31,60 @@ struct AuctionFilterView: View {
       .padding(.vertical, 12)
     }
     .scrollIndicators(.hidden)
-    .sheet(item: $sheetType) { type in
+    .sheet(item: $activeSheetItem, onDismiss: {
+      refreshData()
+    }) { type in
+      filterSheetContent(for: type)
+        .dynamicSheet()
+    }
+  }
+  
+  // MARK: - Private Methods
+  
+  private func handleTap(_ type: AuctionFilterType) {
+    if type.isSingleToggle {
       switch type {
-      case .buildingUsage:
-        AuctionBuildingUsageFilterView() {
-          self.sheetType = nil
-          if let index = self.filterItems.firstIndex(where: { $0.type == .buildingUsage }) {
-            self.setFilterItem(item: &self.filterItems[index])
-          }
-        }
-        .dynamicSheet()
-      case .auctionStatus:
-        AuctionStatusFilterView() {
-          self.sheetType = nil
-        }
-        .dynamicSheet()
-      case .price:
-        AuctionPriceFilterView() {
-          self.sheetType = nil
-        }
-        .dynamicSheet()
+      case .certified:
+        modelData.currentAuctionFilter.isCertified.toggle()
+      case .bidWon:
+        modelData.currentAuctionFilter.isBidWon.toggle()
+      default:
+        return
       }
+      refreshData()
+    } else {
+      activeSheetItem = type
     }
   }
   
-  private func tapFilter(item: inout FilterItem) {
-    if item.type.isSingleToggle {
-      item.selectedValues = item.isActive ? [] : [item.type.defaultTitle]
+  private func refreshData() {
+    Task {
+      await modelData.loadAuctionSalesList(withFilter: true)
     }
-    switch item.type {
+  }
+  
+  // MARK: - ViewBuilders
+  
+  @ViewBuilder
+  private func filterSheetContent(for type: AuctionFilterType) -> some View {
+    switch type {
     case .buildingUsage:
-      self.sheetType = .buildingUsage
+      AuctionBuildingUsageFilterView {
+        self.activeSheetItem = nil
+      }
     case .auctionStatus:
-      self.sheetType = .auctionStatus
+      AuctionStatusFilterView {
+        self.activeSheetItem = nil
+      }
     case .price:
-      self.sheetType = .price
+      AuctionPriceFilterView(
+        lowerPrice: Double(modelData.currentAuctionFilter.minimumPrice ?? 0),
+        upperPrice: Double(modelData.currentAuctionFilter.maximumPrice ?? 2_000_000_000)
+      ) {
+        self.activeSheetItem = nil
+      }
     default:
-      break
-    }
-  }
-  
-  private func setFilterItem(item: inout FilterItem) {
-    guard !item.type.isSingleToggle else { return }
-    switch item.type {
-    case .buildingUsage:
-      let buildingTypeOptions = modelData.auctionSearchFilter?.buildingTypes ?? []
-      let selectedCodes: Set<String> = modelData.currentAuctionFilter.buildingTypeCodes ?? []
-      let selectedBuildings: [String] = buildingTypeOptions
-        .filter { option in selectedCodes.contains(option.code) }
-        .map { $0.displayName }
-      item.selectedValues = selectedBuildings
-    default:
-      break
+      EmptyView()
     }
   }
 }
-
-extension AuctionFilterType {
-  var leftImage: Image? {
-    return self == .certified ? Asset.Images.certified.image : nil
-  }
-}
-
