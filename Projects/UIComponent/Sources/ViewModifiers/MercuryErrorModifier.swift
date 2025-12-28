@@ -11,13 +11,13 @@ import Combine
 import AppFoundation
 
 struct MercuryErrorModifier: ViewModifier {
-  @Binding var mercuryError: MercuryError?
+  @Binding var mercuryError: Error?
   var completion: (() -> Void)?
   
   func body(content: Content) -> some View {
     content
       .onReceive(Just(mercuryError)) { newValue in
-        guard let error = newValue else { return }
+        guard let error = newValue?.toMercuryError() else { return }
         MercuryAlert.shared
           .present(
             type: .confirmable(
@@ -37,7 +37,7 @@ struct MercuryErrorModifier: ViewModifier {
 }
 
 public extension View {
-  func alert(error: Binding<MercuryError?>, completion: (() -> Void)? = nil) -> some View {
+  func alert(error: Binding<Error?>, completion: (() -> Void)? = nil) -> some View {
     self.modifier(MercuryErrorModifier(mercuryError: error, completion: completion))
   }
 }

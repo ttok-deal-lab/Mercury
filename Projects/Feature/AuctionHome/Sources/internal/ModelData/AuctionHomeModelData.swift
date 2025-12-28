@@ -27,7 +27,7 @@ final class AuctionHomeModelData {
   var isLoadingForPaging: Bool = false
   var filteredItemCount: Int = .zero
   
-  var error: MercuryError?
+  var error: Error?
   
   // MARK: - Private Properties
   
@@ -47,7 +47,7 @@ final class AuctionHomeModelData {
       do {
         try await fetchSearchFilters()
       } catch {
-        self.error = error.toMercuryError()
+        self.error = error
       }
     }
   }
@@ -72,8 +72,8 @@ final class AuctionHomeModelData {
       }
       self.auctionSalesItems = auctionSales.items
       
-    } catch {
-      self.error = error.toMercuryError()
+    } catch let error {
+      self.error = error
     }
   }
   
@@ -92,7 +92,7 @@ final class AuctionHomeModelData {
       let auctionSalesItems = try await auctionListUsecase.fetchNextAuctionSales(filter: self.currentAuctionFilter)
       self.auctionSalesItems = currentAuctionSalesItems + auctionSalesItems
     } catch {
-      self.error = error.toMercuryError()
+      self.error = error
     }
   }
   

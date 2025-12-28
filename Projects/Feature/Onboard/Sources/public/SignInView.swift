@@ -16,7 +16,7 @@ import Router
 
 public struct SignInView: View {
   @State private var modelData: OnboardingModelData
-  @State private var error: MercuryError?
+  @State private var error: Error?
   
   private var onComplete: (() -> Void)?
   

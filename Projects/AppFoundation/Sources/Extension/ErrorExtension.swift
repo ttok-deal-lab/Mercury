@@ -8,11 +8,13 @@
 import Foundation
 
 public extension Error {
-  func toMercuryError() -> MercuryError {
+  func toMercuryError() -> MercuryError? {
     if let mercuryErr = self as? MercuryError {
       return mercuryErr
+    } else if let networkErr = self as? NetworkError {
+      return networkErr.toMercuryError()
     } else {
-      return MercuryError(code: (self as NSError).code)
+      return nil
     }
   }
 }
