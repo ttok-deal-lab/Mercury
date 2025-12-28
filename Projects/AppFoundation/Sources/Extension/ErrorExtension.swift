@@ -12,7 +12,7 @@ public extension Error {
     if let mercuryErr = self as? MercuryError {
       return mercuryErr
     } else if let networkErr = self as? NetworkError {
-      return networkErr.toMercuryError()
+      return MercuryError(code: networkErr.rawValue)
     } else {
       return nil
     }
