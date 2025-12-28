@@ -6,9 +6,9 @@ import Foundation
 // MARK: - Swift Bundle Accessor - for SPM
 private class BundleFinder {}
 extension Foundation.Bundle {
-/// Since Analysis is a static framework, the bundle containing the resources is copied into the final product.
+/// Since Search is a static framework, the bundle containing the resources is copied into the final product.
 static let module: Bundle = {
-    let bundleName = "Analysis_Analysis"
+    let bundleName = "Search_Search"
     let bundleFinderResourceURL = Bundle(for: BundleFinder.self).resourceURL
     var candidates = [
         Bundle.main.resourceURL,
@@ -45,12 +45,12 @@ static let module: Bundle = {
             return bundle
         }
     }
-    fatalError("unable to find bundle named Analysis_Analysis")
+    fatalError("unable to find bundle named Search_Search")
 }()
 }
 // MARK: - Objective-C Bundle Accessor
 @objc
-public class AnalysisResources: NSObject {
+public class SearchResources: NSObject {
 @objc public class var bundle: Bundle {
     return .module
 }

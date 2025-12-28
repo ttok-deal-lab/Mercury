@@ -10,7 +10,7 @@ import SwiftUI
 public struct AnalysisView: View {
 
   public var body: some View {
-    Text("Analysis")
+    Text("Search")
   }
   
 }
