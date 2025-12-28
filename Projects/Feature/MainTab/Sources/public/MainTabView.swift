@@ -23,7 +23,6 @@ public struct MainTabView<
 >: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @Environment(NetworkMonitor.self) var networkMonitor
-  @Environment(\.modelContext) private var modelContext
   @State private var isShowNetworkDisconnect: Bool = false
   @State private var modelData: MainTabModelData
   @State private var selection: Tab = .home

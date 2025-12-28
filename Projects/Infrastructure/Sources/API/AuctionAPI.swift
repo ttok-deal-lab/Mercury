@@ -10,7 +10,7 @@ import Foundation
 import Networking
 
 enum AuctionAPI: BaseAPI {
-  case auctionSearchList(keyword: String?, region: String?, district: String?, buildTypes: [String]?, auctionFailCount: Int?, varificationStatus: String?, minimumPrice: Int?, maximumPrice: Int?, nextCursor: String?, sort: String?)
+  case auctionSearchList(keyword: String?, region: String?, district: String?, buildTypes: [String]?, auctionFailCount: [String]?, isCertified: Bool?, minimumPrice: Int?, maximumPrice: Int?, nextCursor: String?, sort: String?)
   case auctionDetail(_ auctionID: Int)
   case auctionSearchFilter
   
@@ -44,21 +44,25 @@ enum AuctionAPI: BaseAPI {
   
   var queryParam: [String : Any]? {
     switch self {
-    case let .auctionSearchList(keyword, region, district, buildTypes, auctionFailCount, varificationStatus, minimumPrice, maximumPrice, nextCursor, sort):
+    case let .auctionSearchList(keyword, region, district, buildTypes, auctionFailCount, isCertified, minimumPrice, maximumPrice, nextCursor, sort):
       var params: [String: Any] = [:]
       
-      if let keyword = keyword {
-        params["keyword"] = keyword
-      }
-      
+      params["keyword"] = keyword ?? "unknown"
+  
       if let region = region {
         params["region"] = region
       } else {
         params["region"] = "ALL"
       }
-      
+
       if let district = district {
-        params["district"] = district
+        if district.lowercased() == "unknown" {
+          params["district"] = "unknown"
+        } else {
+          params["district"] = district
+        }
+      } else {
+        params["district"] = "unknown"
       }
       
       if let buildTypes = buildTypes, !buildTypes.isEmpty {
@@ -67,25 +71,22 @@ enum AuctionAPI: BaseAPI {
         params["buildTypes"] = "ALL"
       }
       
-      if let auctionFailCount = auctionFailCount {
-        params["auctionFailCount"] = auctionFailCount
+      if let auctionFailCount = auctionFailCount, !auctionFailCount.isEmpty {
+        params["auctionFailCount"] = auctionFailCount.first!  // TODO: 복수 선택일 경우 대응해야함
       } else {
         params["auctionFailCount"] = "ALL"
       }
       
-      if let varificationStatus = varificationStatus {
-        params["varificationStatus"] = varificationStatus
+      if let isCertified = isCertified {
+        params["verificationStatus"] = isCertified ? "VERIFIED" : "ALL"
       } else {
-        params["varificationStatus"] = "ALL"
+        params["verificationStatus"] = "ALL"
       }
       
-      if let minimumPrice = minimumPrice {
-        params["minimumPrice"] = minimumPrice
-      }
+      params["minimumPrice"] = minimumPrice ?? -1
       
-      if let maximumPrice = maximumPrice {
-        params["maximumPrice"] = maximumPrice
-      }
+      params["maximumPrice"] = maximumPrice ?? -1
+      
       
       if let nextCursor {
         params["nextCursor"] = nextCursor

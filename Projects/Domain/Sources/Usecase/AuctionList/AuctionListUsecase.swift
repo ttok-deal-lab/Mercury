@@ -63,8 +63,12 @@ actor AuctionSalesListFetcher {
       size: loadOnce
     )
     
-    self.cursor = fetchedAuctionSales.nextCursor
-    self.hasNext = self.cursor != nil
+    if let nextCursor = fetchedAuctionSales.nextCursor,
+        let _ = Int(nextCursor) {
+      self.cursor = nextCursor
+    } else {
+      self.hasNext = false
+    }
     
     return (auctionCount: fetchedAuctionSales.searchHitCount, items: fetchedAuctionSales.items)
   }
