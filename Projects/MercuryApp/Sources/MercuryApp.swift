@@ -85,7 +85,13 @@ extension AppDelegate { // pre-configure instances
   }
   
   private func configureNaverLoginInstance() {
-    NidOAuth.shared.initialize()
+    NidOAuth.shared
+      .initialize(
+        appName: CommonDefine.naverAppName ?? "",
+        clientId: CommonDefine.naverClientID ?? "",
+        clientSecret: CommonDefine.naverClientSecret ?? "",
+        urlScheme: CommonDefine.naverURLScheme ?? ""
+      )
   }
   
   private func configureKakaoLoginInstance() {

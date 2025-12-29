@@ -24,7 +24,8 @@ public struct MyPageViewFactory: ViewFactory {
   ) -> some View {
     switch mypageRouter.route {
     case .recentlySales:
-      RecentSalesView()
+//      RecentSalesView()
+      EmptyView()
     case .chat:
       EmptyView()
     }
