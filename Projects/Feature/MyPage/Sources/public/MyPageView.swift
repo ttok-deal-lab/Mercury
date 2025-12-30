@@ -37,7 +37,7 @@ enum MyPageItemType: CaseIterable {
 public struct MyPageView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var modelData: MyPageModelData
-  @State private var error: MercuryError?
+  @State private var error: Error?
   @State private var hasFetched = false
   @Inject private var accessTokenManager: AccessTokenManagable
   private var items: [MyPageItemType] = MyPageItemType.allCases
@@ -82,7 +82,7 @@ public struct MyPageView: View {
       do {
         try await modelData.fetchProfile()
       } catch {
-        self.error = error.toMercuryError()
+        self.error = error
       }
     }
   }

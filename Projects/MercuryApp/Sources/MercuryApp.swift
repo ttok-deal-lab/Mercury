@@ -62,11 +62,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     container.register(Alertable.self, instance: MercuryAlert.shared)
     container.register(LoadingPresentable.self, instance: MercuryLoading.shared)
     
-    let appearance = UITabBarAppearance.blurredSafe()
-    
-    UITabBar.appearance().standardAppearance = appearance
-    UITabBar.appearance().scrollEdgeAppearance = appearance
-    UITabBar.appearance().isTranslucent = true
+    DispatchQueue.main.async {
+      let appearance = UITabBarAppearance.blurredSafe()
+      
+      UITabBar.appearance().standardAppearance = appearance
+      UITabBar.appearance().scrollEdgeAppearance = appearance
+      UITabBar.appearance().isTranslucent = true
+    }
     
     return true
   }

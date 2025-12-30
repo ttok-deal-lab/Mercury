@@ -39,7 +39,7 @@ public struct AuctionHomeView: View {
           isShowFilterArea = true
         },
         onTapSearch: {
-          print("search")
+          coordinator.push(.search(SearchRoute(route: .searchHome)))
         }
       )
       

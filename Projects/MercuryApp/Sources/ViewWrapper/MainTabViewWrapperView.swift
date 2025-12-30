@@ -18,7 +18,6 @@ public struct MainTabViewWrapperView: View, MainTabViewable {
   let hostView: MainTabView<
     AuctionHomeViewWrapperView,
     InterestViewWrapperView,
-    ReportViewWrapperView,
     MyPageViewWrapperView,
     SignInViewWrapperView
   >

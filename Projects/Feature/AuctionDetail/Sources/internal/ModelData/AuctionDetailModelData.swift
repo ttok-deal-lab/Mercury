@@ -17,7 +17,7 @@ public final class AuctionDetailModelData {
   
   // MARK: - internal properties
   
-  var error: MercuryError?
+  var error: Error?
   var auctionDetailItem: AuctionDetail?
   var isLoading: Bool = false
   

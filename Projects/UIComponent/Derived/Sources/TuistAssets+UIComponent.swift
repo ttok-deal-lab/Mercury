@@ -132,6 +132,7 @@ public enum Asset {
     public static let gnbMypageGray = ImageAsset(name: "GNB_mypage_gray")
     public static let gnbReport = ImageAsset(name: "GNB_report")
     public static let gnbReportGray = ImageAsset(name: "GNB_report_gray")
+    public static let dot3Circle = ImageAsset(name: "Dot3Circle")
     public static let infoFill = ImageAsset(name: "Info-fill")
     public static let infoLine = ImageAsset(name: "Info-line")
     public static let questionFill = ImageAsset(name: "Question-fill")

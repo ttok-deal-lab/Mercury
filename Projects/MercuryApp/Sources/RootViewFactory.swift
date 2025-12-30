@@ -16,6 +16,7 @@ import Domain
 import Infrastructure
 import MyPage
 import Setting
+import Search
 
 import PulseUI
 
@@ -52,6 +53,14 @@ struct RootViewFactory: ViewFactory {
       .makeView(myPageStep)
     case .notification:
       NotificationView()
+      
+    case .search(let searchStep):
+      SearchViewFactory(
+        auctionSalesListUsecase: AuctionSalesListUsecase(repository: AuctionSalesListRepository()),
+        auctionSearchFilterUsecase: AuctionSearchFilterUsecase(repository: AuctionSearchFilterRepository()),
+        localStoargeUsecase: LocalStorageUsecase(repository: UserDefaultsStoreRepository())
+      )
+      .makeView(searchStep)
     }
   }
 }

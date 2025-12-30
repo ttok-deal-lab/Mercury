@@ -76,9 +76,9 @@ enum AuctionAPI: BaseAPI {
       }
       
       if let buildTypes = buildTypes, !buildTypes.isEmpty {
-        params["buildTypes"] = buildTypes.first! // TODO: 복수 선택일 경우 대응해야함
+        params["buildType"] = buildTypes.first! // TODO: 복수 선택일 경우 대응해야함
       } else {
-        params["buildTypes"] = "ALL"
+        params["buildType"] = "ALL"
       }
       
       if let auctionFailCount = auctionFailCount, !auctionFailCount.isEmpty {

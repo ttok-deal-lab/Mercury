@@ -28,12 +28,12 @@ final class MainTabModelData {
       .store(in: &store)
     
     Task { [weak self] in
-      let appFirstRunkeyExist = await localStorageUsecase.isKeyExist(forKey: .isTabEnterFirst)
+      let appFirstRunkeyExist = await localStorageUsecase.isKeyExist(forKey: LocalStorageKey.isTabEnterFirst.rawValue)
       if !appFirstRunkeyExist {
         await MainActor.run { [weak self] in
           self?.isTabEnterFirst = true
         }
-        await localStorageUsecase.set(false, forKey: .isTabEnterFirst)
+        await localStorageUsecase.set(false, forKey: LocalStorageKey.isTabEnterFirst.rawValue)
       }
     } 
   }

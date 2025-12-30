@@ -14,5 +14,7 @@ public enum FeatureRoute: Hashable {
   case recentViewList(RecentViewRoute)
   case setting(SettingRoute)
   case notification
+  case terms(TermsRoute)
+  case search(SearchRoute)
   case networkConsole
 }
