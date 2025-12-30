@@ -13,13 +13,19 @@ import Domain
 import UIComponent
 import Router
 
-struct RecentSalesView: View {
+public struct RecentSalesView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
-  private let modelData: RecentSalesModelData
-  private var recentSales: [AuctionSalesItem]
+  @State private var modelData: RecentSalesModelData
   
+  public init(
+    recentViewListUsecase: RecentViewListUsecase,
+  ) {
+    self.modelData = RecentSalesModelData(
+      recentViewListUsecase: recentViewListUsecase
+    )
+  }
   
-  var body: some View {
+  public var body: some View {
     VStack {
       MercuryNavigationBar(L10n.settingRecentViewSales) {
         Button {
@@ -31,16 +37,24 @@ struct RecentSalesView: View {
       
       ScrollView(.vertical) {
         LazyVStack(spacing: .zero) {
-          ForEach(recentSales, id: \.id) { item in
+          ForEach(modelData.recentViewList, id: \.id) { item in
             Button {
               coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
             } label: {
-              
+              RecentSalesItemView(item: item, onZzim: {
+                // TODO: - 찜 했을 때 액션
+              })
             }
           }
         }
       }
       Spacer()
+    }
+    .loading(modelData.isLoading)
+    .onLoad {
+      Task {
+        try await modelData.loadRecentViewList()
+      }
     }
     .navigationBarBackButtonHidden()
   }

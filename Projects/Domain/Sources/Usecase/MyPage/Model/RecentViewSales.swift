@@ -1,0 +1,58 @@
+//
+//  RecentViewSales.swift
+//  Domain
+//
+//  Created by 최수훈 on 12/29/25.
+//
+
+import Foundation
+
+public struct RecentViewSalesItem: Identifiable {
+  public let id: Int
+  /// 매각여부
+  public let isSoldOut: Bool
+  /// 물건 주소
+  public let salesAddress: String
+  /// 카테고리
+  public let salesCategories: [AuctionSalesCategory]
+  /// 경매 날짜
+  public let salesDateTime: Date
+  /// 가격
+  public let appraisalPrice: String
+  /// 물건 사진 정보
+  public let salesPictures: String
+  /// 입찰실패 횟수
+  public let failBidCount: Int
+  /// 찜 횟수
+  public let zzimCount: Int
+  /// 매각까지 남은 기간
+  public let salesLeftDays: Int
+  
+  public init(
+    id: Int,
+    isSoldOut: Bool,
+    salesAddress: String,
+    salesCategories: [AuctionSalesCategory],
+    salesDateTime: Date,
+    appraisalPrice: String,
+    salesPictures: String,
+    failBidCount: Int,
+    zzimCount: Int
+  ) {
+    self.id = id
+    self.isSoldOut = isSoldOut
+    self.salesAddress = salesAddress
+    self.salesCategories = salesCategories
+    self.salesDateTime = salesDateTime
+    self.appraisalPrice = appraisalPrice
+    self.salesPictures = salesPictures
+    self.failBidCount = failBidCount
+    self.zzimCount = zzimCount
+    let leftDays: Int = {
+      let interval = Date().timeIntervalSince(salesDateTime)
+      let days = Int(interval / 86400)
+      return days
+    }()
+    self.salesLeftDays = leftDays
+  }
+}

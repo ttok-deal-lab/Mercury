@@ -25,6 +25,7 @@ let project = Project.app(
     .feature(target: "Map"),
     .feature(target: "Onboard"),
     .feature(target: "SignUp"),
+    .feature(target: "Setting"),
     .firebaseCore,
     .firebaseDatabase,
     .firebaseMessaging,

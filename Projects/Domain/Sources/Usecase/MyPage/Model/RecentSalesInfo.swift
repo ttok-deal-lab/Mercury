@@ -8,7 +8,7 @@
 import Foundation
 
 public struct RecentSalesInfo: Codable, Equatable {
-  let id: Int
+  public let id: Int
   let date: Date
   
   public init(id: Int, date: Date) {

@@ -13,13 +13,24 @@ import Domain
 @Observable
 public final class RecentSalesModelData {
   // MARK: - internal property
-  
+  var recentViewList: [RecentViewSalesItem] = []
+  var isLoading: Bool = false
   // MARK: - private property
-  private let localStorageUsecase: LocalStorageUsecasable
+  private let recentViewListUsecase: RecentViewListUsecasable
   
   // MARK: - life cycle
   
-  public init(localStorageUsecase: LocalStorageUsecasable) {
-    self.localStorageUsecase = localStorageUsecase
+  public init(recentViewListUsecase: RecentViewListUsecasable) {
+    self.recentViewListUsecase = recentViewListUsecase
+  }
+  
+  func loadRecentViewList() async throws {
+    self.isLoading = true
+    defer {
+      self.isLoading = false
+    }
+    let recentList = try await recentViewListUsecase.fetchRecentViewList()
+    
+    recentViewList = recentList
   }
 }
