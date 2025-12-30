@@ -54,7 +54,6 @@ public struct AuctionHomeView: View {
           ForEach(modelData.auctionSalesItems) { item in
             Button {
               coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
-              // UserDefault 에 id 값 추가
               Task {
                 await modelData.saveRecentSales(id: item.id)
               }

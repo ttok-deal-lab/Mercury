@@ -112,7 +112,10 @@ final class AuctionHomeModelData {
   }
   
   func saveRecentSales(id: Int) async {
-    var recentSales: [RecentSalesInfo] = await localStorageUsecase.getModel(forKey: LocalStorageKey.recentViwedSales.rawValue, as: [RecentSalesInfo].self) ?? []
+    var recentSales: [RecentSalesInfo] = await localStorageUsecase.getModel(
+      forKey: LocalStorageKey.recentViwedSales.rawValue,
+      as: [RecentSalesInfo].self
+    ) ?? []
     let date = Date.now
     
     let newItem = RecentSalesInfo(id: id, date: date)
