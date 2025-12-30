@@ -25,7 +25,7 @@ public struct RecentSalesViewFactory: ViewFactory {
   ) -> some View {
     switch mypageRouter.route {
     case .recentViewedList:
-      RecentSalesView(recentViewListUsecase: recentSalesUescase)
+      RecentSalesView(recentSalesUsecase: recentSalesUescase)
     }
   }
 }
