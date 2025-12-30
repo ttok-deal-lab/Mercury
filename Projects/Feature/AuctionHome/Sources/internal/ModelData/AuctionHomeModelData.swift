@@ -112,7 +112,7 @@ final class AuctionHomeModelData {
   }
   
   func saveRecentSales(id: Int) async {
-    var recentSales: [RecentSalesInfo] = await localStorageUsecase.getModel(forKey: .recentViwedSales, as: [RecentSalesInfo].self) ?? []
+    var recentSales: [RecentSalesInfo] = await localStorageUsecase.getModel(forKey: LocalStorageKey.recentViwedSales.rawValue, as: [RecentSalesInfo].self) ?? []
     let date = Date.now
     
     let newItem = RecentSalesInfo(id: id, date: date)
@@ -125,7 +125,7 @@ final class AuctionHomeModelData {
     if recentSales.count > 50 { // 정책 정하기 전 임시 갯수 제한
       recentSales.removeLast()
     }
-    await localStorageUsecase.setModel(recentSales, forKey: .recentViwedSales)
+    await localStorageUsecase.setModel(recentSales, forKey: LocalStorageKey.recentViwedSales.rawValue)
     
   }
 }

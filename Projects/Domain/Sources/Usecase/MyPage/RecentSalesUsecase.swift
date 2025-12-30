@@ -7,11 +7,13 @@
 
 import Foundation
 
-public class RecentViewListUsecase: RecentViewListUsecasable {
+import AppFoundation
+
+public class RecentSalesUsecase: RecentSalesUsecasable {
   private let fetcher : RecentViewListFetcher
   
   public init(
-    repository: RecentViewListRepositoriable,
+    repository: RecentSalesRepositoriable,
     localStorageUseCase: LocalStorageUsecasable
   ) {
     self.fetcher = RecentViewListFetcher(
@@ -19,7 +21,7 @@ public class RecentViewListUsecase: RecentViewListUsecasable {
       localStorageUseCase: localStorageUseCase
     )
   }
-  public func fetchRecentViewList() async throws -> [RecentViewSalesItem] {
+  public func fetchRecentViewList() async throws -> [RecentSalesItem] {
     return try await self.fetcher.fetchRecentViewList()
   }
 }
@@ -27,25 +29,25 @@ public class RecentViewListUsecase: RecentViewListUsecasable {
 
 actor RecentViewListFetcher {
   private let localStorageUseCase: LocalStorageUsecasable
-  private let repostiory: RecentViewListRepositoriable
+  private let repostiory: RecentSalesRepositoriable
   private var isLoading: Bool = false
   
   init(
-    repostiory: RecentViewListRepositoriable,
+    repostiory: RecentSalesRepositoriable,
     localStorageUseCase: LocalStorageUsecasable
   ) {
     self.repostiory = repostiory
     self.localStorageUseCase = localStorageUseCase
   }
   
-  func fetchRecentViewList() async throws -> [RecentViewSalesItem] {
+  func fetchRecentViewList() async throws -> [RecentSalesItem] {
     self.isLoading = true
     defer {
       self.isLoading = false
     }
     
     guard let recentSalesInfo = await localStorageUseCase.getModel(
-      forKey: .recentViwedSales,
+      forKey: LocalStorageKey.recentViwedSales.rawValue,
       as: [RecentSalesInfo].self
     ) else {
       return []

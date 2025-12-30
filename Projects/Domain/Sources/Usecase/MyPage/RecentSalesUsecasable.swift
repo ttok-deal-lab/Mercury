@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol RecentViewListUsecasable {
-  func fetchRecentViewList() async throws -> [RecentViewSalesItem]
+public protocol RecentSalesUsecasable {
+  func fetchRecentViewList() async throws -> [RecentSalesItem]
 }
 

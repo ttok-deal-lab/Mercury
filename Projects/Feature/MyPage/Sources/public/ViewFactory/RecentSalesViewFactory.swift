@@ -12,14 +12,12 @@ import Combine
 import Domain
 import Router
 
-public struct RecentViewListViewFactory: ViewFactory {
+public struct RecentSalesViewFactory: ViewFactory {
   
-  private let recentViewListUsecase: RecentViewListUsecase
+  private let recentSalesUescase: RecentSalesUsecase
   
-  public init(
-    recentViewListUsecase: RecentViewListUsecase
-  ) {
-    self.recentViewListUsecase = recentViewListUsecase
+  public init(recentViewListUsecase: RecentSalesUsecase) {
+    self.recentSalesUescase = recentViewListUsecase
   }
   
   public func makeView(
@@ -27,9 +25,7 @@ public struct RecentViewListViewFactory: ViewFactory {
   ) -> some View {
     switch mypageRouter.route {
     case .recentViewedList:
-      RecentSalesView(
-        recentViewListUsecase: recentViewListUsecase
-      )
+      RecentSalesView(recentViewListUsecase: recentSalesUescase)
     }
   }
 }

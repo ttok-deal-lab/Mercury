@@ -17,12 +17,8 @@ public struct RecentSalesView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var modelData: RecentSalesModelData
   
-  public init(
-    recentViewListUsecase: RecentViewListUsecase,
-  ) {
-    self.modelData = RecentSalesModelData(
-      recentViewListUsecase: recentViewListUsecase
-    )
+  public init(recentSalesUsecase: RecentSalesUsecase) {
+    self.modelData = RecentSalesModelData( recentViewListUsecase: recentSalesUsecase)
   }
   
   public var body: some View {

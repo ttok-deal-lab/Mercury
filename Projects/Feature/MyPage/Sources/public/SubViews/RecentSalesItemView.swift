@@ -14,7 +14,7 @@ import UIComponent
 
 struct RecentSalesItemView: View {
   
-  let item: RecentViewSalesItem
+  let item: RecentSalesItem
   let onZzim: () -> Void
   
   var body: some View {

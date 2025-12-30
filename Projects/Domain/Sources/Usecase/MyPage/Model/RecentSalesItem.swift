@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct RecentViewSalesItem: Identifiable {
+public struct RecentSalesItem: Identifiable {
   public let id: Int
   /// 매각여부
   public let isSoldOut: Bool

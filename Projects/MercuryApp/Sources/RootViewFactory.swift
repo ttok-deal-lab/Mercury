@@ -44,9 +44,9 @@ struct RootViewFactory: ViewFactory {
       SettingViewFactory()
         .makeView(settingStep)
     case .recentViewList(let myPageStep):
-      RecentViewListViewFactory(
-        recentViewListUsecase: RecentViewListUsecase(
-          repository: RecentViewListRepository(),
+      RecentSalesViewFactory(
+        recentViewListUsecase: RecentSalesUsecase(
+          repository: RecentSalesRepository(),
           localStorageUseCase: LocalStorageUsecase(repository: UserDefaultsStoreRepository())
         )
       )

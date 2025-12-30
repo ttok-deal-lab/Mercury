@@ -10,7 +10,7 @@ import Foundation
 import AppFoundation
 import Domain
 
-struct RecentViewSalesDTO: Decodable, Sendable {
+struct RecentSalesItemDTO: Decodable, Sendable {
   let id: Int
   let isSoldOut: Bool
   let salesAddress: String
@@ -43,9 +43,9 @@ struct RecentViewSalesDTO: Decodable, Sendable {
   }
 }
 
-extension RecentViewSalesDTO {
-  func toEntity() -> RecentViewSalesItem {
-    return RecentViewSalesItem(
+extension RecentSalesItemDTO {
+  func toEntity() -> RecentSalesItem {
+    return RecentSalesItem(
       id: id,
       isSoldOut: isSoldOut,
       salesAddress: salesAddress,

@@ -13,14 +13,14 @@ import Domain
 @Observable
 public final class RecentSalesModelData {
   // MARK: - internal property
-  var recentViewList: [RecentViewSalesItem] = []
+  var recentViewList: [RecentSalesItem] = []
   var isLoading: Bool = false
-  // MARK: - private property
-  private let recentViewListUsecase: RecentViewListUsecasable
   
+  // MARK: - private property
+  private let recentViewListUsecase: RecentSalesUsecasable
   // MARK: - life cycle
   
-  public init(recentViewListUsecase: RecentViewListUsecasable) {
+  public init(recentViewListUsecase: RecentSalesUsecasable) {
     self.recentViewListUsecase = recentViewListUsecase
   }
   
