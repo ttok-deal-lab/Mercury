@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct MyPageRoute: Hashable {
+public struct RecentViewRoute: Hashable {
   public private(set) var route: Route
   
   public init(route: Route) {
@@ -15,8 +15,7 @@ public struct MyPageRoute: Hashable {
   }
   
   public enum Route: Hashable {
-    case recentlySales
-    case chat
+    case recentViewedList
   }
   
   public func hash(into hasher: inout Hasher) {
