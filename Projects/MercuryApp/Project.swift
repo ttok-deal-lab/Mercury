@@ -31,6 +31,7 @@ let project = Project.app(
     .firebaseMessaging,
     .firebaseCrashlytics,
     .firebaseAnalytics,
+    .firebaseRemoteConfig,
     .pulse,
     .pulseProxy,
     .pulseUI

@@ -20,6 +20,7 @@ public extension TargetDependency {
   static let firebaseMessaging: TargetDependency = .external(name: "FirebaseMessaging")
   static let firebaseCrashlytics: TargetDependency = .external(name: "FirebaseCrashlytics")
   static let firebaseAnalytics: TargetDependency = .external(name: "FirebaseAnalytics")
+  static let firebaseRemoteConfig: TargetDependency = .external(name: "FirebaseRemoteConfig")
   static let pulse: TargetDependency = .external(name: "Pulse")
   static let pulseProxy: TargetDependency = .external(name: "PulseProxy")
   static let pulseUI: TargetDependency = .external(name: "PulseUI")

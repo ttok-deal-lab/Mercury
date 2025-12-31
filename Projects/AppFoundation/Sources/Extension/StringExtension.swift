@@ -21,4 +21,8 @@ public extension String {
     formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
     return formatter.date(from: self) ?? Date()
   }
+  
+  func compareVersion(to other: String) -> ComparisonResult {
+    return self.compare(other, options: .numeric)
+  }
 }
