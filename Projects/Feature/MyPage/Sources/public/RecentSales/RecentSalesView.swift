@@ -50,7 +50,7 @@ public struct RecentSalesView: View {
           .padding(.top, 145)
           .padding(.bottom, 12)
         
-        Text("최근 본 매물이 없어요.")
+        Text(L10n.settingRecentViewNone)
           .fonts(.bodySmallMedium)
           .foregroundStyle(Asset.Colors.neutralSubtler.color)
       }
