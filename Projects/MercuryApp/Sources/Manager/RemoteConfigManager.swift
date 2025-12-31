@@ -28,10 +28,13 @@ final class RemoteConfigManager: AppConfigService {
   }
   var minVersion: String = "0.0.0"
   var latestVersion: String = "0.0.0"
-  var needsUpdate: Bool = false
   
   func fetchConfig() async throws {
     try await remoteConfig.fetchAndActivate()
+    
+    minVersion = remoteConfig["min_version"].stringValue
+    latestVersion = remoteConfig["latest_version"].stringValue
+    
   }
   
   

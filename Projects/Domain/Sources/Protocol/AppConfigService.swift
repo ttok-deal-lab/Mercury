@@ -8,6 +8,5 @@
 public protocol AppConfigService {
   var minVersion: String { get }
   var latestVersion: String { get }
-  var needsUpdate: Bool { get }
   func fetchConfig() async throws
 }

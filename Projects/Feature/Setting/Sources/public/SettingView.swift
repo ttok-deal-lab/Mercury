@@ -13,11 +13,7 @@ import Domain
 import UIComponent
 import Router
 
-import FirebaseRemoteConfig
-
 public struct SettingView: View {
-  
-  // MARK: - internal property
   
   // MARK: - private property
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
@@ -25,14 +21,14 @@ public struct SettingView: View {
   private let items: [SettingItemType] = SettingItemType.allCases
   private var isNeedUpdate: Bool = true
   @Inject private var accessTokenManager: AccessTokenManagable
-  
+  @Inject private var configService: AppConfigService
   // MARK: - life cycle
   public init() {
-    self.modelData = SettingModelData(remoteConfig: RemoteConfig.remoteConfig())
+    self.modelData = SettingModelData()
+    print( configService.latestVersion)
+    print(Bundle.main.appVersion)
   }
-  func remoteTest() async throws {
-    try await self.modelData.test()
-  }
+  
   public var body: some View {
     ZStack {
       VStack(alignment: .leading, spacing: 0) {
@@ -75,22 +71,26 @@ public struct SettingView: View {
               .fonts(.bodySmallMedium)
               .foregroundStyle(Asset.Colors.neutralSubtler.color)
             
-            Text(L10n.settingUpdate)
-              .fonts(.bodySmallMedium)
-              .foregroundStyle(Asset.Colors.neutralSubtler.color)
-              .mercuryUnderLine()
-              .task {
-                // TODO: 앱스토어 가기
-                //              if let url = URL(string: "itms-apps://itunes.apple.com/app/[@id]"),
-                //                                  UIApplication.shared.canOpenURL(url)
-                //              {
-                //                  if #available(iOS 10.0, *) {
-                //                      UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                //                  } else {
-                //                      UIApplication.shared.openURL(url)
-                //                  }
-                //              }
-              }
+            // lateste > bundle version 일때 보여주기
+            if configService.latestVersion
+              .compareVersion(to: Bundle.main.appVersion) == .orderedDescending {
+              Text(L10n.settingUpdate)
+                .fonts(.bodySmallMedium)
+                .foregroundStyle(Asset.Colors.neutralSubtler.color)
+                .mercuryUnderLine()
+                .task {
+                  // TODO: 앱스토어 가기
+                  //              if let url = URL(string: "itms-apps://itunes.apple.com/app/[@id]"),
+                  //                                  UIApplication.shared.canOpenURL(url)
+                  //              {
+                  //                  if #available(iOS 10.0, *) {
+                  //                      UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                  //                  } else {
+                  //                      UIApplication.shared.openURL(url)
+                  //                  }
+                  //              }
+                }
+            }
           }
           
           Text("\(L10n.settingOpenLicense)")
@@ -111,11 +111,6 @@ public struct SettingView: View {
     }
     .background(Asset.Colors.neutralWeak.color)
     .navigationBarBackButtonHidden()
-    .onLoad {
-      Task {
-        try await remoteTest()
-      }
-    }
   }
   
   private func onTapItem(_ item: SettingItemType) {
