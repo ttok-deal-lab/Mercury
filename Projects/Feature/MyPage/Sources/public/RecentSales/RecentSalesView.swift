@@ -31,18 +31,28 @@ public struct RecentSalesView: View {
         }
       }
       
-      ScrollView(.vertical) {
-        LazyVStack(spacing: .zero) {
-          ForEach(modelData.recentViewList, id: \.id) { item in
-            Button {
-              coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
-            } label: {
-              RecentSalesItemView(item: item, onZzim: {
-                // TODO: - 찜 했을 때 액션
-              })
+      if !modelData.recentViewList.isEmpty {
+        ScrollView(.vertical) {
+          LazyVStack(spacing: .zero) {
+            ForEach(modelData.recentViewList, id: \.id) { item in
+              Button {
+                coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
+              } label: {
+                RecentSalesItemView(item: item, onZzim: {
+                  // TODO: - 찜 했을 때 액션
+                })
+              }
             }
           }
         }
+      } else {
+        Asset.Images.dot3Circle.image
+          .padding(.top, 145)
+          .padding(.bottom, 12)
+        
+        Text("최근 본 매물이 없어요.")
+          .fonts(.bodySmallMedium)
+          .foregroundStyle(Asset.Colors.neutralSubtler.color)
       }
       Spacer()
     }

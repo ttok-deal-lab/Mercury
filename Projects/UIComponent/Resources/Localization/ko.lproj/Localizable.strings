@@ -28,6 +28,7 @@
 "setting_recent_view_sales" = "최근 본 매물";
 "setting_update" = "업데이트하기";
 "setting_open_license" = "오픈소스 라이선스 보기";
+"setting_recent_view_none" = "최근 본 매물이 없어요.";
 "mypage_login_google" = "구글로 로그인";
 "mypage_login_apple" = "애플로 로그인";
 "mypage_login_kakao" = "카카오로 로그인";
