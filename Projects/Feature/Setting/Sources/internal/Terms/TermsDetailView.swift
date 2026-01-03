@@ -23,7 +23,7 @@ struct TermsDetailView: View {
   
   var body: some View {
     VStack(spacing: 0) {
-      MercuryNavigationBar(nil) {
+      MercuryNavigationBar() {
         Button {
           coordinator.pop()
         } label: {
@@ -32,10 +32,14 @@ struct TermsDetailView: View {
       }
       
       ZStack {
-        MercuryWebView(
-          url: termsType.webURL!,
-          isLoading: $isLoading
-        )
+        if let url = termsType.webURL {
+          MercuryWebView(
+            url: url,
+            isLoading: $isLoading
+          )
+        } else {
+          // TODO: - placeHolder 혹은 기본페이지 연결
+        }
       }
       Spacer()
     }

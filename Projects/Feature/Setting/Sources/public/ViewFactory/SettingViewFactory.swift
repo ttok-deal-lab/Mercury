@@ -15,8 +15,9 @@ import Router
 
 public struct SettingViewFactory: ViewFactory {
   
-  // MARK: - pricate properties
+  // MARK: - private properties
   private let settingUsecase: SettingUsecasable
+  
   public init(settingUsecase: SettingUsecasable) {
     self.settingUsecase = settingUsecase
   }

@@ -1,5 +1,5 @@
 //
-//  TermsType.swift
+//  TermsItemType.swift
 //  Domain
 //
 //  Created by 최수훈 on 1/3/26.
@@ -29,11 +29,11 @@ public enum TermsItemType: CaseIterable {
   public var webURL: URL? {
     switch self {
     case .memberAgreement:
-      URL(string: PolicyURL.memberAgreement)
+      URL(string: CommonURL.memberAgreement)
     case .privacyPolicy:
-      URL(string: PolicyURL.privacyPolicy)
+      URL(string: CommonURL.privacyPolicy)
     case .servicePolicy:
-      URL(string: PolicyURL.servicePolicy)
+      URL(string: CommonURL.servicePolicy)
     }
   }
 }

@@ -23,9 +23,10 @@ public struct SignOutView: View {
       settingUsecase: settingUsecase
     )
   }
+  
   public var body: some View {
     VStack(spacing: .zero) {
-      MercuryNavigationBar(nil) {
+      MercuryNavigationBar() {
         Button {
           coordinator.pop()
         } label: {
@@ -62,17 +63,15 @@ public struct SignOutView: View {
       
       VStack(alignment: .leading) {
         Label {
-          Text("탈퇴 전 안내 사항을 모두 확인했어요.")
+          Text(L10n.signoutCheckComment)
             .fonts(.bodyMediumMedium)
             .foregroundStyle(Asset.Colors.neutral.color)
         } icon: {
-          // TODO: boolean 값으로 체크 표시 아이콘 변경
           if !isChecked {
             Asset.Images.sucessLine.image
           } else {
             Asset.Images.successBlue.image
           }
-          
         }
         .padding(.top, 21)
         .onTapGesture {

@@ -17,7 +17,6 @@ public struct SettingView: View {
   
   // MARK: - private property
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
-  //  @State private var modelData: SettingModelData
   private let items: [SettingItemType] = [
     .terms,
     .settingLogout,
@@ -26,6 +25,7 @@ public struct SettingView: View {
   private var isNeedUpdate: Bool = true
   @Inject private var accessTokenManager: AccessTokenManagable
   @Inject private var configService: AppConfigService
+  
   // MARK: - life cycle
   public init() { }
   

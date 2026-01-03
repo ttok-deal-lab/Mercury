@@ -47,8 +47,7 @@ public struct MercuryNavigationBar<LeftContent: View, RightContent: View>: View 
           .padding(.vertical, 16)
           .padding(.trailing, 20)
         
-      } // HStack
-      
+      }
     }
     .contentShape(Rectangle())
     .background(.white)
@@ -57,7 +56,7 @@ public struct MercuryNavigationBar<LeftContent: View, RightContent: View>: View 
 
 extension MercuryNavigationBar where LeftContent == EmptyView {
   public init(
-    _ title: String?,
+    _ title: String? = nil,
     @ViewBuilder rightButtons: () -> RightContent
   ) {
     self.title = title
@@ -68,7 +67,7 @@ extension MercuryNavigationBar where LeftContent == EmptyView {
 
 extension MercuryNavigationBar where RightContent == EmptyView {
   public init(
-    _ title: String?,
+    _ title: String? = nil,
     @ViewBuilder leftButtons: @escaping () -> LeftContent
   ) {
     self.title = title
