@@ -72,3 +72,4 @@ fastlane/.env.default
 Gemfile.lock
 Tuist/.DS_Store
 **/.DS_Store
+Projects/**/Derived
