@@ -9,16 +9,15 @@ import Combine
 import SwiftUI
 
 import AppFoundation
-import Domain
 import UIComponent
 import Router
 
 struct TermsDetailView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var isLoading = true
-  private let termsType: TermsType
+  private let termsType: TermsItemType
   
-  init(type: TermsType) {
+  init(type: TermsItemType) {
     self.termsType = type
   }
   

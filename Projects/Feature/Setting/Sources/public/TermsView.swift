@@ -9,12 +9,11 @@ import SwiftUI
 import Combine
 
 import UIComponent
-import Domain
 import Router
 
-struct TermsView: View {
+public struct TermsView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
-  private let items: [TermsType] = [
+  private let items: [TermsItemType] = [
     .memberAgreement,
     .privacyPolicy,
     .servicePolicy
@@ -22,7 +21,7 @@ struct TermsView: View {
   
   public init() { }
   
-  var body: some View {
+  public var body: some View {
     VStack(spacing: 0) {
       MercuryNavigationBar(L10n.settingTerms) {
         Button {
@@ -45,7 +44,7 @@ struct TermsView: View {
     .navigationBarBackButtonHidden()
   }
   
-  func onItemTap(termsType: TermsType) {
+  func onItemTap(termsType: TermsItemType) {
     switch termsType {
     case .memberAgreement:
       coordinator.push(.terms(.init(route: .memberAgreement)))

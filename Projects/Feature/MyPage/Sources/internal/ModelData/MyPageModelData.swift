@@ -13,7 +13,7 @@ import Router
 import Domain
 
 @Observable
-public final class MyPageModelData {
+final class MyPageModelData {
   
   // MARK: - internal property
   
@@ -24,7 +24,7 @@ public final class MyPageModelData {
   
   // MARK: - life cycle
   
-  public init(userProfileUsecasable: MyPageUsecasable) {
+  init(userProfileUsecasable: MyPageUsecasable) {
     self.userProfileUsecasable = userProfileUsecasable
   }
   

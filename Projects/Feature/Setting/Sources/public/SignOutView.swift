@@ -11,7 +11,7 @@ import UIComponent
 import Domain
 import Router
 
-struct SignOutView: View {
+public struct SignOutView: View {
   
   // MARK: - private property
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
@@ -23,7 +23,7 @@ struct SignOutView: View {
       settingUsecase: settingUsecase
     )
   }
-  var body: some View {
+  public var body: some View {
     VStack(spacing: .zero) {
       MercuryNavigationBar(nil) {
         Button {

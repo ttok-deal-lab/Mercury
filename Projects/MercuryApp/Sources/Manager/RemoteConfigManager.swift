@@ -22,6 +22,7 @@ final class RemoteConfigManager: AppConfigService {
 #if DEBUG
     settings.minimumFetchInterval = 0
 #else
+    //
     settings.minimumFetchInterval = 60 * 24 * 7 // TODO: - 임시: 일주일
 #endif
     remoteConfig.configSettings = settings
