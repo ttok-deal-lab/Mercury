@@ -25,4 +25,8 @@ public extension String {
   func compareVersion(to other: String) -> ComparisonResult {
     return self.compare(other, options: .numeric)
   }
+  
+  var byChaWrapping: Self {
+    map(String.init).joined(separator: "\u{200B}")
+  }
 }

@@ -29,6 +29,10 @@
 "setting_update" = "Update";
 "setting_open_license" = "Open License";
 "setting_recent_view_none" = "There are no recent listings.";
+"signout_title" = "Are you sure you want to leave?\nPlease be sure to review the important information before leaving.";
+"signout_description1" = "Your personal information will be completely deleted in accordance with our privacy policy.";
+"signout_description2" = "The ID you used cannot be used again.";
+"signout_check_comment" = "I have reviewed all the pre-withdrawal notices.";
 "mypage_login_google" = "Login via Google";
 "mypage_login_apple" = "Login via Apple";
 "mypage_login_kakao" = "Login via Kakao";

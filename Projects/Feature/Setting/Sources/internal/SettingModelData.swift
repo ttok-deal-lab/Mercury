@@ -13,9 +13,13 @@ import Domain
 @Observable
 final class SettingModelData {
   
-  // MARK: - Internal Properties
-  var isLatestVersion: Bool = false
+  // MARK: - Internal properties
   
-  init() { }
+  // MARK: - private properties
+  private let settingUsecase: SettingUsecasable
+  
+  init(settingUsecase: SettingUsecasable) {
+    self.settingUsecase = settingUsecase
+  }
   
 }
