@@ -5,14 +5,14 @@
 //  Created by 송하민 on 4/13/25.
 //
 
-import SwiftUI
 import Combine
 import SwiftData
+import SwiftUI
 
-import Router
-import UIComponent
 import AppFoundation
 import Domain
+import UIComponent
+import Router
 
 public struct AuctionHomeView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
@@ -21,11 +21,13 @@ public struct AuctionHomeView: View {
   
   public init(
     auctionListUsecase: AuctionSalesListUsecasable,
-    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
+    localStorageUsecase: LocalStorageUsecasable
   ) {
     self.modelData = AuctionHomeModelData(
+      localStorageUsecase: localStorageUsecase,
       auctionListUsecase: auctionListUsecase,
-      auctionSearchFilterUsecase: auctionSearchFilterUsecase,
+      auctionSearchFilterUsecase: auctionSearchFilterUsecase
     )
   }
   
@@ -52,6 +54,9 @@ public struct AuctionHomeView: View {
           ForEach(modelData.auctionSalesItems) { item in
             Button {
               coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
+              Task {
+                await modelData.saveRecentSales(id: item.id)
+              }
             } label: {
               AuctionSalesItemView(item: item, onZzim: {
                 // 찜 했을때의 액션

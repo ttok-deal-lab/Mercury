@@ -44,15 +44,14 @@ struct TermsDetailView: View {
   }
   
   private func termsURL(route: TermsDetailRoute) -> String {
-//    switch route {
-//    case .memberAgreement:
-//      PolicyURL.memberAgreement
-//    case .pivacyPolicy:
-//      PolicyURL.privacyPolicy
-//    case .servicewPolicy:
-//      PolicyURL.servicePolicy
-//    }
-    return ""
+    switch route {
+    case .memberAgreement:
+      PolicyURL.memberAgreement
+    case .pivacyPolicy:
+      PolicyURL.privacyPolicy
+    case .servicewPolicy:
+      PolicyURL.servicePolicy
+    }
   }
 }
 

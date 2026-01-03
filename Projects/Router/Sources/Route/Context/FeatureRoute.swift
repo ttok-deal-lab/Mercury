@@ -11,9 +11,9 @@ import SwiftUI
 public enum FeatureRoute: Hashable {
   case onboard(OnboardRoute)
   case auctionDetail(AuctionDetailRoute)
-  case mypage(MyPageRoute)
+  case recentViewList(RecentViewRoute)
   case setting(SettingRoute)
-  case terms(TermsRoute)
+  case notification
   case search(SearchRoute)
   case networkConsole
 }

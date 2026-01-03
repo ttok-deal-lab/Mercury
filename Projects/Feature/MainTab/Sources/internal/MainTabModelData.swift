@@ -35,7 +35,7 @@ final class MainTabModelData {
         }
         await localStorageUsecase.set(false, forKey: LocalStorageKey.isTabEnterFirst.rawValue)
       }
-    }
+    } 
   }
   
 }

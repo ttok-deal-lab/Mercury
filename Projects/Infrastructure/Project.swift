@@ -14,8 +14,7 @@ let project = Project.framework(
   dependencies: [
     .appFoundation,
     .domain,
-    .networking,
-    .feature(target: "MyPage")
+    .networking
   ],
   testDependencies: [
     

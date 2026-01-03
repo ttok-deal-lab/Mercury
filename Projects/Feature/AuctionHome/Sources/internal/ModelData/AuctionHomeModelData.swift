@@ -15,7 +15,6 @@ import UIComponent
 
 @Observable
 final class AuctionHomeModelData {
-  
   // MARK: - Internal Properties
   
   var auctionSalesItems: [AuctionSalesItem] = []
@@ -31,15 +30,18 @@ final class AuctionHomeModelData {
   
   // MARK: - Private Properties
   
+  private let localStorageUsecase: LocalStorageUsecasable
   private let auctionListUsecase: AuctionSalesListUsecasable
   private let auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
   
   // MARK: - Initialize
   
   init(
+    localStorageUsecase: LocalStorageUsecasable,
     auctionListUsecase: AuctionSalesListUsecasable,
     auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
   ) {
+    self.localStorageUsecase = localStorageUsecase
     self.auctionListUsecase = auctionListUsecase
     self.auctionSearchFilterUsecase = auctionSearchFilterUsecase
     
@@ -107,6 +109,27 @@ final class AuctionHomeModelData {
     if let defaultRegion = filters.regions.first {
       self.currentAuctionFilter.region = defaultRegion
     }
+  }
+  
+  func saveRecentSales(id: Int) async {
+    var recentSales: [RecentSalesInfo] = await localStorageUsecase.getModel(
+      forKey: LocalStorageKey.recentViwedSales.rawValue,
+      as: [RecentSalesInfo].self
+    ) ?? []
+    let date = Date.now
+    
+    let newItem = RecentSalesInfo(id: id, date: date)
+    
+    if let index = recentSales.firstIndex(of: newItem) {
+      recentSales.remove(at: index)
+    }
+    recentSales.insert(newItem, at: 0)
+    
+    if recentSales.count > 50 { // 정책 정하기 전 임시 갯수 제한
+      recentSales.removeLast()
+    }
+    await localStorageUsecase.setModel(recentSales, forKey: LocalStorageKey.recentViwedSales.rawValue)
+    
   }
 }
 

@@ -12,6 +12,7 @@ import Networking
 enum AuctionAPI: BaseAPI {
   case auctionSearchList(keyword: String?, region: String?, district: String?, buildTypes: [String]?, auctionFailCount: [String]?, isCertified: Bool?, minimumPrice: Int?, maximumPrice: Int?, nextCursor: String?, sort: String?)
   case auctionDetail(_ auctionID: Int)
+  case auctionSales(auctionIDs: [Int])
   case auctionSearchFilter
   
   var baseURL: String {
@@ -21,16 +22,24 @@ enum AuctionAPI: BaseAPI {
   var domain: String? {
     switch self {
     case .auctionSearchList: "api/v2/"
-    case .auctionDetail: "v2/courts/"
+    case .auctionDetail, .auctionSales: "v2/courts/"
     case .auctionSearchFilter: "api/v1/"
     }
   }
   
   var path: String {
     switch self {
-    case .auctionSearchList: "search"
-    case .auctionDetail(let auctionID): "sales/\(auctionID)"
-    case .auctionSearchFilter: "search/filters"
+    case .auctionSearchList:
+      return "search"
+    case .auctionDetail(let auctionID):
+      return "sales/\(auctionID)"
+    case .auctionSales(let auctionIDs):
+      let queryString = auctionIDs
+        .map { "ids=\($0)" }
+        .joined(separator: "&")
+      return "sales?\(queryString)"
+    case .auctionSearchFilter:
+      return "search/filters"
     }
   }
   
@@ -38,6 +47,7 @@ enum AuctionAPI: BaseAPI {
     switch self {
     case .auctionSearchList: .get
     case .auctionDetail: .get
+    case .auctionSales: .get
     case .auctionSearchFilter: .get
     }
   }
@@ -100,6 +110,8 @@ enum AuctionAPI: BaseAPI {
       
       return params
     case .auctionDetail:
+      return nil
+    case .auctionSales(let auctionIDs):
       return nil
     case .auctionSearchFilter:
       return nil

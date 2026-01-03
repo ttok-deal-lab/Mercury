@@ -15,6 +15,7 @@ import Onboard
 import Domain
 import Infrastructure
 import MyPage
+import Setting
 import Search
 
 import PulseUI
@@ -42,14 +43,17 @@ struct RootViewFactory: ViewFactory {
     case .setting(let settingStep):
       SettingViewFactory()
         .makeView(settingStep)
-    case .terms(let agreementStep):
-      TermsViewFactory()
-        .makeView(agreementStep)
-    case .mypage(let myPageStep):
-      MyPageViewFactory(
-        mypageUsecasable: MyPageUsecase(repository: MyPageRepository())
+    case .recentViewList(let myPageStep):
+      RecentSalesViewFactory(
+        recentViewListUsecase: RecentSalesUsecase(
+          repository: RecentSalesRepository(),
+          localStorageUseCase: LocalStorageUsecase(repository: UserDefaultsStoreRepository())
+        )
       )
       .makeView(myPageStep)
+    case .notification:
+      NotificationView()
+      
     case .search(let searchStep):
       SearchViewFactory(
         auctionSalesListUsecase: AuctionSalesListUsecase(repository: AuctionSalesListRepository()),

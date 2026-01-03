@@ -19,10 +19,11 @@ public struct SettingViewFactory: ViewFactory {
   
   public func makeView(_ settingRouter: SettingRoute) -> some View {
     switch settingRouter.route {
-    case .setting:
+    case .settingList:
       SettingView()
-    case .notification:
-      NotificationView()
+    case .terms(let agreementStep):
+      TermsViewFactory()
+        .makeView(agreementStep)
     case .version:
       EmptyView()
     case .signOut:

@@ -19,14 +19,9 @@ public final class MyPageRepository: MyPageRepositoriable {
   @LazyInject private var userProfileManager: UserProfileManagable
   private var signininformationManager = MercuryContainer.shared.resolve(SignInInformationReadable.self)
   
-  private let localStorageUsecase: LocalStorageUsecase
   private var accessToken: UserAccessToken?
   
-  public init(localStorageUsecase: LocalStorageUsecase = LocalStorageUsecase(
-    repository: UserDefaultsStoreRepository())
-  ) {
-    self.localStorageUsecase = localStorageUsecase 
-  }
+  public init() { }
   
   public func fetchUserProfile() async throws -> UserProfileInfo {
     guard let userID = signininformationManager.userInfo?.id else {

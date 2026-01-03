@@ -1,8 +1,8 @@
 //
-//  AuctionItemView.swift
-//  Auction
+//  RecentSalesItemView.swift
+//  MyPage
 //
-//  Created by 송하민 on 5/4/25.
+//  Created by 최수훈 on 12/30/25.
 //
 
 import SwiftUI
@@ -11,14 +11,16 @@ import AppFoundation
 import Domain
 import UIComponent
 
-struct AuctionSalesItemView: View {
-  let item: AuctionSalesItem
+
+struct RecentSalesItemView: View {
+  
+  let item: RecentSalesItem
   let onZzim: () -> Void
   
   var body: some View {
     VStack(spacing: .zero) {
       HStack(spacing: 16) {
-        CachedAsyncImage(url: item.salesPictures.first?.url, content: { image in
+        CachedAsyncImage(url: item.salesPictures, content: { image in
           image.resizable()
         }) {
           Asset.Colors.gray150.color

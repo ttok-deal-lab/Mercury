@@ -31,7 +31,8 @@ struct TermsView: View {
         MercuryMenuItemView(item: item.title, left: .textLabel, rightView: {
           Asset.Images.arrowRightNoShaftGray.image
         }) {
-          coordinator.push(.terms(TermsRoute(route: .termsDetail(detailItemType: item))))
+          coordinator
+            .push(.setting(.init(route: .terms(.init(route: .termsDetail(detailItemType: item))))))
         }
       }
       

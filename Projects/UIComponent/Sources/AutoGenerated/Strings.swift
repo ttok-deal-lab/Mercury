@@ -102,6 +102,8 @@ public enum L10n {
   public static let settingOpenLicense = L10n.tr("Localizable", "setting_open_license", fallback: "오픈소스 라이선스 보기")
   /// 개인정보처리방침
   public static let settingPrivacyPolicy = L10n.tr("Localizable", "setting_privacy policy", fallback: "개인정보처리방침")
+  /// 최근 본 매물이 없어요.
+  public static let settingRecentViewNone = L10n.tr("Localizable", "setting_recent_view_none", fallback: "최근 본 매물이 없어요.")
   /// 최근 본 매물
   public static let settingRecentViewSales = L10n.tr("Localizable", "setting_recent_view_sales", fallback: "최근 본 매물")
   /// 서비스 운영정책

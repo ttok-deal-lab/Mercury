@@ -51,7 +51,7 @@ public struct MyPageView: View {
       MercuryNavigationBar(
         rightButtons: {
           Button {
-            coordinator.push(.setting(SettingRoute(route: .setting)))
+            coordinator.push(.setting(SettingRoute(route: .settingList)))
           } label: {
             Asset.Images.settingBlack.image
               .padding(.vertical, 16)
@@ -90,7 +90,7 @@ public struct MyPageView: View {
   private func onTapItem(item: MyPageItemType) {
     switch item {
     case .recentlySales:
-      coordinator.push(.mypage(MyPageRoute(route: .recentlySales)))
+      coordinator.push(.recentViewList(RecentViewRoute(route: .recentViewedList)))
     case .chat:
       EmptyView()
       // Mail 연결

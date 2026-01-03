@@ -13,15 +13,15 @@ import Domain
 import UIComponent
 import Router
 
-struct RecentSalesView: View {
+public struct RecentSalesView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
-  @Query var recentSales: [SDAuctionItem]
+  @State private var modelData: RecentSalesModelData
   
-  init() {
-    
+  public init(recentSalesUsecase: RecentSalesUsecase) {
+    self.modelData = RecentSalesModelData( recentViewListUsecase: recentSalesUsecase)
   }
   
-  var body: some View {
+  public var body: some View {
     VStack {
       MercuryNavigationBar(L10n.settingRecentViewSales) {
         Button {
@@ -31,14 +31,36 @@ struct RecentSalesView: View {
         }
       }
       
-      ScrollView(.vertical) {
-        LazyVStack(spacing: .zero) {
-          ForEach(recentSales, id: \.id) { sales in
-            Text("\(sales.salesId)")
+      if !modelData.recentViewList.isEmpty {
+        ScrollView(.vertical) {
+          LazyVStack(spacing: .zero) {
+            ForEach(modelData.recentViewList, id: \.id) { item in
+              Button {
+                coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
+              } label: {
+                RecentSalesItemView(item: item, onZzim: {
+                  // TODO: - 찜 했을 때 액션
+                })
+              }
+            }
           }
         }
+      } else {
+        Asset.Images.dot3Circle.image
+          .padding(.top, 145)
+          .padding(.bottom, 12)
+        
+        Text(L10n.settingRecentViewNone)
+          .fonts(.bodySmallMedium)
+          .foregroundStyle(Asset.Colors.neutralSubtler.color)
       }
       Spacer()
+    }
+    .loading(modelData.isLoading)
+    .onLoad {
+      Task {
+        try await modelData.loadRecentViewList()
+      }
     }
     .navigationBarBackButtonHidden()
   }
