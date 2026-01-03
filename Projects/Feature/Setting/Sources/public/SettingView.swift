@@ -17,17 +17,17 @@ public struct SettingView: View {
   
   // MARK: - private property
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
-  @State private var modelData: SettingModelData
-  private let items: [SettingItemType] = SettingItemType.allCases
+  //  @State private var modelData: SettingModelData
+  private let items: [SettingItemType] = [
+    .terms,
+    .settingLogout,
+    .signOut
+  ]
   private var isNeedUpdate: Bool = true
   @Inject private var accessTokenManager: AccessTokenManagable
   @Inject private var configService: AppConfigService
   // MARK: - life cycle
-  public init() {
-    self.modelData = SettingModelData()
-    print( configService.latestVersion)
-    print(Bundle.main.appVersion)
-  }
+  public init() { }
   
   public var body: some View {
     ZStack {
@@ -119,7 +119,7 @@ public struct SettingView: View {
       //    case .notification:
       //      navigationStream.send(.push(.setting(.init(route: .notification))))
     case .terms:
-      coordinator.push(.setting(SettingRoute(route: .terms(TermsRoute(route: .termsList)))))
+      coordinator.push(.terms(TermsRoute(route: .termsList)))
     case .settingLogout:
       // TODO: 모달 띄우기
       MercuryAlert.shared
@@ -141,7 +141,7 @@ public struct SettingView: View {
         )
       
     case .signOut:
-      print("SignOut Tapped")
+      coordinator.push(.setting(SettingRoute(route: .signOut)))
     }
   }
 }

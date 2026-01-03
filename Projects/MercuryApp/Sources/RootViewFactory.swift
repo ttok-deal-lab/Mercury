@@ -41,8 +41,14 @@ struct RootViewFactory: ViewFactory {
     case .networkConsole:
       ConsoleView()
     case .setting(let settingStep):
-      SettingViewFactory()
-        .makeView(settingStep)
+      SettingViewFactory(
+        settingUsecase: SettingUsecase(repository: SettingRepository())
+      )
+      .makeView(settingStep)
+      
+    case .terms(let termsRoute):
+      TermsViewFactory()
+        .makeView(termsRoute)
     case .recentViewList(let myPageStep):
       RecentSalesViewFactory(
         recentViewListUsecase: RecentSalesUsecase(

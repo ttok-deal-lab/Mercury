@@ -15,19 +15,20 @@ import Router
 
 public struct SettingViewFactory: ViewFactory {
   
-  public init() { }
+  // MARK: - pricate properties
+  private let settingUsecase: SettingUsecasable
+  public init(settingUsecase: SettingUsecasable) {
+    self.settingUsecase = settingUsecase
+  }
   
   public func makeView(_ settingRouter: SettingRoute) -> some View {
     switch settingRouter.route {
     case .settingList:
       SettingView()
-    case .terms(let agreementStep):
-      TermsViewFactory()
-        .makeView(agreementStep)
     case .version:
       EmptyView()
     case .signOut:
-      SignOutView()
+      SignOutView(settingUsecase: settingUsecase)
     case .license:
       OpenLicenseView()
     }

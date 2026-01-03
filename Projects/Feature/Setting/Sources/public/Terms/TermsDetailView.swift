@@ -9,16 +9,17 @@ import Combine
 import SwiftUI
 
 import AppFoundation
+import Domain
 import UIComponent
 import Router
 
 struct TermsDetailView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var isLoading = true
-  private var route: TermsDetailRoute
+  private let termsType: TermsType
   
-  init(route: TermsDetailRoute) {
-    self.route = route
+  init(type: TermsType) {
+    self.termsType = type
   }
   
   var body: some View {
@@ -33,25 +34,13 @@ struct TermsDetailView: View {
       
       ZStack {
         MercuryWebView(
-          url: route.toURL(urlString: termsURL(route: route))!,
+          url: termsType.webURL!,
           isLoading: $isLoading
         )
       }
-      
       Spacer()
     }
     .navigationBarBackButtonHidden()
-  }
-  
-  private func termsURL(route: TermsDetailRoute) -> String {
-    switch route {
-    case .memberAgreement:
-      PolicyURL.memberAgreement
-    case .pivacyPolicy:
-      PolicyURL.privacyPolicy
-    case .servicewPolicy:
-      PolicyURL.servicePolicy
-    }
   }
 }
 
