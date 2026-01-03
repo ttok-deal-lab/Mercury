@@ -53,7 +53,6 @@ Tuist/Package.resolved
 
 .build/
 
-
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
@@ -72,3 +71,5 @@ fastlane/.env.default
 Gemfile.lock
 Tuist/.DS_Store
 **/.DS_Store
+
+Projects/**/Derived
