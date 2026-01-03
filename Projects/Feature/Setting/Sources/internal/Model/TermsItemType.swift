@@ -10,7 +10,7 @@ import Foundation
 import AppFoundation
 import UIComponent
 
-public enum TermsType: CaseIterable {
+public enum TermsItemType: CaseIterable {
   case memberAgreement
   case privacyPolicy
   case servicePolicy

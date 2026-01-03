@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 import Combine
 
-import Domain
 import Router
 
 public struct TermsViewFactory: ViewFactory {
@@ -27,7 +26,7 @@ public struct TermsViewFactory: ViewFactory {
     }
   }
   
-  private func mapTermsType(_ route: TermsRoute.Route) -> TermsType? {
+  private func mapTermsType(_ route: TermsRoute.Route) -> TermsItemType? {
     switch route {
     case .memberAgreement:
       return .memberAgreement
