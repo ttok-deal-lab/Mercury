@@ -114,6 +114,15 @@ public enum L10n {
   public static let settingTerms = L10n.tr("Localizable", "setting_terms", fallback: "서비스 약관")
   /// 업데이트하기
   public static let settingUpdate = L10n.tr("Localizable", "setting_update", fallback: "업데이트하기")
+  /// 탈퇴 전 안내 사항을 모두 확인했어요.
+  public static let signoutCheckComment = L10n.tr("Localizable", "signout_check_comment", fallback: "탈퇴 전 안내 사항을 모두 확인했어요.")
+  /// 고객님의 개인정보는 개인정보처리 방침에 따라 완전하게 삭제돼요.
+  public static let signoutDescription1 = L10n.tr("Localizable", "signout_description1", fallback: "고객님의 개인정보는 개인정보처리 방침에 따라 완전하게 삭제돼요.")
+  /// 사용하신 아이디는 다시 사용할 수 없어요.
+  public static let signoutDescription2 = L10n.tr("Localizable", "signout_description2", fallback: "사용하신 아이디는 다시 사용할 수 없어요.")
+  /// 탈퇴하시나요?
+  /// 탈퇴 전 안내 사항을 반드시 확인해주세요.
+  public static let signoutTitle = L10n.tr("Localizable", "signout_title", fallback: "탈퇴하시나요?\n탈퇴 전 안내 사항을 반드시 확인해주세요.")
   /// 홈
   public static let tabHome = L10n.tr("Localizable", "tab_home", fallback: "홈")
   /// 관심

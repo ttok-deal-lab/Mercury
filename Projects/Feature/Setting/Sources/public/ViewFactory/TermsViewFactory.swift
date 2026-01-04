@@ -19,8 +19,23 @@ public struct TermsViewFactory: ViewFactory {
     switch agreementRouter.route {
     case .termsList:
       TermsView()
-    case .termsDetail(let detailItemType):
-      TermsDetailView(route: detailItemType)
+    case .memberAgreement, .privacyPolicy, .servicePolicy:
+      if let termsType = mapTermsType(agreementRouter.route) {
+        TermsDetailView(type: termsType)
+      }
+    }
+  }
+  
+  private func mapTermsType(_ route: TermsRoute.Route) -> TermsItemType? {
+    switch route {
+    case .memberAgreement:
+      return .memberAgreement
+    case .privacyPolicy:
+      return .privacyPolicy
+    case .servicePolicy:
+      return .servicePolicy
+    default:
+      return nil
     }
   }
 }

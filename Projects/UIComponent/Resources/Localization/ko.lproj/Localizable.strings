@@ -29,6 +29,10 @@
 "setting_update" = "업데이트하기";
 "setting_open_license" = "오픈소스 라이선스 보기";
 "setting_recent_view_none" = "최근 본 매물이 없어요.";
+"signout_title" = "탈퇴하시나요?\n탈퇴 전 안내 사항을 반드시 확인해주세요.";
+"signout_description1" = "고객님의 개인정보는 개인정보처리 방침에 따라 완전하게 삭제돼요.";
+"signout_description2" = "사용하신 아이디는 다시 사용할 수 없어요.";
+"signout_check_comment" = "탈퇴 전 안내 사항을 모두 확인했어요.";
 "mypage_login_google" = "구글로 로그인";
 "mypage_login_apple" = "애플로 로그인";
 "mypage_login_kakao" = "카카오로 로그인";

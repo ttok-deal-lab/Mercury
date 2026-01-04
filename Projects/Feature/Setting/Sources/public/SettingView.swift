@@ -14,15 +14,20 @@ import UIComponent
 import Router
 
 public struct SettingView: View {
+  
+  // MARK: - private property
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
-  private let items: [SettingItemType] = SettingItemType.allCases
-  private var version: String = "1.20.1"
+  private let items: [SettingItemType] = [
+    .terms,
+    .settingLogout,
+    .signOut
+  ]
   private var isNeedUpdate: Bool = true
   @Inject private var accessTokenManager: AccessTokenManagable
+  @Inject private var configService: AppConfigService
   
-  public init() {
-    
-  }
+  // MARK: - life cycle
+  public init() { }
   
   public var body: some View {
     ZStack {
@@ -62,25 +67,30 @@ public struct SettingView: View {
         
         VStack(alignment: .leading, spacing: 0) {
           HStack() {
-            Text("\(L10n.commonAppVersion) \(version)")
+            Text("\(L10n.commonAppVersion) \(Bundle.main.appVersion)")
               .fonts(.bodySmallMedium)
               .foregroundStyle(Asset.Colors.neutralSubtler.color)
-            Text(L10n.settingUpdate)
-              .fonts(.bodySmallMedium)
-              .foregroundStyle(Asset.Colors.neutralSubtler.color)
-              .mercuryUnderLine()
-              .task {
-                // TODO: 앱스토어 가기
-  //              if let url = URL(string: "itms-apps://itunes.apple.com/app/[@id]"),
-  //                                  UIApplication.shared.canOpenURL(url)
-  //              {
-  //                  if #available(iOS 10.0, *) {
-  //                      UIApplication.shared.open(url, options: [:], completionHandler: nil)
-  //                  } else {
-  //                      UIApplication.shared.openURL(url)
-  //                  }
-  //              }
-              }
+            
+            // lateste > bundle version 일때 보여주기
+            if configService.latestVersion
+              .compareVersion(to: Bundle.main.appVersion) == .orderedDescending {
+              Text(L10n.settingUpdate)
+                .fonts(.bodySmallMedium)
+                .foregroundStyle(Asset.Colors.neutralSubtler.color)
+                .mercuryUnderLine()
+                .task {
+                  // TODO: 앱스토어 가기
+                  //              if let url = URL(string: "itms-apps://itunes.apple.com/app/[@id]"),
+                  //                                  UIApplication.shared.canOpenURL(url)
+                  //              {
+                  //                  if #available(iOS 10.0, *) {
+                  //                      UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                  //                  } else {
+                  //                      UIApplication.shared.openURL(url)
+                  //                  }
+                  //              }
+                }
+            }
           }
           
           Text("\(L10n.settingOpenLicense)")
@@ -106,10 +116,10 @@ public struct SettingView: View {
   private func onTapItem(_ item: SettingItemType) {
     switch item {
       // MARK: - 1차 MVP 이후
-//    case .notification:
-//      navigationStream.send(.push(.setting(.init(route: .notification))))
+      //    case .notification:
+      //      navigationStream.send(.push(.setting(.init(route: .notification))))
     case .terms:
-      coordinator.push(.setting(SettingRoute(route: .terms(TermsRoute(route: .termsList)))))
+      coordinator.push(.terms(TermsRoute(route: .termsList)))
     case .settingLogout:
       // TODO: 모달 띄우기
       MercuryAlert.shared
@@ -131,7 +141,7 @@ public struct SettingView: View {
         )
       
     case .signOut:
-      print("SignOut Tapped")
+      coordinator.push(.setting(SettingRoute(route: .signOut)))
     }
   }
 }

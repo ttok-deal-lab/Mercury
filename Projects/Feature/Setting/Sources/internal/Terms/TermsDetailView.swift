@@ -15,15 +15,15 @@ import Router
 struct TermsDetailView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var isLoading = true
-  private var route: TermsDetailRoute
+  private let termsType: TermsItemType
   
-  init(route: TermsDetailRoute) {
-    self.route = route
+  init(type: TermsItemType) {
+    self.termsType = type
   }
   
   var body: some View {
     VStack(spacing: 0) {
-      MercuryNavigationBar(nil) {
+      MercuryNavigationBar() {
         Button {
           coordinator.pop()
         } label: {
@@ -32,26 +32,18 @@ struct TermsDetailView: View {
       }
       
       ZStack {
-        MercuryWebView(
-          url: route.toURL(urlString: termsURL(route: route))!,
-          isLoading: $isLoading
-        )
+        if let url = termsType.webURL {
+          MercuryWebView(
+            url: url,
+            isLoading: $isLoading
+          )
+        } else {
+          // TODO: - placeHolder 혹은 기본페이지 연결
+        }
       }
-      
       Spacer()
     }
     .navigationBarBackButtonHidden()
-  }
-  
-  private func termsURL(route: TermsDetailRoute) -> String {
-    switch route {
-    case .memberAgreement:
-      PolicyURL.memberAgreement
-    case .pivacyPolicy:
-      PolicyURL.privacyPolicy
-    case .servicewPolicy:
-      PolicyURL.servicePolicy
-    }
   }
 }
 

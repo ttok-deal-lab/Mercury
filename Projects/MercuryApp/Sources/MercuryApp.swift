@@ -61,6 +61,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     container.register(Toastable.self, instance: MercuryToast.shared)
     container.register(Alertable.self, instance: MercuryAlert.shared)
     container.register(LoadingPresentable.self, instance: MercuryLoading.shared)
+    container.register(AppConfigService.self, instance: RemoteConfigManager.shared)
+    
+    Task {
+      try await RemoteConfigManager.shared.fetchConfig()
+    }
     
     DispatchQueue.main.async {
       let appearance = UITabBarAppearance.blurredSafe()
