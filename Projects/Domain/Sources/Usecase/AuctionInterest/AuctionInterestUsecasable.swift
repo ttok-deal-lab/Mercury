@@ -9,7 +9,7 @@ import Foundation
 
 public protocol AuctionInterestUsecasable: Sendable {
   func isAuctionUserInterested(auctionID: Int) async throws -> Bool
-  func addUserInterest(auctionID: Int) async throws
-  func removeUserInterest(auctionID: Int) async throws
-  func fetchAuctionInterest() async throws
+  func addUserInterestAuction(auctionID: Int) async throws
+  func removeUserInterestAuction(auctionID: Int) async throws
+  func fetchUserInterestAuctions() async throws -> [AuctionSales]
 }
