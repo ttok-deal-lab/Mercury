@@ -13,6 +13,7 @@ public extension TargetScript {
     case swiftLint
     case localization
     case swiftGen
+    case licensePlist
   }
   
   static func prebuildScript(_ utility: UtilityTool, name: String) -> TargetScript {
@@ -30,6 +31,8 @@ private extension TargetScript.UtilityTool {
       "${PROJECT_DIR}/../../Tools/generate_strings.sh"
     case .swiftGen:
       "${PROJECT_DIR}/../../Tools/swiftgen config run --config ${PROJECT_DIR}/../UIComponent/Resources/swiftgen.yml"
+    case .licensePlist:
+      "${PROJECT_DIR}/../../Tools/update_licenses.sh"
     }
   }
 }

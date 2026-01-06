@@ -11,10 +11,14 @@ import ProjectDescriptionHelpers
 let project = Project.framework(
   name: "Setting",
   platform: .iOS,
+  scripts: [
+    .prebuildScript(.licensePlist, name: "Open source License")
+  ],
   dependencies: [
     .uiComponent,
     .router,
     .domain
   ],
-  testDependencies: []
+  testDependencies: [],
 )
+

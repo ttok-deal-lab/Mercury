@@ -1,0 +1,10 @@
+ignore:
+  github:
+    - owner: kakao-mapsSDK
+      name: KakaoMapsSDK-SPM
+manual:
+  - name: KakaoMapsSDK-SPM
+    source_url: https://github.com/kakao-mapsSDK/KakaoMapsSDK-SPM
+    license_body: |
+      Copyright Kakao Corp. All rights reserved.
+      This application uses Kakao Maps API.
