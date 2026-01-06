@@ -10,12 +10,12 @@ import Foundation
 import AppFoundation
 import UIComponent
 
-public enum TermsItemType: CaseIterable {
+enum TermsItemType: CaseIterable {
   case memberAgreement
   case privacyPolicy
   case servicePolicy
   
-  public var displayTitle: String {
+  var displayTitle: String {
     switch self {
     case .memberAgreement:
       L10n.settingAgreement
@@ -26,7 +26,7 @@ public enum TermsItemType: CaseIterable {
     }
   }
   
-  public var webURL: URL? {
+  var webURL: URL? {
     switch self {
     case .memberAgreement:
       URL(string: CommonURL.memberAgreement)

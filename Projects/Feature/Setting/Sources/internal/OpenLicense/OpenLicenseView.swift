@@ -7,12 +7,8 @@
 
 import SwiftUI
 
-public struct OpenLicenseView: View {
-  public var body: some View {
+struct OpenLicenseView: View {
+  var body: some View {
     Text("OpenLicense View")
   }
-}
-
-#Preview {
-  OpenLicenseView()
 }
