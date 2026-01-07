@@ -1,36 +1,76 @@
 #!/bin/bash
 
-# 1. 환경 설정 (Homebrew 등)
 export PATH="$PATH:/opt/homebrew/bin:/usr/local/bin"
 
-# 2. 프로젝트 루트로 이동
-# 이 스크립트는 Xcode 빌드 시 실행되므로, 현재 위치가 Setting 프로젝트 폴더.
-# ../../../Tools/update_licenses.sh 로 실행되더라도, 실행 주체의 위치를 기준으로 상위로 이동.
-# 안전하게 스크립트 파일이 있는 위치($0)를 기준으로 루트를 찾거나, 그냥 상대 경로 사용.
-cd ../../../
+# 프로젝트 루트 이동
+cd "$(dirname "$0")/.."
 
-# 3. 토큰 확인 (Xcode Scheme 환경변수)
-if [ -z "$LICENSE_TOKEN" ]; then
-    echo "⚠️ warning: LICENSE_TOKEN이 없습니다. 라이선스 갱신을 건너뜁니다."
+# Pacakage.resolve 변경사항 없으면 pass
+LOCK_FILE="Tuist/Package.resolved"
+CACHE_FILE="Tuist/.license_checksum" # 체크섬 저장할 숨김 파일
+
+# 1. Lock 파일이 없으면 패스 (Tuist가 아직 생성 안 했을 수도 있음)
+if [ ! -f "$LOCK_FILE" ]; then
+    echo "⚠️ warning: $LOCK_FILE 이 없습니다. 라이선스 갱신을 건너뜁니다."
     exit 0
 fi
 
-echo "🚀 오픈소스 라이선스 갱신 중..."
+# 2. 현재 파일의 해시값(지문) 계산 (macOS shasum 사용)
+CURRENT_HASH=$(shasum "$LOCK_FILE" | awk '{print $1}')
 
-# 4. [Workaround] 가짜 루트 환경 생성
+# 3. 이전에 저장된 해시값 읽기
+OLD_HASH=""
+if [ -f "$CACHE_FILE" ]; then
+    OLD_HASH=$(cat "$CACHE_FILE")
+fi
+
+# 4. 비교: 지문이 같으면 즉시 종료
+if [ "$CURRENT_HASH" == "$OLD_HASH" ]; then
+    echo "⏩ 라이브러리 변경 사항 없음. 라이선스 갱신을 스킵합니다."
+    exit 0
+fi
+
+# ==========================================================
+# 👇 변경 사항이 있을 때만 아래 로직 실행
+# ==========================================================
+
+# .xcconfig에서 토큰 읽어오기
+CONFIG_FILE="XCConfigs/Sensitive.xcconfig"
+
+if [ -f "$CONFIG_FILE" ]; then
+    LICENSE_TOKEN=$(grep "LICENSE_TOKEN" "$CONFIG_FILE" | cut -d '=' -f2 | tr -d '[:space:]')
+else
+    echo "⚠️ warning: $CONFIG_FILE 파일이 없습니다."
+fi
+
+if [ -z "$LICENSE_TOKEN" ]; then
+    echo "⚠️ warning: LICENSE_TOKEN이 없습니다. 갱신 건너뜀."
+    exit 0
+fi
+
+echo "🚀 라이브러리 변경 감지! 오픈소스 라이선스 갱신 시작..."
+
+# Tuist vs SPM 환경을 일시적으로 통일하기 위해 가짜 루트 환경 생성
 cp Tuist/Package.swift .
+cp Tuist/Package.resolved .
 
-# 5. 의존성 해결 (로그 최소화)
+# 5. 의존성 해결 (iOS 환경 간섭 제거)
+unset SDKROOT
+unset TOOLCHAINS
+
 swift package resolve -q
 
 # 6. LicensePlist 실행
-# (config-path는 Tuist 폴더 안의 파일 지정)
 license-plist --output-path Projects/Feature/Setting/Resources/Settings.bundle \
               --config-path Tuist/license_plist.yml \
-              --github-token "$LICENSE_TOKEN"
+              --github-token "$LICENSE_TOKEN" \
+		 --add-version-numbers
 
-# 7. 뒷정리
 rm Package.swift Package.resolved
 rm -rf .build
 
-echo "✅ 라이선스 갱신 완료!"
+# 8. 성공했으면 현재 해시값을 저장해서 캐싱해서 빌드 최적화
+echo "$CURRENT_HASH" > "$CACHE_FILE"
+
+echo "✅ 라이선스 갱신 및 캐시 저장 완료!"
+```

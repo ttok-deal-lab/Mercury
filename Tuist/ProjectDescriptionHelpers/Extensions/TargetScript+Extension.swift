@@ -32,7 +32,7 @@ private extension TargetScript.UtilityTool {
     case .swiftGen:
       "${PROJECT_DIR}/../../Tools/swiftgen config run --config ${PROJECT_DIR}/../UIComponent/Resources/swiftgen.yml"
     case .licensePlist:
-      "${PROJECT_DIR}/../../Tools/update_licenses.sh"
+      "${PROJECT_DIR}/../../../Tools/open_license.sh"
     }
   }
 }
