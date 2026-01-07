@@ -64,7 +64,6 @@ swift package resolve -q
 license-plist --output-path Projects/Feature/Setting/Resources/Settings.bundle \
               --config-path Tuist/license_plist.yml \
               --github-token "$LICENSE_TOKEN" \
-		 --add-version-numbers
 
 rm Package.swift Package.resolved
 rm -rf .build
