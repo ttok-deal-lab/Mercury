@@ -95,8 +95,7 @@ public struct MyPageView: View {
     case .recentlySales:
       coordinator.push(.recentViewList(RecentViewRoute(route: .recentViewedList)))
     case .chat:
-      EmptyView()
-      // Mail 연결
+      self.modelData.openMail()
     }
   }
 }

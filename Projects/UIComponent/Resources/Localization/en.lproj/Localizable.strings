@@ -37,6 +37,9 @@
 "mypage_login_apple" = "Login via Apple";
 "mypage_login_kakao" = "Login via Kakao";
 "mypage_login_naver" = "Login via Naver";
+"mypage_slug_email_address" = "slugdeveloper@gmail.com";
+"mypage_chat_title" = "[민달팽이] inqury mail";
+"mypage_chat_body" = "Please enter your inquiry.";
 "auction_item" = "Item";
 "auction_sort_by_latest_registration" = "By newest registration";
 "auction_sort_by_most_interested" = "Order of interest";

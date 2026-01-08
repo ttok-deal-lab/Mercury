@@ -63,6 +63,8 @@
 	<string>${KAKAO_AUTH_KEY}</string>
 	<key>KAKAO_MAP_KEY</key>
 	<string>${MAP_KEY_PROD}</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>kakaokompassauth</string>
@@ -71,9 +73,18 @@
 		<string>kakaotalk</string>
 		<string>naversearchapp</string>
 		<string>naversearchthirdlogin</string>
+		<string>googlegmail</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NAVER_APP_NAME</key>
+	<string>$(NAVER_APP_NAME)</string>
+	<key>NAVER_CLIENT_ID</key>
+	<string>$(NAVER_CLIENT_ID)</string>
+	<key>NAVER_CLIENT_SECRET</key>
+	<string>$(NAVER_CLIENT_SECRET)</string>
+	<key>NAVER_URL_SCHEME</key>
+	<string>$(NAVER_URL_SCHEME)</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -87,16 +98,6 @@
 	<string>내 위치 확인을 위해 권한이 필요합니다.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>내 위치 확인을 위해 권한이 필요합니다.</string>
-	<key>NAVER_APP_NAME</key>
-	<string>$(NAVER_APP_NAME)</string>
-	<key>NAVER_CLIENT_ID</key>
-	<string>$(NAVER_CLIENT_ID)</string>
-	<key>NAVER_CLIENT_SECRET</key>
-	<string>$(NAVER_CLIENT_SECRET)</string>
-	<key>NAVER_URL_SCHEME</key>
-	<string>$(NAVER_URL_SCHEME)</string>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

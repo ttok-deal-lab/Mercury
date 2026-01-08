@@ -37,6 +37,9 @@
 "mypage_login_apple" = "애플로 로그인";
 "mypage_login_kakao" = "카카오로 로그인";
 "mypage_login_naver" = "네이버로 로그인";
+"mypage_slug_email_address" = "slugdeveloper@gmail.com";
+"mypage_chat_title" = "[민달팽이] 문의 메일";
+"mypage_chat_body" = "문의하실 내용을 입력해주세요.";
 "auction_item" = "상품 ";
 "auction_sort_by_latest_registration" = "최신 등록순";
 "auction_sort_by_most_interested" = "관심 많은 순";
