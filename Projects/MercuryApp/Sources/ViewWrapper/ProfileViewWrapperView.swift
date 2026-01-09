@@ -18,7 +18,12 @@ public struct MyPageViewWrapperView: View, MyPageViewable {
   let hostView: MyPageView
   
   public init() {
-    self.hostView = MyPageView(userProfileUsecase: MyPageUsecase(repository: MyPageRepository()))
+    self.hostView = MyPageView(
+      userProfileUsecase: MyPageUsecase(
+        repository: MyPageRepository(),
+        mailManager: MailManager()
+      )
+    )
   }
   
   public var body: some View {
