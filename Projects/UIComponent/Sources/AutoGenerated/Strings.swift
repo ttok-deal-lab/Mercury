@@ -70,6 +70,10 @@ public enum L10n {
   public static let commonYes = L10n.tr("Localizable", "common_yes", fallback: "네")
   /// 전체
   public static let homeDefaultArea = L10n.tr("Localizable", "home_default_area", fallback: "전체")
+  /// 문의하실 내용을 입력해주세요.
+  public static let mypageChatBody = L10n.tr("Localizable", "mypage_chat_body", fallback: "문의하실 내용을 입력해주세요.")
+  /// [민달팽이] 문의 메일
+  public static let mypageChatTitle = L10n.tr("Localizable", "mypage_chat_title", fallback: "[민달팽이] 문의 메일")
   /// 애플로 로그인
   public static let mypageLoginApple = L10n.tr("Localizable", "mypage_login_apple", fallback: "애플로 로그인")
   /// 구글로 로그인
@@ -78,6 +82,8 @@ public enum L10n {
   public static let mypageLoginKakao = L10n.tr("Localizable", "mypage_login_kakao", fallback: "카카오로 로그인")
   /// 네이버로 로그인
   public static let mypageLoginNaver = L10n.tr("Localizable", "mypage_login_naver", fallback: "네이버로 로그인")
+  /// slugdeveloper@gmail.com
+  public static let mypageSlugEmailAddress = L10n.tr("Localizable", "mypage_slug_email_address", fallback: "slugdeveloper@gmail.com")
   /// 회원 이용약관
   public static let settingAgreement = L10n.tr("Localizable", "setting_agreement", fallback: "회원 이용약관")
   /// 로그아웃 하시겠어요?
