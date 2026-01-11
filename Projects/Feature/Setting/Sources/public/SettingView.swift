@@ -100,7 +100,7 @@ public struct SettingView: View {
             .padding(.top, 16)
             .onTapGesture {
               // TODO: 오픈소스 라이선스 시트뷰 띄우기
-              //            navigationStream.send(.presentFullScreen(1))
+              coordinator.push(.setting(SettingRoute(route: .license)))
             }
         }
         .padding(.top, 20)
