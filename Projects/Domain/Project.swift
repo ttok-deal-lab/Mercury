@@ -12,7 +12,8 @@ let project = Project.framework(
   name: "Domain",
   platform: .iOS,
   dependencies: [
-    .appFoundation
+    .appFoundation,
+    .uiComponent
   ],
   testDependencies: [
     
