@@ -7,16 +7,29 @@
 
 import Foundation
 
-
 public class MyPageUsecase: MyPageUsecasable {
+
   private let fetcher: UerProfileFetcher
+  private let mailManager: MailManagerable
   
-  public init(repository: MyPageRepositoriable) {
+  public init(
+    repository: MyPageRepositoriable,
+    mailManager: MailManagerable
+  ) {
     self.fetcher = UerProfileFetcher(repository: repository)
+    self.mailManager = mailManager
   }
   
   public func fetchUserProfile() async throws -> UserProfileInfo {
     return try await self.fetcher.fetchProfile()
+  }
+  
+  public func openMail(recipent: String, title: String, body: String) async throws {
+    self.mailManager.openMail(
+      recipient: recipent,
+      title: title,
+      body: body
+    )
   }
 }
 

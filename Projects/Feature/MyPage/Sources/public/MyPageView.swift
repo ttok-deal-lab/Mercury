@@ -40,10 +40,13 @@ public struct MyPageView: View {
   @State private var error: Error?
   @State private var hasFetched = false
   @Inject private var accessTokenManager: AccessTokenManagable
-  private var items: [MyPageItemType] = MyPageItemType.allCases
+  private var items: [MyPageItemType] = [
+    .recentlySales,
+    .chat
+  ]
   
   public init(userProfileUsecase: MyPageUsecasable) {
-    self.modelData = MyPageModelData(userProfileUsecasable: userProfileUsecase)
+    self.modelData = MyPageModelData(mypageUsecase: userProfileUsecase)
   }
   
   public var body: some View {
@@ -57,6 +60,7 @@ public struct MyPageView: View {
               .padding(.vertical, 16)
           }
         })
+      
       UserProfileView(modelData: $modelData)
         .padding(.bottom, 20)
       Divider()
@@ -92,8 +96,9 @@ public struct MyPageView: View {
     case .recentlySales:
       coordinator.push(.recentViewList(RecentViewRoute(route: .recentViewedList)))
     case .chat:
-      EmptyView()
-      // Mail 연결
+      Task {
+       await  self.modelData.openMail()
+      }
     }
   }
 }

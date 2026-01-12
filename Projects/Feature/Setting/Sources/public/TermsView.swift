@@ -11,13 +11,17 @@ import Combine
 import UIComponent
 import Router
 
-struct TermsView: View {
+public struct TermsView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
-  private let items: [TermsDetailRoute] = TermsDetailRoute.allCases
+  private let items: [TermsItemType] = [
+    .memberAgreement,
+    .privacyPolicy,
+    .servicePolicy
+  ]
   
   public init() { }
   
-  var body: some View {
+  public var body: some View {
     VStack(spacing: 0) {
       MercuryNavigationBar(L10n.settingTerms) {
         Button {
@@ -27,12 +31,11 @@ struct TermsView: View {
         }
       }
       
-      ForEach(items, id: \.self) { item in
-        MercuryMenuItemView(item: item.title, left: .textLabel, rightView: {
+      ForEach(items, id: \.self) { type in
+        MercuryMenuItemView(item: type.displayTitle, left: .textLabel, rightView: {
           Asset.Images.arrowRightNoShaftGray.image
         }) {
-          coordinator
-            .push(.setting(.init(route: .terms(.init(route: .termsDetail(detailItemType: item))))))
+          onItemTap(termsType: type)
         }
       }
       
@@ -40,17 +43,15 @@ struct TermsView: View {
     }
     .navigationBarBackButtonHidden()
   }
-}
-
-extension TermsDetailRoute {
-  var title: String {
-    switch self {
+  
+  func onItemTap(termsType: TermsItemType) {
+    switch termsType {
     case .memberAgreement:
-      L10n.settingAgreement
-    case .pivacyPolicy:
-      L10n.settingPrivacyPolicy
-    case .servicewPolicy:
-      L10n.settingServiceOperationPolicy
+      coordinator.push(.terms(.init(route: .memberAgreement)))
+    case .privacyPolicy:
+      coordinator.push(.terms(.init(route: .privacyPolicy)))
+    case .servicePolicy:
+      coordinator.push(.terms(.init(route: .servicePolicy)))
     }
   }
 }

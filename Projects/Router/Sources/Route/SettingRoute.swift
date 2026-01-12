@@ -16,7 +16,6 @@ public struct SettingRoute: Hashable {
   
   public enum Route: Hashable {
     case settingList
-    case terms(TermsRoute)
     case version
     case signOut
     case license

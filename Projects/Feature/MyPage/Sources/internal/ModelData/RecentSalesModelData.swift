@@ -11,7 +11,7 @@ import Combine
 import Domain
 
 @Observable
-public final class RecentSalesModelData {
+final class RecentSalesModelData {
   // MARK: - internal property
   var recentViewList: [RecentSalesItem] = []
   var isLoading: Bool = false
@@ -20,7 +20,7 @@ public final class RecentSalesModelData {
   private let recentViewListUsecase: RecentSalesUsecasable
   // MARK: - life cycle
   
-  public init(recentViewListUsecase: RecentSalesUsecasable) {
+  init(recentViewListUsecase: RecentSalesUsecasable) {
     self.recentViewListUsecase = recentViewListUsecase
   }
   

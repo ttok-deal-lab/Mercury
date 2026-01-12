@@ -9,4 +9,5 @@ import Foundation
 
 public protocol MyPageUsecasable {
   func fetchUserProfile() async throws -> UserProfileInfo
+  func openMail(recipent: String, title: String, body: String) async throws 
 }

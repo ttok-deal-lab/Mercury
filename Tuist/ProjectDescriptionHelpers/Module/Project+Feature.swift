@@ -17,6 +17,7 @@ extension Project {
     name: String,
     infoPlist: InfoPlist = .default,
     platform: Platform,
+    scripts: [TargetScript] = [],
     dependencies: [TargetDependency],
     testDependencies: [TargetDependency],
     resourceSynthesizers: [ResourceSynthesizer] = []
@@ -25,6 +26,7 @@ extension Project {
       name: name,
       infoPlist: infoPlist,
       platform: platform,
+      scripts: scripts,
       frameworkDependencies: dependencies,
       frameworkTestDependencies: testDependencies,
       resourceSynthesizers: resourceSynthesizers
