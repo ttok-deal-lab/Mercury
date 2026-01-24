@@ -1,0 +1,90 @@
+//
+//  AuctionFavoritesAPI.swift
+//  Infrastructure
+//
+//  Created by 최수훈 on 1/20/26.
+//
+
+import Foundation
+
+import AppFoundation
+import Domain
+import Networking
+
+enum AuctionInterestAPI {
+  case checkUserInterested(userID: String, auctionID: Int)
+  case addUserInterestAuction(userID: String, auctionID: Int)
+  case removeUserInterestAuction(userID: String, auctionID: Int)
+  case fetchUserInterestAuctions(userID: String, type: String?, nextCursor: String?)
+}
+
+extension AuctionInterestAPI: BaseAPI {
+  
+  var baseURL: String {
+    RestAPIDefine.base(.auth)
+  }
+  
+  var domain: String? {
+    "v1/users/"
+  }
+  
+  var path: String {
+    switch self {
+    case let .checkUserInterested(userID, auctionID),
+      let .addUserInterestAuction(userID, auctionID),
+      let .removeUserInterestAuction(userID, auctionID):
+      return "\(userID)/favorites/\(auctionID)"
+    case let .fetchUserInterestAuctions(userID, _, _):
+      return "\(userID)/favorites"
+    }
+  }
+  
+  var method: Networking.HTTPMethod {
+    switch self {
+    case .checkUserInterested:
+      return .get
+    case .addUserInterestAuction:
+      return .post
+    case .removeUserInterestAuction:
+      return .delete
+    case .fetchUserInterestAuctions:
+      return .get
+    }
+  }
+  
+  var headers: [String : String]? {
+    switch self {
+    case .checkUserInterested(_, _),
+        .addUserInterestAuction(_, _),
+        .removeUserInterestAuction(_, _),
+        .fetchUserInterestAuctions(_, _, _):
+      return ["Authorization" : MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
+    }
+  }
+  
+  var queryParam: [String: Any]? {
+    switch self {
+    case .checkUserInterested:
+      return nil
+    case .addUserInterestAuction:
+      return nil
+    case .removeUserInterestAuction:
+      return nil
+    case let .fetchUserInterestAuctions(userID, type, nextCursor):
+      var params: [String: Any] = [:]
+      
+      if let type = type {
+        params["type"] = type.description
+      } else {
+        params["type"] = "product"
+      }
+      
+      if let nextCursor = nextCursor {
+        params["cursor"] = nextCursor
+      }
+      
+      return params
+    }
+  }
+}
+

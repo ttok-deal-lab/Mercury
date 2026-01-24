@@ -13,10 +13,10 @@ import Interest
 
 public struct InterestViewWrapperView: View, InterestViewable {
   
-  let hostView: InterestView
+  let hostView: AuctionInterestView
   
   public init() {
-    self.hostView = InterestView()
+    self.hostView = AuctionInterestView()
   }
   
   public var body: some View {
