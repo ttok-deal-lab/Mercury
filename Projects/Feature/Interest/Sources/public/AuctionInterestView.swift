@@ -15,10 +15,10 @@ import UIComponent
 import Router
 
 public struct AuctionInterestView: View {
-  @State private var modelData: InterestModelData
+  @State private var modelData: AuctionInterestModelData
   
-  public init() {
-    self.modelData = InterestModelData(interestUsecase: AuctionInterestUsecase())
+  public init(interestUsecase: AuctionInterestUsecasable) {
+    self.modelData = AuctionInterestModelData(interestUsecase: interestUsecase)
   }
   
   public var body: some View {
@@ -33,7 +33,8 @@ public struct AuctionInterestView: View {
           LazyVStack(spacing: .zero) {
             ForEach(modelData.interestList) { item in
               AuctionInterestItemView(item: item, onZzim: {
-                  // 찜 제거했을 떄의 액션
+                // TODO: - 찜 제거했을 떄의 액션
+                modelData.interestList.removeFirst(item.id)
                   Task {
                     try await modelData.removeUserInterestAuction(auctionID: item.id)
                   }
@@ -53,6 +54,12 @@ public struct AuctionInterestView: View {
       }
       
       Spacer()
+    }
+    .loading(modelData.isLoading)
+    .onLoad {
+      Task {
+        try await modelData.fetchUserInterestAuctions()
+      }
     }
   }
 }

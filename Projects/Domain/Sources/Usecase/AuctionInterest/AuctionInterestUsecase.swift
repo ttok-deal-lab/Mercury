@@ -13,20 +13,25 @@ final public class AuctionInterestUsecase: AuctionInterestUsecasable {
   }
   
   public func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
-      return true
+    // TODO: - 구현
+    return true
   }
-
+  
   public func addUserInterestAuction(auctionID: Int) async throws {
     
   }
-
+  
   public func removeUserInterestAuction(auctionID: Int) async throws {
+    // TODO: - 유저정보 가지고오기
+    
     try await repository.removeUserInterestAuction(userID: "", auctionID: auctionID)
   }
-
-  public func fetchUserInterestAuctions() async throws -> [AuctionSales] {
-    return .init()
+  
+  public func fetchUserInterestAuctions() async throws -> [InterestItem] {
+    
+    let interestSales = try await repository.fetchUserInterestAuctions()
+    return interestSales.items
   }
-
+  
   
 }

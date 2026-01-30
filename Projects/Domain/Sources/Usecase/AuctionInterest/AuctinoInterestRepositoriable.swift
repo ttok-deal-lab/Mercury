@@ -5,7 +5,7 @@
 //  Created by 최수훈 on 1/20/26.
 //
 
-public protocol AuctionInterestRepositoriable: Sendable {
+public protocol AuctionInterestRepositoriable {
   func isAuctionUserInterested(auctionID: Int) async throws -> Bool
   func addUserInterestAuction(auctionID: Int) async throws
   func removeUserInterestAuction(userID: String, auctionID: Int) async throws

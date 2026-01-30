@@ -11,10 +11,13 @@ import Domain
 
 public final class AuctionInterestRepository: AuctionInterestRepositoriable {
   
+  private let signininformationManager = MercuryContainer.shared.resolve(SignInInformationReadable.self)
+  
   public init() { }
   
   public func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
-    
+    // TODO: - 구현
+    return true
   }
   
   public func addUserInterestAuction(auctionID: Int) async throws {
@@ -27,13 +30,24 @@ public final class AuctionInterestRepository: AuctionInterestRepositoriable {
       .request()
   }
   
-  public func fetchUserInterestAuctions(userID: String) async throws -> InterestSales {
-    let interestSalesDTO = try await AuctionInterestAPI
-      .fetchUserInterestAuctions(userID: userID)
-      .request([InterestItemDTO].self)
+  public func fetchUserInterestAuctions() async throws -> InterestSales {
+    guard let userID = signininformationManager.userInfo?.id else {
+      throw MercuryError(.notFoundUser)
+    }
     
-    let interestItemList = interestSalesDTO.map { $0.toEntity() }
+    // TODO: - type, cursor
+    let interestSalesDTO = try await AuctionInterestAPI
+      .fetchUserInterestAuctions(
+        userID: "\(userID)",
+        type: nil,
+        nextCursor: "",
+        size: nil
+      )
+      .request(InterestSalesDTO.self)
+    let interestItemList = interestSalesDTO.toEntity()
+    print(interestItemList)
+    
+    return interestItemList
   }
-  
   
 }

@@ -8,11 +8,11 @@
 import Foundation
 
 public struct InterestSales {
-  public let nextCursor: String
+  public let nextCursor: String?
   public let hasNext: Bool
   public let items: [InterestItem]
   
-  public init(nextCursor: String, hasNext: Bool, items: [InterestItem], ) {
+  public init(nextCursor: String?, hasNext: Bool, items: [InterestItem], ) {
     self.nextCursor = nextCursor
     self.hasNext = hasNext
     self.items = items

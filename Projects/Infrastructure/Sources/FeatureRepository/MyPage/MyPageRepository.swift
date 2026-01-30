@@ -11,10 +11,6 @@ import AppFoundation
 import Networking
 import Domain
 
-enum UserProfileError: Error {
-  case missingUserId
-}
-
 public final class MyPageRepository: MyPageRepositoriable {
   @LazyInject private var userProfileManager: UserProfileManagable
   private var signininformationManager = MercuryContainer.shared.resolve(SignInInformationReadable.self)
@@ -25,7 +21,7 @@ public final class MyPageRepository: MyPageRepositoriable {
   
   public func fetchUserProfile() async throws -> UserProfileInfo {
     guard let userID = signininformationManager.userInfo?.id else {
-      throw UserProfileError.missingUserId
+      throw MercuryError(.notFoundUser)
     }
     let userProfileInfoDTO = try await UserProfileAPI.userProfile(userID: userID)
       .request(UserProfileInfoDTO.self)

@@ -12,7 +12,7 @@ import AppFoundation
 import Domain
 
 @Observable
-final class InterestModelData {
+final class AuctionInterestModelData {
   // MARK: - internal property
   var interestList: [InterestItem] = []
   var isLoading = false
@@ -23,6 +23,15 @@ final class InterestModelData {
   // MARK: - life cycle
   init(interestUsecase: AuctionInterestUsecasable) {
     self.interestUsecase = interestUsecase
+  }
+  
+  func fetchUserInterestAuctions() async throws {
+    self.isLoading = true
+    defer {
+      self.isLoading = false
+    }
+    let interestList = try await self.interestUsecase.fetchUserInterestAuctions()
+    self.interestList = interestList
   }
   
   func removeUserInterestAuction(auctionID: Int) async throws {

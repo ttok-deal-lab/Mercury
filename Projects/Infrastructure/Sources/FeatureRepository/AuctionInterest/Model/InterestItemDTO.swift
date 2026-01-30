@@ -10,18 +10,18 @@ import Foundation
 import AppFoundation
 import Domain
 
-struct InterestDTO: Decodable, Sendable {
+struct InterestSalesDTO: Decodable, Sendable {
   let nextCursor: String?
   let hasNext: Bool
-  let item: [InterestItemDTO]
+  let items: [InterestItemDTO]
 }
 
-extension InterestDTO {
+extension InterestSalesDTO {
   func toEntity() -> InterestSales {
     return InterestSales(
       nextCursor: nextCursor,
       hasNext: hasNext,
-      items: item
+      items: items.map { $0.toEntity() }
     )
   }
 }

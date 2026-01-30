@@ -54,7 +54,7 @@ struct AuctionInterestItemView: View {
             .fonts(.bodyMicroMedium)
             .multilineTextAlignment(.leading)
           
-          Text("\(item.salesBuildingName)")
+          Text("\(item.salesBuildingName ?? "")")
             .foregroundStyle(Asset.Colors.neutralSubtler.color)
             .fonts(.bodyMicroRegular)
             .multilineTextAlignment(.leading)
@@ -90,7 +90,7 @@ struct AuctionInterestItemView: View {
                 Asset.Images.heart.image
                   .renderingMode(.template)
                   .resizable()
-                  .foregroundStyle(Asset.Colors.neutralMuted.color)
+                  .foregroundStyle(Asset.Colors.critical.color)
                   .frame(width: 18, height: 18)
                 
                 Text("\(item.zzimCount)")
