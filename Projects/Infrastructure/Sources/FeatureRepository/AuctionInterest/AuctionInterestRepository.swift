@@ -11,9 +11,16 @@ import Domain
 
 public final class AuctionInterestRepository: AuctionInterestRepositoriable {
   
-  private let signininformationManager = MercuryContainer.shared.resolve(SignInInformationReadable.self)
+  private let signinInformationManager = MercuryContainer.shared.resolve(SignInInformationReadable.self)
   
   public init() { }
+  
+  private func getUserID() throws -> Int {
+    guard let userID = signinInformationManager.userInfo?.id else {
+      throw MercuryError(.notFoundUser)
+    }
+    return userID
+  }
   
   public func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
     // TODO: - 구현
@@ -21,31 +28,30 @@ public final class AuctionInterestRepository: AuctionInterestRepositoriable {
   }
   
   public func addUserInterestAuction(auctionID: Int) async throws {
-    
+    let userID = try getUserID()
+    try await AuctionInterestAPI.addUserInterestAuction(userID: userID, auctionID: auctionID)
+      .request()
   }
   
-  public func removeUserInterestAuction(userID: String, auctionID: Int) async throws {
+  public func removeUserInterestAuction(auctionID: Int) async throws {
+    let userID = try getUserID()
     try await AuctionInterestAPI
       .removeUserInterestAuction(userID: userID, auctionID: auctionID)
       .request()
   }
   
   public func fetchUserInterestAuctions() async throws -> InterestSales {
-    guard let userID = signininformationManager.userInfo?.id else {
-      throw MercuryError(.notFoundUser)
-    }
-    
+    let userID = try getUserID()
     // TODO: - type, cursor
     let interestSalesDTO = try await AuctionInterestAPI
       .fetchUserInterestAuctions(
-        userID: "\(userID)",
+        userID: userID,
         type: nil,
         nextCursor: "",
         size: nil
       )
       .request(InterestSalesDTO.self)
     let interestItemList = interestSalesDTO.toEntity()
-    print(interestItemList)
     
     return interestItemList
   }

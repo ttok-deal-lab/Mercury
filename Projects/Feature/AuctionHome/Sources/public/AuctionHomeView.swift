@@ -22,12 +22,14 @@ public struct AuctionHomeView: View {
   public init(
     auctionListUsecase: AuctionSalesListUsecasable,
     auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
+    auctionInterestUsecase: AuctionInterestUsecasable,
     localStorageUsecase: LocalStorageUsecasable
   ) {
     self.modelData = AuctionHomeModelData(
       localStorageUsecase: localStorageUsecase,
       auctionListUsecase: auctionListUsecase,
-      auctionSearchFilterUsecase: auctionSearchFilterUsecase
+      auctionSearchFilterUsecase: auctionSearchFilterUsecase,
+      auctionInterestUsecase: auctionInterestUsecase
     )
   }
   
@@ -59,7 +61,11 @@ public struct AuctionHomeView: View {
               }
             } label: {
               AuctionSalesItemView(item: item, onZzim: {
-                // 찜 했을때의 액션
+                // TODO: - 찜 버튼 토글 추가 
+                Task {
+                  try await modelData.addInterest(auctionID: item.id)
+                  
+                }
               })
             }
           }

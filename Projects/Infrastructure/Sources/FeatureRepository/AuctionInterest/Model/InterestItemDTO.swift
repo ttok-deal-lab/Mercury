@@ -42,7 +42,7 @@ struct InterestItemDTO: Decodable, Sendable {
     case id
     case salesBuildingName, salesAddress, salesCategories, salesDateTime, salesPicture, appraisalPrice
     case failBidCount, zzimCount
-    case isSoldOut = "soldOut"
+    case isSoldOut
   }
   
   init(from decoder: any Decoder) throws {

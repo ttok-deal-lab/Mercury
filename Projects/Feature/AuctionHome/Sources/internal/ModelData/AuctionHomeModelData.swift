@@ -33,17 +33,20 @@ final class AuctionHomeModelData {
   private let localStorageUsecase: LocalStorageUsecasable
   private let auctionListUsecase: AuctionSalesListUsecasable
   private let auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
+  private let auctionInterestUsecase: AuctionInterestUsecasable
   
   // MARK: - Initialize
   
   init(
     localStorageUsecase: LocalStorageUsecasable,
     auctionListUsecase: AuctionSalesListUsecasable,
-    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
+    auctionInterestUsecase: AuctionInterestUsecasable
   ) {
     self.localStorageUsecase = localStorageUsecase
     self.auctionListUsecase = auctionListUsecase
     self.auctionSearchFilterUsecase = auctionSearchFilterUsecase
+    self.auctionInterestUsecase = auctionInterestUsecase
     
     Task {
       do {
@@ -130,6 +133,10 @@ final class AuctionHomeModelData {
     }
     await localStorageUsecase.setModel(recentSales, forKey: LocalStorageKey.recentViwedSales.rawValue)
     
+  }
+  
+  func addInterest(auctionID: Int) async throws {
+    try await auctionInterestUsecase.addUserInterestAuction(auctionID: auctionID)
   }
 }
 

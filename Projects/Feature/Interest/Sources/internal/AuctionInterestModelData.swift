@@ -20,18 +20,24 @@ final class AuctionInterestModelData {
   // MARK: - private property
   private let interestUsecase: AuctionInterestUsecasable
   
+  var error: Error?
+  
   // MARK: - life cycle
   init(interestUsecase: AuctionInterestUsecasable) {
     self.interestUsecase = interestUsecase
   }
   
-  func fetchUserInterestAuctions() async throws {
+  func fetchUserInterestAuctions() async {
     self.isLoading = true
     defer {
       self.isLoading = false
     }
-    let interestList = try await self.interestUsecase.fetchUserInterestAuctions()
-    self.interestList = interestList
+    do {
+      let interestList = try await self.interestUsecase.fetchUserInterestAuctions()
+      self.interestList = interestList
+    } catch let error {
+      self.error = error
+    }
   }
   
   func removeUserInterestAuction(auctionID: Int) async throws {

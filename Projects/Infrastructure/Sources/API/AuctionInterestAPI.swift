@@ -12,10 +12,10 @@ import Domain
 import Networking
 
 enum AuctionInterestAPI {
-  case checkUserInterested(userID: String, auctionID: Int)
-  case addUserInterestAuction(userID: String, auctionID: Int)
-  case removeUserInterestAuction(userID: String, auctionID: Int)
-  case fetchUserInterestAuctions(userID: String, type: String? = "product", nextCursor: String?, size: Int? = 20)
+  case checkUserInterested(userID: Int, auctionID: Int)
+  case addUserInterestAuction(userID: Int, auctionID: Int, type: String? = "product")
+  case removeUserInterestAuction(userID: Int, auctionID: Int)
+  case fetchUserInterestAuctions(userID: Int, type: String? = "product", nextCursor: String?, size: Int? = 20)
 }
 
 extension AuctionInterestAPI: BaseAPI {
@@ -31,7 +31,7 @@ extension AuctionInterestAPI: BaseAPI {
   var path: String {
     switch self {
     case let .checkUserInterested(userID, auctionID),
-      let .addUserInterestAuction(userID, auctionID),
+      let .addUserInterestAuction(userID, auctionID, _),
       let .removeUserInterestAuction(userID, auctionID):
       return "\(userID)/favorites/\(auctionID)"
     case let .fetchUserInterestAuctions(userID, _, _, _):
@@ -55,7 +55,7 @@ extension AuctionInterestAPI: BaseAPI {
   var headers: [String : String]? {
     switch self {
     case .checkUserInterested(_, _),
-        .addUserInterestAuction(_, _),
+        .addUserInterestAuction(_, _, _),
         .removeUserInterestAuction(_, _),
         .fetchUserInterestAuctions(_, _, _, _):
       return ["Authorization" : MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
@@ -66,8 +66,16 @@ extension AuctionInterestAPI: BaseAPI {
     switch self {
     case .checkUserInterested:
       return nil
-    case .addUserInterestAuction:
-      return nil
+    case let .addUserInterestAuction(_, _, type):
+      var params: [String: Any] = [:]
+      
+      if let type = type {
+        params["type"] = type.description
+      } else {
+        params["type"] = "product"
+      }
+      
+      return params
     case .removeUserInterestAuction:
       return nil
     case let .fetchUserInterestAuctions(_, type, nextCursor, size):
