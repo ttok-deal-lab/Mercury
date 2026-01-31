@@ -14,7 +14,7 @@ import Networking
 enum AuctionInterestAPI {
   case checkUserInterested(userID: Int, auctionID: Int)
   case addUserInterestAuction(userID: Int, auctionID: Int, type: String? = "product")
-  case removeUserInterestAuction(userID: Int, auctionID: Int)
+  case removeUserInterestAuction(userID: Int, auctionID: Int, type: String? = "product")
   case fetchUserInterestAuctions(userID: Int, type: String? = "product", nextCursor: String?, size: Int? = 20)
 }
 
@@ -32,7 +32,7 @@ extension AuctionInterestAPI: BaseAPI {
     switch self {
     case let .checkUserInterested(userID, auctionID),
       let .addUserInterestAuction(userID, auctionID, _),
-      let .removeUserInterestAuction(userID, auctionID):
+      let .removeUserInterestAuction(userID, auctionID, _):
       return "\(userID)/favorites/\(auctionID)"
     case let .fetchUserInterestAuctions(userID, _, _, _):
       return "\(userID)/favorites"
@@ -56,7 +56,7 @@ extension AuctionInterestAPI: BaseAPI {
     switch self {
     case .checkUserInterested(_, _),
         .addUserInterestAuction(_, _, _),
-        .removeUserInterestAuction(_, _),
+        .removeUserInterestAuction(_, _, _),
         .fetchUserInterestAuctions(_, _, _, _):
       return ["Authorization" : MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
     }
@@ -66,7 +66,8 @@ extension AuctionInterestAPI: BaseAPI {
     switch self {
     case .checkUserInterested:
       return nil
-    case let .addUserInterestAuction(_, _, type):
+    case let .addUserInterestAuction(_, _, type),
+      let .removeUserInterestAuction(_, _, type):
       var params: [String: Any] = [:]
       
       if let type = type {
@@ -76,8 +77,6 @@ extension AuctionInterestAPI: BaseAPI {
       }
       
       return params
-    case .removeUserInterestAuction:
-      return nil
     case let .fetchUserInterestAuctions(_, type, nextCursor, size):
       var params: [String: Any] = [:]
       

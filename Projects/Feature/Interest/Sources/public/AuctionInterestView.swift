@@ -35,7 +35,7 @@ public struct AuctionInterestView: View {
             ForEach(modelData.interestList) { item in
               AuctionInterestItemView(item: item, onZzim: {
                 // TODO: - 찜 제거했을 떄의 액션
-                modelData.interestList.removeFirst(item.id)
+                modelData.interestList.remove(at: modelData.interestList.firstIndex(of: item)!)
                 Task {
                   try await modelData.removeUserInterestAuction(auctionID: item.id)
                 }
@@ -60,10 +60,15 @@ public struct AuctionInterestView: View {
       Spacer()
     }
     .loading(modelData.isLoading)
-    .onLoad {
+    .onAppear {
       Task {
-        try await modelData.fetchUserInterestAuctions()
+        await modelData.fetchUserInterestAuctions()
       }
     }
+//    .onLoad {
+//      Task {
+//        await modelData.fetchUserInterestAuctions()
+//      }
+//    }
   }
 }

@@ -19,7 +19,7 @@ public struct InterestSales {
   }
 }
 
-public struct InterestItem: Identifiable {
+public struct InterestItem: Identifiable, Equatable {
   public let id: Int
   /// 건물 이름
   public let salesBuildingName: String?
