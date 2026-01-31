@@ -61,10 +61,9 @@ public struct AuctionHomeView: View {
               }
             } label: {
               AuctionSalesItemView(item: item, onZzim: {
-                // TODO: - 찜 버튼 토글 추가 
+                // TODO: - 찜 버튼 토글 추가
                 Task {
                   try await modelData.addInterest(auctionID: item.id)
-                  
                 }
               })
             }

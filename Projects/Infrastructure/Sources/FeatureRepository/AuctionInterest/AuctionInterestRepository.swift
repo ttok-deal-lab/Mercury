@@ -23,20 +23,30 @@ public final class AuctionInterestRepository: AuctionInterestRepositoriable {
   }
   
   public func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
-    // TODO: - 구현
-    return true
+    let userID = try getUserID()
+    let isZzim = try await AuctionInterestAPI.isAuctionUserInterested(
+      userID: userID,
+      auctionID: auctionID
+    ).request(Bool.self)
+    return isZzim
   }
   
   public func addUserInterestAuction(auctionID: Int) async throws {
     let userID = try getUserID()
-    try await AuctionInterestAPI.addUserInterestAuction(userID: userID, auctionID: auctionID)
-      .request()
+    try await AuctionInterestAPI.addUserInterestAuction(
+      userID: userID,
+      auctionID: auctionID
+    )
+    .request()
   }
   
   public func removeUserInterestAuction(auctionID: Int) async throws {
     let userID = try getUserID()
     try await AuctionInterestAPI
-      .removeUserInterestAuction(userID: userID, auctionID: auctionID)
+      .removeUserInterestAuction(
+        userID: userID,
+        auctionID: auctionID
+      )
       .request()
   }
   

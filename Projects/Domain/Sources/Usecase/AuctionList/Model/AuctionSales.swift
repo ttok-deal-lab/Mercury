@@ -36,7 +36,7 @@ public struct AuctionSalesItem: Identifiable {
   /// 입찰실패 횟수
   public let failBidCount: Int
   /// 찜 횟수
-  public let zzimCount: Int
+  public var zzimCount: Int
   /// 등록 날짜
   public let registerDate: Date
   /// 인증 물건 여부

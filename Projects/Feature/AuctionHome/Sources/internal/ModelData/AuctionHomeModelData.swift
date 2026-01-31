@@ -25,7 +25,6 @@ final class AuctionHomeModelData {
   var isLoading: Bool = false
   var isLoadingForPaging: Bool = false
   var filteredItemCount: Int = .zero
-  
   var error: Error?
   
   // MARK: - Private Properties
@@ -136,7 +135,24 @@ final class AuctionHomeModelData {
   }
   
   func addInterest(auctionID: Int) async throws {
-    try await auctionInterestUsecase.addUserInterestAuction(auctionID: auctionID)
+    guard let index = self.auctionSalesItems.firstIndex(where: { $0.id == auctionID }) else { return }
+    
+    var targetItem = self.auctionSalesItems[index]
+    let isNowZzim = try await isAuctionUserInterested(auctionID: auctionID)
+    if !isNowZzim {
+      try await auctionInterestUsecase
+        .addUserInterestAuction(auctionID: auctionID)
+    } else {
+      try await auctionInterestUsecase
+        .removeUserInterestAuction(auctionID: auctionID)
+    }
+    targetItem.zzimCount += isNowZzim ? 1 : -1
+    self.auctionSalesItems[index] = targetItem
+  }
+  
+  private func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
+     let isZzim = try await auctionInterestUsecase.isAuctionUserInterested(auctionID: auctionID)
+    return isZzim
   }
 }
 

@@ -12,7 +12,7 @@ import Domain
 import Networking
 
 enum AuctionInterestAPI {
-  case checkUserInterested(userID: Int, auctionID: Int)
+  case isAuctionUserInterested(userID: Int, auctionID: Int, type: String? = "product")
   case addUserInterestAuction(userID: Int, auctionID: Int, type: String? = "product")
   case removeUserInterestAuction(userID: Int, auctionID: Int, type: String? = "product")
   case fetchUserInterestAuctions(userID: Int, type: String? = "product", nextCursor: String?, size: Int? = 20)
@@ -30,7 +30,7 @@ extension AuctionInterestAPI: BaseAPI {
   
   var path: String {
     switch self {
-    case let .checkUserInterested(userID, auctionID),
+    case let .isAuctionUserInterested(userID, auctionID, _),
       let .addUserInterestAuction(userID, auctionID, _),
       let .removeUserInterestAuction(userID, auctionID, _):
       return "\(userID)/favorites/\(auctionID)"
@@ -41,7 +41,7 @@ extension AuctionInterestAPI: BaseAPI {
   
   var method: Networking.HTTPMethod {
     switch self {
-    case .checkUserInterested:
+    case .isAuctionUserInterested:
       return .get
     case .addUserInterestAuction:
       return .post
@@ -54,7 +54,7 @@ extension AuctionInterestAPI: BaseAPI {
   
   var headers: [String : String]? {
     switch self {
-    case .checkUserInterested(_, _),
+    case .isAuctionUserInterested(_, _, _),
         .addUserInterestAuction(_, _, _),
         .removeUserInterestAuction(_, _, _),
         .fetchUserInterestAuctions(_, _, _, _):
@@ -64,10 +64,9 @@ extension AuctionInterestAPI: BaseAPI {
   
   var queryParam: [String: Any]? {
     switch self {
-    case .checkUserInterested:
-      return nil
     case let .addUserInterestAuction(_, _, type),
-      let .removeUserInterestAuction(_, _, type):
+      let .removeUserInterestAuction(_, _, type),
+      let .isAuctionUserInterested(_, _, type):
       var params: [String: Any] = [:]
       
       if let type = type {

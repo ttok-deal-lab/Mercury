@@ -13,8 +13,8 @@ final public class AuctionInterestUsecase: AuctionInterestUsecasable {
   }
   
   public func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
-    // TODO: - 구현
-    return true
+    let isZzim = try await repository.isAuctionUserInterested(auctionID: auctionID)
+    return isZzim
   }
   
   public func addUserInterestAuction(auctionID: Int) async throws {
