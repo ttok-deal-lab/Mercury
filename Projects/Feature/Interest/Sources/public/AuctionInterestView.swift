@@ -39,8 +39,7 @@ public struct AuctionInterestView: View {
                 Task {
                   try await modelData.removeUserInterestAuction(auctionID: item.id)
                 }
-              }
-              )
+              })
             }
           }
         } else {
@@ -54,7 +53,7 @@ public struct AuctionInterestView: View {
         }
       }
       .refreshable {
-         await modelData.fetchUserInterestAuctions()
+        await modelData.fetchUserInterestAuctions()
       }
       
       Spacer()
@@ -65,10 +64,5 @@ public struct AuctionInterestView: View {
         await modelData.fetchUserInterestAuctions()
       }
     }
-//    .onLoad {
-//      Task {
-//        await modelData.fetchUserInterestAuctions()
-//      }
-//    }
   }
 }

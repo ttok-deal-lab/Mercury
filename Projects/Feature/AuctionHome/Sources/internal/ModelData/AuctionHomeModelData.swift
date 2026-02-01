@@ -146,11 +146,11 @@ final class AuctionHomeModelData {
       try await auctionInterestUsecase
         .removeUserInterestAuction(auctionID: auctionID)
     }
-    targetItem.zzimCount += isNowZzim ? 1 : -1
+    targetItem.zzimCount += isNowZzim ? -1 : 1
     self.auctionSalesItems[index] = targetItem
   }
   
-  private func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
+  func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
      let isZzim = try await auctionInterestUsecase.isAuctionUserInterested(auctionID: auctionID)
     return isZzim
   }
