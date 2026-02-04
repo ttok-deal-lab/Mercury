@@ -27,15 +27,35 @@ final class AuctionInterestModelData {
     self.interestUsecase = interestUsecase
   }
   
-  func fetchUserInterestAuctions() async {
+  func loadUserInterestAuctions() async {
     self.isLoading = true
     defer {
       self.isLoading = false
     }
     do {
-      let interestList = try await self.interestUsecase.fetchUserInterestAuctions()
+      let interestList = try await self.interestUsecase.loadUserInterestAuctions()
       self.interestList = interestList
     } catch let error {
+      self.error = error
+    }
+  }
+  
+  func loadMoreInterestSales() async {
+    withAnimation {
+      self.isLoadingForPaging = true
+    }
+    defer {
+      withAnimation {
+        self.isLoadingForPaging = false
+      }
+    }
+    
+    let currentInterestSalesItem = self.interestList
+    
+    do {
+      let interestItems = try await interestUsecase.loadNextInterestAuctions()
+      self.interestList = currentInterestSalesItem + interestItems
+    } catch {
       self.error = error
     }
   }

@@ -9,12 +9,12 @@ import Foundation
 
 public struct InterestSales {
   public let nextCursor: String?
-  public let hasNext: Bool
+  public let searchHitCount: Int
   public let items: [InterestItem]
   
-  public init(nextCursor: String?, hasNext: Bool, items: [InterestItem], ) {
+  public init(nextCursor: String?, searchHitCount: Int, items: [InterestItem], ) {
     self.nextCursor = nextCursor
-    self.hasNext = hasNext
+    self.searchHitCount = searchHitCount
     self.items = items
   }
 }
@@ -22,7 +22,7 @@ public struct InterestSales {
 public struct InterestItem: Identifiable, Equatable {
   public let id: Int
   /// 건물 이름
-  public let salesBuildingName: String?
+//  public let salesBuildingName: String?
   /// 물건 주소
   public let salesAddress: String
   /// 카테고리
@@ -41,10 +41,14 @@ public struct InterestItem: Identifiable, Equatable {
   public let isSoldOut: Bool
   /// 매각까지 남은 기간
   public let salesLeftDays: Int
+  /// 인증 매물 여부
+  public let verified: Bool
+  /// 찜 여부
+  public var isZzim: Bool = false
   
   public init(
     id: Int,
-    salesBuildingName: String?,
+//    salesBuildingName: String?,
     salesAddress: String,
     salesCategories: [AuctionSalesCategory],
     salesDateTime: Date,
@@ -52,10 +56,11 @@ public struct InterestItem: Identifiable, Equatable {
     salesPictures: URL?,
     failBidCount: Int,
     zzimCount: Int,
+    verified: Bool,
     isSoldOut: Bool
   ) {
     self.id = id
-    self.salesBuildingName = salesBuildingName
+//    self.salesBuildingName = salesBuildingName
     self.salesAddress = salesAddress
     self.salesCategories = salesCategories
     self.salesDateTime = salesDateTime
@@ -69,6 +74,7 @@ public struct InterestItem: Identifiable, Equatable {
       return days
     }()
     self.salesLeftDays = leftDays
+    self.verified = verified
     self.isSoldOut = isSoldOut
   }
 }

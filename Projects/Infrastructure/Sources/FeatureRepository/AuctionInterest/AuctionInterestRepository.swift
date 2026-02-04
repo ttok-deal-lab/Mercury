@@ -22,6 +22,7 @@ public final class AuctionInterestRepository: AuctionInterestRepositoriable {
     return userID
   }
   
+  // 단일물건 관심여부
   public func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
     let userID = try getUserID()
     let isZzim = try await AuctionInterestAPI.isAuctionUserInterested(
@@ -50,20 +51,46 @@ public final class AuctionInterestRepository: AuctionInterestRepositoriable {
       .request()
   }
   
+  // 관심 탭 리스트
   public func fetchUserInterestAuctions() async throws -> InterestSales {
-    let userID = try getUserID()
-    // TODO: - type, cursor
-    let interestSalesDTO = try await AuctionInterestAPI
-      .fetchUserInterestAuctions(
-        userID: userID,
-        type: nil,
-        nextCursor: "",
-        size: nil
-      )
-      .request(InterestSalesDTO.self)
-    let interestItemList = interestSalesDTO.toEntity()
-    
-    return interestItemList
+    do {
+      let userID = try getUserID()
+      // TODO: - type, cursor
+      let interestSalesDTO = try await AuctionInterestAPI
+        .fetchUserInterestAuctions(
+          userID: userID,
+          type: nil,
+          nextCursor: "",
+          size: nil
+        )
+        .request(InterestSalesDTO.self)
+      let interestItemList = interestSalesDTO.toEntity()
+      
+      return interestItemList
+    } catch {
+      print(error)
+      dump(error)
+      return .init(nextCursor: "", searchHitCount: 0, items: [])
+    }
   }
   
+  public func fetchInterestAuctionList(ids: [Int]) async throws -> [InterestWhether] {
+    do {
+      let userID = try getUserID()
+      let interestWhetherDTO = try await AuctionInterestAPI.fetchInterestAuctionList(
+        userID: userID,
+        ids: ids
+      )
+        .request([InterestWhetherDTO].self)
+      
+      let interestWhether = interestWhetherDTO.map { $0.toEntity() }
+      
+      return interestWhether
+    } catch {
+      print(error)
+      dump(error)
+      
+      return []
+    }
+  }
 }

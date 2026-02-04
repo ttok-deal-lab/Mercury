@@ -39,12 +39,14 @@ public struct AuctionSalesItem: Identifiable {
   public var zzimCount: Int
   /// 등록 날짜
   public let registerDate: Date
-  /// 인증 물건 여부
-  public let verified: Bool
   /// 매각까지 남은 기간
   public let salesLeftDays: Int
+  /// 인증 물건 여부
+  public let verified: Bool
   /// 매각여부
   public let isSoldOut: Bool
+  /// 찜 여부
+  public var isZzim: Bool = false
   
   public init(id: Int, caseNumber: String, salesAddress: String, salesCategories: [AuctionSalesCategory], salesDateTime: Date, appraisalPrice: String, salesPictures: [SalesPicture], failBidCount: Int, zzimCount: Int, registerDate: Date, verified: Bool, isSoldOut: Bool) {
     self.id = id

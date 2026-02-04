@@ -53,7 +53,7 @@ public struct AuctionInterestView: View {
         }
       }
       .refreshable {
-        await modelData.fetchUserInterestAuctions()
+        await modelData.loadUserInterestAuctions()
       }
       
       Spacer()
@@ -61,7 +61,8 @@ public struct AuctionInterestView: View {
     .loading(modelData.isLoading)
     .onAppear {
       Task {
-        await modelData.fetchUserInterestAuctions()
+        await modelData.loadUserInterestAuctions()
+        
       }
     }
   }

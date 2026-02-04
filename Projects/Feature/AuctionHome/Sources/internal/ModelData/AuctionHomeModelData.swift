@@ -113,6 +113,7 @@ final class AuctionHomeModelData {
     }
   }
   
+  // 최근본 매물 저장
   func saveRecentSales(id: Int) async {
     var recentSales: [RecentSalesInfo] = await localStorageUsecase.getModel(
       forKey: LocalStorageKey.recentViwedSales.rawValue,
@@ -131,9 +132,9 @@ final class AuctionHomeModelData {
       recentSales.removeLast()
     }
     await localStorageUsecase.setModel(recentSales, forKey: LocalStorageKey.recentViwedSales.rawValue)
-    
   }
   
+  // 관심매물 추가
   func addInterest(auctionID: Int) async throws {
     guard let index = self.auctionSalesItems.firstIndex(where: { $0.id == auctionID }) else { return }
     
@@ -147,6 +148,7 @@ final class AuctionHomeModelData {
         .removeUserInterestAuction(auctionID: auctionID)
     }
     targetItem.zzimCount += isNowZzim ? -1 : 1
+    targetItem.isZzim.toggle()
     self.auctionSalesItems[index] = targetItem
   }
   
@@ -154,6 +156,21 @@ final class AuctionHomeModelData {
      let isZzim = try await auctionInterestUsecase.isAuctionUserInterested(auctionID: auctionID)
     return isZzim
   }
+  
+  // 관심매물 여부 리스트 검사
+  func loadInterestAuctionList() async throws {
+    let ids = auctionSalesItems.map { $0.id }
+    let interestWhetherList = try await auctionInterestUsecase.loadInterestAuctionList(ids: ids)
+    
+    for inter in interestWhetherList {
+      guard let index =  self.auctionSalesItems.firstIndex(where: { $0.id == inter.id }) else { return }
+      
+      var targetItem = self.auctionSalesItems[index]
+      targetItem.isZzim = inter.favorite
+      self.auctionSalesItems[index] = targetItem
+    }
+  }
+  
 }
 
 // 필터처리

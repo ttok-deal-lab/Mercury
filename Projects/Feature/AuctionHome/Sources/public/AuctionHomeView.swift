@@ -18,6 +18,7 @@ public struct AuctionHomeView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var modelData: AuctionHomeModelData
   @State private var isShowFilterArea: Bool = false
+  private var isZzim: Bool = false
   
   public init(
     auctionListUsecase: AuctionSalesListUsecasable,
@@ -90,6 +91,7 @@ public struct AuctionHomeView: View {
     .onLoad {
       Task {
         await modelData.loadAuctionSalesList(withFilter: false)
+        try await modelData.loadInterestAuctionList()
       }
     }
     .sheet(isPresented: $isShowFilterArea, content: {

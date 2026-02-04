@@ -16,6 +16,7 @@ enum AuctionInterestAPI {
   case addUserInterestAuction(userID: Int, auctionID: Int, type: String? = "product")
   case removeUserInterestAuction(userID: Int, auctionID: Int, type: String? = "product")
   case fetchUserInterestAuctions(userID: Int, type: String? = "product", nextCursor: String?, size: Int? = 20)
+  case fetchInterestAuctionList(userID: Int, ids: [Int])
 }
 
 extension AuctionInterestAPI: BaseAPI {
@@ -36,6 +37,11 @@ extension AuctionInterestAPI: BaseAPI {
       return "\(userID)/favorites/\(auctionID)"
     case let .fetchUserInterestAuctions(userID, _, _, _):
       return "\(userID)/favorites"
+    case let .fetchInterestAuctionList(userID, ids):
+      let idsString = ids
+        .map { "ids=\($0)" }
+        .joined(separator: "&")
+      return "\(userID)/favorites/ids?\(idsString)"
     }
   }
   
@@ -49,6 +55,8 @@ extension AuctionInterestAPI: BaseAPI {
       return .delete
     case .fetchUserInterestAuctions:
       return .get
+    case .fetchInterestAuctionList:
+      return .get
     }
   }
   
@@ -57,7 +65,9 @@ extension AuctionInterestAPI: BaseAPI {
     case .isAuctionUserInterested(_, _, _),
         .addUserInterestAuction(_, _, _),
         .removeUserInterestAuction(_, _, _),
-        .fetchUserInterestAuctions(_, _, _, _):
+        .fetchUserInterestAuctions(_, _, _, _),
+        .fetchInterestAuctionList(_, _):
+      debugPrint(MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? "")
       return ["Authorization" : MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
     }
   }
@@ -96,6 +106,8 @@ extension AuctionInterestAPI: BaseAPI {
       }
       
       return params
+    case .fetchInterestAuctionList(_, _):
+      return nil
     }
   }
 }
