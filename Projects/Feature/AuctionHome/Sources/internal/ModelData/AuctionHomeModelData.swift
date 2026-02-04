@@ -74,8 +74,9 @@ final class AuctionHomeModelData {
       if let auctionCount = auctionSales.auctionCount {
         self.filteredItemCount = auctionCount
       }
-      self.auctionSalesItems = auctionSales.items
+      let updatedInterestList = try await self.loadInterestAuctionList(list: auctionSales.items)
       
+      self.auctionSalesItems = updatedInterestList
     } catch let error {
       self.error = error
     }
@@ -94,7 +95,9 @@ final class AuctionHomeModelData {
     let currentAuctionSalesItems = self.auctionSalesItems
     do {
       let auctionSalesItems = try await auctionListUsecase.fetchNextAuctionSales(filter: self.currentAuctionFilter)
-      self.auctionSalesItems = currentAuctionSalesItems + auctionSalesItems
+      let updatedInterestList = try await self.loadInterestAuctionList(list: auctionSalesItems)
+      
+      self.auctionSalesItems = currentAuctionSalesItems + updatedInterestList
     } catch {
       self.error = error
     }
@@ -153,22 +156,24 @@ final class AuctionHomeModelData {
   }
   
   func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
-     let isZzim = try await auctionInterestUsecase.isAuctionUserInterested(auctionID: auctionID)
+    let isZzim = try await auctionInterestUsecase.isAuctionUserInterested(auctionID: auctionID)
     return isZzim
   }
   
   // 관심매물 여부 리스트 검사
-  func loadInterestAuctionList() async throws {
-    let ids = auctionSalesItems.map { $0.id }
+  private func loadInterestAuctionList(list: [AuctionSalesItem]) async throws -> [AuctionSalesItem]{
+    var itemList = list
+    let ids = itemList.map { $0.id }
     let interestWhetherList = try await auctionInterestUsecase.loadInterestAuctionList(ids: ids)
     
     for inter in interestWhetherList {
-      guard let index =  self.auctionSalesItems.firstIndex(where: { $0.id == inter.id }) else { return }
+      guard let index = itemList.firstIndex(where: { $0.id == inter.id }) else { return itemList }
       
-      var targetItem = self.auctionSalesItems[index]
+      var targetItem = itemList[index]
       targetItem.isZzim = inter.favorite
-      self.auctionSalesItems[index] = targetItem
+      itemList[index] = targetItem
     }
+    return itemList
   }
   
 }
@@ -203,8 +208,8 @@ extension AuctionHomeModelData {
       
       if let firstName = selectedNames.first {
         return selectedNames.count > 1
-          ? L10n.auctionFilterMultiSelect(firstName, selectedNames.count - 1)
-          : firstName
+        ? L10n.auctionFilterMultiSelect(firstName, selectedNames.count - 1)
+        : firstName
       }
       return type.defaultTitle
       
@@ -216,14 +221,14 @@ extension AuctionHomeModelData {
       let selectedNames = allOptions
         .filter { selectedCodes.contains($0.code) }
         .map { $0.displayName }
-        
+      
       if let firstName = selectedNames.first {
         return selectedNames.count > 1
-          ? L10n.auctionFilterMultiSelect(firstName, selectedNames.count - 1)
-          : firstName
+        ? L10n.auctionFilterMultiSelect(firstName, selectedNames.count - 1)
+        : firstName
       }
       return type.defaultTitle
-
+      
     case .price:
       return makePriceString() ?? type.defaultTitle
       

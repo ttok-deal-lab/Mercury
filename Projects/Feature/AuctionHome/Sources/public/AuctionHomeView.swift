@@ -91,7 +91,6 @@ public struct AuctionHomeView: View {
     .onLoad {
       Task {
         await modelData.loadAuctionSalesList(withFilter: false)
-        try await modelData.loadInterestAuctionList()
       }
     }
     .sheet(isPresented: $isShowFilterArea, content: {
