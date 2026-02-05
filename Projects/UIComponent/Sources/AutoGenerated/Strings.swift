@@ -70,6 +70,8 @@ public enum L10n {
   public static let commonYes = L10n.tr("Localizable", "common_yes", fallback: "네")
   /// 전체
   public static let homeDefaultArea = L10n.tr("Localizable", "home_default_area", fallback: "전체")
+  /// 관심 내역이 없어요.
+  public static let interestViewNone = L10n.tr("Localizable", "interest_view_none", fallback: "관심 내역이 없어요.")
   /// 문의하실 내용을 입력해주세요.
   public static let mypageChatBody = L10n.tr("Localizable", "mypage_chat_body", fallback: "문의하실 내용을 입력해주세요.")
   /// [민달팽이] 문의 메일

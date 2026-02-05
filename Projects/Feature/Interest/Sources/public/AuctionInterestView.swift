@@ -34,7 +34,7 @@ public struct AuctionInterestView: View {
           LazyVStack(spacing: .zero) {
             ForEach(modelData.interestList) { item in
               AuctionInterestItemView(item: item, onZzim: {
-                // TODO: - 찜 제거했을 떄의 액션
+                // TODO: - 찜 제거했을 떄의 액션 
                 modelData.interestList.remove(at: modelData.interestList.firstIndex(of: item)!)
                 Task {
                   try await modelData.removeUserInterestAuction(auctionID: item.id)
@@ -47,7 +47,7 @@ public struct AuctionInterestView: View {
             .padding(.top, 145)
             .padding(.bottom, 12)
           
-          Text(L10n.settingRecentViewNone)
+          Text(L10n.interestViewNone)
             .fonts(.bodySmallMedium)
             .foregroundStyle(Asset.Colors.neutralSubtler.color)
         }
