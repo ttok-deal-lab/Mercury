@@ -11,6 +11,8 @@ public struct RecentSalesItem: Identifiable {
   public let id: Int
   /// 매각여부
   public let isSoldOut: Bool
+  /// 건물명
+  public let salesBuildingName: String?
   /// 물건 주소
   public let salesAddress: String
   /// 카테고리
@@ -24,13 +26,16 @@ public struct RecentSalesItem: Identifiable {
   /// 입찰실패 횟수
   public let failBidCount: Int
   /// 찜 횟수
-  public let zzimCount: Int
+  public var zzimCount: Int
   /// 매각까지 남은 기간
   public let salesLeftDays: Int
+  /// 찜 여부
+  public var isZzim: Bool = false
   
   public init(
     id: Int,
     isSoldOut: Bool,
+    salesBuildingName: String?,
     salesAddress: String,
     salesCategories: [AuctionSalesCategory],
     salesDateTime: Date,
@@ -41,6 +46,7 @@ public struct RecentSalesItem: Identifiable {
   ) {
     self.id = id
     self.isSoldOut = isSoldOut
+    self.salesBuildingName = salesBuildingName
     self.salesAddress = salesAddress
     self.salesCategories = salesCategories
     self.salesDateTime = salesDateTime

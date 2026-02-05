@@ -55,6 +55,12 @@ struct RecentSalesItemView: View {
             .fonts(.bodyMicroMedium)
             .multilineTextAlignment(.leading)
           
+          Text("\(item.salesBuildingName ?? "")")
+            .foregroundStyle(Asset.Colors.neutralSubtler.color)
+            .fonts(.bodyMicroRegular)
+            .multilineTextAlignment(.leading)
+            .padding(.top, 2)
+          
           Spacer()
           
           HStack(spacing: 5) {
@@ -86,7 +92,9 @@ struct RecentSalesItemView: View {
                 Asset.Images.heart.image
                   .renderingMode(.template)
                   .resizable()
-                  .foregroundStyle(Asset.Colors.neutralMuted.color)
+                  .foregroundStyle(
+                    self.item.isZzim ? Asset.Colors.critical.color : Asset.Colors.neutralMuted.color
+                  )
                   .frame(width: 18, height: 18)
                 
                 Text("\(item.zzimCount)")

@@ -138,7 +138,7 @@ final class AuctionHomeModelData {
   }
   
   // 관심매물 추가
-  func addInterest(auctionID: Int) async throws {
+  func tapOnZzim(auctionID: Int) async throws {
     guard let index = self.auctionSalesItems.firstIndex(where: { $0.id == auctionID }) else { return }
     
     var targetItem = self.auctionSalesItems[index]
