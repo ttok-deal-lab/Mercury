@@ -16,55 +16,23 @@ public struct MercuryGradientLabel: View {
   
   public var body: some View {
     HStack(spacing: 4) {
-      HStack(spacing: 4) {
-        Asset.Images.certified.image
-          .resizable()
-          .renderingMode(.template)
-          .foregroundStyle(.white)
-          .frame(width: 16, height: 16)
-        // 인증매물
-        Text(L10n.commonCertifiedAuction)
-          .foregroundStyle(Asset.Colors.neutralWhite.color)
-          .fonts(.captionLargeMedium)
-      }
-//      .frame(height: 24)
-      .padding(.vertical, 3)
-      .padding(.horizontal, 6)
-      .background {
-        LinearGradient(
-          colors: [
-            Asset.Colors.commonGradientStart.color,
-            Asset.Colors.commonGradientEnd.color
-          ],
-          startPoint: .topLeading,
-          endPoint: .bottomTrailing
-        )
-      }
-      .clipShape(RoundedRectangle(cornerRadius: 8))
+      Text(L10n.commonCertifiedAuction)
+        .foregroundStyle(Asset.Colors.neutralWhite.color)
+        .fonts(.captionLargeMedium)
+        .lineLimit(1)
+        .padding(.vertical, 3)
+        .padding(.horizontal, 6)
+        .background {
+          LinearGradient(
+            colors: [
+              Asset.Colors.commonGradientStart.color,
+              Asset.Colors.commonGradientEnd.color
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+          )
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 4))
     }
-//    Label {
-//      Text(title ?? "")
-//        .fonts(.captionLargeMedium)
-//    } icon: {
-//      Asset.Images.certified.image
-//        .resizable()
-//        .renderingMode(.template)
-//        .foregroundStyle(.white)
-//        .frame(width: 16, height: 16)
-//    }
-//      .padding(.vertical, 3)
-//      .padding(.horizontal, 6)
-//      .foregroundStyle(.white)
-//      .background(
-//        LinearGradient(
-//          colors: [
-//            Asset.Colors.commonGradientStart.color,
-//            Asset.Colors.commonGradientEnd.color
-//          ],
-//          startPoint: .topLeading,
-//          endPoint: .bottomTrailing
-//        )
-//      )
-//      .clipShape(RoundedRectangle(cornerRadius: 6))
   }
 }
