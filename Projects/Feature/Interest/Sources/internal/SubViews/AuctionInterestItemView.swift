@@ -54,11 +54,11 @@ struct AuctionInterestItemView: View {
             .fonts(.bodyMicroMedium)
             .multilineTextAlignment(.leading)
           
-//          Text("\(item.salesBuildingName ?? "")")
-//            .foregroundStyle(Asset.Colors.neutralSubtler.color)
-//            .fonts(.bodyMicroRegular)
-//            .multilineTextAlignment(.leading)
-
+          //          Text("\(item.salesBuildingName ?? "")")
+          //            .foregroundStyle(Asset.Colors.neutralSubtler.color)
+          //            .fonts(.bodyMicroRegular)
+          //            .multilineTextAlignment(.leading)
+          
           Spacer()
           
           HStack(spacing: 5) {

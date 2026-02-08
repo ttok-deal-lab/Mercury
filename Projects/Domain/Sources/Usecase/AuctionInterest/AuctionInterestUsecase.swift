@@ -6,7 +6,7 @@
 //
 
 final public class AuctionInterestUsecase: AuctionInterestUsecasable {
-
+  
   private let fetcher: AuctionInterestFetcher
   
   public init(repository: AuctionInterestRepositoriable) {
@@ -32,7 +32,7 @@ final public class AuctionInterestUsecase: AuctionInterestUsecasable {
   public func loadNextInterestAuctions() async throws -> [InterestItem] {
     return []
   }
-
+  
   public func loadInterestAuctionList(ids: [Int]) async throws -> [InterestWhether] {
     return try await fetcher.loadInterestAuctionList(ids: ids)
   }

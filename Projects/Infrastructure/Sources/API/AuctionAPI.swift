@@ -58,13 +58,13 @@ enum AuctionAPI: BaseAPI {
       var params: [String: Any] = [:]
       
       params["keyword"] = keyword ?? "unknown"
-  
+      
       if let region = region {
         params["region"] = region
       } else {
         params["region"] = "ALL"
       }
-
+      
       if let district = district {
         if district.lowercased() == "unknown" {
           params["district"] = "unknown"
@@ -111,7 +111,7 @@ enum AuctionAPI: BaseAPI {
       return params
     case .auctionDetail:
       return nil
-    case .auctionSales(let auctionIDs):
+    case .auctionSales:
       return nil
     case .auctionSearchFilter:
       return nil

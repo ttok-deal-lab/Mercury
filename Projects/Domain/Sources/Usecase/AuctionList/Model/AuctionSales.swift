@@ -48,7 +48,20 @@ public struct AuctionSalesItem: Identifiable {
   /// 찜 여부
   public var isZzim: Bool = false
   
-  public init(id: Int, caseNumber: String, salesAddress: String, salesCategories: [AuctionSalesCategory], salesDateTime: Date, appraisalPrice: String, salesPictures: [SalesPicture], failBidCount: Int, zzimCount: Int, registerDate: Date, verified: Bool, isSoldOut: Bool) {
+  public init(
+    id: Int,
+    caseNumber: String,
+    salesAddress: String,
+    salesCategories: [AuctionSalesCategory],
+    salesDateTime: Date,
+    appraisalPrice: String,
+    salesPictures: [SalesPicture],
+    failBidCount: Int,
+    zzimCount: Int,
+    registerDate: Date,
+    verified: Bool,
+    isSoldOut: Bool
+  ) {
     self.id = id
     self.caseNumber = caseNumber
     self.salesAddress = salesAddress
