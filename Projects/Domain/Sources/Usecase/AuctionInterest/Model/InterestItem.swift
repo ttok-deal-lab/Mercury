@@ -22,7 +22,7 @@ public struct InterestSales {
 public struct InterestItem: Identifiable, Equatable {
   public let id: Int
   /// 건물 이름
-  //  public let salesBuildingName: String?
+    public let salesBuildingName: String?
   /// 물건 주소
   public let salesAddress: String
   /// 카테고리
@@ -48,7 +48,7 @@ public struct InterestItem: Identifiable, Equatable {
   
   public init(
     id: Int,
-    //    salesBuildingName: String?,
+        salesBuildingName: String?,
     salesAddress: String,
     salesCategories: [AuctionSalesCategory],
     salesDateTime: Date,
@@ -60,7 +60,7 @@ public struct InterestItem: Identifiable, Equatable {
     isSoldOut: Bool
   ) {
     self.id = id
-    //    self.salesBuildingName = salesBuildingName
+        self.salesBuildingName = salesBuildingName
     self.salesAddress = salesAddress
     self.salesCategories = salesCategories
     self.salesDateTime = salesDateTime

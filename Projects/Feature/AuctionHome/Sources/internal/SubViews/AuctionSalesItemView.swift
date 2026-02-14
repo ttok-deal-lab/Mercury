@@ -19,7 +19,7 @@ struct AuctionSalesItemView: View {
   var body: some View {
     VStack(spacing: .zero) {
       HStack(spacing: 16) {
-        CachedAsyncImage(url: item.salesPictures.first?.url, content: { image in
+        CachedAsyncImage(url: item.salesPictures, content: { image in
           image.resizable()
         }) {
           Asset.Colors.gray150.color
@@ -52,6 +52,11 @@ struct AuctionSalesItemView: View {
           Text("\(item.salesAddress)")
             .foregroundStyle(Asset.Colors.neutral.color)
             .fonts(.bodyMicroMedium)
+            .multilineTextAlignment(.leading)
+          
+          Text("\(item.salesBuildingName ?? "")")
+            .foregroundStyle(Asset.Colors.neutralSubtler.color)
+            .fonts(.bodyMicroRegular)
             .multilineTextAlignment(.leading)
           
           Spacer()

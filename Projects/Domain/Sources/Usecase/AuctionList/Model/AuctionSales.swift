@@ -27,12 +27,14 @@ public struct AuctionSalesItem: Identifiable {
   public let salesAddress: String
   /// 카테고리
   public let salesCategories: [AuctionSalesCategory]
+  /// 건물 이름
+  public let salesBuildingName: String?
   /// 경매 날짜
   public let salesDateTime: Date
   /// 가격
   public let appraisalPrice: String
   /// 물건 사진 정보
-  public let salesPictures: [SalesPicture]
+  public let salesPictures: URL?
   /// 입찰실패 횟수
   public let failBidCount: Int
   /// 찜 횟수
@@ -53,9 +55,10 @@ public struct AuctionSalesItem: Identifiable {
     caseNumber: String,
     salesAddress: String,
     salesCategories: [AuctionSalesCategory],
+    salesBuildingName: String?,
     salesDateTime: Date,
     appraisalPrice: String,
-    salesPictures: [SalesPicture],
+    salesPictures: URL?,
     failBidCount: Int,
     zzimCount: Int,
     registerDate: Date,
@@ -66,6 +69,7 @@ public struct AuctionSalesItem: Identifiable {
     self.caseNumber = caseNumber
     self.salesAddress = salesAddress
     self.salesCategories = salesCategories
+    self.salesBuildingName = salesBuildingName
     self.salesDateTime = salesDateTime
     self.appraisalPrice = appraisalPrice
     self.salesPictures = salesPictures
