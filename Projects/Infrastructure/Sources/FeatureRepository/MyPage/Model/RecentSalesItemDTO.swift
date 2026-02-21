@@ -13,6 +13,7 @@ import Domain
 struct RecentSalesItemDTO: Decodable, Sendable {
   let id: Int
   let isSoldOut: Bool
+  let verified: Bool
   let salesBuildingName: String
   let salesAddress: String
   let salesCategories: [String]
@@ -27,13 +28,14 @@ struct RecentSalesItemDTO: Decodable, Sendable {
     case id, salesAddress, salesCategories
     case salesDateTime, appraisalPrice, salesPicture
     case failBidCount, zzimCount
-    case isSoldOut, salesBuildingName
+    case isSoldOut, verified, salesBuildingName
   }
   
   init(from decoder: any Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     self.id = try container.decode(Int.self, forKey: .id)
     self.isSoldOut = try container.decode(Bool.self, forKey: .isSoldOut)
+    self.verified = try container.decode(Bool.self, forKey: .verified)
     self.salesBuildingName = try container.decode(String.self, forKey: .salesBuildingName)
     self.salesAddress = try container.decode(String.self, forKey: .salesAddress)
     self.salesCategories = try container.decode([String].self, forKey: .salesCategories)
@@ -50,6 +52,7 @@ extension RecentSalesItemDTO {
     return RecentSalesItem(
       id: id,
       isSoldOut: isSoldOut,
+      verified: verified,
       salesBuildingName: salesBuildingName,
       salesAddress: salesAddress,
       salesCategories: salesCategories.compactMap { AuctionSalesCategory.fromRawValue($0) },

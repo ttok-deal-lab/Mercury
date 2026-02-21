@@ -11,6 +11,8 @@ public struct RecentSalesItem: Identifiable {
   public let id: Int
   /// 매각여부
   public let isSoldOut: Bool
+  /// 인증매물 여부
+  public let verified: Bool
   /// 건물명
   public let salesBuildingName: String?
   /// 물건 주소
@@ -35,6 +37,7 @@ public struct RecentSalesItem: Identifiable {
   public init(
     id: Int,
     isSoldOut: Bool,
+    verified: Bool,
     salesBuildingName: String?,
     salesAddress: String,
     salesCategories: [AuctionSalesCategory],
@@ -46,6 +49,7 @@ public struct RecentSalesItem: Identifiable {
   ) {
     self.id = id
     self.isSoldOut = isSoldOut
+    self.verified = verified
     self.salesBuildingName = salesBuildingName
     self.salesAddress = salesAddress
     self.salesCategories = salesCategories

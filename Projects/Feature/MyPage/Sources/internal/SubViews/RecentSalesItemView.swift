@@ -64,6 +64,10 @@ struct RecentSalesItemView: View {
           Spacer()
           
           HStack(spacing: 5) {
+            if item.verified {
+              MercuryGradientLabel(title: L10n.commonCertifiedAuction)
+            }
+            
             if !item.salesCategories.isEmpty,
                let firstSalesCategory = item.salesCategories.first?.rawValue {
               Text(firstSalesCategory)

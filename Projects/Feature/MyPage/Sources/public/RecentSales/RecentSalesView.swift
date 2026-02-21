@@ -60,7 +60,6 @@ public struct RecentSalesView: View {
           .fonts(.bodySmallMedium)
           .foregroundStyle(Asset.Colors.neutralSubtler.color)
       }
-      Spacer()
     }
     .loading(modelData.isLoading)
     .onLoad {

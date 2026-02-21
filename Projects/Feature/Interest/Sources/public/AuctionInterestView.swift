@@ -41,6 +41,10 @@ public struct AuctionInterestView: View {
                 }
               })
             }
+            
+            if !modelData.interestList.isEmpty {
+              loadMoreView()
+            }
           }
         } else {
           Asset.Images.dot3Circle.image
@@ -55,8 +59,6 @@ public struct AuctionInterestView: View {
       .refreshable {
         await modelData.loadUserInterestAuctions()
       }
-      
-      Spacer()
     }
     .loading(modelData.isLoading)
     .onAppear {
@@ -65,5 +67,13 @@ public struct AuctionInterestView: View {
         
       }
     }
+  }
+  
+  @ViewBuilder
+  private func loadMoreView() -> some View {
+    Color.clear
+      .task {
+        await modelData.loadMoreInterestSales()
+      }
   }
 }
