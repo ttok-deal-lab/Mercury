@@ -61,7 +61,7 @@ public struct AuctionInterestView: View {
       }
     }
     .loading(modelData.isLoading)
-    .onAppear {
+    .onLoad  {
       Task {
         await modelData.loadUserInterestAuctions()
         
