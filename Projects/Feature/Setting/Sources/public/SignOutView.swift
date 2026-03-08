@@ -67,15 +67,20 @@ public struct SignOutView: View {
             .fonts(.bodyMediumMedium)
             .foregroundStyle(Asset.Colors.neutral.color)
         } icon: {
-          if !isChecked {
+          ZStack {
             Asset.Images.sucessLine.image
-          } else {
+              .opacity(isChecked ? 0 : 1) // 체크되면 투명해짐
+            
             Asset.Images.successBlue.image
+              .opacity(isChecked ? 1 : 0) // 체크되면 선명해짐
           }
         }
         .padding(.top, 21)
         .onTapGesture {
-          isChecked.toggle()
+          
+          withAnimation(.easeInOut(duration: 0.2)) {
+            isChecked.toggle()
+          }
         }
         
         Spacer()

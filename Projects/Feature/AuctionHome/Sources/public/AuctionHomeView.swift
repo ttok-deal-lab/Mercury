@@ -94,7 +94,7 @@ public struct AuctionHomeView: View {
     }
     .sheet(isPresented: $isShowFilterArea, content: {
       AuctionFilterLocationView(modelData: $modelData) {
-        Task {
+        Task {  
           await modelData.loadAuctionSalesList()
           isShowFilterArea = false
         }
