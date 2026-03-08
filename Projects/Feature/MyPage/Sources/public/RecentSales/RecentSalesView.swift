@@ -52,13 +52,17 @@ public struct RecentSalesView: View {
           }
         }
       } else {
-        Asset.Images.dot3Circle.image
-          .padding(.top, 145)
-          .padding(.bottom, 12)
-        
-        Text(L10n.settingRecentViewNone)
-          .fonts(.bodySmallMedium)
-          .foregroundStyle(Asset.Colors.neutralSubtler.color)
+        VStack {
+          Asset.Images.dot3Circle.image
+            .padding(.top, 145)
+            .padding(.bottom, 12)
+          
+          Text(L10n.settingRecentViewNone)
+            .fonts(.bodySmallMedium)
+            .foregroundStyle(Asset.Colors.neutralSubtler.color)
+          
+          Spacer()
+        }
       }
     }
     .loading(modelData.isLoading)

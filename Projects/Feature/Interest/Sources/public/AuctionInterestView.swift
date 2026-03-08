@@ -47,13 +47,13 @@ public struct AuctionInterestView: View {
             }
           }
         } else {
-          Asset.Images.dot3Circle.image
-            .padding(.top, 145)
-            .padding(.bottom, 12)
-          
-          Text(L10n.interestViewNone)
-            .fonts(.bodySmallMedium)
-            .foregroundStyle(Asset.Colors.neutralSubtler.color)
+            Asset.Images.dot3Circle.image
+              .padding(.top, 145)
+              .padding(.bottom, 12)
+            
+            Text(L10n.interestViewNone)
+              .fonts(.bodySmallMedium)
+              .foregroundStyle(Asset.Colors.neutralSubtler.color)
         }
       }
       .refreshable {
