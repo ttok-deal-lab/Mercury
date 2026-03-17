@@ -7,10 +7,13 @@
 
 import Foundation
 
+import AppFoundation
+import Domain
 import Networking
 
 enum AuthAPI {
   case signIn(provider: String, idToken: String)
+  case signOut(userID: Int)
 }
 
 extension AuthAPI: BaseAPI {
@@ -20,19 +23,25 @@ extension AuthAPI: BaseAPI {
   
   var domain: String? {
     return "v1/auth/"
+    return "v1/users/"
   }
   
   var path: String {
     switch self {
     case let .signIn(providier, _):
       "\(providier)"
+    case let .signOut(userID):
+      "\(userID)"
     }
+    
   }
   
   var method: Networking.HTTPMethod {
     switch self {
     case .signIn:
       return .post
+    case .signOut:
+      return .delete
     }
   }
   
@@ -42,6 +51,8 @@ extension AuthAPI: BaseAPI {
       return [
         "idToken": idToken
       ]
+    case .signOut(_):
+      return ["Authorization" : MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
     }
   }
     

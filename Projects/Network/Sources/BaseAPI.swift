@@ -8,13 +8,9 @@
 import Foundation
 
 import AppFoundation
-
+import Domain
 import Pulse
 
-import Foundation
-
-import AppFoundation
-import Pulse
 
 public protocol BaseAPI {
   var baseURL: String { get }
@@ -35,7 +31,9 @@ public extension BaseAPI {
 
   var headers: [String: String]? {
     [
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization" : MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""
+      
     ]
   }
 

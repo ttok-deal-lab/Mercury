@@ -22,4 +22,8 @@ final class SettingModelData {
     self.settingUsecase = settingUsecase
   }
   
+  public func signOut() async throws {
+    try await settingUsecase.signOut()
+  }
+  
 }
