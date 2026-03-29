@@ -8,7 +8,6 @@
 import Foundation
 
 import AppFoundation
-import Domain
 import Pulse
 
 
@@ -31,9 +30,7 @@ public extension BaseAPI {
 
   var headers: [String: String]? {
     [
-      "Content-Type": "application/json",
-      "Authorization" : MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""
-      
+      "Content-Type": "application/json"
     ]
   }
 

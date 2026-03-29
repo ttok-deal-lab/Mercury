@@ -53,6 +53,10 @@ extension FCMTokenAPI: BaseAPI {
     }
   }
   
+  var headers: [String: String]? {
+    ["Authorization": MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
+  }
+
   var additionalHeaders: [String : String]? {
     switch self {
     case let .registFCMToken(fcmToken, _, _, deviceType):

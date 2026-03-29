@@ -7,6 +7,8 @@
 
 import Foundation
 
+import AppFoundation
+import Domain
 import Networking
 
 enum AuctionAPI: BaseAPI {
@@ -50,6 +52,10 @@ enum AuctionAPI: BaseAPI {
     case .auctionSales: .get
     case .auctionSearchFilter: .get
     }
+  }
+
+  var headers: [String: String]? {
+    ["Authorization": MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
   }
   
   var queryParam: [String : Any]? {

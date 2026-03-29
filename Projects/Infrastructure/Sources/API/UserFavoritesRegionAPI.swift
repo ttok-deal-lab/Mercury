@@ -7,6 +7,8 @@
 
 import Foundation
 
+import AppFoundation
+import Domain
 import Networking
 
 enum UserFavoritesRegionAPI {
@@ -54,6 +56,10 @@ extension UserFavoritesRegionAPI: BaseAPI {
     case .loadAllFavoritesRegions:
       return .get
     }
+  }
+
+  var headers: [String: String]? {
+    ["Authorization": MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
   }
 }
 
