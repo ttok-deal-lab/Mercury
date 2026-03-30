@@ -158,6 +158,7 @@ final class AuctionHomeModelData {
   
   // 관심매물 여부 리스트 검사
   private func loadInterestAuctionList(list: [AuctionSalesItem]) async throws -> [AuctionSalesItem]{
+    guard !list.isEmpty else { return [] }
     var itemList = list
     let ids = itemList.map { $0.id }
     let interestWhetherList = try await auctionInterestUsecase.loadInterestAuctionList(ids: ids)

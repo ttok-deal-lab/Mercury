@@ -28,13 +28,12 @@ public struct AuctionInterestView: View {
       }
       .padding(.horizontal, 20)
       
-      
       ScrollView(.vertical) {
         if !modelData.interestList.isEmpty {
           LazyVStack(spacing: .zero) {
             ForEach(modelData.interestList) { item in
               AuctionInterestItemView(item: item, onZzim: {
-                // TODO: - 찜 제거했을 떄의 액션 
+                // TODO: - 찜 제거했을 떄의 액션
                 modelData.interestList.remove(at: modelData.interestList.firstIndex(of: item)!)
                 Task {
                   try await modelData.removeUserInterestAuction(auctionID: item.id)
@@ -52,13 +51,13 @@ public struct AuctionInterestView: View {
             }
           }
         } else {
-            Asset.Images.dot3Circle.image
-              .padding(.top, 145)
-              .padding(.bottom, 12)
-            
-            Text(L10n.interestViewNone)
-              .fonts(.bodySmallMedium)
-              .foregroundStyle(Asset.Colors.neutralSubtler.color)
+          Asset.Images.dot3Circle.image
+            .padding(.top, 145)
+            .padding(.bottom, 12)
+          
+          Text(L10n.interestViewNone)
+            .fonts(.bodySmallMedium)
+            .foregroundStyle(Asset.Colors.neutralSubtler.color)
         }
       }
       .refreshable {
