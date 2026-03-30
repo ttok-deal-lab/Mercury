@@ -45,6 +45,11 @@ public struct AuctionInterestView: View {
             if !modelData.interestList.isEmpty {
               loadMoreView()
             }
+            
+            if modelData.isLoadingForPaging {
+              ProgressView()
+                .frame(width: 50, height: 50)
+            }
           }
         } else {
             Asset.Images.dot3Circle.image

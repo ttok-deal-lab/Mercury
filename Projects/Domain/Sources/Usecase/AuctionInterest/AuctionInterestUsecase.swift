@@ -30,7 +30,7 @@ final public class AuctionInterestUsecase: AuctionInterestUsecasable {
   }
   
   public func loadNextInterestAuctions() async throws -> [InterestItem] {
-    return []
+    return try await fetcher.fetchNextInterestAuctions()
   }
   
   public func loadInterestAuctionList(ids: [Int]) async throws -> [InterestWhether] {
@@ -42,7 +42,8 @@ actor AuctionInterestFetcher {
   private let repository: AuctionInterestRepositoriable
   private var cursor: String?
   private var hasNext: Bool = true
-  private var isLoding: Bool = false
+  private var isLoading: Bool = false
+  private let loadOnce: Int = 20
   
   init(repository: AuctionInterestRepositoriable) {
     self.repository = repository
@@ -57,20 +58,43 @@ actor AuctionInterestFetcher {
     try await repository.addUserInterestAuction(auctionID: auctionID)
   }
   
+  // 매물들의
   func removeUserInterestAuction(auctionID: Int) async throws {
     // TODO: - 유저정보 가지고오기
     try await repository.removeUserInterestAuction(auctionID: auctionID)
   }
   
+  // 유저의 관심 탭 리스트
   func fetchUserInterestAuctions() async throws -> [InterestItem] {
-    let interestSales = try await repository.fetchUserInterestAuctions()
+    self.isLoading = true
+    defer {
+      self.isLoading = false
+    }
+    
+    let interestSales = try await repository.fetchUserInterestAuctions(
+      type: "product",
+      cursor: cursor,
+      size: loadOnce
+    )
+    
+    if let nextCursor = interestSales.nextCursor,
+       let _ = Int(nextCursor) {
+      self.cursor = nextCursor
+    } else {
+      self.hasNext = false
+    }
     return interestSales.items
   }
   
-  func fetchNextInterestAuctions() async throws -> [InterestItem] {
-    return []
+  func fetchNextInterestAuctions(type: String? = "product", cursor: String? = "unknown", size: Int = 20) async throws -> [InterestItem] {
+    guard !isLoading else { return [] }
+    guard hasNext else { return [] } // 더 이상 데이터 없음
+    
+    let fetchInterestList = try await fetchUserInterestAuctions()
+    return fetchInterestList
   }
   
+  // 주어진 매물들의 관심 설정여부 조회
   func loadInterestAuctionList(ids: [Int]) async throws -> [InterestWhether] {
     return try await repository.fetchInterestAuctionList(ids: ids)
   }

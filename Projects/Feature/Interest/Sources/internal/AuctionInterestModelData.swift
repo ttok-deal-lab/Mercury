@@ -41,13 +41,9 @@ final class AuctionInterestModelData {
   }
   
   func loadMoreInterestSales() async {
-    withAnimation {
-      self.isLoadingForPaging = true
-    }
+    self.isLoadingForPaging = true
     defer {
-      withAnimation {
-        self.isLoadingForPaging = false
-      }
+      self.isLoadingForPaging = false
     }
     
     let currentInterestSalesItem = self.interestList

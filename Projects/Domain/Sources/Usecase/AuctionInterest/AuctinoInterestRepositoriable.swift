@@ -9,6 +9,6 @@ public protocol AuctionInterestRepositoriable {
   func isAuctionUserInterested(auctionID: Int) async throws -> Bool
   func addUserInterestAuction(auctionID: Int) async throws
   func removeUserInterestAuction(auctionID: Int) async throws
-  func fetchUserInterestAuctions() async throws -> InterestSales
+  func fetchUserInterestAuctions(type: String?, cursor: String?, size: Int) async throws -> InterestSales
   func fetchInterestAuctionList(ids: [Int]) async throws -> [InterestWhether]
 }

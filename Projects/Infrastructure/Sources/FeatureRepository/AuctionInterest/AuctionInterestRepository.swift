@@ -52,15 +52,19 @@ public final class AuctionInterestRepository: AuctionInterestRepositoriable {
   }
   
   // 관심 탭 리스트
-  public func fetchUserInterestAuctions() async throws -> InterestSales {
+  public func fetchUserInterestAuctions(
+    type: String?,
+    cursor: String?,
+    size: Int
+  ) async throws -> InterestSales {
     let userID = try getUserID()
     // TODO: - type, cursor
     let interestSalesDTO = try await AuctionInterestAPI
       .fetchUserInterestAuctions(
         userID: userID,
-        type: nil,
-        nextCursor: "",
-        size: nil
+        type: type,
+        nextCursor: cursor,
+        size: size
       )
       .request(InterestSalesDTO.self)
     let interestItemList = interestSalesDTO.toEntity()

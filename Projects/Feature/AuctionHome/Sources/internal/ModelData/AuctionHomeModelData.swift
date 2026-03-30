@@ -84,13 +84,9 @@ final class AuctionHomeModelData {
   
   // 경매물건 추가로 불러오기
   func loadMoreAuctionSales() async {
-    withAnimation {
-      self.isLoadingForPaging = true
-    }
+    self.isLoadingForPaging = true
     defer {
-      withAnimation {
-        self.isLoadingForPaging = false
-      }
+      self.isLoadingForPaging = false
     }
     let currentAuctionSalesItems = self.auctionSalesItems
     do {
