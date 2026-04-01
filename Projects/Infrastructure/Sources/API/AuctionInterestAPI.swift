@@ -35,7 +35,7 @@ extension AuctionInterestAPI: BaseAPI {
       let .addUserInterestAuction(userID, auctionID, _),
       let .removeUserInterestAuction(userID, auctionID, _):
       return "\(userID)/favorites/\(auctionID)"
-    case let .fetchUserInterestAuctions(userID, _, _, _):
+    case let .fetchUserInterestAuctions(userID, _, _):
       return "\(userID)/favorites"
     case let .fetchInterestAuctionList(userID, ids):
       let idsString = ids
