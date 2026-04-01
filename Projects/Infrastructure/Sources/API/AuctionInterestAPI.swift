@@ -15,7 +15,7 @@ enum AuctionInterestAPI {
   case isAuctionUserInterested(userID: Int, auctionID: Int, type: String? = "product")
   case addUserInterestAuction(userID: Int, auctionID: Int, type: String? = "product")
   case removeUserInterestAuction(userID: Int, auctionID: Int, type: String? = "product")
-  case fetchUserInterestAuctions(userID: Int, type: String? = "product", nextCursor: String?, size: Int? = 20)
+  case fetchUserInterestAuctions(userID: Int, type: String? = "product", nextCursor: String?)
   case fetchInterestAuctionList(userID: Int, ids: [Int])
 }
 
@@ -65,7 +65,7 @@ extension AuctionInterestAPI: BaseAPI {
     case .isAuctionUserInterested(_, _, _),
         .addUserInterestAuction(_, _, _),
         .removeUserInterestAuction(_, _, _),
-        .fetchUserInterestAuctions(_, _, _, _),
+        .fetchUserInterestAuctions(_, _, _),
         .fetchInterestAuctionList(_, _):
       debugPrint(MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? "")
       return ["Authorization" : MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
@@ -86,7 +86,7 @@ extension AuctionInterestAPI: BaseAPI {
       }
       
       return params
-    case let .fetchUserInterestAuctions(_, type, nextCursor, size):
+    case let .fetchUserInterestAuctions(_, type, nextCursor):
       var params: [String: Any] = [:]
       
       if let type = type {
@@ -96,13 +96,7 @@ extension AuctionInterestAPI: BaseAPI {
       }
       
       if let nextCursor = nextCursor {
-        params["cursor"] = nextCursor
-      }
-      
-      if let size = size {
-        params["size"] = size
-      } else {
-        params["size"] = 20
+        params["nextCursor"] = nextCursor
       }
       
       return params

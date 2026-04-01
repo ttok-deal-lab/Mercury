@@ -54,8 +54,7 @@ public final class AuctionInterestRepository: AuctionInterestRepositoriable {
   // 관심 탭 리스트
   public func fetchUserInterestAuctions(
     type: String?,
-    cursor: String?,
-    size: Int
+    cursor: String?
   ) async throws -> InterestSales {
     let userID = try getUserID()
     // TODO: - type, cursor
@@ -63,8 +62,7 @@ public final class AuctionInterestRepository: AuctionInterestRepositoriable {
       .fetchUserInterestAuctions(
         userID: userID,
         type: type,
-        nextCursor: cursor,
-        size: size
+        nextCursor: cursor
       )
       .request(InterestSalesDTO.self)
     let interestItemList = interestSalesDTO.toEntity()

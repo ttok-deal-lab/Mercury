@@ -73,8 +73,7 @@ actor AuctionInterestFetcher {
     
     let interestSales = try await repository.fetchUserInterestAuctions(
       type: "product",
-      cursor: cursor,
-      size: loadOnce
+      cursor: cursor
     )
     
     if let nextCursor = interestSales.nextCursor,
