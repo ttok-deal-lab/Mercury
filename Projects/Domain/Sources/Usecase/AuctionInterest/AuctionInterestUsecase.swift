@@ -76,8 +76,7 @@ actor AuctionInterestFetcher {
       cursor: cursor
     )
     
-    if let nextCursor = interestSales.nextCursor,
-       let _ = Int(nextCursor) {
+    if let nextCursor = interestSales.nextCursor {
       self.cursor = nextCursor
     } else {
       self.hasNext = false
