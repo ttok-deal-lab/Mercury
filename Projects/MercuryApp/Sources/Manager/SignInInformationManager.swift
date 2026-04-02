@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import UIKit
 
 import AppFoundation
 import Domain
@@ -102,8 +103,12 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
   
   public func setFcmToken(_ fcmToken: String?) {
     Task {
+      guard let deviceId = await UIDevice.current.identifierForVendor?.uuidString else {
+        print("fcm token 등록 실패: device UUID를 가져올 수 없음")
+        return
+      }
       do {
-        try await self.fcmTokenUsercase.sendFcmToken(fcmToken: fcmToken)
+        try await self.fcmTokenUsercase.sendFcmToken(fcmToken: fcmToken, deviceId: deviceId)
       } catch {
         print("fcm token 등록 실패: \(error)")
       }

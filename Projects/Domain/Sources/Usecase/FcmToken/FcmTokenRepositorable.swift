@@ -6,5 +6,5 @@
 //
 
 public protocol FcmTokenRepositorable {
-  func sendFcmToken(fcmToken: String, userId: String, deviceId: String, deviceType: String) async throws
+  func sendFcmToken(fcmToken: String, userId: Int, deviceId: String, deviceType: String) async throws
 }

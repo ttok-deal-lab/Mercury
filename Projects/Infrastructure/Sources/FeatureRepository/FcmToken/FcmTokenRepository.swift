@@ -14,7 +14,7 @@ public final class FcmTokenRepository: FcmTokenRepositorable {
   
   public init() { }
   
-  public func sendFcmToken(fcmToken: String, userId: String, deviceId: String, deviceType: String) async throws {
+  public func sendFcmToken(fcmToken: String, userId: Int, deviceId: String, deviceType: String) async throws {
     try await FCMTokenAPI
       .registFCMToken(
         fcmToken: fcmToken,
