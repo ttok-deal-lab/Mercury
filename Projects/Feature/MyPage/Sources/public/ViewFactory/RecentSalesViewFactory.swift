@@ -15,9 +15,14 @@ import Router
 public struct RecentSalesViewFactory: ViewFactory {
   
   private let recentSalesUescase: RecentSalesUsecase
+  private let auctionInterestUsecase: AuctionInterestUsecase
   
-  public init(recentViewListUsecase: RecentSalesUsecase) {
+  public init(
+    recentViewListUsecase: RecentSalesUsecase,
+    auctionInterestUsecase: AuctionInterestUsecase
+  ) {
     self.recentSalesUescase = recentViewListUsecase
+    self.auctionInterestUsecase = auctionInterestUsecase
   }
   
   public func makeView(
@@ -25,7 +30,10 @@ public struct RecentSalesViewFactory: ViewFactory {
   ) -> some View {
     switch mypageRouter.route {
     case .recentViewedList:
-      RecentSalesView(recentSalesUsecase: recentSalesUescase)
+      RecentSalesView(
+        recentSalesUsecase: recentSalesUescase,
+        auctionInterestUsecase: auctionInterestUsecase
+      )
     }
   }
 }

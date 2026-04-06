@@ -8,8 +8,8 @@
 import Foundation
 
 import AppFoundation
-
 import Pulse
+
 
 public protocol BaseAPI {
   var baseURL: String { get }
@@ -20,122 +20,138 @@ public protocol BaseAPI {
   var additionalHeaders: [String: String]? { get }
   var requestBody: [String: Any]? { get }
   var queryParam: [String: Any]? { get }
-  
+
   func request<T: Decodable>(_ model: T.Type) async throws -> T where T: Decodable
   func request() async throws
 }
 
 public extension BaseAPI {
-  var domain: String? {
-    return nil
-  }
-  
+  var domain: String? { nil }
+
   var headers: [String: String]? {
-    return [
+    [
       "Content-Type": "application/json"
     ]
   }
-  
-  var additionalHeaders: [String: String]? {
-    return nil
+
+  var additionalHeaders: [String: String]? { nil }
+  var requestBody: [String: Any]? { nil }
+  var queryParam: [String : Any]? { nil }
+
+  private var session: URLSession { BaseAPISession.session }
+
+  private func mapError(_ error: Error) -> Error {
+    if let urlError = error as? URLError, urlError.code == .cancelled {
+      return error
+    }
+    if error is DecodingError {
+      return error
+    }
+    if error is NetworkError {
+      return error
+    }
+    return NetworkError.unknownError
   }
-  
-  var requestBody: [String: Any]? {
-    return nil
-  }
-  
-  var queryParam: [String : Any]? {
-    return nil
-  }
-  
-  private var session: URLSession {
-    let config = URLSessionConfiguration.default
-    let delegate = URLSessionProxyDelegate()
-    return URLSession(configuration: config, delegate: delegate, delegateQueue: nil)
-  }
-  
+
   func request<T: Decodable>(_ model: T.Type) async throws -> T {
     do {
       let request = try makeURLRequest()
       let (data, response) = try await session.data(for: request)
-      
-      guard let http = response as? HTTPURLResponse,
-            (200...299).contains(http.statusCode)
-      else {
-        print("Network Status Code Err: \(String(describing: (response as? HTTPURLResponse)?.statusCode))")
+
+      guard let http = response as? HTTPURLResponse else {
         throw NetworkError.invalidStatusCode
       }
-      /// 401이면 갱신 해야 함.
+
+      guard (200...299).contains(http.statusCode) else {
+        throw NetworkError.invalidStatusCode
+      }
+
       return try JSONDecoder().decode(T.self, from: data)
     } catch {
-      let nsError = error as NSError
-      if nsError.code == NSURLErrorCancelled {
-        throw error
-      }
-      throw NetworkError.unknownError
+      throw mapError(error)
     }
   }
-  
+
   func request() async throws {
-    let request = try makeURLRequest()
-    let (_, response) = try await session.data(for: request)
-    
-    guard let http = response as? HTTPURLResponse,
-          (200...299).contains(http.statusCode)
-    else {
-      throw NetworkError.invalidStatusCode
+    do {
+      let request = try makeURLRequest()
+      let (_, response) = try await session.data(for: request)
+
+      guard let http = response as? HTTPURLResponse else {
+        throw NetworkError.invalidStatusCode
+      }
+
+      guard (200...299).contains(http.statusCode) else {
+        throw NetworkError.invalidStatusCode
+      }
+    } catch {
+      throw mapError(error)
     }
   }
 }
 
 private extension BaseAPI {
   func makeURLRequest() throws -> URLRequest {
+    func join(_ a: String, _ b: String) -> String {
+      switch (a.hasSuffix("/"), b.hasPrefix("/")) {
+      case (true, true):
+        return a + b.dropFirst()
+      case (false, false):
+        return a + "/" + b
+      default:
+        return a + b
+      }
+    }
+
     let plainURLString: String = {
       if let domain = domain {
-        return baseURL.appending(domain).appending(path)
+        return join(join(baseURL, domain), path)
       }
-      return baseURL.appending(path)
+      return join(baseURL, path)
     }()
-    
+
     guard var comps = URLComponents(string: plainURLString) else {
       throw NetworkError.failToConvertURL
     }
+
     if let queryParam {
       comps.queryItems = queryParam.compactMap { key, value in
         convertToQueryItem(key: key, value: value)
       }
     }
-    guard let url = comps.url else { throw NetworkError.failToConvertURL }
-    
-    print("Request URL: \(url)")
-    
+
+    guard let url = comps.url else {
+      throw NetworkError.failToConvertURL
+    }
+
     var request = URLRequest(
       url: url,
       cachePolicy: Const.cachePolicy,
       timeoutInterval: Const.timeout
     )
+
     request.httpMethod = method.rawValue
-    
-    print("Request method: \(String(describing: request.httpMethod))")
-    
+
     if let requestBody {
       request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
-      print("Request body: \(requestBody)")
     }
-    if let headers { request.allHTTPHeaderFields = headers }
+
+    if let headers {
+      request.allHTTPHeaderFields = headers
+    }
+
     if let additionalHeaders {
       request.allHTTPHeaderFields?.merge(additionalHeaders) { _, new in new }
-      print("Request Header: \(additionalHeaders)")
     }
+
     return request
   }
 }
 
-/// queryItem converting
 private extension BaseAPI {
   func convertToQueryItem(key: String, value: Any?) -> URLQueryItem? {
     guard let unwrapped = value else { return nil }
-    
+
     switch unwrapped {
     case let v as String:
       return URLQueryItem(name: key, value: v)
@@ -147,8 +163,8 @@ private extension BaseAPI {
       return nil
     }
   }
-  
-  private func isPrimitiveNumeric(_ value: CustomStringConvertible) -> Bool {
+
+  func isPrimitiveNumeric(_ value: CustomStringConvertible) -> Bool {
     switch value {
     case is Int, is Int8, is Int16, is Int32, is Int64,
       is UInt, is UInt8, is UInt16, is UInt32, is UInt64,
@@ -158,5 +174,13 @@ private extension BaseAPI {
       return false
     }
   }
-  
+}
+
+private enum BaseAPISession {
+  static let delegate = URLSessionProxyDelegate()
+
+  static let session: URLSession = {
+    let config = URLSessionConfiguration.default
+    return URLSession(configuration: config, delegate: delegate, delegateQueue: nil)
+  }()
 }

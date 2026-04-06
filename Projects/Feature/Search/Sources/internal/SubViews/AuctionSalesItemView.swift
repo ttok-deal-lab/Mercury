@@ -19,7 +19,7 @@ struct SearchAuctionSalesItemView: View {
   var body: some View {
     VStack(spacing: .zero) {
       HStack(spacing: 16) {
-        CachedAsyncImage(url: item.salesPictures.first?.url, content: { image in
+        CachedAsyncImage(url: item.salesPictures, content: { image in
           image.resizable()
         }) {
           Asset.Colors.gray150.color

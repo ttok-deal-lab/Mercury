@@ -55,4 +55,5 @@
 "auction_introduce_certified_listing_title_A" = "What is a";
 "auction_introduce_certified_listing_title_B" = "certified listing";
 "auction_introduce_certified_listing_description" = "The executive report exists so you can see the exact information.";
+"interest_view_none" = "There is no interest sales.";
 "auction_detail_sales_number" = "Sales Number %@";

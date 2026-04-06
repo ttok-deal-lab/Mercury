@@ -1,8 +1,8 @@
 //
-//  RecentViewSalesDTO.swift
+//  InterestItemDTO.swift
 //  Infrastructure
 //
-//  Created by 최수훈 on 12/29/25.
+//  Created by 최수훈 on 1/12/26.
 //
 
 import Foundation
@@ -10,49 +10,63 @@ import Foundation
 import AppFoundation
 import Domain
 
-struct RecentSalesItemDTO: Decodable, Sendable {
+struct InterestSalesDTO: Decodable, Sendable {
+  let nextCursor: String?
+  let searchHitCount: Int
+  let auctionItemResponses: [InterestItemDTO]
+}
+
+extension InterestSalesDTO {
+  func toEntity() -> InterestSales {
+    return InterestSales(
+      nextCursor: nextCursor,
+      searchHitCount: searchHitCount,
+      items: auctionItemResponses.map { $0.toEntity() }
+    )
+  }
+}
+
+struct InterestItemDTO: Decodable, Sendable {
   let id: Int
-  let isSoldOut: Bool
-  let verified: Bool
-  let salesBuildingName: String
+  let salesBuildingName: String?
   let salesAddress: String
   let salesCategories: [String]
   let salesDateTime: String
+  let salesPicture: String
   let appraisalPrice: Int
   let failBidCount: Int
   let zzimCount: Int
-  let salesPicture: String
-  
+  let verified: Bool
+  let isSoldOut: Bool
   
   enum CodingKeys: String, CodingKey {
-    case id, salesAddress, salesCategories
-    case salesDateTime, appraisalPrice, salesPicture
-    case failBidCount, zzimCount
-    case isSoldOut, verified, salesBuildingName
+    case id
+    case salesBuildingName, salesAddress, salesCategories, salesDateTime, salesPicture, appraisalPrice
+    case failBidCount, zzimCount, verified
+    case isSoldOut
   }
   
   init(from decoder: any Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
+    
     self.id = try container.decode(Int.self, forKey: .id)
-    self.isSoldOut = try container.decode(Bool.self, forKey: .isSoldOut)
-    self.verified = try container.decode(Bool.self, forKey: .verified)
-    self.salesBuildingName = try container.decode(String.self, forKey: .salesBuildingName)
+    self.salesBuildingName = try container.decode(String?.self, forKey: .salesBuildingName)
     self.salesAddress = try container.decode(String.self, forKey: .salesAddress)
     self.salesCategories = try container.decode([String].self, forKey: .salesCategories)
     self.salesDateTime = try container.decode(String.self, forKey: .salesDateTime)
+    self.salesPicture = try container.decode(String.self, forKey: .salesPicture)
     self.appraisalPrice = try container.decode(Int.self, forKey: .appraisalPrice)
     self.failBidCount = try container.decode(Int.self, forKey: .failBidCount)
     self.zzimCount = try container.decode(Int.self, forKey: .zzimCount)
-    self.salesPicture = try container.decode(String.self, forKey: .salesPicture)
+    self.verified = try container.decode(Bool.self, forKey: .verified)
+    self.isSoldOut = try container.decode(Bool.self, forKey: .isSoldOut)
   }
 }
 
-extension RecentSalesItemDTO {
-  func toEntity() -> RecentSalesItem {
-    return RecentSalesItem(
+extension InterestItemDTO {
+  func toEntity() -> InterestItem {
+    return InterestItem(
       id: id,
-      isSoldOut: isSoldOut,
-      verified: verified,
       salesBuildingName: salesBuildingName,
       salesAddress: salesAddress,
       salesCategories: salesCategories.compactMap { AuctionSalesCategory.fromRawValue($0) },
@@ -60,7 +74,9 @@ extension RecentSalesItemDTO {
       appraisalPrice: appraisalPrice.toKoreanWon,
       salesPictures: URL(string: salesPicture),
       failBidCount: failBidCount,
-      zzimCount: zzimCount
+      zzimCount: zzimCount,
+      verified: verified,
+      isSoldOut: isSoldOut
     )
   }
 }

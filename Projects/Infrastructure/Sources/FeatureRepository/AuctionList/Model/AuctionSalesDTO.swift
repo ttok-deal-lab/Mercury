@@ -30,18 +30,19 @@ struct AuctionSalesItemDTO: Decodable, Sendable {
   let id: Int
   let salesAddress: String
   let salesCategories: [String]
+  let salesBuildingName: String
   let salesDateTime: String
   let appraisalPrice: Int
   let failBidCount: Int
   let zzimCount: Int
   let caseNumber: String
-  let salesPicture: [SalesPictureDTO]
+  let salesPicture: String
   let registerDate: String
   let verified: Bool
   let isSoldOut: Bool
   
   enum CodingKeys: String, CodingKey {
-    case id, caseNumber, salesAddress, salesCategories
+    case id, caseNumber, salesAddress, salesCategories, salesBuildingName
     case salesDateTime, appraisalPrice, salesPicture
     case failBidCount, zzimCount, registerDate, verified
     case isSoldOut
@@ -54,8 +55,9 @@ struct AuctionSalesItemDTO: Decodable, Sendable {
     caseNumber = try container.decode(String.self, forKey: .caseNumber)
     salesAddress = try container.decode(String.self, forKey: .salesAddress)
     salesCategories = try container.decode([String].self, forKey: .salesCategories)
+    salesBuildingName = try container.decode(String.self, forKey: .salesBuildingName)
     appraisalPrice = try container.decode(Int.self, forKey: .appraisalPrice)
-    salesPicture = try container.decode([SalesPictureDTO].self, forKey: .salesPicture)
+    salesPicture = try container.decode(String.self, forKey: .salesPicture)
     failBidCount = try container.decode(Int.self, forKey: .failBidCount)
     zzimCount = try container.decode(Int.self, forKey: .zzimCount)
     verified = try container.decode(Bool.self, forKey: .verified)
@@ -72,9 +74,10 @@ extension AuctionSalesItemDTO {
       caseNumber: caseNumber,
       salesAddress: salesAddress,
       salesCategories: salesCategories.compactMap { AuctionSalesCategory.fromRawValue($0) },
+      salesBuildingName: salesBuildingName,
       salesDateTime: salesDateTime.toKoreanDate(),
       appraisalPrice: appraisalPrice.toKoreanWon,
-      salesPictures: salesPicture.map { SalesPicture(sequence: $0.sequence, url: URL(string: $0.imageUrl)) },
+      salesPictures: URL(string: salesPicture),
       failBidCount: failBidCount,
       zzimCount: zzimCount,
       registerDate: registerDate.toKoreanDate(),

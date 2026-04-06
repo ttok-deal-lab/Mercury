@@ -9,7 +9,7 @@ import Foundation
 
 import AppFoundation
 
-public class ServiceSignInUsecase: ServiceSignInUsecasable {
+public final class ServiceSignInUsecase: ServiceSignInUsecasable {
   private let repository: ServiceSignInRepositorable
   
   public init(repository: ServiceSignInRepositorable) {

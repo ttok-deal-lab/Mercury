@@ -18,16 +18,19 @@ public struct AuctionHomeView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var modelData: AuctionHomeModelData
   @State private var isShowFilterArea: Bool = false
+  private var isZzim: Bool = false
   
   public init(
     auctionListUsecase: AuctionSalesListUsecasable,
     auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
+    auctionInterestUsecase: AuctionInterestUsecasable,
     localStorageUsecase: LocalStorageUsecasable
   ) {
     self.modelData = AuctionHomeModelData(
       localStorageUsecase: localStorageUsecase,
       auctionListUsecase: auctionListUsecase,
-      auctionSearchFilterUsecase: auctionSearchFilterUsecase
+      auctionSearchFilterUsecase: auctionSearchFilterUsecase,
+      auctionInterestUsecase: auctionInterestUsecase
     )
   }
   
@@ -59,7 +62,9 @@ public struct AuctionHomeView: View {
               }
             } label: {
               AuctionSalesItemView(item: item, onZzim: {
-                // 찜 했을때의 액션
+                Task {
+                  try await modelData.tapOnZzim(auctionID: item.id)
+                }
               })
             }
           }
@@ -89,7 +94,7 @@ public struct AuctionHomeView: View {
     }
     .sheet(isPresented: $isShowFilterArea, content: {
       AuctionFilterLocationView(modelData: $modelData) {
-        Task {
+        Task {  
           await modelData.loadAuctionSalesList()
           isShowFilterArea = false
         }

@@ -1,20 +1,28 @@
 //
-//  RecentViewSales.swift
+//  InterestItem.swift
 //  Domain
 //
-//  Created by 최수훈 on 12/29/25.
+//  Created by 최수훈 on 1/12/26.
 //
 
 import Foundation
 
-public struct RecentSalesItem: Identifiable {
+public struct InterestSales {
+  public let nextCursor: String?
+  public let searchHitCount: Int
+  public let items: [InterestItem]
+  
+  public init(nextCursor: String?, searchHitCount: Int, items: [InterestItem], ) {
+    self.nextCursor = nextCursor
+    self.searchHitCount = searchHitCount
+    self.items = items
+  }
+}
+
+public struct InterestItem: Identifiable, Equatable {
   public let id: Int
-  /// 매각여부
-  public let isSoldOut: Bool
-  /// 인증매물 여부
-  public let verified: Bool
-  /// 건물명
-  public let salesBuildingName: String?
+  /// 건물 이름
+    public let salesBuildingName: String?
   /// 물건 주소
   public let salesAddress: String
   /// 카테고리
@@ -28,29 +36,31 @@ public struct RecentSalesItem: Identifiable {
   /// 입찰실패 횟수
   public let failBidCount: Int
   /// 찜 횟수
-  public var zzimCount: Int
+  public let zzimCount: Int
+  /// 매각여부
+  public let isSoldOut: Bool
   /// 매각까지 남은 기간
   public let salesLeftDays: Int
+  /// 인증 매물 여부
+  public let verified: Bool
   /// 찜 여부
   public var isZzim: Bool = false
   
   public init(
     id: Int,
-    isSoldOut: Bool,
-    verified: Bool,
-    salesBuildingName: String?,
+        salesBuildingName: String?,
     salesAddress: String,
     salesCategories: [AuctionSalesCategory],
     salesDateTime: Date,
     appraisalPrice: String,
     salesPictures: URL?,
     failBidCount: Int,
-    zzimCount: Int
+    zzimCount: Int,
+    verified: Bool,
+    isSoldOut: Bool
   ) {
     self.id = id
-    self.isSoldOut = isSoldOut
-    self.verified = verified
-    self.salesBuildingName = salesBuildingName
+        self.salesBuildingName = salesBuildingName
     self.salesAddress = salesAddress
     self.salesCategories = salesCategories
     self.salesDateTime = salesDateTime
@@ -64,5 +74,7 @@ public struct RecentSalesItem: Identifiable {
       return days
     }()
     self.salesLeftDays = leftDays
+    self.verified = verified
+    self.isSoldOut = isSoldOut
   }
 }

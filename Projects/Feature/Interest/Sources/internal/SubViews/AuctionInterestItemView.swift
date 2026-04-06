@@ -1,8 +1,8 @@
 //
-//  RecentSalesItemView.swift
-//  MyPage
+//  InterestItemView.swift
+//  Interest
 //
-//  Created by 최수훈 on 12/30/25.
+//  Created by 최수훈 on 1/12/26.
 //
 
 import SwiftUI
@@ -11,10 +11,9 @@ import AppFoundation
 import Domain
 import UIComponent
 
-
-struct RecentSalesItemView: View {
+struct AuctionInterestItemView: View {
   
-  let item: RecentSalesItem
+  let item: InterestItem
   let onZzim: () -> Void
   
   var body: some View {
@@ -59,7 +58,6 @@ struct RecentSalesItemView: View {
             .foregroundStyle(Asset.Colors.neutralSubtler.color)
             .fonts(.bodyMicroRegular)
             .multilineTextAlignment(.leading)
-            .padding(.top, 2)
           
           Spacer()
           
@@ -96,9 +94,7 @@ struct RecentSalesItemView: View {
                 Asset.Images.heart.image
                   .renderingMode(.template)
                   .resizable()
-                  .foregroundStyle(
-                    self.item.isZzim ? Asset.Colors.critical.color : Asset.Colors.neutralMuted.color
-                  )
+                  .foregroundStyle(Asset.Colors.critical.color)
                   .frame(width: 18, height: 18)
                 
                 Text("\(item.zzimCount)")

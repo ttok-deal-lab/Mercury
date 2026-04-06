@@ -8,15 +8,21 @@
 import SwiftUI
 import Combine
 
+import Domain
 import Router
 import Interest
+import Infrastructure
 
 public struct InterestViewWrapperView: View, InterestViewable {
   
-  let hostView: InterestView
+  let hostView: AuctionInterestView
   
   public init() {
-    self.hostView = InterestView()
+    self.hostView = AuctionInterestView(
+      interestUsecase: AuctionInterestUsecase(
+        repository: AuctionInterestRepository()
+      )
+    )
   }
   
   public var body: some View {

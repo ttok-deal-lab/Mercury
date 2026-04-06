@@ -17,8 +17,12 @@ public struct RecentSalesView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var modelData: RecentSalesModelData
   
-  public init(recentSalesUsecase: RecentSalesUsecase) {
-    self.modelData = RecentSalesModelData( recentViewListUsecase: recentSalesUsecase)
+  public init(recentSalesUsecase: RecentSalesUsecase,
+              auctionInterestUsecase: AuctionInterestUsecase) {
+    self.modelData = RecentSalesModelData(
+      recentViewListUsecase: recentSalesUsecase,
+      auctionInterestUsecase: auctionInterestUsecase
+    )
   }
   
   public var body: some View {
@@ -39,22 +43,27 @@ public struct RecentSalesView: View {
                 coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
               } label: {
                 RecentSalesItemView(item: item, onZzim: {
-                  // TODO: - 찜 했을 때 액션
+                  Task {
+                    try await modelData.tapOnZzim(auctionID: item.id)
+                  }
                 })
               }
             }
           }
         }
       } else {
-        Asset.Images.dot3Circle.image
-          .padding(.top, 145)
-          .padding(.bottom, 12)
-        
-        Text(L10n.settingRecentViewNone)
-          .fonts(.bodySmallMedium)
-          .foregroundStyle(Asset.Colors.neutralSubtler.color)
+        VStack {
+          Asset.Images.dot3Circle.image
+            .padding(.top, 145)
+            .padding(.bottom, 12)
+          
+          Text(L10n.settingRecentViewNone)
+            .fonts(.bodySmallMedium)
+            .foregroundStyle(Asset.Colors.neutralSubtler.color)
+          
+          Spacer()
+        }
       }
-      Spacer()
     }
     .loading(modelData.isLoading)
     .onLoad {

@@ -7,6 +7,8 @@
 
 import Foundation
 
+import AppFoundation
+import Domain
 import Networking
 
 enum MapAPI {
@@ -78,6 +80,9 @@ extension MapAPI: BaseAPI {
       ]
     }
   }
-  
-  
+
+  var headers: [String: String]? {
+    ["Authorization": MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
+  }
+
 }

@@ -15,10 +15,11 @@ struct AuctionSalesItemView: View {
   let item: AuctionSalesItem
   let onZzim: () -> Void
   
+  
   var body: some View {
     VStack(spacing: .zero) {
       HStack(spacing: 16) {
-        CachedAsyncImage(url: item.salesPictures.first?.url, content: { image in
+        CachedAsyncImage(url: item.salesPictures, content: { image in
           image.resizable()
         }) {
           Asset.Colors.gray150.color
@@ -53,9 +54,18 @@ struct AuctionSalesItemView: View {
             .fonts(.bodyMicroMedium)
             .multilineTextAlignment(.leading)
           
+          Text("\(item.salesBuildingName ?? "")")
+            .foregroundStyle(Asset.Colors.neutralSubtler.color)
+            .fonts(.bodyMicroRegular)
+            .multilineTextAlignment(.leading)
+          
           Spacer()
           
           HStack(spacing: 5) {
+            if item.verified {
+              MercuryGradientLabel(title: L10n.commonCertifiedAuction)
+            }
+            
             if !item.salesCategories.isEmpty,
                let firstSalesCategory = item.salesCategories.first?.rawValue {
               Text(firstSalesCategory)
@@ -84,7 +94,9 @@ struct AuctionSalesItemView: View {
                 Asset.Images.heart.image
                   .renderingMode(.template)
                   .resizable()
-                  .foregroundStyle(Asset.Colors.neutralMuted.color)
+                  .foregroundStyle(
+                    self.item.isZzim ? Asset.Colors.critical.color : Asset.Colors.neutralMuted.color
+                  )
                   .frame(width: 18, height: 18)
                 
                 Text("\(item.zzimCount)")

@@ -42,10 +42,10 @@ class KakaoSignInProvider: OauthSignInable {
         return
       }
       guard let token = oauthToken?.accessToken else {
+        
         continuation.resume(throwing: MercuryError(.noOauthToken))
         return
       }
-      
       continuation.resume(returning: token)
     }
   }

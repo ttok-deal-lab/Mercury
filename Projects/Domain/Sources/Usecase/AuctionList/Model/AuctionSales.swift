@@ -27,30 +27,49 @@ public struct AuctionSalesItem: Identifiable {
   public let salesAddress: String
   /// 카테고리
   public let salesCategories: [AuctionSalesCategory]
+  /// 건물 이름
+  public let salesBuildingName: String?
   /// 경매 날짜
   public let salesDateTime: Date
   /// 가격
   public let appraisalPrice: String
   /// 물건 사진 정보
-  public let salesPictures: [SalesPicture]
+  public let salesPictures: URL?
   /// 입찰실패 횟수
   public let failBidCount: Int
   /// 찜 횟수
-  public let zzimCount: Int
+  public var zzimCount: Int
   /// 등록 날짜
   public let registerDate: Date
-  /// 인증 물건 여부
-  public let verified: Bool
   /// 매각까지 남은 기간
   public let salesLeftDays: Int
+  /// 인증 물건 여부
+  public let verified: Bool
   /// 매각여부
   public let isSoldOut: Bool
+  /// 찜 여부
+  public var isZzim: Bool = false
   
-  public init(id: Int, caseNumber: String, salesAddress: String, salesCategories: [AuctionSalesCategory], salesDateTime: Date, appraisalPrice: String, salesPictures: [SalesPicture], failBidCount: Int, zzimCount: Int, registerDate: Date, verified: Bool, isSoldOut: Bool) {
+  public init(
+    id: Int,
+    caseNumber: String,
+    salesAddress: String,
+    salesCategories: [AuctionSalesCategory],
+    salesBuildingName: String?,
+    salesDateTime: Date,
+    appraisalPrice: String,
+    salesPictures: URL?,
+    failBidCount: Int,
+    zzimCount: Int,
+    registerDate: Date,
+    verified: Bool,
+    isSoldOut: Bool
+  ) {
     self.id = id
     self.caseNumber = caseNumber
     self.salesAddress = salesAddress
     self.salesCategories = salesCategories
+    self.salesBuildingName = salesBuildingName
     self.salesDateTime = salesDateTime
     self.appraisalPrice = appraisalPrice
     self.salesPictures = salesPictures

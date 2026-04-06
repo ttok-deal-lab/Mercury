@@ -54,6 +54,9 @@ struct RootViewFactory: ViewFactory {
         recentViewListUsecase: RecentSalesUsecase(
           repository: RecentSalesRepository(),
           localStorageUseCase: LocalStorageUsecase(repository: UserDefaultsStoreRepository())
+        ),
+        auctionInterestUsecase: AuctionInterestUsecase(
+          repository: AuctionInterestRepository()
         )
       )
       .makeView(myPageStep)

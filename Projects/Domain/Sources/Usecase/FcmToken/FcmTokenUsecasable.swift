@@ -8,6 +8,6 @@
 import Foundation
 
 public protocol FcmTokenUsecasable: Sendable {
-  func sendFcmToken(fcmToken: String?) async throws
+  func sendFcmToken(fcmToken: String?, deviceId: String) async throws
 }
 

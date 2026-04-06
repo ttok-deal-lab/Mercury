@@ -7,6 +7,8 @@
 
 import Foundation
 
+import AppFoundation
+import Domain
 import Networking
 
 enum AuctionAPI: BaseAPI {
@@ -51,6 +53,10 @@ enum AuctionAPI: BaseAPI {
     case .auctionSearchFilter: .get
     }
   }
+
+  var headers: [String: String]? {
+    ["Authorization": MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
+  }
   
   var queryParam: [String : Any]? {
     switch self {
@@ -58,13 +64,13 @@ enum AuctionAPI: BaseAPI {
       var params: [String: Any] = [:]
       
       params["keyword"] = keyword ?? "unknown"
-  
+      
       if let region = region {
         params["region"] = region
       } else {
         params["region"] = "ALL"
       }
-
+      
       if let district = district {
         if district.lowercased() == "unknown" {
           params["district"] = "unknown"
@@ -111,7 +117,7 @@ enum AuctionAPI: BaseAPI {
       return params
     case .auctionDetail:
       return nil
-    case .auctionSales(let auctionIDs):
+    case .auctionSales:
       return nil
     case .auctionSearchFilter:
       return nil

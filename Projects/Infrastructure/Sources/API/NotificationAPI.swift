@@ -7,6 +7,8 @@
 
 import Foundation
 
+import AppFoundation
+import Domain
 import Networking
 
 enum NotificationAPI {
@@ -45,6 +47,9 @@ extension NotificationAPI: BaseAPI {
       return .get
     }
   }
-  
-  
+
+  var headers: [String: String]? {
+    ["Authorization": MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
+  }
+
 }

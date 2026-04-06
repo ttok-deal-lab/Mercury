@@ -7,6 +7,8 @@
 
 import Foundation
 
+import AppFoundation
+import Domain
 import Networking
 
 enum UserFavoritesProductAPI {
@@ -54,5 +56,9 @@ extension UserFavoritesProductAPI: BaseAPI {
     case .loadAllFavoritesProducts:
       return .get
     }
+  }
+
+  var headers: [String: String]? {
+    ["Authorization": MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
   }
 }

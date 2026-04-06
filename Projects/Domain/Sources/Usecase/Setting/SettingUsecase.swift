@@ -13,7 +13,7 @@ public class SettingUsecase: SettingUsecasable {
     self.fetcher = SettingFetcher(repository: repository)
   }
   public func signOut() async throws {
-    
+    try await fetcher.signOut()
   }
 }
 
@@ -25,6 +25,6 @@ actor SettingFetcher {
   }
   
   func signOut() async throws {
-    
+    try await repository.signOut()
   }
 }

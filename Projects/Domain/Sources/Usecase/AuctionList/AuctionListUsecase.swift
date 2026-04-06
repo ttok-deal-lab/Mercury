@@ -40,6 +40,7 @@ actor AuctionSalesListFetcher {
   
   func fetchInitial(filter: CurrentAuctionFilter?) async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
     self.cursor = nil
+    self.hasNext = true
     return try await fetch(filter: filter)
   }
   
@@ -63,8 +64,7 @@ actor AuctionSalesListFetcher {
       size: loadOnce
     )
     
-    if let nextCursor = fetchedAuctionSales.nextCursor,
-        let _ = Int(nextCursor) {
+    if let nextCursor = fetchedAuctionSales.nextCursor {
       self.cursor = nextCursor
     } else {
       self.hasNext = false

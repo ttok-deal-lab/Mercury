@@ -21,7 +21,7 @@ public struct OnboardingFactory: ViewFactory {
     locationUsecasable: LocationUsecasable
   ) {
     self.serviceSignInUsecasable = serviceSignInUsecasable
-    self.locationUsecasable = locationUsecasable
+    self.locationUsecasable = locationUsecasable 
   }
   
   public func makeView(

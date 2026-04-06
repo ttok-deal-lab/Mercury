@@ -28,6 +28,18 @@ public struct CurrentAuctionFilter {
   /// 낙찰여부
   public var isBidWon: Bool = false
   
+  public var isEmpty: Bool {
+    self.keyword == nil &&
+    self.region == nil &&
+    self.buildingTypeCodes == nil &&
+    self.auctionFailCodes == nil &&
+    self.minimumPrice == nil &&
+    self.maximumPrice == nil &&
+    self.sort == nil &&
+    self.isCertified == false &&
+    self.isBidWon == false
+  }
+  
   public init() {
     
   }
