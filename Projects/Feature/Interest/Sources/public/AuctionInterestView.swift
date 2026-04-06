@@ -33,18 +33,20 @@ public struct AuctionInterestView: View {
           LazyVStack(spacing: .zero) {
             ForEach(modelData.interestList) { item in
               AuctionInterestItemView(item: item, onZzim: {
-                // TODO: - 찜 제거했을 떄의 액션
-                modelData.interestList.remove(at: modelData.interestList.firstIndex(of: item)!)
+                modelData.interestList.removeAll { $0 == item }
                 Task {
                   try await modelData.removeUserInterestAuction(auctionID: item.id)
                 }
               })
+              .onAppear {
+                if item.id == modelData.interestList.last?.id {
+                  Task {
+                    await modelData.loadMoreInterestSales()
+                  }
+                }
+              }
             }
-            
-            if !modelData.interestList.isEmpty {
-              loadMoreView()
-            }
-            
+
             if modelData.isLoadingForPaging {
               ProgressView()
                 .frame(width: 50, height: 50)
@@ -71,13 +73,5 @@ public struct AuctionInterestView: View {
         
       }
     }
-  }
-  
-  @ViewBuilder
-  private func loadMoreView() -> some View {
-    Color.clear
-      .task {
-        await modelData.loadMoreInterestSales()
-      }
   }
 }

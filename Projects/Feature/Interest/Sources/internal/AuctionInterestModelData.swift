@@ -33,6 +33,7 @@ final class AuctionInterestModelData {
       self.isLoading = false
     }
     do {
+      await self.interestUsecase.resetPagination()
       let interestList = try await self.interestUsecase.loadInterest()
       self.interestList = interestList
     } catch let error {
@@ -41,16 +42,17 @@ final class AuctionInterestModelData {
   }
   
   func loadMoreInterestSales() async {
+    guard !isLoadingForPaging else { return }
     self.isLoadingForPaging = true
     defer {
       self.isLoadingForPaging = false
     }
     
-    let currentInterestSalesItem = self.interestList
-    
     do {
       let interestItems = try await interestUsecase.loadNextInterest()
-      self.interestList = currentInterestSalesItem + interestItems
+      let existingIDs = Set(interestList.map(\.id))
+      let newItems = interestItems.filter { !existingIDs.contains($0.id) }
+      self.interestList += newItems
     } catch {
       self.error = error
     }
