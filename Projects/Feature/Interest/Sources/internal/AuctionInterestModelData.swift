@@ -33,7 +33,7 @@ final class AuctionInterestModelData {
       self.isLoading = false
     }
     do {
-      let interestList = try await self.interestUsecase.loadUserInterestAuctions()
+      let interestList = try await self.interestUsecase.loadInterest()
       self.interestList = interestList
     } catch let error {
       self.error = error
@@ -49,7 +49,7 @@ final class AuctionInterestModelData {
     let currentInterestSalesItem = self.interestList
     
     do {
-      let interestItems = try await interestUsecase.loadNextInterestAuctions()
+      let interestItems = try await interestUsecase.loadNextInterest()
       self.interestList = currentInterestSalesItem + interestItems
     } catch {
       self.error = error
@@ -57,7 +57,7 @@ final class AuctionInterestModelData {
   }
   
   func removeUserInterestAuction(auctionID: Int) async throws {
-    try await self.interestUsecase.removeUserInterestAuction(auctionID: auctionID)
+    try await self.interestUsecase.removeInterest(auctionID: auctionID)
   }
 }
 

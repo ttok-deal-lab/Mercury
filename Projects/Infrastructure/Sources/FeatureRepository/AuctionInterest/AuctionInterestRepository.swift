@@ -23,28 +23,28 @@ public final class AuctionInterestRepository: AuctionInterestRepositoriable {
   }
   
   // 단일물건 관심여부
-  public func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
+  public func isAuctionInterested(auctionID: Int) async throws -> Bool {
     let userID = try getUserID()
-    let isZzim = try await AuctionInterestAPI.isAuctionUserInterested(
+    let isZzim = try await AuctionInterestAPI.isAuctionInterested(
       userID: userID,
       auctionID: auctionID
     ).request(Bool.self)
     return isZzim
   }
   
-  public func addUserInterestAuction(auctionID: Int) async throws {
+  public func addInterest(auctionID: Int) async throws {
     let userID = try getUserID()
-    try await AuctionInterestAPI.addUserInterestAuction(
+    try await AuctionInterestAPI.addInterest(
       userID: userID,
       auctionID: auctionID
     )
     .request()
   }
   
-  public func removeUserInterestAuction(auctionID: Int) async throws {
+  public func removeInterest(auctionID: Int) async throws {
     let userID = try getUserID()
     try await AuctionInterestAPI
-      .removeUserInterestAuction(
+      .removeInterest(
         userID: userID,
         auctionID: auctionID
       )
@@ -52,14 +52,14 @@ public final class AuctionInterestRepository: AuctionInterestRepositoriable {
   }
   
   // 관심 탭 리스트
-  public func fetchUserInterestAuctions(
+  public func fetchInterest(
     type: String?,
     cursor: String?
   ) async throws -> InterestSales {
     let userID = try getUserID()
     // TODO: - type, cursor
     let interestSalesDTO = try await AuctionInterestAPI
-      .fetchUserInterestAuctions(
+      .fetchInterest(
         userID: userID,
         type: type,
         nextCursor: cursor
@@ -70,9 +70,9 @@ public final class AuctionInterestRepository: AuctionInterestRepositoriable {
     return interestItemList
   }
   
-  public func fetchInterestAuctionList(ids: [Int]) async throws -> [InterestWhether] {
+  public func fetchInterestList(ids: [Int]) async throws -> [InterestWhether] {
     let userID = try getUserID()
-    let interestWhetherDTO = try await AuctionInterestAPI.fetchInterestAuctionList(
+    let interestWhetherDTO = try await AuctionInterestAPI.fetchInterestList(
       userID: userID,
       ids: ids
     )

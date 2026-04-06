@@ -8,10 +8,10 @@
 import Foundation
 
 public protocol AuctionInterestUsecasable: Sendable {
-  func isAuctionUserInterested(auctionID: Int) async throws -> Bool
-  func addUserInterestAuction(auctionID: Int) async throws
-  func removeUserInterestAuction(auctionID: Int) async throws
-  func loadUserInterestAuctions() async throws -> [InterestItem]
-  func loadNextInterestAuctions() async throws -> [InterestItem]
-  func loadInterestAuctionList(ids: [Int]) async throws -> [InterestWhether]
+  func isAuctionInterested(auctionID: Int) async throws -> Bool
+  func addInterest(auctionID: Int) async throws
+  func removeInterest(auctionID: Int) async throws
+  func loadInterest() async throws -> [InterestItem]
+  func loadNextInterest() async throws -> [InterestItem]
+  func loadInterestList(ids: [Int]) async throws -> [InterestWhether]
 }

@@ -52,10 +52,10 @@ final class RecentSalesModelData {
     let isNowZzim = try await isAuctionUserInterested(auctionID: auctionID)
     if !isNowZzim {
       try await auctionInterestUsecase
-        .addUserInterestAuction(auctionID: auctionID)
+        .addInterest(auctionID: auctionID)
     } else {
       try await auctionInterestUsecase
-        .removeUserInterestAuction(auctionID: auctionID)
+        .removeInterest(auctionID: auctionID)
     }
     targetItem.zzimCount += isNowZzim ? -1 : 1
     targetItem.isZzim.toggle()
@@ -63,7 +63,7 @@ final class RecentSalesModelData {
   }
   
   func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
-    let isZzim = try await auctionInterestUsecase.isAuctionUserInterested(auctionID: auctionID)
+    let isZzim = try await auctionInterestUsecase.isAuctionInterested(auctionID: auctionID)
     return isZzim
   }
   
@@ -71,7 +71,7 @@ final class RecentSalesModelData {
   private func loadInterestAuctionList(list: [RecentSalesItem]) async throws -> [RecentSalesItem]{
     var itemList = list
     let ids = itemList.map { $0.id }
-    let interestWhetherList = try await auctionInterestUsecase.loadInterestAuctionList(ids: ids)
+    let interestWhetherList = try await auctionInterestUsecase.loadInterestList(ids: ids)
     
     for inter in interestWhetherList {
       guard let index = itemList.firstIndex(where: { $0.id == inter.id }) else { return itemList }

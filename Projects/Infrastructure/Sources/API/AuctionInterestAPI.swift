@@ -12,11 +12,11 @@ import Domain
 import Networking
 
 enum AuctionInterestAPI {
-  case isAuctionUserInterested(userID: Int, auctionID: Int, type: String? = "product")
-  case addUserInterestAuction(userID: Int, auctionID: Int, type: String? = "product")
-  case removeUserInterestAuction(userID: Int, auctionID: Int, type: String? = "product")
-  case fetchUserInterestAuctions(userID: Int, type: String? = "product", nextCursor: String?)
-  case fetchInterestAuctionList(userID: Int, ids: [Int])
+  case isAuctionInterested(userID: Int, auctionID: Int, type: String? = "product")
+  case addInterest(userID: Int, auctionID: Int, type: String? = "product")
+  case removeInterest(userID: Int, auctionID: Int, type: String? = "product")
+  case fetchInterest(userID: Int, type: String? = "product", nextCursor: String?)
+  case fetchInterestList(userID: Int, ids: [Int])
 }
 
 extension AuctionInterestAPI: BaseAPI {
@@ -31,13 +31,13 @@ extension AuctionInterestAPI: BaseAPI {
   
   var path: String {
     switch self {
-    case let .isAuctionUserInterested(userID, auctionID, _),
-      let .addUserInterestAuction(userID, auctionID, _),
-      let .removeUserInterestAuction(userID, auctionID, _):
+    case let .isAuctionInterested(userID, auctionID, _),
+      let .addInterest(userID, auctionID, _),
+      let .removeInterest(userID, auctionID, _):
       return "\(userID)/favorites/\(auctionID)"
-    case let .fetchUserInterestAuctions(userID, _, _):
+    case let .fetchInterest(userID, _, _):
       return "\(userID)/favorites"
-    case let .fetchInterestAuctionList(userID, ids):
+    case let .fetchInterestList(userID, ids):
       let idsString = ids
         .map { "ids=\($0)" }
         .joined(separator: "&")
@@ -47,26 +47,26 @@ extension AuctionInterestAPI: BaseAPI {
   
   var method: Networking.HTTPMethod {
     switch self {
-    case .isAuctionUserInterested:
+    case .isAuctionInterested:
       return .get
-    case .addUserInterestAuction:
+    case .addInterest:
       return .post
-    case .removeUserInterestAuction:
+    case .removeInterest:
       return .delete
-    case .fetchUserInterestAuctions:
+    case .fetchInterest:
       return .get
-    case .fetchInterestAuctionList:
+    case .fetchInterestList:
       return .get
     }
   }
   
   var headers: [String : String]? {
     switch self {
-    case .isAuctionUserInterested(_, _, _),
-        .addUserInterestAuction(_, _, _),
-        .removeUserInterestAuction(_, _, _),
-        .fetchUserInterestAuctions(_, _, _),
-        .fetchInterestAuctionList(_, _):
+    case .isAuctionInterested(_, _, _),
+        .addInterest(_, _, _),
+        .removeInterest(_, _, _),
+        .fetchInterest(_, _, _),
+        .fetchInterestList(_, _):
       debugPrint(MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? "")
       return ["Authorization" : MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
     }
@@ -74,9 +74,9 @@ extension AuctionInterestAPI: BaseAPI {
   
   var queryParam: [String: Any]? {
     switch self {
-    case let .addUserInterestAuction(_, _, type),
-      let .removeUserInterestAuction(_, _, type),
-      let .isAuctionUserInterested(_, _, type):
+    case let .addInterest(_, _, type),
+      let .removeInterest(_, _, type),
+      let .isAuctionInterested(_, _, type):
       var params: [String: Any] = [:]
       
       if let type = type {
@@ -86,7 +86,7 @@ extension AuctionInterestAPI: BaseAPI {
       }
       
       return params
-    case let .fetchUserInterestAuctions(_, type, nextCursor):
+    case let .fetchInterest(_, type, nextCursor):
       var params: [String: Any] = [:]
       
       if let type = type {
@@ -100,7 +100,7 @@ extension AuctionInterestAPI: BaseAPI {
       }
       
       return params
-    case .fetchInterestAuctionList(_, _):
+    case .fetchInterestList(_, _):
       return nil
     }
   }

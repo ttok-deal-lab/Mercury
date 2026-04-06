@@ -13,27 +13,27 @@ final public class AuctionInterestUsecase: AuctionInterestUsecasable {
     self.fetcher = AuctionInterestFetcher(repository: repository)
   }
   
-  public func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
+  public func isAuctionInterested(auctionID: Int) async throws -> Bool {
     return try await fetcher.isAuctionUserInterested(auctionID: auctionID)
   }
   
-  public func addUserInterestAuction(auctionID: Int) async throws {
+  public func addInterest(auctionID: Int) async throws {
     try await fetcher.addUserInterestAuction(auctionID: auctionID)
   }
   
-  public func removeUserInterestAuction(auctionID: Int) async throws {
+  public func removeInterest(auctionID: Int) async throws {
     try await fetcher.removeUserInterestAuction(auctionID: auctionID)
   }
   
-  public func loadUserInterestAuctions() async throws -> [InterestItem] {
+  public func loadInterest() async throws -> [InterestItem] {
     return try await fetcher.fetchUserInterestAuctions()
   }
   
-  public func loadNextInterestAuctions() async throws -> [InterestItem] {
+  public func loadNextInterest() async throws -> [InterestItem] {
     return try await fetcher.fetchNextInterestAuctions()
   }
   
-  public func loadInterestAuctionList(ids: [Int]) async throws -> [InterestWhether] {
+  public func loadInterestList(ids: [Int]) async throws -> [InterestWhether] {
     return try await fetcher.loadInterestAuctionList(ids: ids)
   }
 }
@@ -50,18 +50,18 @@ actor AuctionInterestFetcher {
   }
   
   func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
-    let isZzim = try await repository.isAuctionUserInterested(auctionID: auctionID)
+    let isZzim = try await repository.isAuctionInterested(auctionID: auctionID)
     return isZzim
   }
   
   func addUserInterestAuction(auctionID: Int) async throws {
-    try await repository.addUserInterestAuction(auctionID: auctionID)
+    try await repository.addInterest(auctionID: auctionID)
   }
   
   // 매물들의
   func removeUserInterestAuction(auctionID: Int) async throws {
     // TODO: - 유저정보 가지고오기
-    try await repository.removeUserInterestAuction(auctionID: auctionID)
+    try await repository.removeInterest(auctionID: auctionID)
   }
   
   // 유저의 관심 탭 리스트
@@ -71,7 +71,7 @@ actor AuctionInterestFetcher {
       self.isLoading = false
     }
     
-    let interestSales = try await repository.fetchUserInterestAuctions(
+    let interestSales = try await repository.fetchInterest(
       type: "product",
       cursor: cursor
     )
@@ -94,6 +94,6 @@ actor AuctionInterestFetcher {
   
   // 주어진 매물들의 관심 설정여부 조회
   func loadInterestAuctionList(ids: [Int]) async throws -> [InterestWhether] {
-    return try await repository.fetchInterestAuctionList(ids: ids)
+    return try await repository.fetchInterestList(ids: ids)
   }
 }
