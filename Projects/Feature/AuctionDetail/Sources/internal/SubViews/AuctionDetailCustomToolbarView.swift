@@ -14,6 +14,14 @@ struct AuctionDetailCustomToolbarView: View {
   @Environment(\.dismiss) var dismiss
   let auctionDetailInfo: AuctionDetail
   
+  private var shareText: String {
+    [
+      auctionDetailInfo.salesAddress,
+      "사건번호: \(auctionDetailInfo.salesNumber)"
+    ]
+    .joined(separator: "\n")
+  }
+  
   var body: some View {
     HStack {
       Button {
@@ -31,7 +39,7 @@ struct AuctionDetailCustomToolbarView: View {
       
       Spacer()
       
-      ShareLink(item: URL(string: "www.naver.com")!) {
+      ShareLink(item: shareText) {
         Asset.Images.share.image
           .resizable()
           .frame(width: 28, height: 28)

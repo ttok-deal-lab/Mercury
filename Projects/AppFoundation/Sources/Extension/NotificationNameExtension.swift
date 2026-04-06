@@ -9,4 +9,5 @@ import UIKit
 
 public extension Notification.Name {
   static let deviceDidShakeNotification = Notification.Name("deviceDidShakeNotification")
+  static let auctionZzimDidChange = Notification.Name("auctionZzimDidChange")
 }

@@ -96,6 +96,17 @@ public struct AuctionHomeView: View {
       Task {
         await modelData.refreshInterestStatus()
       }
+    .onReceive(NotificationCenter.default.publisher(for: .auctionZzimDidChange)) { notification in
+      guard
+        let userInfo = notification.userInfo,
+        let auctionID = userInfo[AuctionZzimNotificationUserInfoKey.auctionID] as? Int,
+        let isZzimed = userInfo[AuctionZzimNotificationUserInfoKey.isZzimed] as? Bool,
+        let zzimCount = userInfo[AuctionZzimNotificationUserInfoKey.zzimCount] as? Int
+      else {
+        return
+      }
+      
+      modelData.syncZzimState(auctionID: auctionID, isZzimed: isZzimed, zzimCount: zzimCount)
     }
     .sheet(isPresented: $isShowFilterArea, content: {
       AuctionFilterLocationView(modelData: $modelData) {
@@ -125,3 +136,8 @@ public struct AuctionHomeView: View {
   }
 }
 
+private enum AuctionZzimNotificationUserInfoKey {
+  static let auctionID = "auctionID"
+  static let isZzimed = "isZzimed"
+  static let zzimCount = "zzimCount"
+}

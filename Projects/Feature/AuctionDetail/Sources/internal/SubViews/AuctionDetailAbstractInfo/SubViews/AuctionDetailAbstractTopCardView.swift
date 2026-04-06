@@ -7,21 +7,33 @@
 
 import SwiftUI
 
+import AppFoundation
 import UIComponent
 import Domain
 
-fileprivate enum AuctionDetailEasyInformation: String, Identifiable {
-  var id: Self { self }
-  
-  /// 최저 매각 가격
-  case minimum_sale_price
-  /// 감정가
-  case estimated_value
-}
-
 struct AuctionDetailAbstractTopCardView: View {
-  @State private var showEasyInfoType: AuctionDetailEasyInformation?
   let auctionDetailInfo: AuctionDetail
+  
+  private var priceDifference: Int {
+    auctionDetailInfo.lowestSalesPrice - auctionDetailInfo.appraisalPrice
+  }
+  
+  private var priceDifferenceRate: Double {
+    guard auctionDetailInfo.appraisalPrice > 0 else { return 0 }
+    return (Double(priceDifference) / Double(auctionDetailInfo.appraisalPrice)) * 100
+  }
+  
+  private var priceDifferenceText: String {
+    let rateText = String(format: "%.2f", abs(priceDifferenceRate))
+    if priceDifference == 0 {
+      return "감정가와 동일"
+    }
+    return "\(priceDifference.toKoreanWon) (\(rateText)%)"
+  }
+  
+  private var priceDifferenceColor: Color {
+    priceDifference <= 0 ? Asset.Colors.primary.color : Asset.Colors.critical.color
+  }
   
   var body: some View {
     VStack(spacing: .zero) {
@@ -29,7 +41,8 @@ struct AuctionDetailAbstractTopCardView: View {
       
       VStack(spacing: 12) {
         estimatedValueRow()
-        recentDealRow()
+        salesLocationRow()
+        salesReceptionDateRow()
         auctionDateRow()
       }
       .padding(16)
@@ -41,39 +54,17 @@ struct AuctionDetailAbstractTopCardView: View {
         .stroke(lineWidth: 1)
         .foregroundStyle(Asset.Colors.gray150.color)
     }
-    .sheet(item: $showEasyInfoType) { type in
-      switch type {
-      case .minimum_sale_price:
-        Text("최저매각가격이란? 시트")
-          .dynamicSheet()
-      case .estimated_value:
-        Text("감정가 시트")
-          .dynamicSheet()
-      }
-    }
   }
   
   private func minimumSalePriceSection() -> some View {
     VStack(spacing: .zero) {
       // 최저 매각 가격
       HStack(spacing: .zero) {
-        Button {
-          showEasyInfoType = .minimum_sale_price
-        } label: {
-          HStack(spacing: .zero) {
-            HStack(spacing: 3) {
-              Text("최저매각가격")
-                .fonts(.bodySmallMedium)
-                .foregroundStyle(Asset.Colors.neutralSubtler.color)
-              Asset.Images.infoLine.image
-                .resizable()
-                .frame(width: 16, height: 16)
-            }
-            Spacer()
-          }
-        }
+        Text("최저매각가격")
+          .fonts(.bodySmallMedium)
+          .foregroundStyle(Asset.Colors.neutralSubtler.color)
         Spacer()
-        Text("1억 8,320만원")
+        Text(auctionDetailInfo.lowestSalesPrice.toKoreanWon)
           .fonts(.titleMediumBold)
           .foregroundStyle(Asset.Colors.neutral.color)
       }
@@ -83,9 +74,9 @@ struct AuctionDetailAbstractTopCardView: View {
         Text("감정가대비")
           .fonts(.bodyMicroMedium)
           .foregroundStyle(Asset.Colors.neutralSubtler.color)
-        Text("-4,800만원 (10.84%)")
+        Text(priceDifferenceText)
           .fonts(.bodyMicroMedium)
-          .foregroundStyle(Asset.Colors.primary.color)
+          .foregroundStyle(priceDifferenceColor)
       }
     }
     .padding(16)
@@ -94,57 +85,43 @@ struct AuctionDetailAbstractTopCardView: View {
   
   /// 감정가 행
   private func estimatedValueRow() -> some View {
-    HStack(spacing: .zero) {
-      Button {
-        showEasyInfoType = .estimated_value
-      } label: {
-        HStack(spacing: .zero) {
-          HStack(spacing: 3) {
-            Text("감정가")
-              .fonts(.bodySmallMedium)
-              .foregroundStyle(Asset.Colors.neutralSubtler.color)
-            Asset.Images.infoLine.image
-              .resizable()
-              .frame(width: 16, height: 16)
-            Spacer()
-          }
-        }
-      }
-      Spacer()
-      Text("2억 3,000만원")
-        .fonts(.bodySmallMedium)
-        .foregroundStyle(Asset.Colors.neutralSubtler.color)
-    }
+    infoRow(title: "감정가", value: auctionDetailInfo.appraisalPrice.toKoreanWon)
   }
 
-  /// 최근 실거래가 행
-  private func recentDealRow() -> some View {
-    HStack(spacing: .zero) {
-      HStack(spacing: 4) {
-        Text("최근실거래가")
-          .fonts(.bodySmallMedium)
-          .foregroundStyle(Asset.Colors.neutralSubtler.color)
-        Text("(25.03.16)")
-          .fonts(.bodyMicroRegular)
-          .foregroundStyle(Asset.Colors.neutralSubtler.color)
-      }
-      Spacer()
-      Text("5억 5,421만원")
-        .fonts(.bodySmallMedium)
-        .foregroundStyle(Asset.Colors.neutralSubtler.color)
-    }
+  /// 매각장소 행
+  private func salesLocationRow() -> some View {
+    infoRow(title: "매각장소", value: auctionDetailInfo.salesLocation)
   }
 
   /// 매각기일 행
   private func auctionDateRow() -> some View {
+    infoRow(
+      title: "매각기일",
+      value: auctionDetailInfo.salesDateTime.toKoreanDateString(format: .full),
+      valueFont: .bodySmallBold,
+      valueColor: Asset.Colors.neutral.color
+    )
+  }
+  
+  private func salesReceptionDateRow() -> some View {
+    infoRow(title: "접수마감", value: auctionDetailInfo.salesReceptionDate.toKoreanDateString())
+  }
+  
+  private func infoRow(
+    title: String,
+    value: String,
+    valueFont: MercuryFont = .bodySmallMedium,
+    valueColor: Color = Asset.Colors.neutralSubtler.color
+  ) -> some View {
     HStack(spacing: .zero) {
-      Text("매각기일")
+      Text(title)
         .fonts(.bodySmallMedium)
         .foregroundStyle(Asset.Colors.neutralSubtler.color)
       Spacer()
-      Text("2025.04.08 10:00")
-        .fonts(.bodyLargeBold)
-        .foregroundStyle(Asset.Colors.neutral.color)
+      Text(value)
+        .fonts(valueFont)
+        .foregroundStyle(valueColor)
+        .multilineTextAlignment(.trailing)
     }
   }
 }

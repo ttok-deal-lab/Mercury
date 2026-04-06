@@ -149,23 +149,22 @@ final class AuctionHomeModelData {
     targetItem.zzimCount += isNowZzim ? -1 : 1
     targetItem.isZzim.toggle()
     self.auctionSalesItems[index] = targetItem
+    NotificationCenter.default.post(
+      name: .auctionZzimDidChange,
+      object: nil,
+      userInfo: [
+        AuctionZzimChangeUserInfoKey.auctionID: auctionID,
+        AuctionZzimChangeUserInfoKey.isZzimed: targetItem.isZzim,
+        AuctionZzimChangeUserInfoKey.zzimCount: targetItem.zzimCount
+      ]
+    )
   }
   
   func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
-    let isZzim = try await auctionInterestUsecase.isAuctionInterested(auctionID: auctionID)
+    let isZzim = try await auctionInterestUsecase.isAuctionUserInterested(auctionID: auctionID)
     return isZzim
   }
   
-  func refreshInterestStatus() async {
-    guard !auctionSalesItems.isEmpty else { return }
-    do {
-      let updatedList = try await loadInterestAuctionList(list: auctionSalesItems)
-      self.auctionSalesItems = updatedList
-    } catch {
-      self.error = error
-    }
-  }
-
   // 관심매물 여부 리스트 검사
   private func loadInterestAuctionList(list: [AuctionSalesItem]) async throws -> [AuctionSalesItem]{
     guard !list.isEmpty else { return [] }
@@ -183,6 +182,21 @@ final class AuctionHomeModelData {
     return itemList
   }
   
+  func syncZzimState(auctionID: Int, isZzimed: Bool, zzimCount: Int) {
+    guard let index = self.auctionSalesItems.firstIndex(where: { $0.id == auctionID }) else { return }
+    
+    var targetItem = self.auctionSalesItems[index]
+    targetItem.isZzim = isZzimed
+    targetItem.zzimCount = zzimCount
+    self.auctionSalesItems[index] = targetItem
+  }
+  
+}
+
+private enum AuctionZzimChangeUserInfoKey {
+  static let auctionID = "auctionID"
+  static let isZzimed = "isZzimed"
+  static let zzimCount = "zzimCount"
 }
 
 // 필터처리

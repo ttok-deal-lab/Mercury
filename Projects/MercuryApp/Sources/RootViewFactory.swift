@@ -35,7 +35,8 @@ struct RootViewFactory: ViewFactory {
       .makeView(signInStep)
     case .auctionDetail(let auctionStep):
       AuctionDetailViewFactory<MapViewWrapperView>(
-        auctionDetailUsecase: AuctionDetailUsecase(auctionDetailRepositorable: AuctionDetailRepository())
+        auctionDetailUsecase: AuctionDetailUsecase(auctionDetailRepositorable: AuctionDetailRepository()),
+        auctionInterestUsecase: AuctionInterestUsecase(repository: AuctionInterestRepository())
       )
       .makeView(auctionStep)
     case .networkConsole:

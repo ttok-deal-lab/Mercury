@@ -36,11 +36,20 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
           // 사진 Pager
           AuctionDetailPicturesPagerView(height: 216, auctionDetailInfo: auctionDetailItem)
           // 요약정보
-          AuctionDetailAbstractInfoView(auctionDetailInfo: auctionDetailItem)
+          AuctionDetailAbstractInfoView(
+            auctionDetailInfo: auctionDetailItem,
+            isZzimed: modelData.isZzimed,
+            zzimCount: modelData.zzimCount,
+            isLoadingZzim: modelData.isLoadingZzim
+          ) {
+            Task {
+              await modelData.tapOnZzim()
+            }
+          }
           
           dividerView()
           
-          // 경매정보 | 권리분석 | 건물정보
+          // 경매정보 | 권리분석
           AuctionDetailTabPagerContainerView(auctionDetailInfo: auctionDetailItem)
           
           dividerView()
@@ -49,28 +58,25 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
           AuctionDetailHistoryView(
             auctionStartDateText: auctionDetailItem.salesOpenDate.toKoreanDateString(),
             distributionDeadlineText: auctionDetailItem.distributionRequiredDeadlineDate.toKoreanDateString(),
-            appraisalDateText: auctionDetailItem.conditionReport.investigationDate.toKoreanDateString(),
+            investigationDateText: auctionDetailItem.conditionReport.investigationDate.toKoreanDateString(),
             salesDetails: modelData.sortedSalesDetailByTime()
           )
-          
-          dividerView()
-          
-          // 등기부 현황
-          AuctionDetailRegisterStatusView()
           
           dividerView()
           
           // 법원정보
           AuctionDetailCourtInfoView<MapView>(
             auctionDetailItem: auctionDetailItem,
-            courtLongitude: 127.108678, // 아직 위경도 안내려줌
-            courtLatitude: 37.402001
+            mapCoordinate: modelData.mapCoordinate,
+            isLoadingMapCoordinate: modelData.isLoadingMapCoordinate
           )
           
-          dividerView()
-          
-          // 건물 상세내역
-          AuctionDetailSalesBuildingDetailView(salesItems: auctionDetailItem.salesItemDetails)
+          if !auctionDetailItem.salesItemDetails.isEmpty {
+            dividerView()
+            
+            // 목록 상세내역
+            AuctionDetailSalesBuildingDetailView(salesItems: auctionDetailItem.salesItemDetails)
+          }
         }
       }
     }
@@ -85,4 +91,3 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
       .foregroundStyle(Asset.Colors.neutralWeak.color)
   }
 }
-

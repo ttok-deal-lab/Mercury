@@ -18,10 +18,12 @@ public struct AuctionDetailView<MapView: MapViewable>: View {
   
   public init(
     auctionID: Int,
-    auctionDetailUsecase: AuctionDetailUsecase
+    auctionDetailUsecase: AuctionDetailUsecase,
+    auctionInterestUsecase: any AuctionInterestUsecasable
   ) {
     self.modelData = AuctionDetailModelData(
       auctionDetailUsecase: auctionDetailUsecase,
+      auctionInterestUsecase: auctionInterestUsecase,
       auctionID: auctionID
     )
   }
@@ -30,4 +32,3 @@ public struct AuctionDetailView<MapView: MapViewable>: View {
     AuctionDetailMainContentView<MapView>(modelData: $modelData)
   }
 }
-

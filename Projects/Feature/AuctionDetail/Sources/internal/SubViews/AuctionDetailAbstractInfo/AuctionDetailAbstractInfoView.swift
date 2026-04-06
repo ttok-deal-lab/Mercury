@@ -12,10 +12,20 @@ import Domain
 
 struct AuctionDetailAbstractInfoView: View {
   let auctionDetailInfo: AuctionDetail
+  let isZzimed: Bool
+  let zzimCount: Int
+  let isLoadingZzim: Bool
+  let onTapZzim: () -> Void
   
   var body: some View {
     VStack(spacing: .zero) {
-      AuctionDetailAbstractTitleInfoView(auctionDetailInfo: auctionDetailInfo)
+      AuctionDetailAbstractTitleInfoView(
+        auctionDetailInfo: auctionDetailInfo,
+        isZzimed: isZzimed,
+        zzimCount: zzimCount,
+        isLoadingZzim: isLoadingZzim,
+        onTapZzim: onTapZzim
+      )
       
       AuctionDetailAbstractChipsView(auctionDetailInfo: auctionDetailInfo)
         .padding(.bottom, 16)
