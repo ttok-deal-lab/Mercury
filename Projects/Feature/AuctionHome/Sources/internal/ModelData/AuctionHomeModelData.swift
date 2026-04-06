@@ -160,8 +160,19 @@ final class AuctionHomeModelData {
     )
   }
   
+  func refreshInterestStatus() async {
+    guard !auctionSalesItems.isEmpty else { return }
+    do {
+      let updatedList = try await loadInterestAuctionList(list: auctionSalesItems)
+      self.auctionSalesItems = updatedList
+    } catch {
+      self.error = error
+    }
+  }
+
+  
   func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
-    let isZzim = try await auctionInterestUsecase.isAuctionUserInterested(auctionID: auctionID)
+    let isZzim = try await auctionInterestUsecase.isAuctionInterested(auctionID: auctionID)
     return isZzim
   }
   

@@ -46,9 +46,9 @@ public final class AuctionDetailModelData {
     auctionID: Int
   ) {
     self.fetchAuctionDetail = auctionDetailUsecase.fetchAuctionDetail
-    self.loadAuctionInterestState = auctionInterestUsecase.isAuctionUserInterested
-    self.addUserInterestAuction = auctionInterestUsecase.addUserInterestAuction
-    self.removeUserInterestAuction = auctionInterestUsecase.removeUserInterestAuction
+    self.loadAuctionInterestState = auctionInterestUsecase.isAuctionInterested
+    self.addUserInterestAuction = auctionInterestUsecase.addInterest
+    self.removeUserInterestAuction = auctionInterestUsecase.removeInterest
     self.coordinateResolver = LiveAuctionDetailCoordinateResolver()
     self.auctionID = auctionID
     Task { [weak self] in

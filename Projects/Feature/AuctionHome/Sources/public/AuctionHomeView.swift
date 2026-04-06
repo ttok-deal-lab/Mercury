@@ -96,6 +96,7 @@ public struct AuctionHomeView: View {
       Task {
         await modelData.refreshInterestStatus()
       }
+    }
     .onReceive(NotificationCenter.default.publisher(for: .auctionZzimDidChange)) { notification in
       guard
         let userInfo = notification.userInfo,
@@ -110,7 +111,7 @@ public struct AuctionHomeView: View {
     }
     .sheet(isPresented: $isShowFilterArea, content: {
       AuctionFilterLocationView(modelData: $modelData) {
-        Task {  
+        Task {
           await modelData.loadAuctionSalesList()
           isShowFilterArea = false
         }
