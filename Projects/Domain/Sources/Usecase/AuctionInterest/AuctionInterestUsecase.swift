@@ -25,6 +25,10 @@ final public class AuctionInterestUsecase: AuctionInterestUsecasable {
     try await fetcher.removeUserInterestAuction(auctionID: auctionID)
   }
   
+  public func resetPagination() async {
+    await fetcher.resetPagination()
+  }
+
   public func loadInterest() async throws -> [InterestItem] {
     return try await fetcher.fetchUserInterestAuctions()
   }
@@ -64,6 +68,12 @@ actor AuctionInterestFetcher {
     try await repository.removeInterest(auctionID: auctionID)
   }
   
+  func resetPagination() {
+    self.cursor = nil
+    self.hasNext = true
+    self.isLoading = false
+  }
+
   // 유저의 관심 탭 리스트
   func fetchUserInterestAuctions() async throws -> [InterestItem] {
     self.isLoading = true

@@ -11,6 +11,7 @@ public protocol AuctionInterestUsecasable: Sendable {
   func isAuctionInterested(auctionID: Int) async throws -> Bool
   func addInterest(auctionID: Int) async throws
   func removeInterest(auctionID: Int) async throws
+  func resetPagination() async
   func loadInterest() async throws -> [InterestItem]
   func loadNextInterest() async throws -> [InterestItem]
   func loadInterestList(ids: [Int]) async throws -> [InterestWhether]
