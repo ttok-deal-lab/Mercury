@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+import AppFoundation
 import UIComponent
 import Domain
 
@@ -49,19 +50,6 @@ struct AuctionDetailTabRightsAnalysisView: View {
           OccupantDetailCard(item: selected)
         }
       }
-
-      Button { } label: {
-        Text("현황조사서 보기")
-          .font(.system(size: 15, weight: .semibold))
-          .frame(maxWidth: .infinity)
-          .padding(.vertical, 14)
-      }
-      .buttonStyle(.plain)
-      .background(
-        RoundedRectangle(cornerRadius: 12)
-          .stroke(Color.gray.opacity(0.25), lineWidth: 1)
-      )
-      .padding(.top, 6)
     }
     .padding(16)
     .onAppear { selectedIndex = 0 }
@@ -164,17 +152,17 @@ private struct OccupantDetailCard: View {
       .padding(16)
 
       VStack(spacing: 12) {
-        DetailRow(title: "대항력", value: "Mock", displayType: .titler, valueStyle: .mock)
-        DetailRow(title: "ㄴ 전입신고일", value: item.movedAt.formattedKRDate)
-        DetailRow(title: "ㄴ 점유상태", value: "Mock", valueStyle: .mock)
-
-        DetailRow(title: "우선변제권", value: "Mock", displayType: .titler, valueStyle: .mock)
-        DetailRow(title: "ㄴ 확정일자", value: item.confirmedAt.formattedKRDate)
-
-        DetailRow(title: "배당요구", value: "Mock", displayType: .titler, valueStyle: .mock)
-        DetailRow(title: "ㄴ 배당요구일", value: "Mock", valueStyle: .mock)
-        DetailRow(title: "ㄴ 보증금", value: item.deposit.toKoreanWon)
-        DetailRow(title: "ㄴ 월세", value: item.rental.toKoreanWon)
+        DetailRow(title: "소재지", value: item.address)
+        if !item.purpose.displayName.isEmpty {
+          DetailRow(title: "용도", value: item.purpose.displayName)
+        }
+        if !item.duration.isEmpty {
+          DetailRow(title: "점유기간", value: item.duration)
+        }
+        DetailRow(title: "전입신고일", value: item.movedAt.formattedKRDate)
+        DetailRow(title: "확정일자", value: item.confirmedAt.formattedKRDate)
+        DetailRow(title: "보증금", value: item.deposit.toKoreanWon)
+        DetailRow(title: "월세", value: item.rental.toKoreanWon)
       }
       .padding(16)
       .background(Asset.Colors.neutralLight.color)
@@ -189,7 +177,6 @@ private struct OccupantDetailCard: View {
   }
 }
 
-private enum DetailValueStyle { case normal, mock }
 private enum DetailRowDisplayType {
   case titler
   case subtler
@@ -206,7 +193,6 @@ private struct DetailRow: View {
   let title: String
   let value: String
   var displayType: DetailRowDisplayType = .subtler
-  var valueStyle: DetailValueStyle = .normal
 
   var body: some View {
     HStack(alignment: .firstTextBaseline) {
@@ -218,7 +204,7 @@ private struct DetailRow: View {
 
       Text(value)
         .fonts(displayType.font)
-        .foregroundStyle(valueStyle == .mock ? Color.orange : Asset.Colors.neutralSubtler.color)
+        .foregroundStyle(Asset.Colors.neutralSubtler.color)
         .multilineTextAlignment(.trailing)
     }
   }
@@ -231,6 +217,21 @@ private extension AuctionDetail.ConditionReport.OccupationRelationReport.Occupan
     case .tenant: "임차인"
     case .owner: "소유자"
     case .other(let v): v
+    }
+  }
+}
+
+private extension AuctionDetail.ConditionReport.OccupationRelationReport.OccupationPurpose {
+  var displayName: String {
+    switch self {
+    case .residential:
+      return "주거"
+    case .commercial:
+      return "상업"
+    case .office:
+      return "사무실"
+    case .other(let value):
+      return value
     }
   }
 }

@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Combine
+import UIKit
 
 import AppFoundation
 import UIComponent
@@ -73,11 +74,10 @@ public struct MainTabView<
         }
         .tag(Tab.setting)
     }
-    .onAppear {
-      let tabBarAppearance = UITabBarAppearance()
-      tabBarAppearance.configureWithDefaultBackground()
-      UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
-    }
+    .background(TabBarAppearanceConfigurator())
+    .toolbarVisibility(.visible, for: .tabBar)
+    .toolbarBackground(.visible, for: .tabBar)
+    .toolbarBackground(.ultraThinMaterial, for: .tabBar)
     .onChange(of: networkMonitor.isConnected) { _, isConnected in
       isShowNetworkDisconnect = !isConnected
     }
@@ -94,6 +94,30 @@ public struct MainTabView<
       }
       .dynamicSheet()
     })
+  }
+}
+
+private struct TabBarAppearanceConfigurator: UIViewControllerRepresentable {
+  func makeUIViewController(context: Context) -> UIViewController {
+    let viewController = UIViewController()
+    viewController.view.isHidden = true
+    viewController.view.isUserInteractionEnabled = false
+    return viewController
+  }
+  
+  func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+    DispatchQueue.main.async {
+      guard let tabBar = uiViewController.tabBarController?.tabBar else { return }
+      let appearance = UITabBarAppearance()
+      appearance.configureWithDefaultBackground()
+      appearance.backgroundEffect = UIBlurEffect(style: .systemChromeMaterial)
+      appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.9)
+      appearance.shadowColor = UIColor.separator.withAlphaComponent(0.18)
+      tabBar.standardAppearance = appearance
+      tabBar.scrollEdgeAppearance = appearance
+      tabBar.isTranslucent = true
+      tabBar.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.6)
+    }
   }
 }
 

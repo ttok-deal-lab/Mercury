@@ -25,7 +25,6 @@ final class AuctionHomeModelData {
   var isLoading: Bool = false
   var isLoadingForPaging: Bool = false
   var filteredItemCount: Int = .zero
-  
   var error: Error?
   
   // MARK: - Private Properties
@@ -33,17 +32,20 @@ final class AuctionHomeModelData {
   private let localStorageUsecase: LocalStorageUsecasable
   private let auctionListUsecase: AuctionSalesListUsecasable
   private let auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
+  private let auctionInterestUsecase: AuctionInterestUsecasable
   
   // MARK: - Initialize
   
   init(
     localStorageUsecase: LocalStorageUsecasable,
     auctionListUsecase: AuctionSalesListUsecasable,
-    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
+    auctionInterestUsecase: AuctionInterestUsecasable
   ) {
     self.localStorageUsecase = localStorageUsecase
     self.auctionListUsecase = auctionListUsecase
     self.auctionSearchFilterUsecase = auctionSearchFilterUsecase
+    self.auctionInterestUsecase = auctionInterestUsecase
     
     Task {
       do {
@@ -72,8 +74,9 @@ final class AuctionHomeModelData {
       if let auctionCount = auctionSales.auctionCount {
         self.filteredItemCount = auctionCount
       }
-      self.auctionSalesItems = auctionSales.items
+      let updatedInterestList = try await self.loadInterestAuctionList(list: auctionSales.items)
       
+      self.auctionSalesItems = updatedInterestList
     } catch let error {
       self.error = error
     }
@@ -81,18 +84,16 @@ final class AuctionHomeModelData {
   
   // 경매물건 추가로 불러오기
   func loadMoreAuctionSales() async {
-    withAnimation {
-      self.isLoadingForPaging = true
-    }
+    self.isLoadingForPaging = true
     defer {
-      withAnimation {
-        self.isLoadingForPaging = false
-      }
+      self.isLoadingForPaging = false
     }
     let currentAuctionSalesItems = self.auctionSalesItems
     do {
       let auctionSalesItems = try await auctionListUsecase.fetchNextAuctionSales(filter: self.currentAuctionFilter)
-      self.auctionSalesItems = currentAuctionSalesItems + auctionSalesItems
+      let updatedInterestList = try await self.loadInterestAuctionList(list: auctionSalesItems)
+      
+      self.auctionSalesItems = currentAuctionSalesItems + updatedInterestList
     } catch {
       self.error = error
     }
@@ -111,6 +112,7 @@ final class AuctionHomeModelData {
     }
   }
   
+  // 최근본 매물 저장
   func saveRecentSales(id: Int) async {
     var recentSales: [RecentSalesInfo] = await localStorageUsecase.getModel(
       forKey: LocalStorageKey.recentViwedSales.rawValue,
@@ -129,8 +131,72 @@ final class AuctionHomeModelData {
       recentSales.removeLast()
     }
     await localStorageUsecase.setModel(recentSales, forKey: LocalStorageKey.recentViwedSales.rawValue)
-    
   }
+  
+  // 관심매물 추가
+  func tapOnZzim(auctionID: Int) async throws {
+    guard let index = self.auctionSalesItems.firstIndex(where: { $0.id == auctionID }) else { return }
+    
+    var targetItem = self.auctionSalesItems[index]
+    let isNowZzim = try await isAuctionUserInterested(auctionID: auctionID)
+    if !isNowZzim {
+      try await auctionInterestUsecase
+        .addUserInterestAuction(auctionID: auctionID)
+    } else {
+      try await auctionInterestUsecase
+        .removeUserInterestAuction(auctionID: auctionID)
+    }
+    targetItem.zzimCount += isNowZzim ? -1 : 1
+    targetItem.isZzim.toggle()
+    self.auctionSalesItems[index] = targetItem
+    NotificationCenter.default.post(
+      name: .auctionZzimDidChange,
+      object: nil,
+      userInfo: [
+        AuctionZzimChangeUserInfoKey.auctionID: auctionID,
+        AuctionZzimChangeUserInfoKey.isZzimed: targetItem.isZzim,
+        AuctionZzimChangeUserInfoKey.zzimCount: targetItem.zzimCount
+      ]
+    )
+  }
+  
+  func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
+    let isZzim = try await auctionInterestUsecase.isAuctionUserInterested(auctionID: auctionID)
+    return isZzim
+  }
+  
+  // 관심매물 여부 리스트 검사
+  private func loadInterestAuctionList(list: [AuctionSalesItem]) async throws -> [AuctionSalesItem]{
+    guard !list.isEmpty else { return [] }
+    var itemList = list
+    let ids = itemList.map { $0.id }
+    let interestWhetherList = try await auctionInterestUsecase.loadInterestAuctionList(ids: ids)
+    
+    for inter in interestWhetherList {
+      guard let index = itemList.firstIndex(where: { $0.id == inter.id }) else { return itemList }
+      
+      var targetItem = itemList[index]
+      targetItem.isZzim = inter.favorite
+      itemList[index] = targetItem
+    }
+    return itemList
+  }
+  
+  func syncZzimState(auctionID: Int, isZzimed: Bool, zzimCount: Int) {
+    guard let index = self.auctionSalesItems.firstIndex(where: { $0.id == auctionID }) else { return }
+    
+    var targetItem = self.auctionSalesItems[index]
+    targetItem.isZzim = isZzimed
+    targetItem.zzimCount = zzimCount
+    self.auctionSalesItems[index] = targetItem
+  }
+  
+}
+
+private enum AuctionZzimChangeUserInfoKey {
+  static let auctionID = "auctionID"
+  static let isZzimed = "isZzimed"
+  static let zzimCount = "zzimCount"
 }
 
 // 필터처리
@@ -163,8 +229,8 @@ extension AuctionHomeModelData {
       
       if let firstName = selectedNames.first {
         return selectedNames.count > 1
-          ? L10n.auctionFilterMultiSelect(firstName, selectedNames.count - 1)
-          : firstName
+        ? L10n.auctionFilterMultiSelect(firstName, selectedNames.count - 1)
+        : firstName
       }
       return type.defaultTitle
       
@@ -176,14 +242,14 @@ extension AuctionHomeModelData {
       let selectedNames = allOptions
         .filter { selectedCodes.contains($0.code) }
         .map { $0.displayName }
-        
+      
       if let firstName = selectedNames.first {
         return selectedNames.count > 1
-          ? L10n.auctionFilterMultiSelect(firstName, selectedNames.count - 1)
-          : firstName
+        ? L10n.auctionFilterMultiSelect(firstName, selectedNames.count - 1)
+        : firstName
       }
       return type.defaultTitle
-
+      
     case .price:
       return makePriceString() ?? type.defaultTitle
       

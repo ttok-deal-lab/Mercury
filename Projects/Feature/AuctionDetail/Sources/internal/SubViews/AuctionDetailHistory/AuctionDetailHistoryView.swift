@@ -13,7 +13,7 @@ import Domain
 struct AuctionDetailHistoryView: View {
   let auctionStartDateText: String
   let distributionDeadlineText: String
-  let appraisalDateText: String
+  let investigationDateText: String
   let items: [AuctionDetail.SalesDetail]
 
   @State private var isExpanded: Bool = false
@@ -21,12 +21,12 @@ struct AuctionDetailHistoryView: View {
   init(
     auctionStartDateText: String,
     distributionDeadlineText: String,
-    appraisalDateText: String,
+    investigationDateText: String,
     salesDetails: [AuctionDetail.SalesDetail]
   ) {
     self.auctionStartDateText = auctionStartDateText
     self.distributionDeadlineText = distributionDeadlineText
-    self.appraisalDateText = appraisalDateText
+    self.investigationDateText = investigationDateText
     self.items = salesDetails
   }
 
@@ -40,7 +40,7 @@ struct AuctionDetailHistoryView: View {
       VStack(spacing: 20) {
         infoRow(title: "경매개시일", value: auctionStartDateText)
         infoRow(title: "배당종기일", value: distributionDeadlineText)
-        infoRow(title: "감정평가일", value: appraisalDateText)
+        infoRow(title: "현황조사일", value: investigationDateText)
       }
       .padding(.bottom, 20)
 
@@ -115,16 +115,6 @@ struct AuctionDetailHistoryView: View {
     return "\(n)차"
   }
   
-  private func historyItems(from details: [AuctionDetail.SalesDetail]) -> [AuctionDetail.SalesDetail] {
-    // 히스토리로 보여줄 기일만
-    details.filter { detail in
-      switch detail.type {
-      case .saleDate: return true
-      case .other: return true
-      }
-    }
-  }
-
 }
 
 extension AuctionDetail.SalesDetail {

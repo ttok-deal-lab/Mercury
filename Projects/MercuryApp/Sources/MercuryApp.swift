@@ -67,13 +67,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
       try await RemoteConfigManager.shared.fetchConfig()
     }
     
-    DispatchQueue.main.async {
-      let appearance = UITabBarAppearance.blurredSafe()
-      
-      UITabBar.appearance().standardAppearance = appearance
-      UITabBar.appearance().scrollEdgeAppearance = appearance
-      UITabBar.appearance().isTranslucent = true
-    }
+    UITabBar.applyBlurredSafeAppearance()
     
     return true
   }
@@ -139,9 +133,19 @@ extension UITabBarAppearance {
   static func blurredSafe() -> UITabBarAppearance {
     let appearance = UITabBarAppearance()
     appearance.configureWithDefaultBackground()
-    appearance.backgroundEffect = UIBlurEffect(style: .systemMaterial)
-    appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.6)
-    appearance.shadowColor = .clear
+    appearance.backgroundEffect = UIBlurEffect(style: .systemChromeMaterial)
+    appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.9)
+    appearance.shadowColor = UIColor.separator.withAlphaComponent(0.18)
     return appearance
+  }
+}
+
+extension UITabBar {
+  static func applyBlurredSafeAppearance() {
+    let appearance = UITabBarAppearance.blurredSafe()
+    let proxy = UITabBar.appearance()
+    proxy.standardAppearance = appearance
+    proxy.scrollEdgeAppearance = appearance
+    proxy.isTranslucent = true
   }
 }
