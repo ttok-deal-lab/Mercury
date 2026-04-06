@@ -156,6 +156,16 @@ final class AuctionHomeModelData {
     return isZzim
   }
   
+  func refreshInterestStatus() async {
+    guard !auctionSalesItems.isEmpty else { return }
+    do {
+      let updatedList = try await loadInterestAuctionList(list: auctionSalesItems)
+      self.auctionSalesItems = updatedList
+    } catch {
+      self.error = error
+    }
+  }
+
   // 관심매물 여부 리스트 검사
   private func loadInterestAuctionList(list: [AuctionSalesItem]) async throws -> [AuctionSalesItem]{
     guard !list.isEmpty else { return [] }
