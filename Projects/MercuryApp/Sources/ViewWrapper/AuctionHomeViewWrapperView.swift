@@ -20,6 +20,7 @@ public struct AuctionHomeViewWrapperView: View, AuctionHomeViewable {
     self.hostView = AuctionHomeView(
       auctionListUsecase: AuctionSalesListUsecase(repository: AuctionSalesListRepository()),
       auctionSearchFilterUsecase: AuctionSearchFilterUsecase(repository: AuctionSearchFilterRepository()),
+      auctionInterestUsecase: AuctionInterestUsecase(repository: AuctionInterestRepository()),
       localStorageUsecase: LocalStorageUsecase(repository: UserDefaultsStoreRepository())
     )
   }

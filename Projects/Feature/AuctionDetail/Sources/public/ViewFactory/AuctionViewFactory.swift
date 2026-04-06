@@ -15,11 +15,14 @@ import Domain
 public struct AuctionDetailViewFactory<MapView: MapViewable>: ViewFactory {
   
   private let auctionDetailUsecase: AuctionDetailUsecase
+  private let auctionInterestUsecase: any AuctionInterestUsecasable
   
   public init(
-    auctionDetailUsecase: AuctionDetailUsecase
+    auctionDetailUsecase: AuctionDetailUsecase,
+    auctionInterestUsecase: any AuctionInterestUsecasable
   ) {
     self.auctionDetailUsecase = auctionDetailUsecase
+    self.auctionInterestUsecase = auctionInterestUsecase
   }
   
   public func makeView(
@@ -29,7 +32,8 @@ public struct AuctionDetailViewFactory<MapView: MapViewable>: ViewFactory {
     case .auctionDetail(let auctionID):
       AuctionDetailView<MapView>(
         auctionID: auctionID,
-        auctionDetailUsecase: self.auctionDetailUsecase
+        auctionDetailUsecase: self.auctionDetailUsecase,
+        auctionInterestUsecase: self.auctionInterestUsecase
       )
     }
   }

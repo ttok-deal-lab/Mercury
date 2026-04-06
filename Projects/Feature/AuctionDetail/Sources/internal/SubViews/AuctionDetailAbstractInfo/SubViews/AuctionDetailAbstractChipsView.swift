@@ -14,58 +14,72 @@ import Domain
 struct AuctionDetailAbstractChipsView: View {
   let auctionDetailInfo: AuctionDetail
   
+  private var saleStatusText: String {
+    if auctionDetailInfo.soldOut {
+      return "낙찰 완료"
+    }
+    
+    let calendar = Calendar.current
+    let today = calendar.startOfDay(for: Date())
+    let saleDate = calendar.startOfDay(for: auctionDetailInfo.salesDateTime)
+    let daysUntilSale = calendar.dateComponents([.day], from: today, to: saleDate).day ?? 0
+    
+    switch daysUntilSale {
+    case ..<0:
+      return "매각 종료"
+    case 0:
+      return "오늘 매각"
+    default:
+      return "매각 D-\(daysUntilSale)"
+    }
+  }
+  
   var body: some View {
     HStack(spacing: 4) {
-      HStack(spacing: 4) {
-        Asset.Images.certified.image
-          .resizable()
-          .renderingMode(.template)
-          .foregroundStyle(.white)
-          .frame(width: 16, height: 16)
-        // 인증매물
-        Text(L10n.commonCertifiedAuction)
-          .foregroundStyle(Asset.Colors.neutralWhite.color)
-          .fonts(.bodyMicroMedium)
-      }
-      .frame(height: 24)
-      .padding(.horizontal, 6)
-      .background {
-        LinearGradient(colors: [Asset.Colors.commonGradientStart.color, Asset.Colors.commonGradientEnd.color], startPoint: .topLeading, endPoint: .bottomTrailing)
-      }
-      .clipShape(RoundedRectangle(cornerRadius: 8))
+      chipView(
+        text: auctionDetailInfo.bidType.displayName,
+        foregroundColor: Asset.Colors.neutralSubtler.color,
+        backgroundColor: Asset.Colors.neutralWeak.color
+      )
       
-      // 유찰 n회
-      Text(L10n.commonFailedBidCount(2))
-        .fonts(.bodyMicroMedium)
-        .foregroundStyle(Asset.Colors.neutralSubtler.color)
-        .padding(.horizontal, 6)
-        .frame(height: 24)
-        .background {
-          Asset.Colors.neutralWeak.color
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+      chipView(
+        text: L10n.commonFailedBidCount(auctionDetailInfo.failBidCount),
+        foregroundColor: Asset.Colors.neutralSubtler.color,
+        backgroundColor: Asset.Colors.neutralWeak.color
+      )
       
-      Text("매각 D-2")
-        .fonts(.bodyMicroMedium)
-        .foregroundStyle(Asset.Colors.critical.color)
-        .padding(.horizontal, 6)
-        .frame(height: 24)
-        .background {
-          Asset.Colors.criticalWeak.color
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-      
-      Text("매각 D-4")
-        .fonts(.bodyMicroMedium)
-        .foregroundStyle(Asset.Colors.neutralSubtler.color)
-        .padding(.horizontal, 6)
-        .frame(height: 24)
-        .background {
-          Asset.Colors.neutralWeak.color
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+      chipView(
+        text: saleStatusText,
+        foregroundColor: auctionDetailInfo.soldOut ? Asset.Colors.primary.color : Asset.Colors.critical.color,
+        backgroundColor: auctionDetailInfo.soldOut ? Asset.Colors.primaryWeak.color : Asset.Colors.criticalWeak.color
+      )
       
       Spacer()
+    }
+  }
+  
+  private func chipView(text: String, foregroundColor: Color, backgroundColor: Color) -> some View {
+    Text(text)
+      .fonts(.bodyMicroMedium)
+      .foregroundStyle(foregroundColor)
+      .padding(.horizontal, 6)
+      .frame(height: 24)
+      .background {
+        backgroundColor
+      }
+      .clipShape(RoundedRectangle(cornerRadius: 8))
+  }
+}
+
+private extension AuctionDetail.BidType {
+  var displayName: String {
+    switch self {
+    case .general:
+      return "일반입찰"
+    case .limited:
+      return "제한입찰"
+    case .other(let value):
+      return value
     }
   }
 }
