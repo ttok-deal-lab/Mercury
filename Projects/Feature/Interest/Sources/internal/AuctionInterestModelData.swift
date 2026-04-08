@@ -58,8 +58,22 @@ final class AuctionInterestModelData {
     }
   }
   
-  func removeUserInterestAuction(auctionID: Int) async throws {
-    try await self.interestUsecase.removeInterest(auctionID: auctionID)
+  func removeAndDeleteInterest(item: InterestItem) async {
+    do {
+      try await self.interestUsecase.removeInterest(auctionID: item.id)
+      self.interestList.removeAll { $0.id == item.id }
+      NotificationCenter.default.post(
+        name: .auctionZzimDidChange,
+        object: nil,
+        userInfo: [
+          "auctionID": item.id,
+          "isZzimed": false,
+          "zzimCount": max(0, item.zzimCount - 1)
+        ]
+      )
+    } catch {
+      self.error = error
+    }
   }
 }
 

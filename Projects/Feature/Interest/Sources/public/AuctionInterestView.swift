@@ -33,9 +33,8 @@ public struct AuctionInterestView: View {
           LazyVStack(spacing: .zero) {
             ForEach(modelData.interestList) { item in
               AuctionInterestItemView(item: item, onZzim: {
-                modelData.interestList.removeAll { $0 == item }
                 Task {
-                  try await modelData.removeUserInterestAuction(auctionID: item.id)
+                  await modelData.removeAndDeleteInterest(item: item)
                 }
               })
               .onAppear {

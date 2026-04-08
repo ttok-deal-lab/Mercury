@@ -73,6 +73,10 @@ Tuist/.DS_Store
 **/.DS_Store
 Projects/**/Derived
 
-# Cluade
+# Claude
 CLAUDE.md
 .claude/
+agent_docs/
+
+# OMC (Ralph runtime state)
+.omc/
