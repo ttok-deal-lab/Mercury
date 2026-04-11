@@ -58,6 +58,7 @@ final class AuctionInterestModelData {
     }
   }
   
+  @MainActor
   func removeAndDeleteInterest(item: InterestItem) async {
     do {
       try await self.interestUsecase.removeInterest(auctionID: item.id)

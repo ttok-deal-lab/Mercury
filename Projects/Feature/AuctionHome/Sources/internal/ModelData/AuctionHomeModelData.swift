@@ -133,6 +133,9 @@ final class AuctionHomeModelData {
     await localStorageUsecase.setModel(recentSales, forKey: LocalStorageKey.recentViwedSales.rawValue)
   }
   
+  
+  
+  @MainActor
   // 관심매물 추가
   func tapOnZzim(auctionID: Int) async throws {
     guard let index = self.auctionSalesItems.firstIndex(where: { $0.id == auctionID }) else { return }
