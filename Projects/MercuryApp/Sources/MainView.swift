@@ -19,7 +19,8 @@ struct MainView: View {
   @StateObject private var coordinator = NavigationCoordinator<FeatureRoute>()
   @State private var isSplashDone  = false
   @State private var isUserLoggedIn = false
-  
+  @Inject private var accessTokenManager: AccessTokenManagable
+
   var body: some View {
     ZStack {
       currentView()
@@ -29,6 +30,15 @@ struct MainView: View {
     })
     .animation(.easeInOut(duration: DesignDefine.transitionOpacityDuration), value: isSplashDone)
     .environmentObject(coordinator)
+    .onReceive(accessTokenManager.tokenInfoStream) { token in
+      guard isSplashDone else { return }
+      let loggedIn = token != nil
+      guard isUserLoggedIn != loggedIn else { return }
+      if !loggedIn {
+        coordinator.popToRoot()
+      }
+      isUserLoggedIn = loggedIn
+    }
   }
 
   @ViewBuilder
