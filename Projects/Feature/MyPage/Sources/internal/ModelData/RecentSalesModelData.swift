@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 
+import AppFoundation
 import Domain
 
 @Observable
@@ -44,6 +45,7 @@ final class RecentSalesModelData {
     }
   }
   
+  @MainActor
   // 관심매물 추가
   func tapOnZzim(auctionID: Int) async throws {
     guard let index = self.recentViewList.firstIndex(where: { $0.id == auctionID }) else { return }
@@ -60,11 +62,39 @@ final class RecentSalesModelData {
     targetItem.zzimCount += isNowZzim ? -1 : 1
     targetItem.isZzim.toggle()
     self.recentViewList[index] = targetItem
+    NotificationCenter.default.post(
+      name: .auctionZzimDidChange,
+      object: nil,
+      userInfo: [
+        "auctionID": targetItem.id,
+        "isZzimed": targetItem.isZzim,
+        "zzimCount": targetItem.zzimCount
+      ]
+    )
   }
   
   func isAuctionUserInterested(auctionID: Int) async throws -> Bool {
     let isZzim = try await auctionInterestUsecase.isAuctionInterested(auctionID: auctionID)
     return isZzim
+  }
+
+  func refreshInterestStatus() async {
+    guard !recentViewList.isEmpty else { return }
+    do {
+      let updatedList = try await loadInterestAuctionList(list: recentViewList)
+      self.recentViewList = updatedList
+    } catch {
+      self.error = error
+    }
+  }
+
+  func syncZzimState(auctionID: Int, isZzimed: Bool, zzimCount: Int) {
+    guard let index = self.recentViewList.firstIndex(where: { $0.id == auctionID }) else { return }
+
+    var targetItem = self.recentViewList[index]
+    targetItem.isZzim = isZzimed
+    targetItem.zzimCount = zzimCount
+    self.recentViewList[index] = targetItem
   }
   
   // 관심매물 여부 리스트 검사
