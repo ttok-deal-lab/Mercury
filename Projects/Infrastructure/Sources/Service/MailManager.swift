@@ -10,6 +10,7 @@ import SwiftUI
 import Domain
 import UIComponent
 
+@MainActor
 public struct MailManager: MailManagerable {
   
   public init() { }
