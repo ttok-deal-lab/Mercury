@@ -13,7 +13,7 @@ import AppFoundation
 import Domain
 import Infrastructure
 
-public final class SignInInformationManager: SignInInformationReadable, AccessTokenManagable, UserInfoManagable {
+public final class SignInInformationManager: SignInInformationReadable, AccessTokenManagable, UserInfoManagable, AuthorizationRefreshable {
 
   private let localStorageUsecase: LocalStorageUsecase
   private let fcmTokenUsercase: FcmTokenUsecase
@@ -22,6 +22,7 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
   
   public private(set) var tokenInfoStream: CurrentValueSubject<UserAccessToken?, Never> = .init(nil)
   public private(set) var userInfoStream: CurrentValueSubject<UserInformation?, Never> = .init(nil)
+  
   
   public var accessToken: UserAccessToken? {
     didSet {
@@ -95,6 +96,11 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
   
   public func removeAccessToken() { // logout
     self.accessToken = nil
+  }
+
+  public func refreshAccessToken(rawValue: String) {
+    guard self.accessToken?.value != rawValue else { return }
+    self.accessToken = UserAccessToken(value: rawValue)
   }
   
   public func setUserInfo(_ info: UserInformation?) {
