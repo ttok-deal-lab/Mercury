@@ -45,6 +45,7 @@ public struct MainTabView<
         tabView()
           .task {
             if modelData.isTabEnterFirst {
+              modelData.isTabEnterFirst = false
               coordinator.presentFullScreen(.onboard(OnboardRoute(route: .permissionRequest)))
             }
           }
