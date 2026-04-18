@@ -99,7 +99,12 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
   }
 
   public func refreshAccessToken(rawValue: String) {
-    guard self.accessToken?.value != rawValue else { return }
+    let hasBearerPrefix = rawValue.hasPrefix("Bearer ")
+    let oldPrefix = self.accessToken?.value.prefix(12).description ?? "nil"
+    let newPrefix = rawValue.prefix(12).description
+    let changed = self.accessToken?.value != rawValue
+    print("[TOKEN REFRESH] changed=\(changed) bearer=\(hasBearerPrefix) old=\(oldPrefix)… new=\(newPrefix)… len=\(rawValue.count)")
+    guard changed else { return }
     self.accessToken = UserAccessToken(value: rawValue)
   }
   

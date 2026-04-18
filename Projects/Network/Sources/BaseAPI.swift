@@ -98,15 +98,15 @@ public extension BaseAPI {
 
 private extension BaseAPI {
   func handleAuthorizationRefresh(_ response: HTTPURLResponse) {
-    guard
-      let rawValue = response.value(forHTTPHeaderField: "Authorization"),
-      !rawValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    else {
+    let raw = response.value(forHTTPHeaderField: "Authorization") ?? ""
+    let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !trimmed.isEmpty else {
+      print("[TOKEN REFRESH] no Authorization header in response")
       return
     }
     MercuryContainer.shared
       .resolve(AuthorizationRefreshable.self)
-      .refreshAccessToken(rawValue: rawValue)
+      .refreshAccessToken(rawValue: trimmed)
   }
 }
 
