@@ -93,7 +93,7 @@ public struct AuctionDetail: Sendable {
   // MARK: - Enums
   
   /// 매물 종류 목록
-  public enum ItemType: Sendable {
+  public enum ItemType: String, Sendable {
     /// 아파트
     case apartment
     ///
@@ -148,46 +148,188 @@ public struct AuctionDetail: Sendable {
   }
   
   /// 매물 카테고리
-  public enum SalesCategory: String, Sendable {
-    /// 주택
-    case housing = "주택"
-    /// 빌라
-    case villa = "빌라"
-    /// 아파트
-    case apartment = "아파트"
-    /// 상점
-    case shopHouse = "상점"
-    /// 오피스텔
-    case officetel = "오피스텔"
-    /// 기타
-    case other = "기타"
-    
-    public init?(rawValue: String) {
+  public enum SalesCategory: Sendable {
+    // MARK: 토지/지목
+    case land
+    case landDesignation
+    case field
+    case paddy
+    case orchard
+    case ranchLand
+    case forestLand
+    case mineralSpringLand
+    case saltPan
+    case buildingSite
+    case factorySite
+    case schoolSite
+    case parkingLot
+    case gasStationSite
+    case warehouseSite
+    case road
+    case railwaySite
+    case embankment
+    case river
+    case ditch
+    case reservoir
+    case fishFarm
+    case waterworksSite
+    case park
+    case sportsSite
+    case recreationArea
+    case religiousSite
+    case historicSite
+    case cemetery
+    case miscellaneousLand
+
+    // MARK: 건물/시설
+    case building
+    case residentialBuilding
+    case detachedHouse
+    case multiHousehold
+    case multipleOccupancy
+    case apartment
+    case rowHouse
+    case multiFamilyHousing
+    case dormitory
+    case villa
+    case shopHouse
+    case officetel
+    case mixedUseResidentialCommercial
+    case commercialAndOffice
+    case neighborhoodFacility
+    case culturalAssemblyFacility
+    case religiousFacility
+    case retailFacility
+    case transportationFacility
+    case medicalFacility
+    case educationResearchFacility
+    case welfareFacility
+    case trainingFacility
+    case sportsFacility
+    case officeFacility
+    case lodgingFacility
+    case entertainmentFacility
+    case correctionalAndMilitaryFacility
+    case broadcastingTelecomFacility
+    case powerGenerationFacility
+    case cemeteryRelatedFacility
+    case tourismRestFacility
+    case industrialAndSpecialPurpose
+    case factory
+    case warehouseFacility
+    case hazmatFacility
+    case automotiveFacility
+    case animalPlantFacility
+    case wasteTreatmentFacility
+    case mixedUse
+    case residentialCommercialBuilding
+    case residentialIndustrialBuilding
+    case otherMixedUseBuilding
+
+    /// 미매핑 (배치 수집 대상 외 카테고리 또는 신규 코드)
+    case other(String)
+
+    public init(rawValue: String) {
       switch rawValue {
-      case "HOUSING": self = .housing
-      case "VILLA": self = .villa
+      // 토지/지목
+      case "LAND": self = .land
+      case "LAND_DESIGNATION": self = .landDesignation
+      case "FIELD": self = .field
+      case "PADDY": self = .paddy
+      case "ORCHARD": self = .orchard
+      case "RANCH_LAND": self = .ranchLand
+      case "FOREST_LAND": self = .forestLand
+      case "MINERAL_SPRING_LAND": self = .mineralSpringLand
+      case "SALT_PAN": self = .saltPan
+      case "BUILDING_SITE": self = .buildingSite
+      case "FACTORY_SITE": self = .factorySite
+      case "SCHOOL_SITE": self = .schoolSite
+      case "PARKING_LOT": self = .parkingLot
+      case "GAS_STATION_SITE": self = .gasStationSite
+      case "WAREHOUSE_SITE": self = .warehouseSite
+      case "ROAD": self = .road
+      case "RAILWAY_SITE": self = .railwaySite
+      case "EMBANKMENT": self = .embankment
+      case "RIVER": self = .river
+      case "DITCH": self = .ditch
+      case "RESERVOIR": self = .reservoir
+      case "FISH_FARM": self = .fishFarm
+      case "WATERWORKS_SITE": self = .waterworksSite
+      case "PARK": self = .park
+      case "SPORTS_SITE": self = .sportsSite
+      case "RECREATION_AREA": self = .recreationArea
+      case "RELIGIOUS_SITE": self = .religiousSite
+      case "HISTORIC_SITE": self = .historicSite
+      case "CEMETERY": self = .cemetery
+      case "MISCELLANEOUS_LAND": self = .miscellaneousLand
+      // 건물/시설
+      case "BUILDING": self = .building
+      case "RESIDENTIAL_BUILDING": self = .residentialBuilding
+      case "DETACHED_HOUSE": self = .detachedHouse
+      case "MULTI_HOUSEHOLD": self = .multiHousehold
+      case "MULTIPLE_OCCUPANCY": self = .multipleOccupancy
       case "APARTMENT": self = .apartment
+      case "ROW_HOUSE": self = .rowHouse
+      case "MULTI_FAMILY_HOUSING": self = .multiFamilyHousing
+      case "DORMITORY": self = .dormitory
+      case "VILLA": self = .villa
       case "SHOP_HOUSE": self = .shopHouse
       case "OFFICETEL": self = .officetel
-      case "OTHER": self = .other
-      default: return nil
+      case "MIXED_USE_RESIDENTIAL_COMMERCIAL": self = .mixedUseResidentialCommercial
+      case "COMMERCIAL_AND_OFFICE": self = .commercialAndOffice
+      case "NEIGHBORHOOD_FACILITY": self = .neighborhoodFacility
+      case "CULTURAL_ASSEMBLY_FACILITY": self = .culturalAssemblyFacility
+      case "RELIGIOUS_FACILITY": self = .religiousFacility
+      case "RETAIL_FACILITY": self = .retailFacility
+      case "TRANSPORTATION_FACILITY": self = .transportationFacility
+      case "MEDICAL_FACILITY": self = .medicalFacility
+      case "EDUCATION_RESEARCH_FACILITY": self = .educationResearchFacility
+      case "WELFARE_FACILITY": self = .welfareFacility
+      case "TRAINING_FACILITY": self = .trainingFacility
+      case "SPORTS_FACILITY": self = .sportsFacility
+      case "OFFICE_FACILITY": self = .officeFacility
+      case "LODGING_FACILITY": self = .lodgingFacility
+      case "ENTERTAINMENT_FACILITY": self = .entertainmentFacility
+      case "CORRECTIONAL_AND_MILITARY_FACILITY": self = .correctionalAndMilitaryFacility
+      case "BROADCASTING_TELECOM_FACILITY": self = .broadcastingTelecomFacility
+      case "POWER_GENERATION_FACILITY": self = .powerGenerationFacility
+      case "CEMETERY_RELATED_FACILITY": self = .cemeteryRelatedFacility
+      case "TOURISM_REST_FACILITY": self = .tourismRestFacility
+      case "INDUSTRIAL_AND_SPECIAL_PURPOSE": self = .industrialAndSpecialPurpose
+      case "FACTORY": self = .factory
+      case "WAREHOUSE_FACILITY": self = .warehouseFacility
+      case "HAZMAT_FACILITY": self = .hazmatFacility
+      case "AUTOMOTIVE_FACILITY": self = .automotiveFacility
+      case "ANIMAL_PLANT_FACILITY": self = .animalPlantFacility
+      case "WASTE_TREATMENT_FACILITY": self = .wasteTreatmentFacility
+      case "MIXED_USE": self = .mixedUse
+      case "RESIDENTIAL_COMMERCIAL_BUILDING": self = .residentialCommercialBuilding
+      case "RESIDENTIAL_INDUSTRIAL_BUILDING": self = .residentialIndustrialBuilding
+      case "OTHER_MIXED_USE_BUILDING": self = .otherMixedUseBuilding
+      default: self = .other(rawValue)
       }
     }
   }
-  
+
   /// 입찰 방식
   public enum BidType: Sendable {
-    /// 일반 입찰
-    case general
-    /// 제한 입찰
-    case limited
-    /// 기타
+    /// 기일입찰
+    case scheduledBid
+    /// 기간입찰
+    case periodBid
+    /// 호가입찰
+    case askingBid
+    /// 매핑 실패 (비노출 권장)
+    case invalid
+    /// 신규/미매핑 코드
     case other(String)
-    
+
     public init(rawValue: String) {
       switch rawValue {
-      case "일반입찰": self = .general
-      case "제한입찰": self = .limited
+      case "SCHEDULED_BID": self = .scheduledBid
+      case "PERIOD_BID": self = .periodBid
+      case "ASKING_BID": self = .askingBid
+      case "INVALID", "": self = .invalid
       default: self = .other(rawValue)
       }
     }
@@ -274,23 +416,71 @@ public struct AuctionDetail: Sendable {
     
     /// 기일 결과
     public enum SalesResult: Sendable {
-      /// 경매 실패
-      case failedBid
-      /// 낙찰 완료
+      /// 매각준비
+      case preparingSale
+      /// 매각
       case sold
-      /// 경매 연기
-      case postponed
-      /// 경매 취소
-      case canceled
-      /// 기타
+      /// 유찰
+      case failedBid
+      /// 최고가매각허가결정
+      case bestBidApproved
+      /// 차순위매각허가결정
+      case secondaryBidApproved
+      /// 최고가매각불허가결정
+      case bestBidRejected
+      /// 차순위매각불허가결정
+      case secondaryBidRejected
+      /// 기한변경
+      case deadlineChanged
+      /// 추후지정
+      case toBeSpecified
+      /// 납부
+      case paymentCompleted
+      /// 미납
+      case paymentMissed
+      /// 기한후납부
+      case latePayment
+      /// 상계허가
+      case offsetApproved
+      /// 진행
+      case inProgress
+      /// 변경
+      case modified
+      /// 배당종결
+      case distributionCompleted
+      /// 배당불가
+      case distributionUnavailable
+      /// 최고가매각허가취소결정
+      case bestBidApprovalCancelled
+      /// 차순위매각허가취소결정
+      case secondaryBidApprovalCancelled
+      /// 매핑 실패 (비노출 권장)
+      case invalid
+      /// 신규/미매핑 코드
       case other(String)
-      
+
       public init(rawValue: String) {
         switch rawValue {
-        case "유찰": self = .failedBid
-        case "낙찰": self = .sold
-        case "연기": self = .postponed
-        case "취소": self = .canceled
+        case "PREPARING_SALE": self = .preparingSale
+        case "SOLD": self = .sold
+        case "FAILED": self = .failedBid
+        case "BEST_BID_APPROVED": self = .bestBidApproved
+        case "SECONDARY_BID_APPROVED": self = .secondaryBidApproved
+        case "BEST_BID_REJECTED": self = .bestBidRejected
+        case "SECONDARY_BID_REJECTED": self = .secondaryBidRejected
+        case "DEADLINE_CHANGED": self = .deadlineChanged
+        case "TO_BE_SPECIFIED": self = .toBeSpecified
+        case "PAYMENT_COMPLETED": self = .paymentCompleted
+        case "PAYMENT_MISSED": self = .paymentMissed
+        case "LATE_PAYMENT": self = .latePayment
+        case "OFFSET_APPROVED": self = .offsetApproved
+        case "IN_PROGRESS": self = .inProgress
+        case "MODIFIED": self = .modified
+        case "DISTRIBUTION_COMPLETED": self = .distributionCompleted
+        case "DISTRIBUTION_UNAVAILABLE": self = .distributionUnavailable
+        case "BEST_BID_APPROVAL_CANCELLED": self = .bestBidApprovalCancelled
+        case "SECONDARY_BID_APPROVAL_CANCELLED": self = .secondaryBidApprovalCancelled
+        case "INVALID", "": self = .invalid
         default: self = .other(rawValue)
         }
       }
@@ -373,13 +563,25 @@ public struct AuctionDetail: Sendable {
       case land
       /// 건물
       case building
+      /// 집합건물
+      case collectiveBuilding
+      /// 토지,건물
+      case landAndBuilding
       /// 기타
+      case etc
+      /// 매핑 실패 (비노출 권장)
+      case invalid
+      /// 신규/미매핑 코드
       case other(String)
-      
+
       public init(rawValue: String) {
         switch rawValue {
-        case "토지": self = .land
-        case "건물": self = .building
+        case "LAND": self = .land
+        case "BUILDING": self = .building
+        case "COLLECTIVE_BUILDING": self = .collectiveBuilding
+        case "LAND_AND_BUILDING": self = .landAndBuilding
+        case "OTHER": self = .etc
+        case "INVALID", "": self = .invalid
         default: self = .other(rawValue)
         }
       }

@@ -23,9 +23,12 @@ struct AuctionDetailSalesBuildingDetailView: View {
         
         ForEach(salesItems) { item in
           VStack(alignment: .leading, spacing: 8) {
-            Text(item.type.displayName)
-              .fonts(.bodySmallBold)
-              .foregroundStyle(Asset.Colors.neutral.color)
+            let typeText = item.type.displayName
+            if !typeText.isEmpty {
+              Text(typeText)
+                .fonts(.bodySmallBold)
+                .foregroundStyle(Asset.Colors.neutral.color)
+            }
             Text(item.content)
               .fonts(.bodySmallMedium)
               .foregroundStyle(Asset.Colors.neutralSubtler.color)
@@ -37,18 +40,5 @@ struct AuctionDetailSalesBuildingDetailView: View {
     }
     .padding(.vertical, 24)
     .padding(.horizontal, 20)
-  }
-}
-
-private extension AuctionDetail.SalesItemDetail.ItemDetailType {
-  var displayName: String {
-    switch self {
-    case .land:
-      return "토지"
-    case .building:
-      return "건물"
-    case .other(let value):
-      return value
-    }
   }
 }

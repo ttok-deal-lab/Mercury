@@ -36,28 +36,31 @@ struct AuctionDetailAbstractChipsView: View {
   
   var body: some View {
     HStack(spacing: 4) {
-      chipView(
-        text: auctionDetailInfo.bidType.displayName,
-        foregroundColor: Asset.Colors.neutralSubtler.color,
-        backgroundColor: Asset.Colors.neutralWeak.color
-      )
-      
+      let bidTypeText = auctionDetailInfo.bidType.displayName
+      if !bidTypeText.isEmpty {
+        chipView(
+          text: bidTypeText,
+          foregroundColor: Asset.Colors.neutralSubtler.color,
+          backgroundColor: Asset.Colors.neutralWeak.color
+        )
+      }
+
       chipView(
         text: L10n.commonFailedBidCount(auctionDetailInfo.failBidCount),
         foregroundColor: Asset.Colors.neutralSubtler.color,
         backgroundColor: Asset.Colors.neutralWeak.color
       )
-      
+
       chipView(
         text: saleStatusText,
         foregroundColor: auctionDetailInfo.soldOut ? Asset.Colors.primary.color : Asset.Colors.critical.color,
         backgroundColor: auctionDetailInfo.soldOut ? Asset.Colors.primaryWeak.color : Asset.Colors.criticalWeak.color
       )
-      
+
       Spacer()
     }
   }
-  
+
   private func chipView(text: String, foregroundColor: Color, backgroundColor: Color) -> some View {
     Text(text)
       .fonts(.bodyMicroMedium)
@@ -68,18 +71,5 @@ struct AuctionDetailAbstractChipsView: View {
         backgroundColor
       }
       .clipShape(RoundedRectangle(cornerRadius: 8))
-  }
-}
-
-private extension AuctionDetail.BidType {
-  var displayName: String {
-    switch self {
-    case .general:
-      return "일반입찰"
-    case .limited:
-      return "제한입찰"
-    case .other(let value):
-      return value
-    }
   }
 }

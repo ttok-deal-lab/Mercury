@@ -56,7 +56,7 @@ struct AuctionDetailDTO: Decodable, Sendable {
     let salesReceptionDate = self.salesReceptionDate.toKoreanDate()
     let salesOpenDate = self.salesOpenDate.toKoreanDate()
     let distributionRequiredDeadlineDate = self.distributionRequiredDeadlineDate.toKoreanDate()
-    let salesCategories = self.salesCategories.compactMap { AuctionDetail.SalesCategory(rawValue: $0) }
+    let salesCategories = self.salesCategories.map { AuctionDetail.SalesCategory(rawValue: $0) }
     let courtCode = AuctionDetail.Court.CourtCode(rawValue: self.courtCode)
     let salesDetails = self.salesDetails.map { $0.toEntity() }
     let salesPictures = self.salesPictures.map { $0.toEntity() }
