@@ -67,7 +67,8 @@ struct AuctionSalesItemView: View {
             }
             
             if !item.salesCategories.isEmpty,
-               let firstSalesCategory = item.salesCategories.first?.rawValue {
+               let firstSalesCategory = item.salesCategories.first?.displayName,
+               !firstSalesCategory.isEmpty {
               Text(firstSalesCategory)
                 .fonts(.captionLargeMedium)
                 .foregroundStyle(Asset.Colors.primary.color)
