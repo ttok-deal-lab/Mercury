@@ -62,6 +62,9 @@ public extension BaseAPI {
         throw NetworkError.invalidStatusCode
       }
 
+      logResponseHeaders(http, url: request.url)
+      handleAuthorizationRefresh(http)
+
       guard (200...299).contains(http.statusCode) else {
         throw NetworkError.invalidStatusCode
       }
@@ -81,12 +84,74 @@ public extension BaseAPI {
         throw NetworkError.invalidStatusCode
       }
 
+      logResponseHeaders(http, url: request.url)
+      handleAuthorizationRefresh(http)
+
       guard (200...299).contains(http.statusCode) else {
         throw NetworkError.invalidStatusCode
       }
     } catch {
       throw mapError(error)
     }
+  }
+}
+
+private extension BaseAPI {
+  func handleAuthorizationRefresh(_ response: HTTPURLResponse) {
+    let raw = response.value(forHTTPHeaderField: "Authorization") ?? ""
+    let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !trimmed.isEmpty else {
+      print("[TOKEN REFRESH] no Authorization header in response")
+      return
+    }
+    MercuryContainer.shared
+      .resolve(AuthorizationRefreshable.self)
+      .refreshAccessToken(rawValue: trimmed)
+  }
+}
+
+private extension BaseAPI {
+  func logResponseHeaders(_ response: HTTPURLResponse, url: URL?) {
+    let urlString = url?.absoluteString ?? "unknown"
+    let status = response.statusCode
+    let headers = response.allHeaderFields
+
+    let sortedKeys = headers.keys
+      .compactMap { $0 as? String }
+      .sorted { $0.lowercased() < $1.lowercased() }
+
+    let header =  "========== [RESP HEADERS] =========="
+    let meta   =  "URL   : \(urlString)"
+    let st     =  "STATUS: \(status)"
+    let count  =  "COUNT : \(sortedKeys.count)"
+    let footer =  "===================================="
+
+    print(header)
+    print(meta)
+    print(st)
+    print(count)
+
+    let chunkSize = 800
+    for key in sortedKeys {
+      let value = headers[key].map { "\($0)" } ?? ""
+      let line = "• \(key): \(value)"
+
+      if line.count <= chunkSize {
+        print(line)
+        continue
+      }
+
+      var start = line.startIndex
+      var index = 0
+      while start < line.endIndex {
+        let end = line.index(start, offsetBy: chunkSize, limitedBy: line.endIndex) ?? line.endIndex
+        print("[\(index)] \(line[start..<end])")
+        start = end
+        index += 1
+      }
+    }
+
+    print(footer)
   }
 }
 

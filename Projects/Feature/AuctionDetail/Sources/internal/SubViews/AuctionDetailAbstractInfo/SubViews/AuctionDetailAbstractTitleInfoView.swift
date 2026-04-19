@@ -18,7 +18,9 @@ struct AuctionDetailAbstractTitleInfoView: View {
   let onTapZzim: () -> Void
   
   private var categoryText: String? {
-    let categories = auctionDetailInfo.salesCategories.map(\.rawValue)
+    let categories = auctionDetailInfo.salesCategories
+      .map(\.displayName)
+      .filter { !$0.isEmpty }
     guard !categories.isEmpty else { return nil }
     return categories.joined(separator: " · ")
   }

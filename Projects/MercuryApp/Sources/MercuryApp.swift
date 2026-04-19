@@ -58,6 +58,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     container.register(SignInInformationReadable.self, instance: SignInInformationManager.shared)
     container.register(AccessTokenManagable.self, instance: SignInInformationManager.shared)
     container.register(UserInfoManagable.self, instance: SignInInformationManager.shared)
+    container.register(AuthorizationRefreshable.self, instance: SignInInformationManager.shared)
     container.register(Toastable.self, instance: MercuryToast.shared)
     container.register(Alertable.self, instance: MercuryAlert.shared)
     container.register(LoadingPresentable.self, instance: MercuryLoading.shared)

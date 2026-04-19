@@ -31,7 +31,7 @@ struct SearchNavigationBar: View {
           .frame(height: height)
         
         if text.isEmpty {
-          Text("경매 번호, 주소 검색")
+          Text("\(L10n.searchPlaceholder1), \(L10n.searchPlaceholder2)")
             .fonts(.bodyMediumMedium)
             .foregroundColor(Asset.Colors.neutralSubtle.color)
             .padding(.vertical, 10)
