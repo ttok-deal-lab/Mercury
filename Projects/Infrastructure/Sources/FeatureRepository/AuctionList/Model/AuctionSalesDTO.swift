@@ -18,10 +18,19 @@ struct AuctionSalesDTO: Decodable, Sendable {
 
 extension AuctionSalesDTO {
   func toEntity() -> AuctionSales {
+    let normalizedNextCursor: String? = {
+      guard let nextCursor else { return nil }
+      let trimmed = nextCursor.trimmingCharacters(in: .whitespacesAndNewlines)
+      guard !trimmed.isEmpty, trimmed.caseInsensitiveCompare("unknown") != .orderedSame else {
+        return nil
+      }
+      return trimmed
+    }()
+
     return AuctionSales(
       searchHitCount: searchHitCount,
       items: auctionItemResponses.map { $0.toEntity() },
-      nextCursor: nextCursor
+      nextCursor: normalizedNextCursor
     )
   }
 }

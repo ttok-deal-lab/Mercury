@@ -31,7 +31,8 @@ public final class AuctionSalesListRepository: AuctionSalesListRepositorable {
       minimumPrice: filter?.minimumPrice,
       maximumPrice: filter?.maximumPrice,
       nextCursor: cursor,
-      sort: filter?.sort?.code
+      sort: filter?.sort?.code,
+      size: size
     ).request(AuctionSalesDTO.self)
     let auctionItems = auctionSalesItemDTO.toEntity()
     return auctionItems

@@ -12,7 +12,7 @@ import Domain
 import Networking
 
 enum AuctionAPI: BaseAPI {
-  case auctionSearchList(keyword: String?, region: String?, district: String?, buildTypes: [String]?, auctionFailCount: [String]?, isCertified: Bool?, minimumPrice: Int?, maximumPrice: Int?, nextCursor: String?, sort: String?)
+  case auctionSearchList(keyword: String?, region: String?, district: String?, buildTypes: [String]?, auctionFailCount: [String]?, isCertified: Bool?, minimumPrice: Int?, maximumPrice: Int?, nextCursor: String?, sort: String?, size: Int?)
   case auctionDetail(_ auctionID: Int)
   case auctionSales(auctionIDs: [Int])
   case auctionSearchFilter
@@ -60,7 +60,7 @@ enum AuctionAPI: BaseAPI {
   
   var queryParam: [String : Any]? {
     switch self {
-    case let .auctionSearchList(keyword, region, district, buildTypes, auctionFailCount, isCertified, minimumPrice, maximumPrice, nextCursor, sort):
+    case let .auctionSearchList(keyword, region, district, buildTypes, auctionFailCount, isCertified, minimumPrice, maximumPrice, nextCursor, sort, size):
       var params: [String: Any] = [:]
       
       params["keyword"] = keyword ?? "unknown"
@@ -103,6 +103,9 @@ enum AuctionAPI: BaseAPI {
       
       params["maximumPrice"] = maximumPrice ?? -1
       
+      if let size {
+        params["size"] = size
+      }
       
       if let nextCursor {
         params["nextCursor"] = nextCursor
