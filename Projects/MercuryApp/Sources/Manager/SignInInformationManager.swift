@@ -95,14 +95,29 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
 
   
   private func tryAutoSignIn() {
-    Task {
+    Task { [weak self] in
+      guard let self else { return }
       async let storedToken = localStorageUsecase.getModel(forKey: LocalStorageKey.signInTokenInfo.rawValue, as: UserAccessToken.self)
       async let storedUser = localStorageUsecase.getModel(forKey: LocalStorageKey.signInUserInfo.rawValue, as: UserInformation.self)
-
-      if let token = await storedToken {
-        self.accessToken = token
+      
+      let token = await storedToken
+      let user = await storedUser
+      
+      guard let token else {
+        if user != nil {
+          await localStorageUsecase.remove(forKey: LocalStorageKey.signInUserInfo.rawValue)
+        }
+        return
       }
-      if let user = await storedUser {
+      
+      guard !token.isExpired else {
+        self.accessToken = nil
+        self.userInfo = nil
+        return
+      }
+      
+      self.accessToken = token
+      if let user {
         self.userInfo = user
       }
     }

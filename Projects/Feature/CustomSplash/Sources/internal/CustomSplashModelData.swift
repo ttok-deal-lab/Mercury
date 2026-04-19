@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 
 import AppFoundation
 import Domain
@@ -14,8 +13,6 @@ import Domain
 @Observable
 final class CustomSplashModelData {
   var isAppFirstRun: Bool = false
-  private var store = Set<AnyCancellable>()
-  private var signInInformation = MercuryContainer.shared.resolve(SignInInformationReadable.self)
   
   init(onComplete: @escaping (Bool) -> Void, localStorageUsecasable: LocalStorageUsecasable) {
     Task { @MainActor [weak self] in
@@ -25,10 +22,24 @@ final class CustomSplashModelData {
       } else {
         await localStorageUsecasable.set(false, forKey: LocalStorageKey.isAppFirst.rawValue)
       }
-      onComplete(self.signInInformation.accessToken != nil)
+      onComplete(await Self.resolveLaunchLoginState(localStorageUsecasable: localStorageUsecasable))
     }
     
   }
+  
+  static func resolveLaunchLoginState(localStorageUsecasable: LocalStorageUsecasable) async -> Bool {
+    let storedToken = await localStorageUsecasable.getModel(
+      forKey: LocalStorageKey.signInTokenInfo.rawValue,
+      as: UserAccessToken.self
+    )
+    
+    guard let storedToken, !storedToken.isExpired else {
+      await localStorageUsecasable.remove(forKey: LocalStorageKey.signInTokenInfo.rawValue)
+      await localStorageUsecasable.remove(forKey: LocalStorageKey.signInUserInfo.rawValue)
+      return false
+    }
+    
+    return true
+  }
 }
-
 
