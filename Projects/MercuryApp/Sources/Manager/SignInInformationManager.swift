@@ -13,7 +13,7 @@ import AppFoundation
 import Domain
 import Infrastructure
 
-public final class SignInInformationManager: SignInInformationReadable, AccessTokenManagable, UserInfoManagable {
+public final class SignInInformationManager: SignInInformationReadable, AccessTokenManagable, UserInfoManagable, AuthorizationRefreshable {
 
   private let localStorageUsecase: LocalStorageUsecase
   private let fcmTokenUsercase: FcmTokenUsecase
@@ -22,6 +22,7 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
   
   public private(set) var tokenInfoStream: CurrentValueSubject<UserAccessToken?, Never> = .init(nil)
   public private(set) var userInfoStream: CurrentValueSubject<UserInformation?, Never> = .init(nil)
+  
   
   public var accessToken: UserAccessToken? {
     didSet {
@@ -132,6 +133,16 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
   
   public func removeAccessToken() { // logout
     self.accessToken = nil
+  }
+
+  public func refreshAccessToken(rawValue: String) {
+    let hasBearerPrefix = rawValue.hasPrefix("Bearer ")
+    let oldPrefix = self.accessToken?.value.prefix(12).description ?? "nil"
+    let newPrefix = rawValue.prefix(12).description
+    let changed = self.accessToken?.value != rawValue
+    print("[TOKEN REFRESH] changed=\(changed) bearer=\(hasBearerPrefix) old=\(oldPrefix)… new=\(newPrefix)… len=\(rawValue.count)")
+    guard changed else { return }
+    self.accessToken = UserAccessToken(value: rawValue)
   }
   
   public func setUserInfo(_ info: UserInformation?) {

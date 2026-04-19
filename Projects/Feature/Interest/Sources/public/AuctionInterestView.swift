@@ -15,6 +15,7 @@ import UIComponent
 import Router
 
 public struct AuctionInterestView: View {
+  @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var modelData: AuctionInterestModelData
   
   public init(interestUsecase: AuctionInterestUsecasable) {
@@ -32,15 +33,19 @@ public struct AuctionInterestView: View {
         if !modelData.interestList.isEmpty {
           LazyVStack(spacing: .zero) {
             ForEach(modelData.interestList) { item in
-              AuctionInterestItemView(item: item, onZzim: {
-                Task {
-                  await modelData.removeAndDeleteInterest(item: item)
-                }
-              })
-              .onAppear {
-                if item.id == modelData.interestList.last?.id {
+              Button {
+                coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
+              } label: {
+                AuctionInterestItemView(item: item, onZzim: {
                   Task {
-                    await modelData.loadMoreInterestSales()
+                    await modelData.removeAndDeleteInterest(item: item)
+                  }
+                })
+                .onAppear {
+                  if item.id == modelData.interestList.last?.id {
+                    Task {
+                      await modelData.loadMoreInterestSales()
+                    }
                   }
                 }
               }

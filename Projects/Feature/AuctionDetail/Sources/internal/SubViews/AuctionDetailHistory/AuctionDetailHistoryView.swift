@@ -120,20 +120,18 @@ struct AuctionDetailHistoryView: View {
 extension AuctionDetail.SalesDetail {
   /// 결과 텍스트
   var displayResult: String {
-    switch result {
-    case .failedBid: return "유찰"
-    case .sold: return "낙찰"
-    case .postponed: return "연기"
-    case .canceled: return "취소"
-    case .other(let v): return v
-    }
+    result.displayName
   }
 
   /// 결과 색상
   var resultColor: Color {
     switch result {
-    case .other(let v) where v.contains("불허"): return .red
-    default: return .secondary
+    case .bestBidRejected, .secondaryBidRejected,
+         .bestBidApprovalCancelled, .secondaryBidApprovalCancelled,
+         .paymentMissed, .distributionUnavailable:
+      return .red
+    default:
+      return .secondary
     }
   }
 }

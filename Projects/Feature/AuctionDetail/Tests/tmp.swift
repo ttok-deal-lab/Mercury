@@ -16,7 +16,7 @@ final class AuctionDetailModelDataTests: XCTestCase {
       salesDetails: [
         .init(timeStamp: olderDate, type: .saleDate, location: "A", leastSalesPrice: 100_000_000, result: .failedBid),
         .init(timeStamp: newestDate, type: .saleDate, location: "B", leastSalesPrice: 90_000_000, result: .sold),
-        .init(timeStamp: middleDate, type: .saleDate, location: "C", leastSalesPrice: 95_000_000, result: .postponed)
+        .init(timeStamp: middleDate, type: .saleDate, location: "C", leastSalesPrice: 95_000_000, result: .modified)
       ]
     )
     
@@ -254,7 +254,7 @@ private extension AuctionDetail {
       itemTypes: [.apartment],
       appraisalPrice: 500_000_000,
       lowestSalesPrice: 400_000_000,
-      bidType: .general,
+      bidType: .scheduledBid,
       salesDateTime: Date(timeIntervalSince1970: 0),
       salesLocation: "서울중앙지방법원",
       salesNote: "",

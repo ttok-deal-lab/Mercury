@@ -21,30 +21,24 @@ struct AuctionDetailTabBriefCardView: View {
   let auctionDetailInfo: AuctionDetail
   
   private var rows: [AuctionInfo] {
-    var result: [AuctionInfo] = [
-      .init(title: "입찰방식", content: bidTypeDisplayName),
+    var result: [AuctionInfo] = []
+
+    let bidTypeText = auctionDetailInfo.bidType.displayName
+    if !bidTypeText.isEmpty {
+      result.append(.init(title: "입찰방식", content: bidTypeText))
+    }
+    result.append(contentsOf: [
       .init(title: "관할법원", content: auctionDetailInfo.court.name),
       .init(title: "매각장소", content: auctionDetailInfo.salesLocation),
       .init(title: "접수마감", content: auctionDetailInfo.salesReceptionDate.toKoreanDateString())
-    ]
-    
+    ])
+
     let trimmedNote = auctionDetailInfo.salesNote.trimmingCharacters(in: .whitespacesAndNewlines)
     if !trimmedNote.isEmpty {
       result.append(.init(title: "매각비고", content: trimmedNote))
     }
-    
+
     return result
-  }
-  
-  private var bidTypeDisplayName: String {
-    switch auctionDetailInfo.bidType {
-    case .general:
-      return "일반입찰"
-    case .limited:
-      return "제한입찰"
-    case .other(let value):
-      return value
-    }
   }
 
   var body: some View {
