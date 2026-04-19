@@ -26,12 +26,12 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
   public var accessToken: UserAccessToken? {
     didSet {
       if let accessToken = accessToken {
-        self.tokenInfoStream.send(accessToken)
+        publishTokenInfoStream(accessToken)
         Task { [weak self] in
           await self?.localStorageUsecase.setModel(accessToken, forKey: LocalStorageKey.signInTokenInfo.rawValue)
         }
       } else {
-        self.tokenInfoStream.send(nil)
+        publishTokenInfoStream(nil)
         Task { [weak self] in
           await self?.localStorageUsecase.remove(forKey: LocalStorageKey.signInTokenInfo.rawValue)
         }
@@ -42,12 +42,12 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
   public var userInfo: UserInformation? {
     didSet {
       if let userInfo {
-        userInfoStream.send(userInfo)
+        publishUserInfoStream(userInfo)
         Task { [weak self] in
           await self?.localStorageUsecase.setModel(userInfo, forKey: LocalStorageKey.signInUserInfo.rawValue)
         }
       } else {
-        userInfoStream.send(nil)
+        publishUserInfoStream(nil)
         Task { [weak self] in
           await self?.localStorageUsecase.remove(forKey: LocalStorageKey.signInUserInfo.rawValue)
         }
@@ -71,6 +71,28 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
   
   
   // MARK: - private method
+
+  private func publishTokenInfoStream(_ accessToken: UserAccessToken?) {
+    publishOnMainThread { [weak self] in
+      self?.tokenInfoStream.send(accessToken)
+    }
+  }
+
+  private func publishUserInfoStream(_ userInfo: UserInformation?) {
+    publishOnMainThread { [weak self] in
+      self?.userInfoStream.send(userInfo)
+    }
+  }
+
+  private func publishOnMainThread(_ publish: @escaping @Sendable () -> Void) {
+    if Thread.isMainThread {
+      publish()
+      return
+    }
+
+    DispatchQueue.main.async(execute: publish)
+  }
+
   
   private func tryAutoSignIn() {
     Task {
