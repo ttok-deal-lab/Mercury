@@ -22,8 +22,12 @@ extension AuthAPI: BaseAPI {
   }
   
   var domain: String? {
-    return "v1/auth/"
-    return "v1/users/"
+    switch self {
+    case .signIn:
+      return "v1/auth/"
+    case .signOut:
+      return "v1/users/"
+    }
   }
   
   var path: String {
@@ -51,9 +55,17 @@ extension AuthAPI: BaseAPI {
       return [
         "idToken": idToken
       ]
-    case .signOut(_):
-      return ["Authorization" : MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
+    default: return nil
     }
   }
-    
+  
+  var additionalHeaders: [String: String]? {
+    switch self {
+    case .signOut:
+      return ["Authorization": MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
+    default:
+      return nil
+    }
+  }
+
 }
