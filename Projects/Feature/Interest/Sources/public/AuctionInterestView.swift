@@ -74,8 +74,19 @@ public struct AuctionInterestView: View {
     .onLoad  {
       Task {
         await modelData.loadUserInterestAuctions()
-        
+
       }
+    }
+    .onReceive(NotificationCenter.default.publisher(for: .auctionZzimDidChange)) { notification in
+      guard
+        let userInfo = notification.userInfo,
+        let auctionID = userInfo["auctionID"] as? Int,
+        let isZzimed = userInfo["isZzimed"] as? Bool
+      else {
+        return
+      }
+
+      modelData.handleZzimChange(auctionID: auctionID, isZzimed: isZzimed)
     }
   }
 }
