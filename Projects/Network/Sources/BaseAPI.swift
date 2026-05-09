@@ -5,11 +5,9 @@
 //  Created by 송하민 on 11/2/24.
 //
 
-import Foundation
-
 import AppFoundation
+import Foundation
 import Pulse
-
 
 public protocol BaseAPI {
   var baseURL: String { get }
@@ -21,22 +19,23 @@ public protocol BaseAPI {
   var requestBody: [String: Any]? { get }
   var queryParam: [String: Any]? { get }
 
-  func request<T: Decodable>(_ model: T.Type) async throws -> T where T: Decodable
+  func request<T: Decodable>(_ model: T.Type) async throws -> T
+  where T: Decodable
   func request() async throws
 }
 
-public extension BaseAPI {
-  var domain: String? { nil }
+extension BaseAPI {
+  public var domain: String? { nil }
 
-  var headers: [String: String]? {
+  public var headers: [String: String]? {
     [
       "Content-Type": "application/json"
     ]
   }
 
-  var additionalHeaders: [String: String]? { nil }
-  var requestBody: [String: Any]? { nil }
-  var queryParam: [String : Any]? { nil }
+  public var additionalHeaders: [String: String]? { nil }
+  public var requestBody: [String: Any]? { nil }
+  public var queryParam: [String: Any]? { nil }
 
   private var session: URLSession { BaseAPISession.session }
 
@@ -53,7 +52,7 @@ public extension BaseAPI {
     return NetworkError.unknownError
   }
 
-  func request<T: Decodable>(_ model: T.Type) async throws -> T {
+  public func request<T: Decodable>(_ model: T.Type) async throws -> T {
     do {
       let request = try makeURLRequest()
       let (data, response) = try await session.data(for: request)
@@ -63,6 +62,14 @@ public extension BaseAPI {
       }
 
       logResponseHeaders(http, url: request.url)
+
+      if http.statusCode == 401 {
+        MercuryContainer.shared
+          .resolve(AccessTokenInvalidatable.self)
+          .invalidateAccessToken()
+        throw NetworkError.unauthorized
+      }
+
       handleAuthorizationRefresh(http)
 
       guard (200...299).contains(http.statusCode) else {
@@ -75,7 +82,7 @@ public extension BaseAPI {
     }
   }
 
-  func request() async throws {
+  public func request() async throws {
     do {
       let request = try makeURLRequest()
       let (_, response) = try await session.data(for: request)
@@ -85,6 +92,14 @@ public extension BaseAPI {
       }
 
       logResponseHeaders(http, url: request.url)
+
+      if http.statusCode == 401 {
+        MercuryContainer.shared
+          .resolve(AccessTokenInvalidatable.self)
+          .invalidateAccessToken()
+        throw NetworkError.unauthorized
+      }
+
       handleAuthorizationRefresh(http)
 
       guard (200...299).contains(http.statusCode) else {
@@ -96,8 +111,8 @@ public extension BaseAPI {
   }
 }
 
-private extension BaseAPI {
-  func handleAuthorizationRefresh(_ response: HTTPURLResponse) {
+extension BaseAPI {
+  fileprivate func handleAuthorizationRefresh(_ response: HTTPURLResponse) {
     let raw = response.value(forHTTPHeaderField: "Authorization") ?? ""
     let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !trimmed.isEmpty else {
@@ -110,8 +125,8 @@ private extension BaseAPI {
   }
 }
 
-private extension BaseAPI {
-  func logResponseHeaders(_ response: HTTPURLResponse, url: URL?) {
+extension BaseAPI {
+  fileprivate func logResponseHeaders(_ response: HTTPURLResponse, url: URL?) {
     let urlString = url?.absoluteString ?? "unknown"
     let status = response.statusCode
     let headers = response.allHeaderFields
@@ -120,11 +135,11 @@ private extension BaseAPI {
       .compactMap { $0 as? String }
       .sorted { $0.lowercased() < $1.lowercased() }
 
-    let header =  "========== [RESP HEADERS] =========="
-    let meta   =  "URL   : \(urlString)"
-    let st     =  "STATUS: \(status)"
-    let count  =  "COUNT : \(sortedKeys.count)"
-    let footer =  "===================================="
+    let header = "========== [RESP HEADERS] =========="
+    let meta = "URL   : \(urlString)"
+    let st = "STATUS: \(status)"
+    let count = "COUNT : \(sortedKeys.count)"
+    let footer = "===================================="
 
     print(header)
     print(meta)
@@ -144,7 +159,9 @@ private extension BaseAPI {
       var start = line.startIndex
       var index = 0
       while start < line.endIndex {
-        let end = line.index(start, offsetBy: chunkSize, limitedBy: line.endIndex) ?? line.endIndex
+        let end =
+          line.index(start, offsetBy: chunkSize, limitedBy: line.endIndex)
+          ?? line.endIndex
         print("[\(index)] \(line[start..<end])")
         start = end
         index += 1
@@ -155,8 +172,8 @@ private extension BaseAPI {
   }
 }
 
-private extension BaseAPI {
-  func makeURLRequest() throws -> URLRequest {
+extension BaseAPI {
+  fileprivate func makeURLRequest() throws -> URLRequest {
     func join(_ a: String, _ b: String) -> String {
       switch (a.hasSuffix("/"), b.hasPrefix("/")) {
       case (true, true):
@@ -213,8 +230,9 @@ private extension BaseAPI {
   }
 }
 
-private extension BaseAPI {
-  func convertToQueryItem(key: String, value: Any?) -> URLQueryItem? {
+extension BaseAPI {
+  fileprivate func convertToQueryItem(key: String, value: Any?) -> URLQueryItem?
+  {
     guard let unwrapped = value else { return nil }
 
     switch unwrapped {
@@ -229,7 +247,8 @@ private extension BaseAPI {
     }
   }
 
-  func isPrimitiveNumeric(_ value: CustomStringConvertible) -> Bool {
+  fileprivate func isPrimitiveNumeric(_ value: CustomStringConvertible) -> Bool
+  {
     switch value {
     case is Int, is Int8, is Int16, is Int32, is Int64,
       is UInt, is UInt8, is UInt16, is UInt32, is UInt64,
@@ -246,6 +265,10 @@ private enum BaseAPISession {
 
   static let session: URLSession = {
     let config = URLSessionConfiguration.default
-    return URLSession(configuration: config, delegate: delegate, delegateQueue: nil)
+    return URLSession(
+      configuration: config,
+      delegate: delegate,
+      delegateQueue: nil
+    )
   }()
 }

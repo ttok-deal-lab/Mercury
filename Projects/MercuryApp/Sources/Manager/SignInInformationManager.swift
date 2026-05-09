@@ -13,7 +13,7 @@ import AppFoundation
 import Domain
 import Infrastructure
 
-public final class SignInInformationManager: SignInInformationReadable, AccessTokenManagable, UserInfoManagable, AuthorizationRefreshable {
+public final class SignInInformationManager: SignInInformationReadable, AccessTokenManagable, UserInfoManagable, AuthorizationRefreshable, AccessTokenInvalidatable {
 
   private let localStorageUsecase: LocalStorageUsecase
   private let fcmTokenUsercase: FcmTokenUsecase
@@ -133,6 +133,14 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
   
   public func removeAccessToken() { // logout
     self.accessToken = nil
+  }
+
+  public func invalidateAccessToken() {
+    self.accessToken = nil
+    self.userInfo = nil
+    Task { [weak self] in
+      await self?.localStorageUsecase.remove(forKey: LocalStorageKey.recentViwedSales.rawValue)
+    }
   }
 
   public func refreshAccessToken(rawValue: String) {
