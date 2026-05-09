@@ -1,5 +1,5 @@
 //
-//  AuctionFactory.swift
+//  AuctionDetailViewFactory.swift
 //  Auction
 //
 //  Created by 송하민 on 12/29/24.
