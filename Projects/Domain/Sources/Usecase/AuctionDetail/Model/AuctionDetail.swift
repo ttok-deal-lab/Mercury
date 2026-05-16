@@ -42,6 +42,8 @@ public struct AuctionDetail: Sendable {
   public let zzimCount: Int
   /// 법원 정보
   public let court: Court
+  /// 법원 상세 정보 (서버 court 객체)
+  public let courtInfo: CourtInfo
   /// 기일 내역
   public let salesDetails: [SalesDetail]
   /// 사진 목록
@@ -61,7 +63,35 @@ public struct AuctionDetail: Sendable {
   /// 낙찰 여부
   public let soldOut: Bool
   
-  public init(id: Int, salesNumber: String, itemTypes: [ItemType], appraisalPrice: Int, lowestSalesPrice: Int, bidType: BidType, salesDateTime: Date, salesLocation: String, salesNote: String, salesReceptionDate: Date, salesOpenDate: Date, distributionRequiredDeadlineDate: Date, salesAddress: String, salesCategories: [SalesCategory], failBidCount: Int, zzimCount: Int, court: Court, salesDetails: [SalesDetail], salesPictures: [SalesPicture], salesBuildings: [SalesBuilding], salesItemDetails: [SalesItemDetail], conditionReport: ConditionReport, appraisalDocumentUrl: URL?, appraisalDocuments: [AppraisalDocument], nearbySalesStats: [NearbySalesStat], soldOut: Bool) {
+  public init(
+    id: Int,
+    salesNumber: String,
+    itemTypes: [ItemType],
+    appraisalPrice: Int,
+    lowestSalesPrice: Int,
+    bidType: BidType,
+    salesDateTime: Date,
+    salesLocation: String,
+    salesNote: String,
+    salesReceptionDate: Date,
+    salesOpenDate: Date,
+    distributionRequiredDeadlineDate: Date,
+    salesAddress: String,
+    salesCategories: [SalesCategory],
+    failBidCount: Int,
+    zzimCount: Int,
+    court: Court,
+    courtInfo: CourtInfo,
+    salesDetails: [SalesDetail],
+    salesPictures: [SalesPicture],
+    salesBuildings: [SalesBuilding],
+    salesItemDetails: [SalesItemDetail],
+    conditionReport: ConditionReport,
+    appraisalDocumentUrl: URL?,
+    appraisalDocuments: [AppraisalDocument],
+    nearbySalesStats: [NearbySalesStat],
+    soldOut: Bool
+  ) {
     self.id = id
     self.salesNumber = salesNumber
     self.itemTypes = itemTypes
@@ -79,6 +109,7 @@ public struct AuctionDetail: Sendable {
     self.failBidCount = failBidCount
     self.zzimCount = zzimCount
     self.court = court
+    self.courtInfo = courtInfo
     self.salesDetails = salesDetails
     self.salesPictures = salesPictures
     self.salesBuildings = salesBuildings
@@ -381,6 +412,28 @@ public struct AuctionDetail: Sendable {
     }
   }
   
+  /// 법원 상세 정보 (서버 court 객체)
+  public struct CourtInfo: Sendable {
+    /// 법원 코드
+    public let code: String
+    /// 법원명 (서버 코드값)
+    public let name: String
+    /// 법원 주소
+    public let address: String
+    /// 위도
+    public let latitude: Double
+    /// 경도
+    public let longitude: Double
+
+    public init(code: String, name: String, address: String, latitude: Double, longitude: Double) {
+      self.code = code
+      self.name = name
+      self.address = address
+      self.latitude = latitude
+      self.longitude = longitude
+    }
+  }
+
   /// 경매 상세 기일 정보
   public struct SalesDetail: Sendable {
     /// 기일

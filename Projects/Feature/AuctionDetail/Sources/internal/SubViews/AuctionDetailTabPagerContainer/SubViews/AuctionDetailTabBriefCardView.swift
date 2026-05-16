@@ -34,7 +34,7 @@ struct AuctionDetailTabBriefCardView: View {
     ])
 
     let trimmedNote = auctionDetailInfo.salesNote.trimmingCharacters(in: .whitespacesAndNewlines)
-    if !trimmedNote.isEmpty && trimmedNote != "null" {
+    if !trimmedNote.isEmpty {
       result.append(.init(title: "매각비고", content: trimmedNote))
     }
 

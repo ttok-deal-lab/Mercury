@@ -23,7 +23,7 @@ struct AuctionDetailCourtInfoView<MapView: MapViewable>: View {
   var body: some View {
     VStack(alignment: .leading, spacing: .zero) {
       
-      Text("매각 정보")
+      Text(L10n.auctionDetailSaleInfoTitle)
         .fonts(.titleMediumBold)
         .foregroundStyle(Asset.Colors.neutral.color)
         .padding(.bottom, 20)

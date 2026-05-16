@@ -28,6 +28,7 @@ struct AuctionDetailDTO: Decodable, Sendable {
   let zzimCount: Int
   let courtCode: String
   let courtTeam: String
+  let court: CourtDTO
   let salesDetails: [SalesDetailDTO]
   let salesPictures: [SalesPictureDTO]
   let salesBuildings: [SalesBuildingDTO]
@@ -43,7 +44,7 @@ struct AuctionDetailDTO: Decodable, Sendable {
     case bidType, salesDateTime, salesLocation, salesNote
     case salesReceptionDate, salesOpenDate, distributionRequiredDeadlineDate
     case salesAddress, salesCategories, failBidCount, zzimCount
-    case courtCode, courtTeam, salesDetails, salesPictures
+    case courtCode, courtTeam, court, salesDetails, salesPictures
     case salesBuildings, salesItemDetails, conditionReport
     case appraisalDocumentUrl, appraisalDocuments, nearbySalesStats
     case soldOut = "isSoldOut"  
@@ -58,6 +59,7 @@ struct AuctionDetailDTO: Decodable, Sendable {
     let distributionRequiredDeadlineDate = self.distributionRequiredDeadlineDate.toKoreanDate()
     let salesCategories = self.salesCategories.map { AuctionDetail.SalesCategory(rawValue: $0) }
     let courtCode = AuctionDetail.Court.CourtCode(rawValue: self.courtCode)
+    let courtInfo = self.court.toEntity()
     let salesDetails = self.salesDetails.map { $0.toEntity() }
     let salesPictures = self.salesPictures.map { $0.toEntity() }
     let salesBuildings = self.salesBuildings.map { $0.toEntity() }
@@ -88,6 +90,7 @@ struct AuctionDetailDTO: Decodable, Sendable {
         code: courtCode,
         team: courtTeam
       ),
+      courtInfo: courtInfo,
       salesDetails: salesDetails,
       salesPictures: salesPictures,
       salesBuildings: salesBuildings,
@@ -97,6 +100,24 @@ struct AuctionDetailDTO: Decodable, Sendable {
       appraisalDocuments: appraisalDocuments,
       nearbySalesStats: nearbySalesStats,
       soldOut: soldOut
+    )
+  }
+}
+
+struct CourtDTO: Decodable, Sendable {
+  let code: String
+  let name: String
+  let address: String
+  let latitude: Double
+  let longitude: Double
+
+  func toEntity() -> AuctionDetail.CourtInfo {
+    return .init(
+      code: code,
+      name: name,
+      address: address,
+      latitude: latitude,
+      longitude: longitude
     )
   }
 }
