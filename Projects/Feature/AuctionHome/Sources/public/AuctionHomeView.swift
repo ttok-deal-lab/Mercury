@@ -92,11 +92,6 @@ public struct AuctionHomeView: View {
         await modelData.loadAuctionSalesList(withFilter: false)
       }
     }
-    .onAppear {
-      Task {
-        await modelData.refreshInterestStatus()
-      }
-    }
     .onReceive(NotificationCenter.default.publisher(for: .auctionZzimDidChange)) { notification in
       guard
         let userInfo = notification.userInfo,

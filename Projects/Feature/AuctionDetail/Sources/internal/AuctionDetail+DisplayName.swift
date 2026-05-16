@@ -130,6 +130,7 @@ extension AuctionDetail.BidType {
 extension AuctionDetail.SalesDetail.SalesResult {
   var displayName: String {
     switch self {
+    case .planned: return "예정"
     case .preparingSale: return "매각준비"
     case .sold: return "매각"
     case .failedBid: return "유찰"

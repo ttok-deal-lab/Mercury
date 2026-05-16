@@ -87,9 +87,12 @@ public struct SignOutView: View {
         
         MercuryButton("탈퇴하기") {
           if isChecked {
-            print("SignOut button Tapped")
+            Task {
+              try await modelData.signOut()
+            }
           }
         }
+        .disabled(!isChecked)
       }
       .padding(.horizontal, 20)
       .frame(maxWidth: .infinity, alignment: .leading)

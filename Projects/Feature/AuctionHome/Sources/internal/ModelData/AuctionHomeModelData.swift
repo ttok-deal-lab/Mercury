@@ -139,17 +139,17 @@ final class AuctionHomeModelData {
   // 관심매물 추가
   func tapOnZzim(auctionID: Int) async throws {
     guard let index = self.auctionSalesItems.firstIndex(where: { $0.id == auctionID }) else { return }
-    
+
     var targetItem = self.auctionSalesItems[index]
-    let isNowZzim = try await isAuctionUserInterested(auctionID: auctionID)
-    if !isNowZzim {
+    let isCurrentlyZzim = targetItem.isZzim
+    if !isCurrentlyZzim {
       try await auctionInterestUsecase
         .addInterest(auctionID: auctionID)
     } else {
       try await auctionInterestUsecase
         .removeInterest(auctionID: auctionID)
     }
-    targetItem.zzimCount += isNowZzim ? -1 : 1
+    targetItem.zzimCount += isCurrentlyZzim ? -1 : 1
     targetItem.isZzim.toggle()
     self.auctionSalesItems[index] = targetItem
     NotificationCenter.default.post(
@@ -179,19 +179,25 @@ final class AuctionHomeModelData {
     return isZzim
   }
   
-  // 관심매물 여부 리스트 검사
+  // 관심매물 여부 리스트 검사 (메모리 isZzim 우선, 신규 ID만 서버 조회)
   private func loadInterestAuctionList(list: [AuctionSalesItem]) async throws -> [AuctionSalesItem]{
     guard !list.isEmpty else { return [] }
     var itemList = list
-    let ids = itemList.map { $0.id }
-    let interestWhetherList = try await auctionInterestUsecase.loadInterestList(ids: ids)
-    
+    let previousZzimMap = Dictionary(uniqueKeysWithValues: self.auctionSalesItems.map { ($0.id, $0.isZzim) })
+
+    for i in itemList.indices {
+      if let prevZzim = previousZzimMap[itemList[i].id] {
+        itemList[i].isZzim = prevZzim
+      }
+    }
+
+    let newIDs = itemList.filter { previousZzimMap[$0.id] == nil }.map { $0.id }
+    guard !newIDs.isEmpty else { return itemList }
+
+    let interestWhetherList = try await auctionInterestUsecase.loadInterestList(ids: newIDs)
     for inter in interestWhetherList {
-      guard let index = itemList.firstIndex(where: { $0.id == inter.id }) else { return itemList }
-      
-      var targetItem = itemList[index]
-      targetItem.isZzim = inter.favorite
-      itemList[index] = targetItem
+      guard let index = itemList.firstIndex(where: { $0.id == inter.id }) else { continue }
+      itemList[index].isZzim = inter.favorite
     }
     return itemList
   }

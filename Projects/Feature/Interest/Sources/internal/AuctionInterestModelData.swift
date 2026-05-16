@@ -76,6 +76,13 @@ final class AuctionInterestModelData {
       self.error = error
     }
   }
+
+  @MainActor
+  func handleZzimChange(auctionID: Int, isZzimed: Bool) {
+    if !isZzimed {
+      self.interestList.removeAll { $0.id == auctionID }
+    }
+  }
 }
 
 

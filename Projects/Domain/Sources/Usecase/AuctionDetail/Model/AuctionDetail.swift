@@ -416,6 +416,8 @@ public struct AuctionDetail: Sendable {
     
     /// 기일 결과
     public enum SalesResult: Sendable {
+      /// 예정
+      case planned
       /// 매각준비
       case preparingSale
       /// 매각
@@ -459,8 +461,31 @@ public struct AuctionDetail: Sendable {
       /// 신규/미매핑 코드
       case other(String)
 
+      /*
+       `PLANNED` | 예정 |
+       | `PREPARING_SALE` | 매각준비 |
+       | `SOLD` | 매각 |
+       | `FAILED` | 유찰 |
+       | `BEST_BID_APPROVED` | 최고가매각허가결정 |
+       | `SECONDARY_BID_APPROVED` | 차순위매각허가결정 |
+       | `BEST_BID_REJECTED` | 최고가매각불허가결정 |
+       | `SECONDARY_BID_REJECTED` | 차순위매각불허가결정 |
+       | `DEADLINE_CHANGED` | 기한변경 |
+       | `TO_BE_SPECIFIED` | 추후지정 |
+       | `PAYMENT_COMPLETED` | 납부 |
+       | `PAYMENT_MISSED` | 미납 |
+       | `LATE_PAYMENT` | 기한후납부 |
+       | `OFFSET_APPROVED` | 상계허가 |
+       | `IN_PROGRESS` | 진행 |
+       | `MODIFIED` | 변경 |
+       | `DISTRIBUTION_COMPLETED` | 배당종결 |
+       | `DISTRIBUTION_UNAVAILABLE` | 배당불가 |
+       | `BEST_BID_APPROVAL_CANCELLED` | 최고가매각허가취소결정 |
+       | `SECONDARY_BID_APPROVAL_CANCELLED` | 차순위매각허가취소결정 |
+       */
       public init(rawValue: String) {
         switch rawValue {
+        case "PLANNED": self = .planned
         case "PREPARING_SALE": self = .preparingSale
         case "SOLD": self = .sold
         case "FAILED": self = .failedBid

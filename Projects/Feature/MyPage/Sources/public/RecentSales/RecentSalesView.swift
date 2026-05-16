@@ -71,11 +71,6 @@ public struct RecentSalesView: View {
         try await modelData.loadRecentViewList()
       }
     }
-    .onAppear {
-      Task {
-        await modelData.refreshInterestStatus()
-      }
-    }
     .onReceive(NotificationCenter.default.publisher(for: .auctionZzimDidChange)) { notification in
       guard
         let userInfo = notification.userInfo,
