@@ -62,7 +62,23 @@ public struct AuctionDetail: Sendable {
   public let nearbySalesStats: [NearbySalesStat]
   /// 낙찰 여부
   public let soldOut: Bool
-  
+  /// 인증 매물 여부
+  public let verified: Bool
+  /// 건물명
+  public let salesBuildingName: String
+  /// 전용면적 (㎡)
+  public let exclusiveArea: Double
+  /// 사건명
+  public let caseName: String
+  /// 채권자 수
+  public let creditorCount: Int
+  /// 최근 실거래가 (데이터 없으면 nil)
+  public let recentTransactionPrice: Int?
+  /// 최근 실거래일 (데이터 없으면 nil)
+  public let recentTransactionDate: Date?
+  /// 권리분석 목록
+  public let rightsAnalysis: [RightsAnalysis]
+
   public init(
     id: Int,
     salesNumber: String,
@@ -90,7 +106,15 @@ public struct AuctionDetail: Sendable {
     appraisalDocumentUrl: URL?,
     appraisalDocuments: [AppraisalDocument],
     nearbySalesStats: [NearbySalesStat],
-    soldOut: Bool
+    soldOut: Bool,
+    verified: Bool,
+    salesBuildingName: String,
+    exclusiveArea: Double,
+    caseName: String,
+    creditorCount: Int,
+    recentTransactionPrice: Int?,
+    recentTransactionDate: Date?,
+    rightsAnalysis: [RightsAnalysis]
   ) {
     self.id = id
     self.salesNumber = salesNumber
@@ -119,6 +143,14 @@ public struct AuctionDetail: Sendable {
     self.appraisalDocuments = appraisalDocuments
     self.nearbySalesStats = nearbySalesStats
     self.soldOut = soldOut
+    self.verified = verified
+    self.salesBuildingName = salesBuildingName
+    self.exclusiveArea = exclusiveArea
+    self.caseName = caseName
+    self.creditorCount = creditorCount
+    self.recentTransactionPrice = recentTransactionPrice
+    self.recentTransactionDate = recentTransactionDate
+    self.rightsAnalysis = rightsAnalysis
   }
   
   // MARK: - Enums
@@ -573,11 +605,17 @@ public struct AuctionDetail: Sendable {
     public let detailAddress: String
     ///소재지 구분 (소분류명)
     public let category: BuildingCategory
-    
-    public init(address: Address, detailAddress: String, category: BuildingCategory) {
+    /// 위도
+    public let latitude: Double
+    /// 경도
+    public let longitude: Double
+
+    public init(address: Address, detailAddress: String, category: BuildingCategory, latitude: Double, longitude: Double) {
       self.address = address
       self.detailAddress = detailAddress
       self.category = category
+      self.latitude = latitude
+      self.longitude = longitude
     }
     
     public struct Address: Sendable {
@@ -856,6 +894,58 @@ public struct AuctionDetail: Sendable {
       self.averageSalesPrice = averageSalesPrice
       self.salesPriceRate = salesPriceRate
       self.averageFailBidCount = averageFailBidCount
+    }
+  }
+
+  /// 권리분석 (현재 서버 mock 데이터)
+  public struct RightsAnalysis: Sendable {
+    /// 이름
+    public let name: String
+    /// 구분 (임차인/채무자 등)
+    public let role: String
+    /// 대항력 여부
+    public let hasOppositionRight: String
+    /// 전입신고일
+    public let moveInReportDate: String
+    /// 점유 상태
+    public let occupationStatus: String
+    /// 우선변제권 여부
+    public let priorityRepaymentRight: String
+    /// 확정일자
+    public let fixedDate: String
+    /// 배당요구 여부
+    public let dividendRequest: String
+    /// 배당요구일
+    public let dividendRequestDate: String
+    /// 보증금
+    public let deposit: Int
+    /// 월세
+    public let monthlyRent: Int
+
+    public init(
+      name: String,
+      role: String,
+      hasOppositionRight: String,
+      moveInReportDate: String,
+      occupationStatus: String,
+      priorityRepaymentRight: String,
+      fixedDate: String,
+      dividendRequest: String,
+      dividendRequestDate: String,
+      deposit: Int,
+      monthlyRent: Int
+    ) {
+      self.name = name
+      self.role = role
+      self.hasOppositionRight = hasOppositionRight
+      self.moveInReportDate = moveInReportDate
+      self.occupationStatus = occupationStatus
+      self.priorityRepaymentRight = priorityRepaymentRight
+      self.fixedDate = fixedDate
+      self.dividendRequest = dividendRequest
+      self.dividendRequestDate = dividendRequestDate
+      self.deposit = deposit
+      self.monthlyRent = monthlyRent
     }
   }
 }

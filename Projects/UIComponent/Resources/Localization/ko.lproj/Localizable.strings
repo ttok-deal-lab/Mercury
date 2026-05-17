@@ -132,6 +132,7 @@
 "auction_detail_chip_sale_today" = "오늘 매각";
 "auction_detail_chip_sale_dday" = "매각 D-%@";
 "auction_detail_sale_status" = "매각";
+"auction_detail_exclusive_area" = "공급 %@㎡";
 "rights_tenant_title" = "임차인";
 "rights_no_occupant" = "점유자 정보가 없습니다";
 "rights_address" = "소재지";

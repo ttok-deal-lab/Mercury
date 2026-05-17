@@ -29,7 +29,15 @@ struct AuctionDetailAbstractTitleInfoView: View {
     HStack(spacing: 12) {
       VStack(alignment: .leading, spacing: 6) {
         titleView()
-        categoryView()
+        HStack(spacing: .zero) {
+          categoryView()
+          
+          Text(" | ")
+            .fonts(.bodyMiniMedium)
+            .foregroundStyle(Asset.Colors.neutralSubtler.color)
+          
+          exlusiveAreaView()
+        }
         auctionNumberView()
       }
       Spacer()
@@ -45,7 +53,7 @@ struct AuctionDetailAbstractTitleInfoView: View {
   
   /// 물건 이름
   private func titleView() -> some View {
-    Text("\(auctionDetailInfo.salesAddress)")
+    Text(auctionDetailInfo.salesBuildingName.isEmpty ? "\(auctionDetailInfo.salesAddress)" : "\(auctionDetailInfo.salesBuildingName)")
       .fonts(.titleLargeBold)
       .foregroundStyle(Asset.Colors.neutral.color)
       .multilineTextAlignment(.leading)
@@ -61,6 +69,12 @@ struct AuctionDetailAbstractTitleInfoView: View {
     }
   }
   
+  @ViewBuilder
+  private func exlusiveAreaView() -> some View {
+    Text(L10n.auctionDetailExclusiveArea(auctionDetailInfo.exclusiveArea))
+      .fonts(.bodyMiniMedium)
+      .foregroundStyle(Asset.Colors.neutralSubtler.color)
+  }
   /// 사건 번호
   private func auctionNumberView() -> some View {
     Button {

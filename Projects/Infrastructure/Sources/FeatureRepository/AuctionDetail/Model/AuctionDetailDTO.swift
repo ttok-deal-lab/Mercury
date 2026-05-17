@@ -38,7 +38,15 @@ struct AuctionDetailDTO: Decodable, Sendable {
   let appraisalDocuments: [AppraisalDocumentDTO]
   let nearbySalesStats: [NearbySalesStatDTO]
   let soldOut: Bool
-  
+  let verified: Bool
+  let salesBuildingName: String
+  let exclusiveArea: Double
+  let caseName: String
+  let creditorCount: Int
+  let recentTransactionPrice: Int
+  let recentTransactionDate: String
+  let rightsAnalysis: [RightsAnalysisDTO]
+
   enum CodingKeys: String, CodingKey {
     case id, salesNumber, itemTypes, appraisalPrice, lowestSalesPrice
     case bidType, salesDateTime, salesLocation, salesNote
@@ -47,7 +55,9 @@ struct AuctionDetailDTO: Decodable, Sendable {
     case courtCode, courtTeam, court, salesDetails, salesPictures
     case salesBuildings, salesItemDetails, conditionReport
     case appraisalDocumentUrl, appraisalDocuments, nearbySalesStats
-    case soldOut = "isSoldOut"  
+    case soldOut = "isSoldOut"
+    case verified, salesBuildingName, exclusiveArea, caseName, creditorCount
+    case recentTransactionPrice, recentTransactionDate, rightsAnalysis
   }
   
   func toEntity() -> AuctionDetail {
@@ -68,7 +78,11 @@ struct AuctionDetailDTO: Decodable, Sendable {
     let appraisalDocumentUrl = URL(string: self.appraisalDocumentUrl)
     let appraisalDocuments = self.appraisalDocuments.map { $0.toEntity() }
     let nearbySalesStats = self.nearbySalesStats.map { $0.toEntity() }
-    
+    let recentTransactionPrice: Int? =
+      self.recentTransactionPrice == Self.noDataPrice ? nil : self.recentTransactionPrice
+    let recentTransactionDate = Self.parseDateOnly(from: self.recentTransactionDate)
+    let rightsAnalysis = self.rightsAnalysis.map { $0.toEntity() }
+
     return .init(
       id: id,
       salesNumber: salesNumber,
@@ -99,7 +113,15 @@ struct AuctionDetailDTO: Decodable, Sendable {
       appraisalDocumentUrl: appraisalDocumentUrl,
       appraisalDocuments: appraisalDocuments,
       nearbySalesStats: nearbySalesStats,
-      soldOut: soldOut
+      soldOut: soldOut,
+      verified: verified,
+      salesBuildingName: salesBuildingName,
+      exclusiveArea: exclusiveArea,
+      caseName: caseName,
+      creditorCount: creditorCount,
+      recentTransactionPrice: recentTransactionPrice,
+      recentTransactionDate: recentTransactionDate,
+      rightsAnalysis: rightsAnalysis
     )
   }
 }
@@ -148,7 +170,9 @@ struct SalesBuildingDTO: Decodable, Sendable {
   let fullAddressName: String
   let detailAddressName: String
   let category: String
-  
+  let latitude: Double
+  let longitude: Double
+
   func toEntity() -> AuctionDetail.SalesBuilding {
     return .init(
       address: .init(
@@ -159,7 +183,39 @@ struct SalesBuildingDTO: Decodable, Sendable {
         full: fullAddressName
       ),
       detailAddress: detailAddressName,
-      category: AuctionDetail.SalesBuilding.BuildingCategory(rawValue: category)
+      category: AuctionDetail.SalesBuilding.BuildingCategory(rawValue: category),
+      latitude: latitude,
+      longitude: longitude
+    )
+  }
+}
+
+struct RightsAnalysisDTO: Decodable, Sendable {
+  let name: String
+  let role: String
+  let hasOppositionRight: String
+  let moveInReportDate: String
+  let occupationStatus: String
+  let priorityRepaymentRight: String
+  let fixedDate: String
+  let dividendRequest: String
+  let dividendRequestDate: String
+  let deposit: Int
+  let monthlyRent: Int
+
+  func toEntity() -> AuctionDetail.RightsAnalysis {
+    return .init(
+      name: name,
+      role: role,
+      hasOppositionRight: hasOppositionRight,
+      moveInReportDate: moveInReportDate,
+      occupationStatus: occupationStatus,
+      priorityRepaymentRight: priorityRepaymentRight,
+      fixedDate: fixedDate,
+      dividendRequest: dividendRequest,
+      dividendRequestDate: dividendRequestDate,
+      deposit: deposit,
+      monthlyRent: monthlyRent
     )
   }
 }
@@ -289,6 +345,19 @@ struct NearbySalesStatDTO: Decodable, Sendable {
 }
 
 extension AuctionDetailDTO {
+  /// 서버가 "데이터 없음"을 나타내는 가격 센티넬
+  fileprivate static let noDataPrice = -999999999
+
+  /// 날짜만 있는 문자열(yyyy-MM-dd) 파싱. 유효하지 않으면 nil ("2026-99-99" 등)
+  fileprivate static func parseDateOnly(from string: String) -> Date? {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    formatter.locale = Locale(identifier: "ko_KR")
+    formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+    formatter.isLenient = false
+    return formatter.date(from: string)
+  }
+
   fileprivate static func parseDate(from string: String) -> Date? {
     let isoFormatter = ISO8601DateFormatter()
     isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]

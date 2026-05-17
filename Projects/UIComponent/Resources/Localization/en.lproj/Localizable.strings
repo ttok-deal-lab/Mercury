@@ -132,6 +132,7 @@
 "auction_detail_chip_sale_today" = "Sale today";
 "auction_detail_chip_sale_dday" = "Sale D-%@";
 "auction_detail_sale_status" = "Sold";
+"auction_detail_exclusive_area" = "Exclusive %@㎡";
 "rights_tenant_title" = "Tenants";
 "rights_no_occupant" = "No occupant information";
 "rights_address" = "Address";
