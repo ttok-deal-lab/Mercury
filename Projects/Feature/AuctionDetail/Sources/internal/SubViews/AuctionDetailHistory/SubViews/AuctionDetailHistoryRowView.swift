@@ -37,6 +37,7 @@ struct AuctionDetailHistoryRowView: View {
 
         Spacer()
 
+        // TODO: 이전 상세페이지 히스토리 없을 경우 숨기기
         Image(systemName: "chevron.right")
           .font(.system(size: 13, weight: .semibold))
           .foregroundStyle(.tertiary)
@@ -60,10 +61,24 @@ struct AuctionDetailHistoryRowView: View {
           .fonts(.bodySmallBold)
           .foregroundStyle(Asset.Colors.neutralSubtler.color)
 
-        Image(systemName: "info.circle")
-          .font(.system(size: 13))
-          .foregroundStyle(.tertiary)
+        Button {
+          // TODO: 설명 말풍선 띄우기
+        } label: {
+          Image(systemName: "info.circle")
+            .font(.system(size: 13))
+            .foregroundStyle(.tertiary)
+        }
       }
     }
   }
+  
+  // TODO: result 에 따른 색상 처리
+//  private var resultTextColor: Color {
+//    switch detail.result {
+//    case .inProgress: {
+//      Asset.Colors.primary.color
+//    case .
+//    }
+//    }
+//  }
 }

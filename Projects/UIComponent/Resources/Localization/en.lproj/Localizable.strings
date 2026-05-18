@@ -121,7 +121,7 @@
 "auction_detail_bid_limited" = "Limited bid";
 "auction_detail_court_jurisdiction" = "Jurisdiction court";
 "auction_detail_court_charge" = "In charge";
-"auction_detail_sale_info_title" = "Sale Info";
+"auction_detail_court_title" = "Court Info";
 "auction_detail_auction_info_title" = "Auction Info";
 "auction_detail_property_location" = "Property location";
 "auction_detail_loading_location" = "Loading location info...";

@@ -152,11 +152,42 @@ public final class AuctionDetailModelData {
       self.isLoadingMapCoordinate = false
     }
 
+    // 1순위: 경매 상세 응답(salesBuildings)에 포함된 좌표를 그대로 사용
+    if let embeddedCoordinate = Self.embeddedCoordinate(for: auctionDetail) {
+      self.mapCoordinate = embeddedCoordinate
+      return
+    }
+
+    // 2순위: 응답에 좌표가 없을 때만 주소 기반 지오코딩으로 폴백
     let addresses = Self.candidateMapAddresses(for: auctionDetail)
     self.mapCoordinate = await self.coordinateResolver.resolveCoordinate(
-      courtName: auctionDetail.court.name,
+      courtName: auctionDetail.courtInfo.address,
       addresses: addresses
     )
+  }
+
+  /// 경매 상세 응답(`courtInfo`)에 포함된 위경도를 좌표로 변환한다.
+  /// 좌표가 없거나(0,0) 유효 범위를 벗어난 건물은 건너뛴다.
+  static func embeddedCoordinate(for auctionDetail: AuctionDetail) -> CLLocationCoordinate2D? {
+//    for court in auctionDetail.courtInfo {
+    let court = auctionDetail.courtInfo
+      guard let latitude = court.latitude,
+            let longitude = court.longitude else {
+//        continue
+        return nil
+      }
+
+      let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+      guard CLLocationCoordinate2DIsValid(coordinate),
+            !(latitude == 0 && longitude == 0) else {
+//        continue
+        return nil
+      }
+
+      return coordinate
+//    }
+
+//    return nil
   }
   
   private func loadInterestState() async {
@@ -175,6 +206,7 @@ public final class AuctionDetailModelData {
   }
 
   static func candidateMapAddresses(for auctionDetail: AuctionDetail) -> [String] {
+    let buildingAdress = auctionDetail.salesAddress
     let detailAddresses = auctionDetail.salesBuildings.flatMap { building -> [String] in
       let detailedAddress = [building.address.full, building.detailAddress]
         .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
@@ -207,17 +239,11 @@ protocol AuctionDetailCoordinateResolving {
 }
 
 struct LiveAuctionDetailCoordinateResolver: AuctionDetailCoordinateResolving {
-  private let productCoordinateService = ProductCoordinateService()
-  
   func resolveCoordinate(courtName: String, addresses: [String]) async -> CLLocationCoordinate2D? {
     let geocoder = CLGeocoder()
 
     for address in addresses {
       guard !Task.isCancelled else { return nil }
-      
-      if let coordinate = await productCoordinateService.coordinate(name: courtName, address: address) {
-        return coordinate
-      }
 
       do {
         let placemarks = try await geocoder.geocodeAddressString(address)

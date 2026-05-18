@@ -130,8 +130,8 @@ struct CourtDTO: Decodable, Sendable {
   let code: String
   let name: String
   let address: String
-  let latitude: Double
-  let longitude: Double
+  let latitude: Double?
+  let longitude: Double?
 
   func toEntity() -> AuctionDetail.CourtInfo {
     return .init(
@@ -170,8 +170,8 @@ struct SalesBuildingDTO: Decodable, Sendable {
   let fullAddressName: String
   let detailAddressName: String
   let category: String
-  let latitude: Double
-  let longitude: Double
+  let latitude: Double?
+  let longitude: Double?
 
   func toEntity() -> AuctionDetail.SalesBuilding {
     return .init(

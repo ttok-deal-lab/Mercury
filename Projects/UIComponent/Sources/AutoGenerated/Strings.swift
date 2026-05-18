@@ -42,6 +42,8 @@ public enum L10n {
   public static let auctionDetailCourtCharge = L10n.tr("Localizable", "auction_detail_court_charge", fallback: "담당")
   /// 관할법원
   public static let auctionDetailCourtJurisdiction = L10n.tr("Localizable", "auction_detail_court_jurisdiction", fallback: "관할법원")
+  /// 법원정보
+  public static let auctionDetailCourtTitle = L10n.tr("Localizable", "auction_detail_court_title", fallback: "법원정보")
   /// 공급 %@㎡
   public static func auctionDetailExclusiveArea(_ p1: Any) -> String {
     return L10n.tr("Localizable", "auction_detail_exclusive_area", String(describing: p1), fallback: "공급 %@㎡")
@@ -82,8 +84,6 @@ public enum L10n {
   public static let auctionDetailResultSold = L10n.tr("Localizable", "auction_detail_result_sold", fallback: "낙찰")
   /// 매각기일
   public static let auctionDetailSaleDate = L10n.tr("Localizable", "auction_detail_sale_date", fallback: "매각기일")
-  /// 매각 정보
-  public static let auctionDetailSaleInfoTitle = L10n.tr("Localizable", "auction_detail_sale_info_title", fallback: "매각 정보")
   /// 매각장소
   public static let auctionDetailSaleLocation = L10n.tr("Localizable", "auction_detail_sale_location", fallback: "매각장소")
   /// 매각비고

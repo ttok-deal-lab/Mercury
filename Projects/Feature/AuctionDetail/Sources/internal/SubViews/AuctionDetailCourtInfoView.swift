@@ -23,7 +23,7 @@ struct AuctionDetailCourtInfoView<MapView: MapViewable>: View {
   var body: some View {
     VStack(alignment: .leading, spacing: .zero) {
       
-      Text(L10n.auctionDetailSaleInfoTitle)
+      Text(L10n.auctionDetailCourtTitle)
         .fonts(.titleMediumBold)
         .foregroundStyle(Asset.Colors.neutral.color)
         .padding(.bottom, 20)
@@ -34,7 +34,7 @@ struct AuctionDetailCourtInfoView<MapView: MapViewable>: View {
             .fonts(.bodyMediumMedium)
             .foregroundStyle(Asset.Colors.neutralSubtler.color)
           Spacer()
-          Text(auctionDetailItem.court.name)
+          Text(auctionDetailItem.courtInfo.name)
             .fonts(.bodyMediumMedium)
             .foregroundStyle(Asset.Colors.neutral.color)
         }

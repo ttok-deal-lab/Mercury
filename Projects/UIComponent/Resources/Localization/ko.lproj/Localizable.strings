@@ -121,7 +121,7 @@
 "auction_detail_bid_limited" = "제한입찰";
 "auction_detail_court_jurisdiction" = "관할법원";
 "auction_detail_court_charge" = "담당";
-"auction_detail_sale_info_title" = "매각 정보";
+"auction_detail_court_title" = "법원정보";
 "auction_detail_auction_info_title" = "경매 정보";
 "auction_detail_property_location" = "물건 위치";
 "auction_detail_loading_location" = "위치 정보를 불러오는 중이에요";

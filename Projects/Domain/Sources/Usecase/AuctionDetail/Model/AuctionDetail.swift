@@ -452,12 +452,12 @@ public struct AuctionDetail: Sendable {
     public let name: String
     /// 법원 주소
     public let address: String
-    /// 위도
-    public let latitude: Double
-    /// 경도
-    public let longitude: Double
+    /// 위도 (서버 미제공 시 nil)
+    public let latitude: Double?
+    /// 경도 (서버 미제공 시 nil)
+    public let longitude: Double?
 
-    public init(code: String, name: String, address: String, latitude: Double, longitude: Double) {
+    public init(code: String, name: String, address: String, latitude: Double? = nil, longitude: Double? = nil) {
       self.code = code
       self.name = name
       self.address = address
@@ -547,7 +547,7 @@ public struct AuctionDetail: Sendable {
       case other(String)
 
       /*
-       `PLANNED` | 예정 |
+       | `PLANNED` | 예정 |
        | `PREPARING_SALE` | 매각준비 |
        | `SOLD` | 매각 |
        | `FAILED` | 유찰 |
@@ -594,6 +594,23 @@ public struct AuctionDetail: Sendable {
         default: self = .other(rawValue)
         }
       }
+      
+      // TODO: 말풍선 디스크립션 케이스 정리
+//      public var description: String {
+//        switch self {
+//        case .inProgress:
+//          return "경매 기일에 입찰이 진행 중이거나 예정된 상태"
+//        case .modified:
+//          return "법원 사정 등으로 경매 일정(기일)이 변경된 상태"
+//        case .failedBid:
+//          return "입찰자가 없어 낙찰되지 않고 다음 기일로 넘어가는 상태"
+//        case .sold:
+//          return "입찰 경쟁을 통해 낙찰자가 결정되어 매각이 완료된 상태 (매수인 및 낙찰가 포함)"
+//        case .offsetApproved:
+//          return "법원이 매각허가결정을 내려 소유권 이전 절차가 진행되는 상태"
+//        case .
+//        }
+//      }
     }
   }
 
@@ -605,12 +622,12 @@ public struct AuctionDetail: Sendable {
     public let detailAddress: String
     ///소재지 구분 (소분류명)
     public let category: BuildingCategory
-    /// 위도
-    public let latitude: Double
-    /// 경도
-    public let longitude: Double
+    /// 위도 (서버 미제공 시 nil)
+    public let latitude: Double?
+    /// 경도 (서버 미제공 시 nil)
+    public let longitude: Double?
 
-    public init(address: Address, detailAddress: String, category: BuildingCategory, latitude: Double, longitude: Double) {
+    public init(address: Address, detailAddress: String, category: BuildingCategory, latitude: Double? = nil, longitude: Double? = nil) {
       self.address = address
       self.detailAddress = detailAddress
       self.category = category
