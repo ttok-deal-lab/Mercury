@@ -7,68 +7,63 @@
 
 import SwiftUI
 
-import AppFoundation
+import UIComponent
+import Domain
+
+import SwiftUI
 import UIComponent
 import Domain
 
 struct AuctionDetailTabBriefCardView: View {
-  struct AuctionInfo: Identifiable {
-    var id: String { title }
-    let title: String
-    let content: String
-  }
-  
   let auctionDetailInfo: AuctionDetail
   
-  private var rows: [AuctionInfo] {
-    var result: [AuctionInfo] = []
+  enum CardType { case emphasize, common }
 
-    let bidTypeText = auctionDetailInfo.bidType.displayName
-    if !bidTypeText.isEmpty {
-      result.append(.init(title: "입찰방식", content: bidTypeText))
-    }
-    result.append(contentsOf: [
-      .init(title: "관할법원", content: auctionDetailInfo.court.name),
-      .init(title: "매각장소", content: auctionDetailInfo.salesLocation),
-      .init(title: "접수마감", content: auctionDetailInfo.salesReceptionDate.toKoreanDateString())
-    ])
-
-    let trimmedNote = auctionDetailInfo.salesNote.trimmingCharacters(in: .whitespacesAndNewlines)
-    if !trimmedNote.isEmpty {
-      result.append(.init(title: "매각비고", content: trimmedNote))
-    }
-
-    return result
-  }
+  private let horizontalPadding: CGFloat = 20
 
   var body: some View {
     VStack(alignment: .leading, spacing: 20) {
-      Text("경매 정보")
+      Text("한 눈에 보기")
         .fonts(.titleMediumBold)
         .foregroundStyle(Asset.Colors.neutral.color)
 
-      VStack(spacing: 20) {
-        ForEach(rows) { row in
-          auctionInfoRow(title: row.title, content: row.content)
-        }
+      HStack(spacing: 10) {
+        briefCardView(type: .emphasize, title: "경매구분", content: auctionDetailInfo.caseName)
+        briefCardView(type: .emphasize, title: "임차인", content: auctionDetailInfo.rightsAnalysis.first?.hasOppositionRight ?? "-")
+        briefCardView(type: .common, title: "채권자", content: "\(auctionDetailInfo.creditorCount)명")
       }
     }
-    .padding(.horizontal, 20)
+    .padding(.horizontal, horizontalPadding)
     .padding(.vertical, 24)
   }
 
-  private func auctionInfoRow(title: String, content: String) -> some View {
-    HStack(alignment: .top, spacing: 12) {
+  @ViewBuilder
+  private func briefCardView(type: CardType, title: String, content: String) -> some View {
+    let contentColor: Color = {
+      switch type {
+      case .emphasize: return Asset.Colors.criticalSubtle.color
+      case .common: return Asset.Colors.neutral.color
+      }
+    }()
+
+    let backgroundColor: Color = {
+      switch type {
+      case .emphasize: return Asset.Colors.criticalLight.color
+      case .common: return Asset.Colors.neutralLight.color
+      }
+    }()
+
+    VStack(spacing: 4) {
       Text(title)
-        .fonts(.bodySmallMedium)
+        .fonts(.bodyMicroMedium)
         .foregroundStyle(Asset.Colors.neutralSubtler.color)
-      
-      Spacer()
-      
+
       Text(content)
-        .fonts(.bodySmallMedium)
-        .foregroundStyle(Asset.Colors.neutral.color)
-        .multilineTextAlignment(.trailing)
+        .fonts(.bodySmallBold)
+        .foregroundStyle(contentColor)
     }
+    .padding(.vertical, 12)
+    .frame(maxWidth: .infinity)
+    .background(backgroundColor, in: RoundedRectangle(cornerRadius: 12))
   }
 }
