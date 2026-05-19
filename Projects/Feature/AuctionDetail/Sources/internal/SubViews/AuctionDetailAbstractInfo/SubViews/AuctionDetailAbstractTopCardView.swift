@@ -41,8 +41,8 @@ struct AuctionDetailAbstractTopCardView: View {
       
       VStack(spacing: 12) {
         estimatedValueRow()
-        salesLocationRow()
-        salesReceptionDateRow()
+//        salesLocationRow()
+//        salesReceptionDateRow()
         auctionDateRow()
       }
       .padding(16)
@@ -64,7 +64,7 @@ struct AuctionDetailAbstractTopCardView: View {
           .fonts(.bodySmallMedium)
           .foregroundStyle(Asset.Colors.neutralSubtler.color)
         Spacer()
-        Text(auctionDetailInfo.lowestSalesPrice.toKoreanWon)
+        Text(auctionDetailInfo.lowestSalesPrice.toKoreanCurrency())
           .fonts(.titleMediumBold)
           .foregroundStyle(Asset.Colors.neutral.color)
       }
@@ -85,7 +85,7 @@ struct AuctionDetailAbstractTopCardView: View {
   
   /// 감정가 행
   private func estimatedValueRow() -> some View {
-    infoRow(title: "감정가", value: auctionDetailInfo.appraisalPrice.toKoreanWon)
+    infoRow(title: "감정가", value: auctionDetailInfo.appraisalPrice.toKoreanCurrency())
   }
 
   /// 매각장소 행
