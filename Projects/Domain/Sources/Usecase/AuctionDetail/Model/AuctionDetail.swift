@@ -464,6 +464,263 @@ public struct AuctionDetail: Sendable {
       self.latitude = latitude
       self.longitude = longitude
     }
+
+    /// 한글 법원명 (서버 enum → 한글 라벨 변환)
+    public var displayName: String {
+      CourtName(rawValue: name).displayName
+    }
+
+    /// 서버 `court.name` enum (CourtName) 매핑
+    /// - 원본: sherbet-api `CourtItemFeignModels.kt` `CourtName`
+    public enum CourtName: Sendable {
+      // 서울권
+      case seoulCentralDistrict        // 서울중앙지방법원
+      case seoulEastDistrict           // 서울동부지방법원
+      case seoulWestDistrict           // 서울서부지방법원
+      case seoulSouthDistrict          // 서울남부지방법원
+      case seoulNorthDistrict          // 서울북부지방법원
+
+      // 경기·인천권
+      case uijeongbuDistrict           // 의정부지방법원
+      case goyangBranch                // 고양지원
+      case namyangjuBranch             // 남양주지원
+      case incheonDistrict             // 인천지방법원
+      case bucheonBranch               // 부천지원
+      case suwonDistrict               // 수원지방법원
+      case seongnamBranch              // 성남지원
+      case yeojuBranch                 // 여주지원
+      case pyeongtaekBranch            // 평택지원
+      case ansanBranch                 // 안산지원
+      case anyangBranch                // 안양지원
+
+      // 강원권
+      case chuncheonDistrict           // 춘천지방법원
+      case gangneungBranch             // 강릉지원
+      case wonjuBranch                 // 원주지원
+      case sokchoBranch                // 속초지원
+      case yeongwolBranch              // 영월지원
+
+      // 충청권
+      case cheongjuDistrict            // 청주지방법원
+      case chungjuBranch               // 충주지원
+      case jecheonBranch               // 제천지원
+      case yeongdongBranch             // 영동지원
+      case daejeonDistrict             // 대전지방법원
+      case hongseongBranch             // 홍성지원
+      case nonsanBranch                // 논산지원
+      case cheonanBranch               // 천안지원
+      case gongjuBranch                // 공주지원
+      case seosanBranch                // 서산지원
+
+      // 경상권 (대구·경북)
+      case daeguDistrict               // 대구지방법원
+      case andongBranch                // 안동지원
+      case gyeongjuBranch              // 경주지원
+      case gimcheonBranch              // 김천지원
+      case sangjuBranch                // 상주지원
+      case uiseongBranch               // 의성지원
+      case yeongdeokBranch             // 영덕지원
+      case pohangBranch                // 포항지원
+      case daeguWestBranch             // 대구서부지원
+
+      // 경상권 (부산·울산·경남)
+      case busanDistrict               // 부산지방법원
+      case busanEastBranch             // 부산동부지원
+      case busanWestBranch             // 부산서부지원
+      case ulsanDistrict               // 울산지방법원
+      case changwonDistrict            // 창원지방법원
+      case masanBranch                 // 마산지원
+      case jinjuBranch                 // 진주지원
+      case tongyeongBranch             // 통영지원
+      case milyangBranch               // 밀양지원
+      case geochangBranch              // 거창지원
+
+      // 전라권
+      case gwangjuDistrict             // 광주지방법원
+      case mokpoBranch                 // 목포지원
+      case jangheungBranch             // 장흥지원
+      case suncheonBranch              // 순천지원
+      case haenamBranch                // 해남지원
+      case jeonjuDistrict              // 전주지방법원
+      case gunsanBranch                // 군산지원
+      case jeongeupBranch              // 정읍지원
+      case namwonBranch                // 남원지원
+
+      // 제주
+      case jejuDistrict                // 제주지방법원
+
+      // Fallback
+      case invalid                     // 매핑 실패
+      case other(String)               // 알 수 없는 값 (서버 신규 enum 대비)
+
+      public init(rawValue: String) {
+        switch rawValue {
+        // 서울권
+        case "SEOUL_CENTRAL_DISTRICT": self = .seoulCentralDistrict
+        case "SEOUL_EAST_DISTRICT":    self = .seoulEastDistrict
+        case "SEOUL_WEST_DISTRICT":    self = .seoulWestDistrict
+        case "SEOUL_SOUTH_DISTRICT":   self = .seoulSouthDistrict
+        case "SEOUL_NORTH_DISTRICT":   self = .seoulNorthDistrict
+
+        // 경기·인천권
+        case "UIJEONGBU_DISTRICT":     self = .uijeongbuDistrict
+        case "GOYANG_BRANCH":          self = .goyangBranch
+        case "NAMYANGJU_BRANCH":       self = .namyangjuBranch
+        case "INCHEON_DISTRICT":       self = .incheonDistrict
+        case "BUCHEON_BRANCH":         self = .bucheonBranch
+        case "SUWON_DISTRICT":         self = .suwonDistrict
+        case "SEONGNAM_BRANCH":        self = .seongnamBranch
+        case "YEOJU_BRANCH":           self = .yeojuBranch
+        case "PYEONGTAEK_BRANCH":      self = .pyeongtaekBranch
+        case "ANSAN_BRANCH":           self = .ansanBranch
+        case "ANYANG_BRANCH":          self = .anyangBranch
+
+        // 강원권
+        case "CHUNCHEON_DISTRICT":     self = .chuncheonDistrict
+        case "GANGNEUNG_BRANCH":       self = .gangneungBranch
+        case "WONJU_BRANCH":           self = .wonjuBranch
+        case "SOKCHO_BRANCH":          self = .sokchoBranch
+        case "YEONGWOL_BRANCH":        self = .yeongwolBranch
+
+        // 충청권
+        case "CHEONGJU_DISTRICT":      self = .cheongjuDistrict
+        case "CHUNGJU_BRANCH":         self = .chungjuBranch
+        case "JECHEON_BRANCH":         self = .jecheonBranch
+        case "YEONGDONG_BRANCH":       self = .yeongdongBranch
+        case "DAEJEON_DISTRICT":       self = .daejeonDistrict
+        case "HONGSEONG_BRANCH":       self = .hongseongBranch
+        case "NONSAN_BRANCH":          self = .nonsanBranch
+        case "CHEONAN_BRANCH":         self = .cheonanBranch
+        case "GONGJU_BRANCH":          self = .gongjuBranch
+        case "SEOSAN_BRANCH":          self = .seosanBranch
+
+        // 경상권 (대구·경북)
+        case "DAEGU_DISTRICT":         self = .daeguDistrict
+        case "ANDONG_BRANCH":          self = .andongBranch
+        case "GYEONGJU_BRANCH":        self = .gyeongjuBranch
+        case "GIMCHEON_BRANCH":        self = .gimcheonBranch
+        case "SANGJU_BRANCH":          self = .sangjuBranch
+        case "UISEONG_BRANCH":         self = .uiseongBranch
+        case "YEONGDEOK_BRANCH":       self = .yeongdeokBranch
+        case "POHANG_BRANCH":          self = .pohangBranch
+        case "DAEGU_WEST_BRANCH":      self = .daeguWestBranch
+
+        // 경상권 (부산·울산·경남)
+        case "BUSAN_DISTRICT":         self = .busanDistrict
+        case "BUSAN_EAST_BRANCH":      self = .busanEastBranch
+        case "BUSAN_WEST_BRANCH":      self = .busanWestBranch
+        case "ULSAN_DISTRICT":         self = .ulsanDistrict
+        case "CHANGWON_DISTRICT":      self = .changwonDistrict
+        case "MASAN_BRANCH":           self = .masanBranch
+        case "JINJU_BRANCH":           self = .jinjuBranch
+        case "TONGYEONG_BRANCH":       self = .tongyeongBranch
+        case "MILYANG_BRANCH":         self = .milyangBranch
+        case "GEOCHANG_BRANCH":        self = .geochangBranch
+
+        // 전라권
+        case "GWANGJU_DISTRICT":       self = .gwangjuDistrict
+        case "MOKPO_BRANCH":           self = .mokpoBranch
+        case "JANGHEUNG_BRANCH":       self = .jangheungBranch
+        case "SUNCHEON_BRANCH":        self = .suncheonBranch
+        case "HAENAM_BRANCH":          self = .haenamBranch
+        case "JEONJU_DISTRICT":        self = .jeonjuDistrict
+        case "GUNSAN_BRANCH":          self = .gunsanBranch
+        case "JEONGEUP_BRANCH":        self = .jeongeupBranch
+        case "NAMWON_BRANCH":          self = .namwonBranch
+
+        // 제주
+        case "JEJU_DISTRICT":          self = .jejuDistrict
+
+        // Fallback
+        case "INVALID", "":            self = .invalid
+        default:                       self = .other(rawValue)
+        }
+      }
+
+      public var displayName: String {
+        switch self {
+        // 서울권
+        case .seoulCentralDistrict: return "서울중앙지방법원"
+        case .seoulEastDistrict:    return "서울동부지방법원"
+        case .seoulWestDistrict:    return "서울서부지방법원"
+        case .seoulSouthDistrict:   return "서울남부지방법원"
+        case .seoulNorthDistrict:   return "서울북부지방법원"
+
+        // 경기·인천권
+        case .uijeongbuDistrict:    return "의정부지방법원"
+        case .goyangBranch:         return "고양지원"
+        case .namyangjuBranch:      return "남양주지원"
+        case .incheonDistrict:      return "인천지방법원"
+        case .bucheonBranch:        return "부천지원"
+        case .suwonDistrict:        return "수원지방법원"
+        case .seongnamBranch:       return "성남지원"
+        case .yeojuBranch:          return "여주지원"
+        case .pyeongtaekBranch:     return "평택지원"
+        case .ansanBranch:          return "안산지원"
+        case .anyangBranch:         return "안양지원"
+
+        // 강원권
+        case .chuncheonDistrict:    return "춘천지방법원"
+        case .gangneungBranch:      return "강릉지원"
+        case .wonjuBranch:          return "원주지원"
+        case .sokchoBranch:         return "속초지원"
+        case .yeongwolBranch:       return "영월지원"
+
+        // 충청권
+        case .cheongjuDistrict:     return "청주지방법원"
+        case .chungjuBranch:        return "충주지원"
+        case .jecheonBranch:        return "제천지원"
+        case .yeongdongBranch:      return "영동지원"
+        case .daejeonDistrict:      return "대전지방법원"
+        case .hongseongBranch:      return "홍성지원"
+        case .nonsanBranch:         return "논산지원"
+        case .cheonanBranch:        return "천안지원"
+        case .gongjuBranch:         return "공주지원"
+        case .seosanBranch:         return "서산지원"
+
+        // 경상권 (대구·경북)
+        case .daeguDistrict:        return "대구지방법원"
+        case .andongBranch:         return "안동지원"
+        case .gyeongjuBranch:       return "경주지원"
+        case .gimcheonBranch:       return "김천지원"
+        case .sangjuBranch:         return "상주지원"
+        case .uiseongBranch:        return "의성지원"
+        case .yeongdeokBranch:      return "영덕지원"
+        case .pohangBranch:         return "포항지원"
+        case .daeguWestBranch:      return "대구서부지원"
+
+        // 경상권 (부산·울산·경남)
+        case .busanDistrict:        return "부산지방법원"
+        case .busanEastBranch:      return "부산동부지원"
+        case .busanWestBranch:      return "부산서부지원"
+        case .ulsanDistrict:        return "울산지방법원"
+        case .changwonDistrict:     return "창원지방법원"
+        case .masanBranch:          return "마산지원"
+        case .jinjuBranch:          return "진주지원"
+        case .tongyeongBranch:      return "통영지원"
+        case .milyangBranch:        return "밀양지원"
+        case .geochangBranch:       return "거창지원"
+
+        // 전라권
+        case .gwangjuDistrict:      return "광주지방법원"
+        case .mokpoBranch:          return "목포지원"
+        case .jangheungBranch:      return "장흥지원"
+        case .suncheonBranch:       return "순천지원"
+        case .haenamBranch:         return "해남지원"
+        case .jeonjuDistrict:       return "전주지방법원"
+        case .gunsanBranch:         return "군산지원"
+        case .jeongeupBranch:       return "정읍지원"
+        case .namwonBranch:         return "남원지원"
+
+        // 제주
+        case .jejuDistrict:         return "제주지방법원"
+
+        // Fallback (스펙: INVALID → 빈 문자열, 알 수 없는 값은 원본 노출)
+        case .invalid:              return ""
+        case .other(let raw):       return raw
+        }
+      }
+    }
   }
 
   /// 경매 상세 기일 정보

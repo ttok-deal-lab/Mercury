@@ -34,7 +34,7 @@ struct AuctionDetailCourtInfoView<MapView: MapViewable>: View {
             .fonts(.bodyMediumMedium)
             .foregroundStyle(Asset.Colors.neutralSubtler.color)
           Spacer()
-          Text(auctionDetailItem.courtInfo.name)
+          Text(auctionDetailItem.courtInfo.displayName)
             .fonts(.bodyMediumMedium)
             .foregroundStyle(Asset.Colors.neutral.color)
         }
