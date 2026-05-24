@@ -30,7 +30,7 @@ struct AuctionDetailTabPagerContainerView: View {
       case .auction:
         AuctionDetailTabBriefCardView(auctionDetailInfo: auctionDetailInfo)
       case .rights:
-        AuctionDetailTabRightsAnalysisView(report: auctionDetailInfo.conditionReport)
+        AuctionDetailTabRightsAnalysisView(rightsAnalysis: auctionDetailInfo.rightsAnalysis)
       }
     }
   }

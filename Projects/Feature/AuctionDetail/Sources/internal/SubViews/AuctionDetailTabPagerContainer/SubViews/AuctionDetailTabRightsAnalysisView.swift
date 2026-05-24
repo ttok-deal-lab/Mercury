@@ -13,14 +13,14 @@ import Domain
 
 struct AuctionDetailTabRightsAnalysisView: View {
   @State private var selectedIndex: Int = 0
-  let report: AuctionDetail.ConditionReport
+  let rightsAnalysis: [AuctionDetail.RightsAnalysis]
 
-  init(report: AuctionDetail.ConditionReport) {
-    self.report = report
+  init(rightsAnalysis: [AuctionDetail.RightsAnalysis]) {
+    self.rightsAnalysis = rightsAnalysis
   }
 
   var body: some View {
-    let items = report.occupationRelationReports
+    let items = rightsAnalysis
 
     let safeIndex = min(max(selectedIndex, 0), max(items.count - 1, 0))
     let selected = items.isEmpty ? nil : items[safeIndex]
@@ -36,7 +36,7 @@ struct AuctionDetailTabRightsAnalysisView: View {
       }
 
       if items.isEmpty {
-        Text("점유자 정보가 없습니다")
+        Text("권리분석 정보가 없습니다")
           .font(.system(size: 14))
           .foregroundStyle(.secondary)
           .padding(.top, 8)
@@ -53,14 +53,14 @@ struct AuctionDetailTabRightsAnalysisView: View {
     }
     .padding(16)
     .onAppear { selectedIndex = 0 }
-    .onChange(of: report.occupationRelationReports.count) { _, _ in
+    .onChange(of: rightsAnalysis.count) { _, _ in
       selectedIndex = 0
     }
   }
 }
 
 private struct OccupantChipRow: View {
-  let items: [AuctionDetail.ConditionReport.OccupationRelationReport]
+  let items: [AuctionDetail.RightsAnalysis]
   @Binding var selectedIndex: Int
 
   var body: some View {
@@ -69,8 +69,8 @@ private struct OccupantChipRow: View {
         ForEach(items.indices, id: \.self) { i in
           let item = items[i]
           OccupantChip(
-            title: item.occupant,
-            statusText: item.relation.displayName,
+            title: item.name,
+            statusText: item.occupationStatus,
             isSelected: i == selectedIndex
           ) {
             withAnimation(.snappy) { selectedIndex = i }
@@ -104,7 +104,7 @@ private struct OccupantChip: View {
               .foregroundStyle(.blue)
           }
         }
-        
+
         Spacer()
         Text(statusText)
           .fonts(.bodyMediumBold)
@@ -125,44 +125,39 @@ private struct OccupantChip: View {
 }
 
 private struct OccupantDetailCard: View {
-  let item: AuctionDetail.ConditionReport.OccupationRelationReport
+  let item: AuctionDetail.RightsAnalysis
 
   var body: some View {
     VStack(alignment: .leading, spacing: .zero) {
-      
-      HStack(alignment: .top) {
-        VStack(alignment: .leading, spacing: 4) {
-          Text(item.occupant)
-            .fonts(.titleMediumBold)
-            .foregroundStyle(Asset.Colors.neutral.color)
 
-          if !item.occupiedPart.isEmpty {
-            Text(item.occupiedPart)
-              .fonts(.bodyMicroMedium)
-              .foregroundStyle(Asset.Colors.neutralSubtler.color)
-          }
-        }
+      HStack(alignment: .top) {
+        Text(item.name)
+          .fonts(.titleMediumBold)
+          .foregroundStyle(Asset.Colors.neutral.color)
 
         Spacer()
 
-        Text(item.relation.displayName)
+        Text(item.occupationStatus)
           .fonts(.titleMediumBold)
           .foregroundStyle(Asset.Colors.primary.color)
       }
       .padding(16)
 
       VStack(spacing: 12) {
-        DetailRow(title: "소재지", value: item.address)
-        if !item.purpose.displayName.isEmpty {
-          DetailRow(title: "용도", value: item.purpose.displayName)
-        }
-        if !item.duration.isEmpty {
-          DetailRow(title: "점유기간", value: item.duration)
-        }
-        DetailRow(title: "전입신고일", value: item.movedAt.formattedKRDate)
-        DetailRow(title: "확정일자", value: item.confirmedAt.formattedKRDate)
-        DetailRow(title: "보증금", value: item.deposit.toKoreanWon)
-        DetailRow(title: "월세", value: item.rental.toKoreanWon)
+        // 대항력
+        DetailRow(title: "대항력", value: item.hasOppositionRight, displayType: .titler)
+        DetailRow(title: "ㄴ 전입신고일", value: item.moveInReportDate)
+        DetailRow(title: "ㄴ 점유상태", value: item.occupationStatus)
+
+        // 우선변제권
+        DetailRow(title: "우선변제권", value: item.priorityRepaymentRight, displayType: .titler)
+        DetailRow(title: "ㄴ 확정일자", value: item.fixedDate)
+
+        // 배당요구
+        DetailRow(title: "배당요구", value: item.dividendRequest, displayType: .titler)
+        DetailRow(title: "ㄴ 배당요구일", value: item.dividendRequestDate)
+        DetailRow(title: "ㄴ 보증금", value: item.deposit.toKoreanWon)
+        DetailRow(title: "ㄴ 월세", value: item.monthlyRent.toKoreanWon)
       }
       .padding(16)
       .background(Asset.Colors.neutralLight.color)
@@ -180,7 +175,7 @@ private struct OccupantDetailCard: View {
 private enum DetailRowDisplayType {
   case titler
   case subtler
-  
+
   var font: MercuryFont {
     switch self {
     case .titler: .bodySmallBold
@@ -207,41 +202,5 @@ private struct DetailRow: View {
         .foregroundStyle(Asset.Colors.neutralSubtler.color)
         .multilineTextAlignment(.trailing)
     }
-  }
-}
-
-private extension AuctionDetail.ConditionReport.OccupationRelationReport.OccupantRelation {
-  var displayName: String {
-    switch self {
-    case .debtor: "채무자"
-    case .tenant: "임차인"
-    case .owner: "소유자"
-    case .other(let v): v
-    }
-  }
-}
-
-private extension AuctionDetail.ConditionReport.OccupationRelationReport.OccupationPurpose {
-  var displayName: String {
-    switch self {
-    case .residential:
-      return "주거"
-    case .commercial:
-      return "상업"
-    case .office:
-      return "사무실"
-    case .other(let value):
-      return value
-    }
-  }
-}
-
-private extension Date {
-  var formattedKRDate: String {
-    let f = DateFormatter()
-    f.locale = Locale(identifier: "ko_KR")
-    f.timeZone = TimeZone(identifier: "Asia/Seoul")
-    f.dateFormat = "yyyy.MM.dd"
-    return f.string(from: self)
   }
 }
