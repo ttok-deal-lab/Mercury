@@ -44,9 +44,9 @@ struct AuctionDetailHistoryRowView: View {
       }
 
       HStack {
-        Text("최저매각")
+        Text(L10n.auctionDetailHistoryMinPrice)
         Spacer()
-        Text(detail.leastSalesPrice.toKoreanWon)
+        Text(detail.leastSalesPrice.toKoreanCurrency())
       }
       .fonts(.bodySmallMedium)
       .foregroundStyle(Asset.Colors.neutralSubtler.color)
