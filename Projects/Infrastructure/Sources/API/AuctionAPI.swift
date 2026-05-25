@@ -81,16 +81,18 @@ enum AuctionAPI: BaseAPI {
         params["district"] = "unknown"
       }
       
+      // 서버 스펙(OpenAPI): `buildType` 은 `type: array` — 반복 키 직렬화.
+      // Set→Array 변환의 무작위 순서를 `.sorted()` 로 안정화한다 (URL 캐시 친화적).
       if let buildTypes = buildTypes, !buildTypes.isEmpty {
-        params["buildType"] = buildTypes.first! // TODO: 복수 선택일 경우 대응해야함
+        params["buildType"] = buildTypes.sorted()
       } else {
-        params["buildType"] = "ALL"
+        params["buildType"] = ["ALL"]
       }
-      
+
       if let auctionFailCount = auctionFailCount, !auctionFailCount.isEmpty {
-        params["auctionFailCount"] = auctionFailCount.first!  // TODO: 복수 선택일 경우 대응해야함
+        params["auctionFailCount"] = auctionFailCount.sorted()
       } else {
-        params["auctionFailCount"] = "ALL"
+        params["auctionFailCount"] = ["ALL"]
       }
       
       if let isCertified = isCertified {

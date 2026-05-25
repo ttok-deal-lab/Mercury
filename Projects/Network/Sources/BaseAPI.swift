@@ -197,8 +197,8 @@ extension BaseAPI {
     }
 
     if let queryParam {
-      comps.queryItems = queryParam.compactMap { key, value in
-        convertToQueryItem(key: key, value: value)
+      comps.queryItems = queryParam.flatMap { key, value in
+        convertToQueryItems(key: key, value: value)
       }
     }
 
@@ -231,19 +231,31 @@ extension BaseAPI {
 }
 
 extension BaseAPI {
-  fileprivate func convertToQueryItem(key: String, value: Any?) -> URLQueryItem?
+  /// 배열 값은 같은 key 를 반복하는 URLQueryItem 으로 직렬화한다.
+  /// OpenAPI 3.0 의 기본 array 직렬화(`style: form`, `explode: true`)와 일치하며,
+  /// 단일 값(`String` / `Bool` / 숫자)도 1개짜리 배열로 일관 처리한다.
+  fileprivate func convertToQueryItems(key: String, value: Any?) -> [URLQueryItem]
   {
-    guard let unwrapped = value else { return nil }
+    guard let unwrapped = value else { return [] }
 
     switch unwrapped {
     case let v as String:
-      return URLQueryItem(name: key, value: v)
+      return [URLQueryItem(name: key, value: v)]
     case let v as Bool:
-      return URLQueryItem(name: key, value: v ? "true" : "false")
+      return [URLQueryItem(name: key, value: v ? "true" : "false")]
     case let v as CustomStringConvertible where isPrimitiveNumeric(v):
-      return URLQueryItem(name: key, value: v.description)
+      return [URLQueryItem(name: key, value: v.description)]
+    case let arr as [String]:
+      return arr.map { URLQueryItem(name: key, value: $0) }
+    case let arr as [Bool]:
+      return arr.map { URLQueryItem(name: key, value: $0 ? "true" : "false") }
+    case let arr as [any CustomStringConvertible]:
+      return arr.compactMap { element in
+        guard isPrimitiveNumeric(element) else { return nil }
+        return URLQueryItem(name: key, value: element.description)
+      }
     default:
-      return nil
+      return []
     }
   }
 
