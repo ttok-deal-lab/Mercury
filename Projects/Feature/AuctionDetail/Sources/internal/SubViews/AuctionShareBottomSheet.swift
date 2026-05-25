@@ -50,7 +50,7 @@ struct AuctionShareBottomSheet: View {
           select(.kakao)
         } label: {
           AuctionShareRowLabel(
-            iconContent: .asset(image: Asset.Images.kakao.image),
+            iconContent: .asset(image: Asset.Images.kakaoLogo.image),
             title: "카카오톡으로 공유하기"
           )
         }
