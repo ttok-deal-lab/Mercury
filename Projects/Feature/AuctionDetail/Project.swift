@@ -17,7 +17,9 @@ let project = Project.framework(
     .router,
     .networking,
     .domain,
-    .infrastructure
+    .infrastructure,
+    .kakaoShare,
+    .kakaoTemplate
   ],
   testDependencies: []
 )

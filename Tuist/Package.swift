@@ -14,6 +14,8 @@ let packageSettings = PackageSettings(
     "KakaoSDKCommon": .framework,
     "KakaoSDKUser": .framework,
     "KakaoSDKAuth": .framework,
+    "KakaoSDKShare": .framework,
+    "KakaoSDKTemplate": .framework,
     "Lottie": .framework,
     "Pulse": .framework,
     "PulseProxy": .framework,

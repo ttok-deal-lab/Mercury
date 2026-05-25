@@ -10,6 +10,8 @@ import ProjectDescription
 public extension TargetDependency {
   static let kakaoMap: TargetDependency = .external(name: "KakaoMapsSDK-SPM")
   static let kakaoSdk: TargetDependency = .external(name: "KakaoSDK")
+  static let kakaoShare: TargetDependency = .external(name: "KakaoSDKShare")
+  static let kakaoTemplate: TargetDependency = .external(name: "KakaoSDKTemplate")
   static let swiftTesting: TargetDependency = .external(name: "Testing")
   static let googleSignIn: TargetDependency = .external(name: "GoogleSignIn")
   static let googleSignInSwift: TargetDependency = .external(name: "GoogleSignInSwift")
