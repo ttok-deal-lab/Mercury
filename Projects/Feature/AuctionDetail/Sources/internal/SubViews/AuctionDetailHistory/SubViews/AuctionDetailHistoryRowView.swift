@@ -16,6 +16,8 @@ struct AuctionDetailHistoryRowView: View {
   let roundText: String
   let detail: AuctionDetail.SalesDetail
 
+  @State private var isResultInfoPresented = false
+
   var body: some View {
     VStack(alignment: .leading, spacing: 10) {
       HStack(spacing: 8) {
@@ -61,12 +63,18 @@ struct AuctionDetailHistoryRowView: View {
           .fonts(.bodySmallBold)
           .foregroundStyle(Asset.Colors.neutralSubtler.color)
 
-        Button {
-          // TODO: 설명 말풍선 띄우기
-        } label: {
-          Image(systemName: "info.circle")
-            .font(.system(size: 13))
-            .foregroundStyle(.tertiary)
+        if detail.result.infoDescription != nil {
+          Button {
+            isResultInfoPresented = true
+          } label: {
+            Image(systemName: "info.circle")
+              .font(.system(size: 13))
+              .foregroundStyle(.tertiary)
+          }
+          .popover(isPresented: $isResultInfoPresented) {
+            AuctionDetailHistoryResultInfoTooltip(result: detail.result)
+              .presentationCompactAdaptation(.popover)
+          }
         }
       }
     }
