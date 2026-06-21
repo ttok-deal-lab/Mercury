@@ -28,7 +28,7 @@ struct AuctionDetailTabBriefCardView: View {
         .foregroundStyle(Asset.Colors.neutral.color)
 
       HStack(spacing: 10) {
-        briefCardView(type: .emphasize, title: "경매구분", content: auctionDetailInfo.caseName)
+        briefCardView(type: .emphasize, title: "경매구분", content: auctionDetailInfo.displayCaseName)
         briefCardView(type: .emphasize, title: "임차인", content: auctionDetailInfo.rightsAnalysis.first?.hasOppositionRight ?? "-")
         briefCardView(type: .common, title: "채권자", content: "\(auctionDetailInfo.creditorCount)명")
       }

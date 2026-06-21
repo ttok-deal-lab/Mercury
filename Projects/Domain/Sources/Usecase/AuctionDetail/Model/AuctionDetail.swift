@@ -806,24 +806,61 @@ public struct AuctionDetail: Sendable {
       /*
        | `PLANNED` | 예정 |
        | `PREPARING_SALE` | 매각준비 |
-       | `SOLD` | 매각 |
+       | `IN_PROGRESS` | 진행 |
        | `FAILED` | 유찰 |
+       | `SOLD` | 매각 |
+       
        | `BEST_BID_APPROVED` | 최고가매각허가결정 |
        | `SECONDARY_BID_APPROVED` | 차순위매각허가결정 |
        | `BEST_BID_REJECTED` | 최고가매각불허가결정 |
        | `SECONDARY_BID_REJECTED` | 차순위매각불허가결정 |
-       | `DEADLINE_CHANGED` | 기한변경 |
-       | `TO_BE_SPECIFIED` | 추후지정 |
+       | `BEST_BID_APPROVAL_CANCELLED` | 최고가매각허가취소결정 |
+       | `SECONDARY_BID_APPROVAL_CANCELLED` | 차순위매각허가취소결정 |
+       
        | `PAYMENT_COMPLETED` | 납부 |
        | `PAYMENT_MISSED` | 미납 |
        | `LATE_PAYMENT` | 기한후납부 |
        | `OFFSET_APPROVED` | 상계허가 |
-       | `IN_PROGRESS` | 진행 |
+       
        | `MODIFIED` | 변경 |
+       | `DEADLINE_CHANGED` | 기한변경 |
+       | `TO_BE_SPECIFIED` | 추후지정 |
+       
        | `DISTRIBUTION_COMPLETED` | 배당종결 |
        | `DISTRIBUTION_UNAVAILABLE` | 배당불가 |
-       | `BEST_BID_APPROVAL_CANCELLED` | 최고가매각허가취소결정 |
-       | `SECONDARY_BID_APPROVAL_CANCELLED` | 차순위매각허가취소결정 |
+       */
+      
+      /*
+       
+       [기일 진행]
+       예정 : 경매 기일이 잡혀 입찰이 예정된 상태  🆕
+       매각준비 : 매각을 위한 사전 절차가 진행 중인 상태  🆕
+       진행 : 경매 기일에 입찰이 진행 중이거나 예정된 상태  ✅
+       유찰 : 입찰자가 없어 낙찰되지 않고 다음 기일로 넘어가는 상태  ✅
+       매각 : 입찰 경쟁을 통해 낙찰자가 결정되어 매각이 완료된 상태 (매수인 및 낙찰가 포함)  ✅
+
+       [매각 허가 / 불허가]
+       최고가매각허가결정 : 법원이 매각허가결정을 내려 소유권 이전 절차가 진행되는 상태  ✅(허가)
+       차순위매각허가결정 : 법원이 차순위 매수신고인에게 매각허가결정을 내린 상태  🆕
+       최고가매각불허가결정 : 이의제기 등으로 법원이 매각허가를 불허한 상태  ✅(불허가)
+       차순위매각불허가결정 : 이의제기 등으로 법원이 차순위 매수신고인에 대한 매각허가를 불허한 상태  🆕
+       최고가매각허가취소결정 : 법원이 최고가 매수인에 대한 매각허가결정을 취소한 상태  🆕
+       차순위매각허가취소결정 : 법원이 차순위 매수신고인에 대한 매각허가결정을 취소한 상태  🆕
+
+       [대금 납부]
+       납부 : 매수인이 정해진 기한 내 매각대금을 완납한 상태  🆕
+       미납 : 매수인이 기한 내 매각대금을 납부하지 않은 상태  🆕
+       기한후납부 : 매수인이 지정된 기한 이후 매각대금을 납부한 상태  🆕
+       상계허가 : 채권자인 매수인이 배당받을 금액과 매각대금의 상계를 법원이 허가한 상태  🆕
+
+       [일정 변경]
+       변경 : 법원 사정 등으로 경매 일정(기일)이 변경된 상태  ✅(변경/기일변경)
+       기한변경 : 법원 사정 등으로 대금 납부 등 기한이 변경된 상태  🆕
+       추후지정 : 다음 기일이 아직 정해지지 않아 추후 지정될 예정인 상태  🆕
+
+       [배당 / 종결]
+       배당종결 : 매각대금이 채권자에게 배당되어 경매절차가 종결된 상태  🆕(종료 변형)
+       배당불가 : 배당 요건을 충족하지 못해 배당을 진행할 수 없는 상태  🆕
        */
       public init(rawValue: String) {
         switch rawValue {
