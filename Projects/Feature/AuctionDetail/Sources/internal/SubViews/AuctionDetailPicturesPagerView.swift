@@ -13,9 +13,13 @@ import Domain
 struct AuctionDetailPicturesPagerView: View {
   let height: CGFloat
   let auctionDetailInfo: AuctionDetail
-  
-  @State private var selectedURL: URL? = nil
-  
+
+  @State private var gallery: GalleryPresentation? = nil
+
+  private var pictureURLs: [URL] {
+    auctionDetailInfo.salesPictures.compactMap(\.url)
+  }
+
   var body: some View {
     InfinitePager(items: auctionDetailInfo.salesPictures) { item in
       CachedAsyncImage(url: item.url) { image in
@@ -26,21 +30,81 @@ struct AuctionDetailPicturesPagerView: View {
       .frame(maxWidth: .infinity)
       .contentShape(Rectangle())
       .onTapGesture {
-        selectedURL = item.url
+        guard let url = item.url,
+              let index = pictureURLs.firstIndex(of: url) else { return }
+        gallery = GalleryPresentation(startIndex: index)
       }
     }
     .frame(height: height)
-    .fullScreenCover(item: $selectedURL) { url in
-      ZoomableAsyncImage(url: url) {
-        selectedURL = nil
+    .fullScreenCover(item: $gallery) { presentation in
+      ZoomableImageGallery(urls: pictureURLs, startIndex: presentation.startIndex) {
+        gallery = nil
       }
     }
   }
 }
 
-private struct ZoomableAsyncImage: View {
-  let url: URL
+// MARK: - Gallery Presentation
+
+private struct GalleryPresentation: Identifiable {
+  let startIndex: Int
+  var id: Int { startIndex }
+}
+
+// MARK: - Zoomable Gallery (가로 슬라이딩 페이지네이션)
+
+private struct ZoomableImageGallery: View {
+  let urls: [URL]
   var onClose: () -> Void
+
+  @State private var selectedIndex: Int
+
+  init(urls: [URL], startIndex: Int, onClose: @escaping () -> Void) {
+    self.urls = urls
+    self.onClose = onClose
+    self._selectedIndex = State(initialValue: startIndex)
+  }
+
+  var body: some View {
+    ZStack {
+      Color.black.ignoresSafeArea()
+
+      TabView(selection: $selectedIndex) {
+        ForEach(Array(urls.enumerated()), id: \.offset) { index, url in
+          ZoomablePage(url: url)
+            .tag(index)
+        }
+      }
+      .tabViewStyle(.page(indexDisplayMode: .never))
+      .ignoresSafeArea()
+    }
+    .overlay(alignment: .topTrailing) {
+      Button(action: onClose) {
+        Image(systemName: "xmark.circle.fill")
+          .font(.system(size: 28))
+          .foregroundStyle(.white.opacity(0.9))
+          .padding(16)
+      }
+      .accessibilityLabel("Close")
+    }
+    .overlay(alignment: .bottom) {
+      if urls.count > 1 {
+        Text("\(selectedIndex + 1) / \(urls.count)")
+          .font(.system(size: 13, weight: .semibold))
+          .foregroundStyle(.white)
+          .padding(.horizontal, 12)
+          .padding(.vertical, 6)
+          .background(.black.opacity(0.4), in: Capsule())
+          .padding(.bottom, 24)
+      }
+    }
+  }
+}
+
+// MARK: - Single Zoomable Page
+
+private struct ZoomablePage: View {
+  let url: URL
 
   @State private var scale: CGFloat = 1.0
   @State private var lastScale: CGFloat = 1.0
@@ -48,47 +112,33 @@ private struct ZoomableAsyncImage: View {
   @State private var lastOffset: CGSize = .zero
 
   var body: some View {
-    ZStack {
-      Color.black.ignoresSafeArea()
-
-      CachedAsyncImage(url: url) { image in
-        GeometryReader { proxy in
-          let size = proxy.size
-          image
-            .resizable()
-            .scaledToFit()
-            .frame(width: size.width, height: size.height)
-            .scaleEffect(scale)
-            .offset(offset)
-            .gesture(magnification)
-            .gesture(drag)
-            .onTapGesture(count: 2) {
-              withAnimation(.spring) {
-                if scale > 1.01 {
-                  scale = 1.0
-                  offset = .zero
-                } else {
-                  scale = 2.0
-                }
+    CachedAsyncImage(url: url) { image in
+      GeometryReader { proxy in
+        let size = proxy.size
+        image
+          .resizable()
+          .scaledToFit()
+          .frame(width: size.width, height: size.height)
+          .scaleEffect(scale)
+          .offset(offset)
+          .gesture(magnification)
+          // 확대 상태에서만 패닝 제스처를 활성화해, 기본 배율에서는 TabView 가로 슬라이딩이 동작하도록 한다.
+          .gesture(drag, including: scale > 1.0 ? .all : .subviews)
+          .onTapGesture(count: 2) {
+            withAnimation(.spring) {
+              if scale > 1.01 {
+                scale = 1.0
+                offset = .zero
+              } else {
+                scale = 2.0
               }
             }
-            .animation(.snappy, value: scale)
-            .animation(.snappy, value: offset)
-        }
-      } placeholder: {
-        ZStack { Color.black.ignoresSafeArea(); ProgressView().tint(.white) }
+          }
+          .animation(.snappy, value: scale)
+          .animation(.snappy, value: offset)
       }
-    }
-    .overlay(alignment: .topTrailing) {
-      Button(action: {
-        onClose()
-      }) {
-        Image(systemName: "xmark.circle.fill")
-          .font(.system(size: 28))
-          .foregroundStyle(.white.opacity(0.9))
-          .padding(16)
-      }
-      .accessibilityLabel("Close")
+    } placeholder: {
+      ZStack { Color.black; ProgressView().tint(.white) }
     }
     .onChange(of: scale) { _, newScale in
       // Clamp scale and adjust offset when scale returns to 1
@@ -132,8 +182,4 @@ private struct ZoomableAsyncImage: View {
         lastOffset = offset
       }
   }
-}
-
-extension URL: @retroactive Identifiable {
-  public var id: String { absoluteString }
 }

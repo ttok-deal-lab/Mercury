@@ -9,6 +9,20 @@ import Foundation
 
 import Domain
 
+extension AuctionDetail {
+  /// 경매구분(사건명) 노출 값.
+  /// 단순 부동산 매매 성격의 강제/임의경매만 노출하고,
+  /// 공유물분할·형식적경매·유치권경매·선박경매 등은 비노출("-") 처리한다.
+  var displayCaseName: String {
+    switch caseName {
+    case "부동산강제경매", "부동산임의경매":
+      return caseName
+    default:
+      return "-"
+    }
+  }
+}
+
 extension AuctionDetail.ItemType {
   var displayName: String {
     switch self {
@@ -128,6 +142,39 @@ extension AuctionDetail.BidType {
 }
 
 extension AuctionDetail.SalesDetail.SalesResult {
+  /// 기일종류 툴팁 설명. 매핑이 없는 케이스(invalid/other)는 nil.
+  var infoDescription: String? {
+    switch self {
+    // 기일 진행
+    case .planned: return "경매 기일이 잡혀 입찰이 예정된 상태"
+    case .preparingSale: return "매각을 위한 사전 절차가 진행 중인 상태"
+    case .inProgress: return "경매 기일에 입찰이 진행 중이거나 예정된 상태"
+    case .failedBid: return "입찰자가 없어 낙찰되지 않고 다음 기일로 넘어가는 상태"
+    case .sold: return "입찰 경쟁을 통해 낙찰자가 결정되어 매각이 완료된 상태 (매수인 및 낙찰가 포함)"
+    // 매각 허가 / 불허가
+    case .bestBidApproved: return "법원이 매각허가결정을 내려 소유권 이전 절차가 진행되는 상태"
+    case .secondaryBidApproved: return "법원이 차순위 매수신고인에게 매각허가결정을 내린 상태"
+    case .bestBidRejected: return "이의제기 등으로 법원이 매각허가를 불허한 상태"
+    case .secondaryBidRejected: return "이의제기 등으로 법원이 차순위 매수신고인에 대한 매각허가를 불허한 상태"
+    case .bestBidApprovalCancelled: return "법원이 최고가 매수인에 대한 매각허가결정을 취소한 상태"
+    case .secondaryBidApprovalCancelled: return "법원이 차순위 매수신고인에 대한 매각허가결정을 취소한 상태"
+    // 대금 납부
+    case .paymentCompleted: return "매수인이 정해진 기한 내 매각대금을 완납한 상태"
+    case .paymentMissed: return "매수인이 기한 내 매각대금을 납부하지 않은 상태"
+    case .latePayment: return "매수인이 지정된 기한 이후 매각대금을 납부한 상태"
+    case .offsetApproved: return "채권자인 매수인이 배당받을 금액과 매각대금의 상계를 법원이 허가한 상태"
+    // 일정 변경
+    case .modified: return "법원 사정 등으로 경매 일정(기일)이 변경된 상태"
+    case .deadlineChanged: return "법원 사정 등으로 대금 납부 등 기한이 변경된 상태"
+    case .toBeSpecified: return "다음 기일이 아직 정해지지 않아 추후 지정될 예정인 상태"
+    // 배당 / 종결
+    case .distributionCompleted: return "매각대금이 채권자에게 배당되어 경매절차가 종결된 상태"
+    case .distributionUnavailable: return "배당 요건을 충족하지 못해 배당을 진행할 수 없는 상태"
+    case .invalid, .other:
+      return nil
+    }
+  }
+
   var displayName: String {
     switch self {
     case .planned: return "예정"

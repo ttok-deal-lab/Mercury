@@ -5,14 +5,20 @@
 //  Created by 최수훈 on 11/6/24.
 //
 
-import Foundation
 import SwiftUI
 
-import AuctionHome
+import AuctionDetail
+import Domain
 
 struct ContentView: View {
-  
+
   var body: some View {
-    EmptyView()
+    AuctionDetailView<SampleMapView>(
+      auctionID: SampleAuctionDetail.auctionID,
+      auctionDetailUsecase: AuctionDetailUsecase(
+        auctionDetailRepositorable: SampleAuctionDetailRepository()
+      ),
+      auctionInterestUsecase: SampleAuctionInterestUsecase()
+    )
   }
 }
