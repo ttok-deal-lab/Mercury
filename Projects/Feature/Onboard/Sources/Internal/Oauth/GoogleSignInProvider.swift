@@ -14,15 +14,19 @@ import Domain
 import GoogleSignIn
 
 class GoogleSignInProvider: OauthSignInable {
+  
+  private let userCancelCode: Int = -5
+  
   @MainActor
   func signIn() async throws -> OauthSignInToken {
     guard let presentingViewController = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else {
       throw MercuryError(.failToLoadTopWindow)
     }
     
-    return try await withCheckedThrowingContinuation { continuation in
+    return try await withCheckedThrowingContinuation { [weak self] continuation in
       GIDSignIn.sharedInstance.signIn(withPresenting: presentingViewController) { result, error in
         if let error = error {
+          guard (error as NSError).code != self?.userCancelCode else { return }
           let mercuryError = MercuryError(code: (error as NSError).code)
           continuation.resume(throwing: mercuryError)
           return

@@ -1,0 +1,15 @@
+appId: com.auction.mercury.AuctionHomeSampleApp
+---
+- launchApp
+- assertVisible: "건물용도"
+- assertVisible: "상품"
+- tapOn: "건물용도"
+- assertVisible: "아파트"
+- tapOn: "아파트"
+- assertVisible: "24개 매물 보기"
+- tapOn: "24개 매물 보기"
+- assertVisible: "24"
+- scrollUntilVisible:
+    element: "아파트 20호"
+    direction: DOWN
+- assertVisible: "아파트 20호"

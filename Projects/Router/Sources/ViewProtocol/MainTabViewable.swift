@@ -6,8 +6,7 @@
 //
 
 import SwiftUI
-import Combine
 
 public protocol MainTabViewable where Self: View {
-  init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>)
+  init()
 }

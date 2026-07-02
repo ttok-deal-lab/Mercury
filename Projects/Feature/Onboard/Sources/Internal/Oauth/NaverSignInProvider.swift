@@ -4,56 +4,32 @@ import Foundation
 import AppFoundation
 import Domain
 
-import NaverThirdPartyLogin
+import NidThirdPartyLogin
+import NidLogin
 
 class NaverSignInProvider: NSObject, OauthSignInable {
   
-  // MARK: - private property
-  
-  private let instance = NaverThirdPartyLoginConnection.getSharedInstance()
-  private var continuation: CheckedContinuation<OauthSignInToken, Error>?
-
-  // MARK: - internal method
-  
-  public func logout() {
-    instance?.requestDeleteToken()
-  }
+  private let userCancelCode: Int = .zero
   
   @MainActor
   func signIn() async throws -> OauthSignInToken {
     return try await withCheckedThrowingContinuation { [weak self] continuation in
-      self?.instance?.delegate = self
-      self?.instance?.requestThirdPartyLogin()
-      self?.continuation = continuation
+      NidOAuth.shared.requestLogin { result in
+        switch result {
+        case .success(let loginResult):
+          let token = loginResult.accessToken.tokenString
+          if loginResult.accessToken.isExpired {
+            let refreshToken = loginResult.refreshToken.tokenString
+            continuation.resume(returning: refreshToken)
+            return
+          }
+          continuation.resume(returning: token)
+        case .failure(let error):
+          guard (error as NSError).code != self?.userCancelCode else { return }
+          continuation.resume(throwing: MercuryError(code: (error as NSError).code))
+        }
+      }
     }
-  }
-  
-  private func naverToken() {
-    if let token = self.instance?.accessToken {
-      self.continuation?.resume(returning: token)
-    } else {
-      self.continuation?.resume(throwing: MercuryError(.noOauthToken))
-    }
-    self.continuation = nil
   }
 }
 
-
-extension NaverSignInProvider: NaverThirdPartyLoginConnectionDelegate {
-  // 로그인 성공
-  func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
-    naverToken()
-  }
-  
-  func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
-    naverToken()
-  }
-  
-  func oauth20ConnectionDidFinishDeleteToken() { }
-  
-  // 로그인 실패
-  func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: (any Error)!) {
-    self.continuation?.resume(throwing: error)
-    self.continuation = nil
-  }
-}

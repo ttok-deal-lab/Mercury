@@ -13,15 +13,28 @@ import Router
 import Domain
 
 public struct OnboardingFactory: ViewFactory {
+  private let serviceSignInUsecasable: ServiceSignInUsecasable
+  private let locationUsecasable: LocationUsecasable
   
-  public init() {
-    
+  public init(
+    serviceSignInUsecasable: ServiceSignInUsecasable,
+    locationUsecasable: LocationUsecasable
+  ) {
+    self.serviceSignInUsecasable = serviceSignInUsecasable
+    self.locationUsecasable = locationUsecasable 
   }
   
   public func makeView(
-    _ onboardRouter: OnboardRoute,
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+    _ onboardRouter: OnboardRoute
   ) -> some View {
-    EmptyView()
+    switch onboardRouter.route {
+    case .permissionRequest:
+      PermissionRequestView(
+        modelData: OnboardingModelData(
+          serviceSignInUsecasable: self.serviceSignInUsecasable,
+          locationUsecasable: self.locationUsecasable
+        )
+      )
+    }
   }
 }

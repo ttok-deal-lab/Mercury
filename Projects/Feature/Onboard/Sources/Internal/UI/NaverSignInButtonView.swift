@@ -11,8 +11,6 @@ import SwiftUI
 import AppFoundation
 import UIComponent
 
-import NaverThirdPartyLogin
-
 struct NaverSignInButtonView: View {
   var completion: () async  throws -> Void
   var body: some View {
@@ -24,7 +22,7 @@ struct NaverSignInButtonView: View {
       ZStack {
         Text("네이버로 로그인")
           .fonts(.bodyMediumMedium)
-          .foregroundStyle(Asset.Colors.gray10TextWhite.color)
+          .foregroundStyle(Asset.Colors.neutralWhite.color)
         HStack {
           Asset.Images.naver.image
             .renderingMode(.template)

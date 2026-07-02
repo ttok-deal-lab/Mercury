@@ -16,15 +16,17 @@ import KakaoSDKUser
 import KakaoSDKAuth
 
 class KakaoSignInProvider: OauthSignInable {
-  // MARK: - private method
-  private func kakoTalkLogin(continuation: CheckedContinuation<OauthSignInToken, any Error>) {
+  
+  private let userCancelCode: Int = .zero
+  
+  private func kakaoTalkLogin(continuation: CheckedContinuation<OauthSignInToken, any Error>) {
     UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
       if let error = error {
         let mercuryError = MercuryError(code: (error as NSError).code)
         continuation.resume(throwing: mercuryError)
         return
       }
-      guard let token = oauthToken?.idToken else {
+      guard let token = oauthToken?.accessToken else {
         continuation.resume(throwing: MercuryError(.noOauthToken))
         return
       }
@@ -33,13 +35,14 @@ class KakaoSignInProvider: OauthSignInable {
   }
   
   private func kakaoAccountLogin(continuation: CheckedContinuation<OauthSignInToken, any Error>) {
-    UserApi.shared.loginWithKakaoAccount { (oauthToken, error) in
+    UserApi.shared.loginWithKakaoAccount { [weak self] (oauthToken, error) in
       if let error = error {
-        let mercuryError = MercuryError(code: (error as NSError).code)
-        continuation.resume(throwing: mercuryError)
+        guard (error as NSError).code != self?.userCancelCode else { return }
+        continuation.resume(throwing: MercuryError(code: (error as NSError).code))
         return
       }
-      guard let token = oauthToken?.idToken else {
+      guard let token = oauthToken?.accessToken else {
+        
         continuation.resume(throwing: MercuryError(.noOauthToken))
         return
       }
@@ -52,7 +55,7 @@ class KakaoSignInProvider: OauthSignInable {
   @MainActor
   func signIn() async throws -> OauthSignInToken {
     return try await withCheckedThrowingContinuation { continuation in
-      UserApi.isKakaoTalkLoginAvailable() ? kakoTalkLogin(continuation: continuation) : kakaoAccountLogin(continuation: continuation)
+      UserApi.isKakaoTalkLoginAvailable() ? kakaoTalkLogin(continuation: continuation) : kakaoAccountLogin(continuation: continuation)
     }
   }
 }

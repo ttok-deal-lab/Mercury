@@ -7,24 +7,26 @@
 
 import Foundation
 
-import Network
+import AppFoundation
+import Domain
+import Networking
 
-public enum NotificationAPI {
+enum NotificationAPI {
   case loadNotifications(sessionID: String)
   case loadUnreadNotifications(sessionID: String)
   case loadCountUnreadNotifications(sessionID: String)
 }
 
 extension NotificationAPI: BaseAPI {
-  public var baseURL: String {
+  var baseURL: String {
     RestAPIDefine.base(.common)
   }
   
-  public var domain: String? {
+  var domain: String? {
     "v1/notification/"
   }
   
-  public var path: String {
+  var path: String {
     switch self {
     case let .loadNotifications(sessionID):
       return "\(sessionID)"
@@ -35,7 +37,7 @@ extension NotificationAPI: BaseAPI {
     }
   }
   
-  public var method: Network.HTTPMethod {
+  var method: Networking.HTTPMethod {
     switch self {
     case .loadNotifications:
       return .get
@@ -45,6 +47,9 @@ extension NotificationAPI: BaseAPI {
       return .get
     }
   }
-  
-  
+
+  var headers: [String: String]? {
+    ["Authorization": MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
+  }
+
 }

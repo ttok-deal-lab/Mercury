@@ -7,9 +7,11 @@
 
 import Foundation
 
-import Network
+import AppFoundation
+import Domain
+import Networking
 
-public enum UserFavoritesRegionAPI {
+enum UserFavoritesRegionAPI {
   case loadFavoritesRegion(userID: String, regionID: Int)
   case addFavoritesRegion(userID: String, regionID: Int)
   case deleteFavoritesRegion(userID: String, regionID: Int)
@@ -18,15 +20,15 @@ public enum UserFavoritesRegionAPI {
 }
 
 extension UserFavoritesRegionAPI: BaseAPI {
-  public var baseURL: String {
+  var baseURL: String {
     RestAPIDefine.base(.auth)
   }
   
-  public var domain: String? {
+  var domain: String? {
     "v1/users/"
   }
   
-  public var path: String {
+  var path: String {
     switch self {
     case let .loadFavoritesRegion(userID, regionID):
       return "\(userID)/favorites/regions/\(regionID)"
@@ -41,7 +43,7 @@ extension UserFavoritesRegionAPI: BaseAPI {
     }
   }
   
-  public var method: Network.HTTPMethod {
+  var method: Networking.HTTPMethod {
     switch self {
     case .loadFavoritesRegion:
       return .get
@@ -54,6 +56,10 @@ extension UserFavoritesRegionAPI: BaseAPI {
     case .loadAllFavoritesRegions:
       return .get
     }
+  }
+
+  var headers: [String: String]? {
+    ["Authorization": MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
   }
 }
 

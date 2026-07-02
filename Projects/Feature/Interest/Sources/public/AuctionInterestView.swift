@@ -1,0 +1,92 @@
+//
+//  ReportView.swift
+//  Report
+//
+//  Created by 송하민 on 4/13/25.
+//
+
+import Foundation
+import SwiftUI
+import Combine
+
+import AppFoundation
+import Domain
+import UIComponent
+import Router
+
+public struct AuctionInterestView: View {
+  @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
+  @State private var modelData: AuctionInterestModelData
+  
+  public init(interestUsecase: AuctionInterestUsecasable) {
+    self.modelData = AuctionInterestModelData(interestUsecase: interestUsecase)
+  }
+  
+  public var body: some View {
+    VStack(spacing: .zero) {
+      MercuryNavigationBar("관심", titleFont: .titleLargeBold) {
+        
+      }
+      .padding(.horizontal, 20)
+      
+      ScrollView(.vertical) {
+        if !modelData.interestList.isEmpty {
+          LazyVStack(spacing: .zero) {
+            ForEach(modelData.interestList) { item in
+              Button {
+                coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
+              } label: {
+                AuctionInterestItemView(item: item, onZzim: {
+                  Task {
+                    await modelData.removeAndDeleteInterest(item: item)
+                  }
+                })
+                .onAppear {
+                  if item.id == modelData.interestList.last?.id {
+                    Task {
+                      await modelData.loadMoreInterestSales()
+                    }
+                  }
+                }
+              }
+            }
+
+            if modelData.isLoadingForPaging {
+              ProgressView()
+                .frame(width: 50, height: 50)
+            }
+          }
+        } else {
+          Asset.Images.dot3Circle.image
+            .padding(.top, 145)
+            .padding(.bottom, 12)
+          
+          Text(L10n.interestViewNone)
+            .fonts(.bodySmallMedium)
+            .foregroundStyle(Asset.Colors.neutralSubtler.color)
+        }
+      }
+      .refreshable {
+        await modelData.loadUserInterestAuctions()
+      }
+    }
+    .loading(modelData.isLoading)
+    .onLoad  {
+      Task {
+        await modelData.loadUserInterestAuctions()
+
+      }
+    }
+    .onReceive(NotificationCenter.default.publisher(for: .auctionZzimDidChange)) { notification in
+      guard
+        let userInfo = notification.userInfo,
+        let auctionID = userInfo["auctionID"] as? Int,
+        let isZzimed = userInfo["isZzimed"] as? Bool
+      else {
+        return
+      }
+
+      modelData.handleZzimChange(auctionID: auctionID, isZzimed: isZzimed)
+    }
+  }
+}

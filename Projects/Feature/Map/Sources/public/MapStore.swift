@@ -6,19 +6,22 @@
 //
 
 import SwiftUI
-import AppFoundation
 import Foundation
 import CoreLocation
 
-public class MapStore: ObservableObject {
+import AppFoundation
+
+@Observable
+@MainActor
+public class MapStore {
   
   // MARK: - published property
   
-  @Published public var error: MercuryError?
-  @Published public var isMapDraw: Bool = true
-  @Published public var isShowDeniedLocationAlert: Bool?
-  @Published public var userLocation: CLLocationCoordinate2D?
-  @Published public var cameraCenterLocation: CLLocationCoordinate2D?
+  public var error: Error?
+  public var isMapDraw: Bool = true
+  public var isShowDeniedLocationAlert: Bool?
+  public var userLocation: CLLocationCoordinate2D?
+  public var cameraCenterLocation: CLLocationCoordinate2D
   
   // MARK: - private property
   
@@ -26,8 +29,9 @@ public class MapStore: ObservableObject {
   
   // MARK: - life cycle
   
-  init(userLocationClient: UserLocationClient) {
+  init(userLocationClient: UserLocationClient, targetCoordinate: CLLocationCoordinate2D) {
     self.userLocationClient = userLocationClient
+    self.cameraCenterLocation = targetCoordinate
   }
   
   // MARK: - private method
@@ -91,6 +95,7 @@ public class MapStore: ObservableObject {
   }
   
   func setCameraCenterLocation(_ location: CLLocationCoordinate2D?) {
+    guard let location else { return }
     self.cameraCenterLocation = location
   }
   

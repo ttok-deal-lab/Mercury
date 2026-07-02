@@ -12,15 +12,20 @@ import UIComponent
 import AppFoundation
 import Domain
 import Router
+import Onboard
 
 import GoogleSignIn
 import GoogleSignInSwift
 import KakaoMapsSDK
-import NaverThirdPartyLogin
+import NidThirdPartyLogin
 import KakaoSDKCommon
+import KakaoSDKAuth
 import FirebaseCore
 import FirebaseAnalytics
 import FirebaseMessaging
+import Pulse
+import PulseProxy
+import PulseUI
 
 @main
 struct MercuryApp: App {
@@ -29,9 +34,10 @@ struct MercuryApp: App {
   var body: some Scene {
     WindowGroup {
       OverlayWindowView {
-        AppView()
+        MainView()
+          .environment(NetworkMonitor.shared)
           .onOpenURL { url in
-            GIDSignIn.sharedInstance.handle(url)
+            OauthDeepLinkHandler.shared.handle(url: url)
           }
       }
     }
@@ -45,15 +51,25 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     configureGoogleInstance()
     configureNaverLoginInstance()
     configureKakaoLoginInstance()
-    
     configFirebase(application)
+    configureNetworkLogger()
     
     let container = MercuryContainer.shared
-    container.register(SignInTokenInformable.self, instance: SignInInformationManager.shared)
-    container.register(SignInUserInformable.self, instance: SignInInformationManager.shared)
+    container.register(SignInInformationReadable.self, instance: SignInInformationManager.shared)
+    container.register(AccessTokenManagable.self, instance: SignInInformationManager.shared)
+    container.register(UserInfoManagable.self, instance: SignInInformationManager.shared)
+    container.register(AuthorizationRefreshable.self, instance: SignInInformationManager.shared)
+    container.register(AccessTokenInvalidatable.self, instance: SignInInformationManager.shared)
     container.register(Toastable.self, instance: MercuryToast.shared)
     container.register(Alertable.self, instance: MercuryAlert.shared)
     container.register(LoadingPresentable.self, instance: MercuryLoading.shared)
+    container.register(AppConfigService.self, instance: RemoteConfigManager.shared)
+    
+    Task {
+      try await RemoteConfigManager.shared.fetchConfig()
+    }
+    
+    UITabBar.applyBlurredSafeAppearance()
     
     return true
   }
@@ -72,14 +88,13 @@ extension AppDelegate { // pre-configure instances
   }
   
   private func configureNaverLoginInstance() {
-    let instance = NaverThirdPartyLoginConnection.getSharedInstance()
-    instance?.isNaverAppOauthEnable = true
-    instance?.isInAppOauthEnable = true
-    instance?.setOnlyPortraitSupportInIphone(false)
-    instance?.consumerKey = CommonDefine.naverClientID
-    instance?.consumerSecret = CommonDefine.naverClientSecret
-    instance?.serviceUrlScheme = Bundle.main.bundleIdentifier
-    instance?.appName = "Mercury"
+    NidOAuth.shared
+      .initialize(
+        appName: CommonDefine.naverAppName ?? "",
+        clientId: CommonDefine.naverClientID ?? "",
+        clientSecret: CommonDefine.naverClientSecret ?? "",
+        urlScheme: CommonDefine.naverURLScheme ?? ""
+      )
   }
   
   private func configureKakaoLoginInstance() {
@@ -87,21 +102,17 @@ extension AppDelegate { // pre-configure instances
   }
   
   private func configFirebase(_ application: UIApplication) {
-    
     FirebaseApp.configure()
-    
     Messaging.messaging().delegate = self
     
     UNUserNotificationCenter.current().delegate = self
-    let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-    UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { granted, _ in
-      if granted {
-        print("알림 등록이 완료되었습니다.")
-      }
-    }
     application.registerForRemoteNotifications()
   }
   
+  private func configureNetworkLogger() {
+    URLSessionProxyDelegate.enableAutomaticRegistration()
+    NetworkLogger.enableProxy()
+  }
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
@@ -109,7 +120,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     Messaging.messaging().apnsToken = deviceToken
   }
   
-  // foreground 상에서 알림이 보이게끔 해준다.
   func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
     completionHandler([.banner, .sound, .badge])
   }
@@ -117,6 +127,27 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
 extension AppDelegate: MessagingDelegate {
   func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-    print("FCM Token: \(fcmToken)")
+    SignInInformationManager.shared.setFcmToken(fcmToken)
+  }
+}
+
+extension UITabBarAppearance {
+  static func blurredSafe() -> UITabBarAppearance {
+    let appearance = UITabBarAppearance()
+    appearance.configureWithDefaultBackground()
+    appearance.backgroundEffect = UIBlurEffect(style: .systemChromeMaterial)
+    appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.9)
+    appearance.shadowColor = UIColor.separator.withAlphaComponent(0.18)
+    return appearance
+  }
+}
+
+extension UITabBar {
+  static func applyBlurredSafeAppearance() {
+    let appearance = UITabBarAppearance.blurredSafe()
+    let proxy = UITabBar.appearance()
+    proxy.standardAppearance = appearance
+    proxy.scrollEdgeAppearance = appearance
+    proxy.isTranslucent = true
   }
 }

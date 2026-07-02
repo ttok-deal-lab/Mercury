@@ -7,20 +7,23 @@
 
 import SwiftUI
 import UIKit
+import Combine
+
+import AppFoundation
 
 public protocol Toastable {
-  func present(title: String, tintType: ToastTintType, timing: ToastTime)
+  func present(title: String, toastType: ToastType, timing: ToastTime)
 }
 
 struct ToastInformation: Identifiable {
   public let id: UUID = .init()
   var title: String
-  var tintType: ToastTintType
+  var toastType: ToastType
   var timing: ToastTime = .medium
   
-  public init(title: String, tintType: ToastTintType, timing: ToastTime) {
+  public init(title: String, toastType: ToastType, timing: ToastTime) {
     self.title = title
-    self.tintType = tintType
+    self.toastType = toastType
     self.timing = timing
   }
 }
@@ -31,10 +34,11 @@ public enum ToastTime: CGFloat {
   case long = 3.5
 }
 
-public enum ToastTintType {
+public enum ToastType {
   case common
   case urgent
 }
+
 
 @Observable
 public final class MercuryToast: Toastable {
@@ -43,7 +47,7 @@ public final class MercuryToast: Toastable {
   
   public func present(
     title: String,
-    tintType: ToastTintType,
+    toastType: ToastType,
     timing: ToastTime = .long
   ) {
     withAnimation(.snappy) {
@@ -51,7 +55,7 @@ public final class MercuryToast: Toastable {
         .append(
           .init(
             title: title,
-            tintType: tintType,
+            toastType: toastType,
             timing: timing
           )
         )
@@ -99,15 +103,20 @@ fileprivate struct ToastView: View {
   
   var body: some View {
     HStack(spacing: .zero) {
-      Text(item.title)
-        .lineLimit(1)
+      Label {
+        Text(item.title)
+          .lineLimit(1)
+      } icon: {
+        toastIcon(toastType: item.toastType)
+      }
+      Spacer()
     }
-    .foregroundStyle(item.tintType == .common ? Asset.Colors.gray900TextBlack.color : Asset.Colors.red700TextError.color)
+    .foregroundStyle(.white)
     .padding(.horizontal, 15)
-    .padding(.vertical, 8)
+    .padding(.bottom, 14)
+    .padding(.top, 12)
     .background(
-      .background
-        .shadow(.drop(color: .primary.opacity(0.1), radius: 11, x: 0, y: 3)),
+      Asset.Colors.gray600.color,
       in: .capsule
     )
     .contentShape(.capsule)
@@ -122,7 +131,7 @@ fileprivate struct ToastView: View {
       
       removeToast()
     }
-    .frame(maxWidth: size.width * 0.7)
+    .frame(maxWidth: size.width * 0.9)
   }
 
   func removeToast() {
@@ -137,4 +146,60 @@ fileprivate struct ToastView: View {
   func removeToastItem() {
     MercuryToast.shared.toasts.removeAll(where: { $0.id == item.id })
   }
+  
+  private func toastIcon(toastType: ToastType) -> some View {
+    switch toastType {
+    case .common:
+      Asset.Images.toastCommon.image
+    case .urgent:
+      Asset.Images.toastUrgent.image
+    }
+  }
+   
 }
+
+struct MercuryToastModifier: ViewModifier {
+  @Inject private var toast: Toastable
+  let isPresented: Bool
+  let text: String
+  let toastType: ToastType
+  let timing: ToastTime
+  
+  init(
+    isPresented: Bool,
+    text: String,
+    toastType: ToastType,
+    timing: ToastTime
+  ) {
+    self.isPresented = isPresented
+    self.text = text
+    self.toastType = toastType
+    self.timing = timing
+  }
+  
+  func body(content: Content) -> some View {
+    return content
+      .onReceive(Just(isPresented)) { _ in
+        toast.present(title: text, toastType: toastType, timing: timing)
+      }
+  }
+}
+
+public extension View {
+  func toast(
+    isPresented: Bool,
+    text: String,
+    toastType: ToastType = .common,
+    timing: ToastTime = .medium
+  ) -> some View {
+    modifier(
+      MercuryToastModifier(
+        isPresented: isPresented,
+        text: text,
+        toastType: toastType,
+        timing: timing
+      )
+    )
+  }
+}
+

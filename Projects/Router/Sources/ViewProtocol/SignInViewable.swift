@@ -9,5 +9,5 @@ import SwiftUI
 import Combine
 
 public protocol SignInViewable where Self: View {
-  init(onComplete: @escaping () -> Void)
+  init(onComplete: (() -> Void)?)
 }
