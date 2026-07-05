@@ -14,11 +14,12 @@ import KakaoSDKTemplate
 import Domain
 
 /// 경매 상세 공유 URL 생성기.
-/// 후속 PR에서 실제 딥링크 스킴/유니버설 링크로 교체될 예정.
+/// 카카오 개발자 콘솔에 등록된 도메인이어야 미설치 사용자 웹 폴백이 정상 동작한다.
+/// (미등록 도메인이면 카카오가 등록된 도메인(localhost 등)으로 폴백시킴)
 enum AuctionShareLink {
   static func url(for auctionID: Int) -> URL {
     // swiftlint:disable:next force_unwrapping
-    URL(string: "https://mercury.example.com/auction/\(auctionID)")!
+    URL(string: "https://ttok-front-dev.estateslug.com/sales/\(auctionID)")!
   }
 }
 
@@ -32,7 +33,14 @@ enum AuctionKakaoShareSender {
     let imageURL = auction.salesPictures.first?.url
       ?? URL(string: "https://placehold.co/600x400")!
 
-    let link = Link(webUrl: shareURL, mobileWebUrl: shareURL)
+    // iosExecutionParams: 카카오톡 설치 시 estateSlug 딥링크로 앱의 상세 화면을 연다.
+    // (카카오 콘솔 iOS 플랫폼에 estateSlug 커스텀 스킴 등록 필요. 미설치 시 webUrl 로 폴백)
+    let link = Link(
+      webUrl: shareURL,
+      mobileWebUrl: shareURL,
+      androidExecutionParams: ["path": "sales/\(auction.id)"],
+      iosExecutionParams: ["path": "sales/\(auction.id)"]
+    )
     let content = Content(
       title: auction.salesAddress,
       imageUrl: imageURL,
