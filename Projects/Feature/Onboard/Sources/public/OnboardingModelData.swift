@@ -59,7 +59,7 @@ public final class OnboardingModelData {
   func requestUserPermission() {
     UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
       if granted {
-        print("알림 등록이 완료되었습니다.") // TODO: Analytics send
+        Log.debug("알림 등록이 완료되었습니다.") // TODO: Analytics send
       }
     }
     Task {

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppFoundation
 
 import Router
 
@@ -24,18 +25,18 @@ enum DeepLinkRouter {
     isLoggedIn: Bool
   ) -> Bool {
     guard let link = DeepLinkParser.parse(url) else {
-      print("[DEEPLINK] ignored (unsupported): \(url.absoluteString)")
+      Log.debug("[DEEPLINK] ignored (unsupported): \(url.absoluteString)")
       return false
     }
 
-    print("[DEEPLINK] url=\(url.absoluteString) parsed=\(link) isLoggedIn=\(isLoggedIn)")
+    Log.debug("[DEEPLINK] url=\(url.absoluteString) parsed=\(link) isLoggedIn=\(isLoggedIn)")
 
     if isLoggedIn {
       coordinator.route(link)
     } else {
       // 콜드스타트/미로그인: 준비되면 소비하도록 보류
       coordinator.pendingDeepLink = link
-      print("[DEEPLINK] deferred until app is ready")
+      Log.debug("[DEEPLINK] deferred until app is ready")
     }
     return true
   }

@@ -24,7 +24,7 @@ public final actor UserDefaultsStoreRepository: LocalStorageRepositorable {
       let encodedData = try JSONEncoder().encode(value)
       userDefaults.set(encodedData, forKey: key)
     } catch {
-      print("Failed to encode \(value) for key \(key): \(error)")
+      Log.debug("Failed to encode \(value) for key \(key): \(error)")
     }
   }
 
@@ -33,7 +33,7 @@ public final actor UserDefaultsStoreRepository: LocalStorageRepositorable {
     do {
       return try JSONDecoder().decode(T.self, from: data)
     } catch {
-      print("Failed to decode data for key \(key): \(error)")
+      Log.debug("Failed to decode data for key \(key): \(error)")
       return nil
     }
   }

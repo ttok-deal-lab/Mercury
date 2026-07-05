@@ -27,7 +27,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
     
     if let sdkAppKey = CommonDefine.mapKey {
-      print("\(sdkAppKey)")
+      Log.debug("\(sdkAppKey)")
       SDKInitializer.InitSDK(appKey: sdkAppKey)
     }
     return true
