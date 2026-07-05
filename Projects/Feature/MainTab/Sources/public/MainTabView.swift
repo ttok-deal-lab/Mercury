@@ -49,12 +49,27 @@ public struct MainTabView<
               coordinator.presentFullScreen(.onboard(OnboardRoute(route: .permissionRequest)))
             }
           }
+          .task {
+            // 콜드스타트/로그인 후 보류돼 있던 딥링크(예: 카카오 공유 진입)를 소비한다.
+            guard let link = coordinator.pendingDeepLink else { return }
+            coordinator.pendingDeepLink = nil
+            try? await Task.sleep(nanoseconds: 400_000_000) // NavigationStack 등장 안정화
+            coordinator.route(link)
+          }
       }
     }
   }
   
   // MARK: - private method
   
+  private func tab(for appTab: AppTab) -> Tab {
+    switch appTab {
+    case .home: return .home
+    case .favorite: return .interest
+    case .mypage: return .setting
+    }
+  }
+
   private func tabView() -> some View {
     TabView(selection: $selection) {
       AuctionHomeView()
@@ -81,6 +96,11 @@ public struct MainTabView<
     .toolbarBackground(.ultraThinMaterial, for: .tabBar)
     .onChange(of: networkMonitor.isConnected) { _, isConnected in
       isShowNetworkDisconnect = !isConnected
+    }
+    .onChange(of: coordinator.selectedTab) { _, newTab in
+      guard let newTab else { return }
+      selection = tab(for: newTab)
+      coordinator.selectedTab = nil
     }
     .sheet(isPresented: $isShowNetworkDisconnect, content: {
       VStack { // TODO: 디자인 필요
