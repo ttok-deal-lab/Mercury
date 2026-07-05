@@ -76,7 +76,12 @@ extension BaseAPI {
         throw NetworkError.invalidStatusCode
       }
 
-      return try JSONDecoder().decode(T.self, from: data)
+      do {
+        return try JSONDecoder().decode(T.self, from: data)
+      } catch {
+        logDecodingError(error, url: request.url, data: data)
+        throw error
+      }
     } catch {
       throw mapError(error)
     }
@@ -169,6 +174,52 @@ extension BaseAPI {
     }
 
     print(footer)
+  }
+}
+
+extension BaseAPI {
+  /// 디코딩 실패 시 어느 key(codingPath)에서 터졌는지 콘솔에 남긴다.
+  fileprivate func logDecodingError(_ error: Error, url: URL?, data: Data) {
+    guard let decodingError = error as? DecodingError else { return }
+    let urlString = url?.absoluteString ?? "unknown"
+
+    func pathString(_ context: DecodingError.Context) -> String {
+      let path = context.codingPath.map { key -> String in
+        if let index = key.intValue { return "[\(index)]" }
+        return key.stringValue
+      }.joined(separator: ".")
+      return path.isEmpty ? "(root)" : path
+    }
+
+    print("========== [DECODING ERROR] ==========")
+    print("URL : \(urlString)")
+    switch decodingError {
+    case let .valueNotFound(type, context):
+      print("KIND: valueNotFound (null 값)")
+      print("TYPE: \(type)")
+      print("KEY : \(pathString(context))")
+      print("DESC: \(context.debugDescription)")
+    case let .keyNotFound(key, context):
+      print("KIND: keyNotFound")
+      print("KEY : \(pathString(context)).\(key.stringValue)")
+      print("DESC: \(context.debugDescription)")
+    case let .typeMismatch(type, context):
+      print("KIND: typeMismatch")
+      print("TYPE: \(type)")
+      print("KEY : \(pathString(context))")
+      print("DESC: \(context.debugDescription)")
+    case let .dataCorrupted(context):
+      print("KIND: dataCorrupted")
+      print("KEY : \(pathString(context))")
+      print("DESC: \(context.debugDescription)")
+    @unknown default:
+      print("KIND: unknown - \(decodingError)")
+    }
+    if let json = String(data: data, encoding: .utf8) {
+      let snippet = json.count > 1200 ? String(json.prefix(1200)) + "…(truncated)" : json
+      print("BODY: \(snippet)")
+    }
+    print("======================================")
   }
 }
 

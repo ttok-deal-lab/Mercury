@@ -79,6 +79,7 @@ final class AuctionHomeModelData {
       self.auctionSalesItems = updatedInterestList
     } catch let error {
       self.error = error
+      print(error.localizedDescription)
     }
   }
   
