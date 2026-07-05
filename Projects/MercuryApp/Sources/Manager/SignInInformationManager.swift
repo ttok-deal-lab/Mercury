@@ -148,7 +148,7 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
     let oldPrefix = self.accessToken?.value.prefix(12).description ?? "nil"
     let newPrefix = rawValue.prefix(12).description
     let changed = self.accessToken?.value != rawValue
-    print("[TOKEN REFRESH] changed=\(changed) bearer=\(hasBearerPrefix) old=\(oldPrefix)… new=\(newPrefix)… len=\(rawValue.count)")
+    Log.debug("[TOKEN REFRESH] changed=\(changed) bearer=\(hasBearerPrefix) old=\(oldPrefix)… new=\(newPrefix)… len=\(rawValue.count)")
     guard changed else { return }
     self.accessToken = UserAccessToken(value: rawValue)
   }
@@ -160,13 +160,13 @@ public final class SignInInformationManager: SignInInformationReadable, AccessTo
   public func setFcmToken(_ fcmToken: String?) {
     Task {
       guard let deviceId = await UIDevice.current.identifierForVendor?.uuidString else {
-        print("fcm token 등록 실패: device UUID를 가져올 수 없음")
+        Log.debug("fcm token 등록 실패: device UUID를 가져올 수 없음")
         return
       }
       do {
         try await self.fcmTokenUsercase.sendFcmToken(fcmToken: fcmToken, deviceId: deviceId)
       } catch {
-        print("fcm token 등록 실패: \(error)")
+        Log.debug("fcm token 등록 실패: \(error)")
       }
     }
   }

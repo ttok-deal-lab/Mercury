@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppFoundation
 
 import UIComponent
 
@@ -58,9 +59,9 @@ struct SearchNavigationBar: View {
 
 #Preview {
   SearchNavigationBar(text: .constant("123")) {
-    print("close")
+    Log.debug("close")
   } onBack: {
-    print("back")
+    Log.debug("back")
   }
   
 }

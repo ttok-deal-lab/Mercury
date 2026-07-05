@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppFoundation
 
 import Onboard
 import Domain
@@ -29,6 +30,6 @@ public class OauthDeepLinkHandler {
         return
       }
     }
-    print("Handler not found : \(url)")
+    Log.debug("Handler not found : \(url)")
   }
 }

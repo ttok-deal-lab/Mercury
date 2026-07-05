@@ -121,7 +121,7 @@ extension BaseAPI {
     let raw = response.value(forHTTPHeaderField: "Authorization") ?? ""
     let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !trimmed.isEmpty else {
-      print("[TOKEN REFRESH] no Authorization header in response")
+      Log.debug("[TOKEN REFRESH] no Authorization header in response")
       return
     }
     MercuryContainer.shared
@@ -146,10 +146,10 @@ extension BaseAPI {
     let count = "COUNT : \(sortedKeys.count)"
     let footer = "===================================="
 
-    print(header)
-    print(meta)
-    print(st)
-    print(count)
+    Log.raw(header)
+    Log.raw(meta)
+    Log.raw(st)
+    Log.raw(count)
 
     let chunkSize = 800
     for key in sortedKeys {
@@ -157,7 +157,7 @@ extension BaseAPI {
       let line = "• \(key): \(value)"
 
       if line.count <= chunkSize {
-        print(line)
+        Log.raw(line)
         continue
       }
 
@@ -167,13 +167,13 @@ extension BaseAPI {
         let end =
           line.index(start, offsetBy: chunkSize, limitedBy: line.endIndex)
           ?? line.endIndex
-        print("[\(index)] \(line[start..<end])")
+        Log.raw("[\(index)] \(line[start..<end])")
         start = end
         index += 1
       }
     }
 
-    print(footer)
+    Log.raw(footer)
   }
 }
 
@@ -191,35 +191,35 @@ extension BaseAPI {
       return path.isEmpty ? "(root)" : path
     }
 
-    print("========== [DECODING ERROR] ==========")
-    print("URL : \(urlString)")
+    Log.raw("========== [DECODING ERROR] ==========")
+    Log.raw("URL : \(urlString)")
     switch decodingError {
     case let .valueNotFound(type, context):
-      print("KIND: valueNotFound (null 값)")
-      print("TYPE: \(type)")
-      print("KEY : \(pathString(context))")
-      print("DESC: \(context.debugDescription)")
+      Log.raw("KIND: valueNotFound (null 값)")
+      Log.raw("TYPE: \(type)")
+      Log.raw("KEY : \(pathString(context))")
+      Log.raw("DESC: \(context.debugDescription)")
     case let .keyNotFound(key, context):
-      print("KIND: keyNotFound")
-      print("KEY : \(pathString(context)).\(key.stringValue)")
-      print("DESC: \(context.debugDescription)")
+      Log.raw("KIND: keyNotFound")
+      Log.raw("KEY : \(pathString(context)).\(key.stringValue)")
+      Log.raw("DESC: \(context.debugDescription)")
     case let .typeMismatch(type, context):
-      print("KIND: typeMismatch")
-      print("TYPE: \(type)")
-      print("KEY : \(pathString(context))")
-      print("DESC: \(context.debugDescription)")
+      Log.raw("KIND: typeMismatch")
+      Log.raw("TYPE: \(type)")
+      Log.raw("KEY : \(pathString(context))")
+      Log.raw("DESC: \(context.debugDescription)")
     case let .dataCorrupted(context):
-      print("KIND: dataCorrupted")
-      print("KEY : \(pathString(context))")
-      print("DESC: \(context.debugDescription)")
+      Log.raw("KIND: dataCorrupted")
+      Log.raw("KEY : \(pathString(context))")
+      Log.raw("DESC: \(context.debugDescription)")
     @unknown default:
-      print("KIND: unknown - \(decodingError)")
+      Log.raw("KIND: unknown - \(decodingError)")
     }
     if let json = String(data: data, encoding: .utf8) {
       let snippet = json.count > 1200 ? String(json.prefix(1200)) + "…(truncated)" : json
-      print("BODY: \(snippet)")
+      Log.raw("BODY: \(snippet)")
     }
-    print("======================================")
+    Log.raw("======================================")
   }
 }
 
