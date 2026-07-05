@@ -45,28 +45,29 @@ struct AuctionSalesItemDTO: Decodable, Sendable {
   let failBidCount: Int
   let zzimCount: Int
   let caseNumber: String
-  let salesPicture: String
+  let salesPicture: String?
   let registerDate: String
   let verified: Bool
   let isSoldOut: Bool
-  
+
   enum CodingKeys: String, CodingKey {
     case id, caseNumber, salesAddress, salesCategories, salesBuildingName
     case salesDateTime, appraisalPrice, salesPicture
     case failBidCount, zzimCount, registerDate, verified
     case isSoldOut
   }
-  
+
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    
+
     id = try container.decode(Int.self, forKey: .id)
     caseNumber = try container.decode(String.self, forKey: .caseNumber)
     salesAddress = try container.decode(String.self, forKey: .salesAddress)
     salesCategories = try container.decode([String].self, forKey: .salesCategories)
     salesBuildingName = try container.decode(String.self, forKey: .salesBuildingName)
     appraisalPrice = try container.decode(Int.self, forKey: .appraisalPrice)
-    salesPicture = try container.decode(String.self, forKey: .salesPicture)
+    // 사진 없는 매물은 서버가 salesPicture: null 로 내려줄 수 있어 null-안전하게 디코딩한다.
+    salesPicture = try container.decodeIfPresent(String.self, forKey: .salesPicture) 
     failBidCount = try container.decode(Int.self, forKey: .failBidCount)
     zzimCount = try container.decode(Int.self, forKey: .zzimCount)
     verified = try container.decode(Bool.self, forKey: .verified)
@@ -86,7 +87,7 @@ extension AuctionSalesItemDTO {
       salesBuildingName: salesBuildingName,
       salesDateTime: salesDateTime.toKoreanDate(),
       appraisalPrice: appraisalPrice.toKoreanWon,
-      salesPictures: URL(string: salesPicture),
+      salesPictures: salesPicture.flatMap { URL(string: $0) },
       failBidCount: failBidCount,
       zzimCount: zzimCount,
       registerDate: registerDate.toKoreanDate(),

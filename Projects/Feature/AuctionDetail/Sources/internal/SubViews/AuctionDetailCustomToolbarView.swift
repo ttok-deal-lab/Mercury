@@ -12,17 +12,7 @@ import UIComponent
 
 struct AuctionDetailCustomToolbarView: View {
   @Environment(\.dismiss) var dismiss
-  @State private var isShareSheetPresented: Bool = false
-  @State private var pendingShareAction: AuctionShareAction?
   let auctionDetailInfo: AuctionDetail
-
-  private var shareText: String {
-    [
-      auctionDetailInfo.salesAddress,
-      "사건번호: \(auctionDetailInfo.salesNumber)"
-    ]
-    .joined(separator: "\n")
-  }
 
   var body: some View {
     HStack {
@@ -42,7 +32,7 @@ struct AuctionDetailCustomToolbarView: View {
       Spacer()
 
       Button {
-        isShareSheetPresented = true
+        AuctionKakaoShareSender.send(auction: auctionDetailInfo)
       } label: {
         Asset.Images.share.image
           .resizable()
@@ -51,25 +41,5 @@ struct AuctionDetailCustomToolbarView: View {
     }
     .frame(height: 60)
     .padding(.horizontal, 16)
-    .sheet(isPresented: $isShareSheetPresented, onDismiss: handlePendingShareAction) {
-      AuctionShareBottomSheet(
-        auctionDetailInfo: auctionDetailInfo,
-        onSelect: { action in
-          pendingShareAction = action
-        }
-      )
-      .dynamicSheet()
-    }
-  }
-
-  private func handlePendingShareAction() {
-    guard let action = pendingShareAction else { return }
-    pendingShareAction = nil
-    switch action {
-    case .link:
-      AuctionLinkSharePresenter.present(items: [shareText])
-    case .kakao:
-      AuctionKakaoShareSender.send(auction: auctionDetailInfo)
-    }
   }
 }

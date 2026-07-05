@@ -76,7 +76,12 @@ extension BaseAPI {
         throw NetworkError.invalidStatusCode
       }
 
-      return try JSONDecoder().decode(T.self, from: data)
+      do {
+        return try JSONDecoder().decode(T.self, from: data)
+      } catch {
+        logDecodingError(error, url: request.url, data: data)
+        throw error
+      }
     } catch {
       throw mapError(error)
     }
@@ -116,7 +121,7 @@ extension BaseAPI {
     let raw = response.value(forHTTPHeaderField: "Authorization") ?? ""
     let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !trimmed.isEmpty else {
-      print("[TOKEN REFRESH] no Authorization header in response")
+      Log.debug("[TOKEN REFRESH] no Authorization header in response")
       return
     }
     MercuryContainer.shared
@@ -141,10 +146,10 @@ extension BaseAPI {
     let count = "COUNT : \(sortedKeys.count)"
     let footer = "===================================="
 
-    print(header)
-    print(meta)
-    print(st)
-    print(count)
+    Log.raw(header)
+    Log.raw(meta)
+    Log.raw(st)
+    Log.raw(count)
 
     let chunkSize = 800
     for key in sortedKeys {
@@ -152,7 +157,7 @@ extension BaseAPI {
       let line = "• \(key): \(value)"
 
       if line.count <= chunkSize {
-        print(line)
+        Log.raw(line)
         continue
       }
 
@@ -162,13 +167,59 @@ extension BaseAPI {
         let end =
           line.index(start, offsetBy: chunkSize, limitedBy: line.endIndex)
           ?? line.endIndex
-        print("[\(index)] \(line[start..<end])")
+        Log.raw("[\(index)] \(line[start..<end])")
         start = end
         index += 1
       }
     }
 
-    print(footer)
+    Log.raw(footer)
+  }
+}
+
+extension BaseAPI {
+  /// 디코딩 실패 시 어느 key(codingPath)에서 터졌는지 콘솔에 남긴다.
+  fileprivate func logDecodingError(_ error: Error, url: URL?, data: Data) {
+    guard let decodingError = error as? DecodingError else { return }
+    let urlString = url?.absoluteString ?? "unknown"
+
+    func pathString(_ context: DecodingError.Context) -> String {
+      let path = context.codingPath.map { key -> String in
+        if let index = key.intValue { return "[\(index)]" }
+        return key.stringValue
+      }.joined(separator: ".")
+      return path.isEmpty ? "(root)" : path
+    }
+
+    Log.raw("========== [DECODING ERROR] ==========")
+    Log.raw("URL : \(urlString)")
+    switch decodingError {
+    case let .valueNotFound(type, context):
+      Log.raw("KIND: valueNotFound (null 값)")
+      Log.raw("TYPE: \(type)")
+      Log.raw("KEY : \(pathString(context))")
+      Log.raw("DESC: \(context.debugDescription)")
+    case let .keyNotFound(key, context):
+      Log.raw("KIND: keyNotFound")
+      Log.raw("KEY : \(pathString(context)).\(key.stringValue)")
+      Log.raw("DESC: \(context.debugDescription)")
+    case let .typeMismatch(type, context):
+      Log.raw("KIND: typeMismatch")
+      Log.raw("TYPE: \(type)")
+      Log.raw("KEY : \(pathString(context))")
+      Log.raw("DESC: \(context.debugDescription)")
+    case let .dataCorrupted(context):
+      Log.raw("KIND: dataCorrupted")
+      Log.raw("KEY : \(pathString(context))")
+      Log.raw("DESC: \(context.debugDescription)")
+    @unknown default:
+      Log.raw("KIND: unknown - \(decodingError)")
+    }
+    if let json = String(data: data, encoding: .utf8) {
+      let snippet = json.count > 1200 ? String(json.prefix(1200)) + "…(truncated)" : json
+      Log.raw("BODY: \(snippet)")
+    }
+    Log.raw("======================================")
   }
 }
 

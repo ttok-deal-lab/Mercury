@@ -30,6 +30,9 @@ struct MainView: View {
     })
     .animation(.easeInOut(duration: DesignDefine.transitionOpacityDuration), value: isSplashDone)
     .environmentObject(coordinator)
+    .onOpenURL { url in
+      DeepLinkRouter.handle(url, coordinator: coordinator, isLoggedIn: isUserLoggedIn)
+    }
     .onReceive(accessTokenManager.tokenInfoStream) { token in
       guard isSplashDone else { return }
       let loggedIn = token != nil
