@@ -19,7 +19,8 @@ struct AuctionDetailCustomToolbarView: View {
   private var shareText: String {
     [
       auctionDetailInfo.salesAddress,
-      "사건번호: \(auctionDetailInfo.salesNumber)"
+      "사건번호: \(auctionDetailInfo.salesNumber)",
+      AuctionShareLink.url(for: auctionDetailInfo.id).absoluteString
     ]
     .joined(separator: "\n")
   }

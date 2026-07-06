@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AppFoundation
 
 public final class ImageCache: Cacheable {
   public static let shared = ImageCache()
@@ -63,7 +64,7 @@ public final class ImageCache: Cacheable {
           return nil
         }
       } catch {
-        print("Network error: \(error)")
+        Log.debug("Network error: \(error)")
         return nil
       }
 

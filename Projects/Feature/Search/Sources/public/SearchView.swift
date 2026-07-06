@@ -26,11 +26,14 @@ public struct SearchView: View {
   @State private var searchText: String = ""
   @State private var screenType: SearchScreenType = .latestSearchedText
   @State private var isSelectingRecentSearch: Bool = false
-  
+  private let initialKeyword: String?
+  @State private var didApplyInitialKeyword: Bool = false
+
   public init(
     auctionSalesListUsecase: AuctionSalesListUsecase,
     auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
-    localStorageUsecase: LocalStorageUsecase
+    localStorageUsecase: LocalStorageUsecase,
+    initialKeyword: String? = nil
   ) {
     self._searchModelData = State(
       initialValue: SearchModelData(
@@ -39,6 +42,7 @@ public struct SearchView: View {
         localStorageUsecase: localStorageUsecase
       )
     )
+    self.initialKeyword = initialKeyword
   }
 
   public var body: some View {
@@ -85,8 +89,23 @@ public struct SearchView: View {
     .alert(error: $searchModelData.error)
     .loading(searchModelData.isLoading)
     .environment(searchModelData)
+    .onAppear(perform: applyInitialKeywordIfNeeded)
   }
-  
+
+  // 딥링크로 keyword 를 받고 진입한 경우, 최근검색 선택과 동일한 플로우로 결과까지 바로 노출한다.
+  private func applyInitialKeywordIfNeeded() {
+    guard
+      !didApplyInitialKeyword,
+      let keyword = initialKeyword,
+      !keyword.trimmingCharacters(in: .whitespaces).isEmpty
+    else { return }
+    didApplyInitialKeyword = true
+    isSelectingRecentSearch = true
+    screenType = .userSearched
+    searchText = keyword
+    searchModelData.search(with: keyword)
+  }
+
   @ViewBuilder
   private func searchScreen() -> some View {
     switch self.screenType {

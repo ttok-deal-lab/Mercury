@@ -67,7 +67,7 @@ extension AuctionInterestAPI: BaseAPI {
         .removeInterest(_, _, _),
         .fetchInterest(_, _, _),
         .fetchInterestList(_, _):
-      debugPrint(MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? "")
+      Log.debug(MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? "")
       return ["Authorization" : MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
     }
   }

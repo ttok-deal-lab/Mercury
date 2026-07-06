@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppFoundation
 
 @Observable
 final class OpenLicenseModelData {
@@ -17,14 +18,14 @@ final class OpenLicenseModelData {
     guard let settingsBundleUrl = bundle.url(forResource: "Settings", withExtension: "bundle"),
           let settingsBundle = Bundle(url: settingsBundleUrl)
     else {
-      print("Settings.bundle 을 찾을 수 없습니다.")
+      Log.debug("Settings.bundle 을 찾을 수 없습니다.")
       return
     }
     
     // 목록 (com.mono0926.LicensePlist.plist) 찾기
     guard let url = settingsBundle.url(forResource: "com.mono0926.LicensePlist", withExtension: "plist")
     else {
-      print("❌ plist 목록 파일을 찾을 수 없습니다.")
+      Log.debug("❌ plist 목록 파일을 찾을 수 없습니다.")
       return
     }
     
@@ -47,7 +48,7 @@ final class OpenLicenseModelData {
               ),
               let content = detailRoot.preferenceSpecifiers.first?.footerText
         else {
-          print("\(title)의 상세 내용을 찾을 수 없습니다.")
+          Log.debug("\(title)의 상세 내용을 찾을 수 없습니다.")
           return nil
         }
         return OpenSourceItem(title: title, licenseContent: content)
@@ -55,7 +56,7 @@ final class OpenLicenseModelData {
       
       self.licenses = loadedItems.sorted { $0.title > $1.title }
     } catch {
-      print(#function, "Error for parse License: \(error)")
+      Log.debug("\(#function) Error for parse License: \(error)")
     }
   }
 }

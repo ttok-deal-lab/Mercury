@@ -27,6 +27,6 @@ protocol MockLoggerProtocol {
 
 final class MockLoggerConcrete: MockLoggerProtocol {
   func log() {
-    print("I'm logging")
+    Log.debug("I'm logging")
   }
 }

@@ -33,7 +33,15 @@ public struct SearchViewFactory: ViewFactory {
       SearchView(
         auctionSalesListUsecase: auctionSalesListUsecase,
         auctionSearchFilterUsecase: auctionSearchFilterUsecase,
-        localStorageUsecase: localStoargeUsecase
+        localStorageUsecase: localStoargeUsecase,
+        initialKeyword: nil
+      )
+    case .searchResult(let keyword):
+      SearchView(
+        auctionSalesListUsecase: auctionSalesListUsecase,
+        auctionSearchFilterUsecase: auctionSearchFilterUsecase,
+        localStorageUsecase: localStoargeUsecase,
+        initialKeyword: keyword
       )
     }
   }

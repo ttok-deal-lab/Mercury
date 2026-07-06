@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppFoundation
 
 import UIComponent
 
@@ -22,10 +23,10 @@ struct AlertTestView: View {
               confirmButtonTitle: "confirm",
               cancelButtonTitle: "cancel",
               onConfirm: {
-                print("11")
+                Log.debug("11")
               },
               onCancel: {
-                print("22")
+                Log.debug("22")
               }
             )
           )
