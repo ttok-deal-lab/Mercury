@@ -14,12 +14,12 @@ import KakaoSDKTemplate
 import Domain
 
 /// 경매 상세 공유 URL 생성기.
-/// 카카오 개발자 콘솔에 등록된 도메인이어야 미설치 사용자 웹 폴백이 정상 동작한다.
-/// (미등록 도메인이면 카카오가 등록된 도메인(localhost 등)으로 폴백시킴)
+/// 도메인 + 매물 상세 경로(`/sales/{id}`). 카카오 콘솔에 등록된 도메인.
+/// 웹에 해당 라우트가 배포되면 404 없이 열린다.
 enum AuctionShareLink {
   static func url(for auctionID: Int) -> URL {
     // swiftlint:disable:next force_unwrapping
-    URL(string: "https://ttok-front-dev.estateslug.com/sales/\(auctionID)")!
+    URL(string: "https://ttok-front-dev.estateslug.com/detail/\(auctionID)")!
   }
 }
 
