@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+import AppFoundation
 import UIComponent
 import Domain
 
@@ -19,18 +20,16 @@ struct AuctionDetailAbstractChipsView: View {
       return "낙찰 완료"
     }
     
-    let calendar = Calendar.current
-    let today = calendar.startOfDay(for: Date())
-    let saleDate = calendar.startOfDay(for: auctionDetailInfo.salesDateTime)
-    let daysUntilSale = calendar.dateComponents([.day], from: today, to: saleDate).day ?? 0
-    
-    switch daysUntilSale {
-    case ..<0:
+    // 목록/찜/최근본 화면의 salesLeftDays 와 동일한 계산을 사용해 D-day 표기를 일치시킨다
+    let dDayOffset = auctionDetailInfo.salesDateTime.dDayOffset()
+
+    switch dDayOffset {
+    case 1...:
       return "매각 종료"
     case 0:
       return "오늘 매각"
     default:
-      return "매각 D-\(daysUntilSale)"
+      return "매각 D-\(abs(dDayOffset))"
     }
   }
   
