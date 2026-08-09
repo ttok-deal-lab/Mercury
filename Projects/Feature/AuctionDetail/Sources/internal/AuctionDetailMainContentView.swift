@@ -19,6 +19,10 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
   var body: some View {
     if let auctionDetailItem = modelData.auctionDetailItem {
       mainContentView(auctionDetailItem: auctionDetailItem)
+    } else if modelData.loadError != nil {
+      AuctionDetailErrorView {
+        Task { await modelData.retryLoadAuctionDetail() }
+      }
     } else {
       ProgressView()
     }

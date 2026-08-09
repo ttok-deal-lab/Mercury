@@ -21,6 +21,9 @@ public final class AuctionDetailModelData {
   // MARK: - internal properties
   
   var error: Error?
+  /// 상세 최초 로딩 실패. 찜 실패 등 부분 동작 에러(`error`)와 분리해야
+  /// 이미 그려진 화면이 에러 화면으로 바뀌지 않는다.
+  var loadError: Error?
   var auctionDetailItem: AuctionDetail?
   var isLoading: Bool = false
   var isLoadingMapCoordinate: Bool = false
@@ -80,6 +83,12 @@ public final class AuctionDetailModelData {
   func sortedSalesDetailByTime() -> [AuctionDetail.SalesDetail] {
     self.auctionDetailItem?.salesDetails.sorted { $0.timeStamp > $1.timeStamp } ?? []
   }
+
+  /// 상세 로딩 실패 후 재시도
+  func retryLoadAuctionDetail() async {
+    self.loadError = nil
+    await self.loadAuctionDetail()
+  }
   
   func tapOnZzim() async {
     let previousIsZzim = self.isZzimed
@@ -127,14 +136,15 @@ public final class AuctionDetailModelData {
       let item = try await self.fetchAuctionDetailItem()
       self.auctionDetailItem = item
       self.zzimCount = item.zzimCount
-      
+      self.loadError = nil
+
       async let mapTask: Void = self.loadMapCoordinate(for: item)
       async let interestTask: Void = self.loadInterestState()
       _ = await (mapTask, interestTask)
     } catch let error as MercuryError {
-      self.error = error
+      self.loadError = error
     } catch {
-      self.error = error
+      self.loadError = error
     }
   }
 

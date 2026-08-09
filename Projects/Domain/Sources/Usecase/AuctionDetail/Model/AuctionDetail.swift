@@ -731,12 +731,12 @@ public struct AuctionDetail: Sendable {
     public let type: SalesDetailType
     /// 기일 장소
     public let location: String
-    /// 최저 낙찰가
-    public let leastSalesPrice: Int
+    /// 최저 낙찰가. 최고가매각불허가결정 등 최저가가 없는 기일은 서버가 null 을 내려준다.
+    public let leastSalesPrice: Int?
     /// 기일 결과
     public let result: SalesResult
-    
-    public init(timeStamp: Date, type: SalesDetailType, location: String, leastSalesPrice: Int, result: SalesResult) {
+
+    public init(timeStamp: Date, type: SalesDetailType, location: String, leastSalesPrice: Int?, result: SalesResult) {
       self.timeStamp = timeStamp
       self.type = type
       self.location = location
