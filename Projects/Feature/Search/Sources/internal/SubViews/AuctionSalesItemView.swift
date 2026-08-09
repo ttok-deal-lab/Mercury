@@ -53,10 +53,19 @@ struct SearchAuctionSalesItemView: View {
             .foregroundStyle(Asset.Colors.neutral.color)
             .fonts(.bodyMicroMedium)
             .multilineTextAlignment(.leading)
-          
+
+          Text("\(item.salesBuildingName ?? "")")
+            .foregroundStyle(Asset.Colors.neutralSubtler.color)
+            .fonts(.bodyMicroRegular)
+            .multilineTextAlignment(.leading)
+
           Spacer()
           
           HStack(spacing: 5) {
+            if item.verified {
+              MercuryGradientLabel(title: L10n.commonCertifiedAuction)
+            }
+
             if let salesCategoryName = AuctionSalesCategory.mostSpecific(in: item.salesCategories)?.displayName {
               Text(salesCategoryName)
                 .fonts(.captionLargeMedium)
@@ -84,7 +93,9 @@ struct SearchAuctionSalesItemView: View {
                 Asset.Images.heart.image
                   .renderingMode(.template)
                   .resizable()
-                  .foregroundStyle(Asset.Colors.neutralMuted.color)
+                  .foregroundStyle(
+                    self.item.isZzim ? Asset.Colors.critical.color : Asset.Colors.neutralMuted.color
+                  )
                   .frame(width: 18, height: 18)
                 
                 Text("\(item.zzimCount)")
