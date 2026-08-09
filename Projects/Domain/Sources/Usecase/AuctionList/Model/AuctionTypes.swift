@@ -21,7 +21,13 @@ public enum AuctionSalesCategory: String, CaseIterable {
   case office_tel = "OFFICE_TEL"
   case neighborhood_facility = "NEIGHBORHOOD_FACILITY"
   case other = "OTHER"
-  
+  // 서버가 구체 용도와 함께 내려주는 상위 분류. 없으면 compactMap 에서 전부 걸러져 칩이 사라진다.
+  case housing = "HOUSING"
+  case building = "BUILDING"
+  case residential_building = "RESIDENTIAL_BUILDING"
+  case land_designation = "LAND_DESIGNATION"
+  case building_site = "BUILDING_SITE"
+
   public static func fromRawValue(_ rawValue: String) -> Self? {
     return AuctionSalesCategory(rawValue: rawValue)
   }
