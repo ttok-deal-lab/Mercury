@@ -66,9 +66,8 @@ struct AuctionInterestItemView: View {
               MercuryGradientLabel(title: L10n.commonCertifiedAuction)
             }
             
-            if !item.salesCategories.isEmpty,
-               let firstSalesCategory = item.salesCategories.first?.rawValue {
-              Text(firstSalesCategory)
+            if let salesCategoryName = AuctionSalesCategory.mostSpecific(in: item.salesCategories)?.displayName {
+              Text(salesCategoryName)
                 .fonts(.captionLargeMedium)
                 .foregroundStyle(Asset.Colors.primary.color)
                 .padding(.vertical, 3)

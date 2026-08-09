@@ -7,6 +7,8 @@
 
 import Foundation
 
+import AppFoundation
+
 public struct RecentSalesItem: Identifiable {
   public let id: Int
   /// 매각여부
@@ -29,7 +31,7 @@ public struct RecentSalesItem: Identifiable {
   public let failBidCount: Int
   /// 찜 횟수
   public var zzimCount: Int
-  /// 매각까지 남은 기간
+  /// 매각일 기준 D-day 오프셋 (미래: 음수 `D-n`, 당일: `0`, 과거: 양수 `D+n`)
   public let salesLeftDays: Int
   /// 찜 여부
   public var isZzim: Bool = false
@@ -58,11 +60,6 @@ public struct RecentSalesItem: Identifiable {
     self.salesPictures = salesPictures
     self.failBidCount = failBidCount
     self.zzimCount = zzimCount
-    let leftDays: Int = {
-      let interval = Date().timeIntervalSince(salesDateTime)
-      let days = Int(interval / 86400)
-      return days
-    }()
-    self.salesLeftDays = leftDays
+    self.salesLeftDays = salesDateTime.dDayOffset()
   }
 }
