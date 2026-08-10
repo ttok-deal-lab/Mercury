@@ -148,7 +148,9 @@ struct SalesDetailDTO: Decodable, Sendable {
   let timeStamp: String
   let type: String
   let location: String
-  let leastSalesPrice: Int
+  // 최고가매각불허가결정(BEST_BID_REJECTED) 등 최저가가 없는 기일은 null 로 내려온다.
+  // 비옵셔널로 두면 이 항목 하나 때문에 상세 응답 전체 디코딩이 실패한다.
+  let leastSalesPrice: Int?
   let result: String
   
   func toEntity() -> AuctionDetail.SalesDetail {
