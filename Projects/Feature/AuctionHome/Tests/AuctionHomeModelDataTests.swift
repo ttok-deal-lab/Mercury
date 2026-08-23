@@ -35,14 +35,65 @@ final class AuctionHomeModelDataTests: XCTestCase {
       }
     )
   }
+
+  func testBidWonFilterLoadsOnlySoldOutItems() async throws {
+    let listUsecase = StubAuctionSalesListUsecase()
+    let modelData = AuctionHomeModelData(
+      localStorageUsecase: NoopLocalStorageUsecase(),
+      auctionListUsecase: listUsecase,
+      auctionSearchFilterUsecase: StubAuctionSearchFilterUsecase(),
+      auctionInterestUsecase: StubAuctionInterestUsecase()
+    )
+
+    try await modelData.fetchSearchFilters()
+    modelData.currentAuctionFilter.isBidWon = true
+
+    await modelData.loadAuctionSalesList()
+
+    // 낙찰 여부가 실제로 하위 계층까지 전달되어야 한다.
+    let receivedFilter = await listUsecase.receivedFilter()
+    XCTAssertEqual(receivedFilter?.isBidWon, true)
+
+    // 매각 완료 매물만 남는다. (아파트 6건 + 빌라 2건)
+    XCTAssertEqual(modelData.filteredItemCount, 8)
+    XCTAssertEqual(modelData.auctionSalesItems.count, 8)
+    XCTAssertTrue(modelData.auctionSalesItems.allSatisfy { $0.isSoldOut })
+    XCTAssertTrue(modelData.isFilterActive(.bidWon))
+  }
+
+  func testTurningOffBidWonFilterRestoresFullList() async throws {
+    let modelData = AuctionHomeModelData(
+      localStorageUsecase: NoopLocalStorageUsecase(),
+      auctionListUsecase: StubAuctionSalesListUsecase(),
+      auctionSearchFilterUsecase: StubAuctionSearchFilterUsecase(),
+      auctionInterestUsecase: StubAuctionInterestUsecase()
+    )
+
+    try await modelData.fetchSearchFilters()
+    modelData.currentAuctionFilter.isBidWon = true
+    await modelData.loadAuctionSalesList()
+    XCTAssertEqual(modelData.filteredItemCount, 8)
+
+    modelData.currentAuctionFilter.isBidWon = false
+    await modelData.loadAuctionSalesList()
+
+    XCTAssertEqual(modelData.filteredItemCount, 32)
+    XCTAssertFalse(modelData.auctionSalesItems.allSatisfy { $0.isSoldOut })
+    XCTAssertFalse(modelData.isFilterActive(.bidWon))
+  }
 }
 
 private actor StubAuctionSalesListUsecase: AuctionSalesListUsecasable {
   private let pageSize = 20
   private var nextStartIndexByFilterKey: [String: Int] = [:]
   private let allItems = StubAuctionDataFactory.makeItems()
+  private var lastFilter: CurrentAuctionFilter?
+
+  /// ModelData 가 실제로 어떤 필터를 넘겼는지 확인용
+  func receivedFilter() -> CurrentAuctionFilter? { lastFilter }
 
   func fetchAuctionSales(filter: CurrentAuctionFilter?) async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
+    lastFilter = filter
     let filteredItems = filteredItems(for: filter)
     let firstPage = Array(filteredItems.prefix(pageSize))
     nextStartIndexByFilterKey[filterKey(for: filter)] = firstPage.count
@@ -61,13 +112,20 @@ private actor StubAuctionSalesListUsecase: AuctionSalesListUsecasable {
   }
 
   private func filteredItems(for filter: CurrentAuctionFilter?) -> [AuctionSalesItem] {
-    guard let selectedTypes = filter?.buildingTypeCodes, !selectedTypes.isEmpty else {
-      return allItems
+    var items = allItems
+
+    if let selectedTypes = filter?.buildingTypeCodes, !selectedTypes.isEmpty {
+      items = items.filter { item in
+        !selectedTypes.isDisjoint(with: Set(item.salesCategories.map(\.rawValue)))
+      }
     }
 
-    return allItems.filter { item in
-      !selectedTypes.isDisjoint(with: Set(item.salesCategories.map(\.rawValue)))
+    // 서버의 soldOutStatus=SOLD_OUT 과 동일하게 매각 완료 매물만 남긴다.
+    if filter?.isBidWon == true {
+      items = items.filter { $0.isSoldOut }
     }
+
+    return items
   }
 
   private func filterKey(for filter: CurrentAuctionFilter?) -> String {
@@ -76,6 +134,7 @@ private actor StubAuctionSalesListUsecase: AuctionSalesListUsecasable {
       filter?.region?.code ?? "ALL",
       filter?.district?.code ?? "unknown",
       buildingTypes,
+      filter?.isBidWon == true ? "SOLD_OUT" : "ALL",
       filter?.sort?.code ?? "LATEST_REGISTERED"
     ].joined(separator: "|")
   }
@@ -125,7 +184,8 @@ private enum StubAuctionDataFactory {
         address: "서울특별시 강남구 샘플로 \(index)",
         buildingName: "아파트 \(index)호",
         category: .apartment,
-        price: 500_000_000 + index * 1_000_000
+        price: 500_000_000 + index * 1_000_000,
+        isSoldOut: index.isMultiple(of: 4)
       )
     }
 
@@ -135,7 +195,8 @@ private enum StubAuctionDataFactory {
         address: "서울특별시 마포구 빌라길 \(index)",
         buildingName: "빌라 \(index)호",
         category: .villa,
-        price: 300_000_000 + index * 500_000
+        price: 300_000_000 + index * 500_000,
+        isSoldOut: index.isMultiple(of: 4)
       )
     }
 
@@ -147,7 +208,8 @@ private enum StubAuctionDataFactory {
     address: String,
     buildingName: String,
     category: AuctionSalesCategory,
-    price: Int
+    price: Int,
+    isSoldOut: Bool
   ) -> AuctionSalesItem {
     AuctionSalesItem(
       id: id,
@@ -162,7 +224,7 @@ private enum StubAuctionDataFactory {
       zzimCount: id % 5,
       registerDate: Date().addingTimeInterval(-86400 * 2),
       verified: id.isMultiple(of: 2),
-      isSoldOut: false
+      isSoldOut: isSoldOut
     )
   }
 }

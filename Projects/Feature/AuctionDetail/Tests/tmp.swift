@@ -14,9 +14,9 @@ final class AuctionDetailModelDataTests: XCTestCase {
     let auctionDetail = AuctionDetail.fixture(
       salesAddress: "서울특별시 강남구 테헤란로 123",
       salesDetails: [
-        .init(timeStamp: olderDate, type: .saleDate, location: "A", leastSalesPrice: 100_000_000, result: .failedBid),
-        .init(timeStamp: newestDate, type: .saleDate, location: "B", leastSalesPrice: 90_000_000, result: .sold),
-        .init(timeStamp: middleDate, type: .saleDate, location: "C", leastSalesPrice: 95_000_000, result: .modified)
+        .init(timeStamp: olderDate, type: .sale, location: "A", leastSalesPrice: 100_000_000, result: .failedBid),
+        .init(timeStamp: newestDate, type: .sale, location: "B", leastSalesPrice: 90_000_000, result: .sold),
+        .init(timeStamp: middleDate, type: .sale, location: "C", leastSalesPrice: 95_000_000, result: .modified)
       ]
     )
     
@@ -161,8 +161,9 @@ final class AuctionDetailModelDataTests: XCTestCase {
     )
     
     await waitUntilSettled(modelData)
-    
-    XCTAssertNotNil(modelData.error)
+
+    // 상세 로딩 실패는 alert(error) 이 아니라 재시도 뷰(loadError) 로 표현된다.
+    XCTAssertNotNil(modelData.loadError)
     XCTAssertNil(modelData.auctionDetailItem)
     XCTAssertNil(modelData.mapCoordinate)
     XCTAssertFalse(modelData.isLoading)
@@ -208,7 +209,7 @@ final class AuctionDetailModelDataTests: XCTestCase {
     var hasObservedStateChange = false
     
     for _ in 0..<20 {
-      if modelData.isLoading || modelData.isLoadingMapCoordinate || modelData.auctionDetailItem != nil || modelData.error != nil {
+      if modelData.isLoading || modelData.isLoadingMapCoordinate || modelData.auctionDetailItem != nil || modelData.error != nil || modelData.loadError != nil {
         hasObservedStateChange = true
       }
       
@@ -266,6 +267,12 @@ private extension AuctionDetail {
       failBidCount: 0,
       zzimCount: 0,
       court: .init(code: .seoulCentralDistrict, team: "1계"),
+      // ModelData 는 지오코딩 폴백 시 courtInfo.address 를 resolver 의 courtName 인자로 넘긴다.
+      courtInfo: .init(
+        code: "B000210",
+        name: "SEOUL_CENTRAL_DISTRICT",
+        address: "서울중앙지방법원"
+      ),
       salesDetails: salesDetails,
       salesPictures: [],
       salesBuildings: salesBuildings,
@@ -279,7 +286,15 @@ private extension AuctionDetail {
       appraisalDocumentUrl: nil,
       appraisalDocuments: [],
       nearbySalesStats: [],
-      soldOut: false
+      soldOut: false,
+      verified: false,
+      salesBuildingName: "테헤란로아파트",
+      exclusiveArea: 84.97,
+      caseName: "임의경매",
+      creditorCount: 1,
+      recentTransactionPrice: nil,
+      recentTransactionDate: nil,
+      rightsAnalysis: []
     )
   }
 }

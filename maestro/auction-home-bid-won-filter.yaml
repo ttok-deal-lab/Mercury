@@ -1,0 +1,28 @@
+appId: com.auction.mercury.AuctionHomeSampleApp
+---
+# 낙찰 필터: 켜면 매각 완료 매물만, 끄면 전체가 다시 보인다.
+- launchApp
+
+# 시뮬레이터의 Apple 계정 알림이 떠 있으면 닫는다.
+- tapOn:
+    text: "지금 안 함"
+    optional: true
+
+# 필터 적용 전에는 미매각 매물(아파트 1호)이 보인다.
+- assertVisible: "아파트 1호"
+
+# 낙찰 칩은 필터 행 오른쪽 끝에 있어 가로 스크롤이 필요하다.
+- swipe:
+    start: 85%, 17%
+    end: 15%, 17%
+- tapOn: "낙찰"
+
+# 매각 완료 매물만 남는다. (fixture 는 4의 배수 index 만 매각 처리)
+- assertVisible: "아파트 4호"
+- assertVisible: "매각"
+- assertNotVisible: "아파트 1호"
+- assertNotVisible: "아파트 2호"
+
+# 다시 끄면 전체 목록으로 복귀한다.
+- tapOn: "낙찰"
+- assertVisible: "아파트 1호"
