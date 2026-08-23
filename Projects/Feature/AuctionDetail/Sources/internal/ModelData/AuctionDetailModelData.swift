@@ -80,8 +80,16 @@ public final class AuctionDetailModelData {
   
   // MARK: - internal methods
   
+  // 최신 -> 과거 순. 기일 파싱에 실패한(nil) 항목은 정렬 기준이 없으므로 항상 뒤로 보낸다.
   func sortedSalesDetailByTime() -> [AuctionDetail.SalesDetail] {
-    self.auctionDetailItem?.salesDetails.sorted { $0.timeStamp > $1.timeStamp } ?? []
+    self.auctionDetailItem?.salesDetails.sorted { lhs, rhs in
+      switch (lhs.timeStamp, rhs.timeStamp) {
+      case let (lhsDate?, rhsDate?): return lhsDate > rhsDate
+      case (_?, nil): return true
+      case (nil, _?): return false
+      case (nil, nil): return false
+      }
+    } ?? []
   }
 
   /// 상세 로딩 실패 후 재시도

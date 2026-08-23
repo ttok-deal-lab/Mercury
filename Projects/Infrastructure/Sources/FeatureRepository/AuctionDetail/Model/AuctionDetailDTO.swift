@@ -155,7 +155,7 @@ struct SalesDetailDTO: Decodable, Sendable {
   
   func toEntity() -> AuctionDetail.SalesDetail {
     return .init(
-      timeStamp: AuctionDetailDTO.parseDate(from: timeStamp) ?? Date(timeIntervalSince1970: 0),
+      timeStamp: AuctionDetailDTO.parseDate(from: timeStamp),
       type: AuctionDetail.SalesDetail.SalesDetailType(rawValue: type),
       location: location,
       leastSalesPrice: leastSalesPrice,
@@ -244,7 +244,7 @@ struct ConditionReportDTO: Decodable, Sendable {
   
   func toEntity() -> AuctionDetail.ConditionReport {
     return .init(
-      investigationDate: AuctionDetailDTO.parseDate(from: investigationDate) ?? Date(timeIntervalSince1970: 0),
+      investigationDate: AuctionDetailDTO.parseDate(from: investigationDate),
       estateLeaseInfos: estateLeaseInfos.map { $0.toEntity() },
       occupationRelations: occupationRelations.map { $0.toEntity() },
       occupationRelationReports: occupationRelationReports.map { $0.toEntity() }
@@ -304,8 +304,8 @@ struct OccupationRelationReportDTO: Decodable, Sendable {
       duration: duration,
       deposit: Int(deposit) ?? 0,
       rental: Int(rental) ?? 0,
-      movedAt: AuctionDetailDTO.parseDate(from: movedAt) ?? Date(timeIntervalSince1970: 0),
-      confirmedAt: AuctionDetailDTO.parseDate(from: confirmedAt) ?? Date(timeIntervalSince1970: 0)
+      movedAt: AuctionDetailDTO.parseDate(from: movedAt),
+      confirmedAt: AuctionDetailDTO.parseDate(from: confirmedAt)
     )
   }
 }
@@ -360,6 +360,10 @@ extension AuctionDetailDTO {
     return formatter.date(from: string)
   }
 
+  /// 날짜+시간 문자열 파싱. 유효하지 않으면 nil.
+  ///
+  /// 서버는 기일/조사일자를 ISO8601 이 아닌 `"2026-09-01 14:00:00"` (T 구분자·타임존 오프셋 없음) 형태로 내려준다.
+  /// ISO8601DateFormatter 만 쓰면 전부 nil 이 되므로 공백 구분 포맷까지 순차적으로 시도한다.
   fileprivate static func parseDate(from string: String) -> Date? {
     let isoFormatter = ISO8601DateFormatter()
     isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
@@ -368,6 +372,20 @@ extension AuctionDetailDTO {
     }
     // Fallback without fractional seconds
     isoFormatter.formatOptions = [.withInternetDateTime]
-    return isoFormatter.date(from: string)
+    if let date = isoFormatter.date(from: string) {
+      return date
+    }
+
+    let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "ko_KR")
+    formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+    formatter.isLenient = false
+    for format in ["yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd"] {
+      formatter.dateFormat = format
+      if let date = formatter.date(from: string) {
+        return date
+      }
+    }
+    return nil
   }
 }

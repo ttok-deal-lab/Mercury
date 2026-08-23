@@ -62,7 +62,7 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
           AuctionDetailHistoryView(
             auctionStartDateText: auctionDetailItem.salesOpenDate.toKoreanDateString(),
             distributionDeadlineText: auctionDetailItem.distributionRequiredDeadlineDate.toKoreanDateString(),
-            investigationDateText: auctionDetailItem.conditionReport.investigationDate.toKoreanDateString(),
+            investigationDateText: auctionDetailItem.conditionReport.investigationDate?.toKoreanDateString() ?? "-",
             salesDetails: modelData.sortedSalesDetailByTime()
           )
           

@@ -33,7 +33,7 @@ struct AuctionDetailHistoryRowView: View {
             )
         }
 
-        Text("\(roundText)  |  \(detail.timeStamp.toKoreanDateString())")
+        Text("\(roundText)  |  \(detail.timeStamp?.toKoreanDateString() ?? "-")")
           .fonts(.bodySmallBold)
           .foregroundStyle(Asset.Colors.neutralSubtler.color)
 
