@@ -22,8 +22,6 @@ public struct MainTabView<
   SignInView: SignInViewable
 >: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
-  @Environment(NetworkMonitor.self) var networkMonitor
-  @State private var isShowNetworkDisconnect: Bool = false
   @State private var modelData: MainTabModelData
   @State private var selection: Tab = .home
   @Inject private var toast: Toastable
@@ -59,9 +57,9 @@ public struct MainTabView<
       }
     }
   }
-  
+
   // MARK: - private method
-  
+
   private func tab(for appTab: AppTab) -> Tab {
     switch appTab {
     case .home: return .home
@@ -94,27 +92,11 @@ public struct MainTabView<
     .toolbarVisibility(.visible, for: .tabBar)
     .toolbarBackground(.visible, for: .tabBar)
     .toolbarBackground(.ultraThinMaterial, for: .tabBar)
-    .onChange(of: networkMonitor.isConnected) { _, isConnected in
-      isShowNetworkDisconnect = !isConnected
-    }
     .onChange(of: coordinator.selectedTab) { _, newTab in
       guard let newTab else { return }
       selection = tab(for: newTab)
       coordinator.selectedTab = nil
     }
-    .sheet(isPresented: $isShowNetworkDisconnect, content: {
-      VStack { // TODO: 디자인 필요
-        Text("인터넷 연결이 되지 않아요")
-          .fonts(.titleMediumBold)
-          .padding(.vertical, 18)
-        Text("인터넷 상태를 확인해주세요")
-          .fonts(.bodyLargeMedium)
-        Text("인터넷 연결이 되면 바로 사용할 수 있어요")
-          .fonts(.bodyLargeMedium)
-          .padding(.vertical, 18)
-      }
-      .dynamicSheet()
-    })
   }
 }
 
