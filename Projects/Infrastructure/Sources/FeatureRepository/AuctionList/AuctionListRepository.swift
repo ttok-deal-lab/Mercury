@@ -28,6 +28,7 @@ public final class AuctionSalesListRepository: AuctionSalesListRepositorable {
       buildTypes: filter?.buildingTypeCodes.map { Array($0) },
       auctionFailCount: filter?.auctionFailCodes.map { Array($0) },
       isCertified: filter?.isCertified,
+      isBidWon: filter?.isBidWon,
       minimumPrice: filter?.minimumPrice,
       maximumPrice: filter?.maximumPrice,
       nextCursor: cursor,

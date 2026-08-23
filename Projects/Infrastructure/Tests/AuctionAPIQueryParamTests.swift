@@ -10,6 +10,7 @@ final class AuctionAPIQueryParamTests: XCTestCase {
       buildTypes: ["APARTMENT"],
       auctionFailCount: nil,
       isCertified: nil,
+      isBidWon: nil,
       minimumPrice: nil,
       maximumPrice: nil,
       nextCursor: nil,
@@ -31,6 +32,7 @@ final class AuctionAPIQueryParamTests: XCTestCase {
       buildTypes: nil,
       auctionFailCount: nil,
       isCertified: nil,
+      isBidWon: nil,
       minimumPrice: nil,
       maximumPrice: nil,
       nextCursor: nil,
@@ -51,6 +53,7 @@ final class AuctionAPIQueryParamTests: XCTestCase {
       buildTypes: ["VILLA", "APARTMENT", "HOUSE"],
       auctionFailCount: ["THIRD_AUCTION", "FIRST_AUCTION"],
       isCertified: nil,
+      isBidWon: nil,
       minimumPrice: nil,
       maximumPrice: nil,
       nextCursor: nil,
@@ -60,5 +63,28 @@ final class AuctionAPIQueryParamTests: XCTestCase {
 
     XCTAssertEqual(query?["buildType"] as? [String], ["APARTMENT", "HOUSE", "VILLA"])
     XCTAssertEqual(query?["auctionFailCount"] as? [String], ["FIRST_AUCTION", "THIRD_AUCTION"])
+  }
+
+  func testAuctionSearchListMapsBidWonToSoldOutStatus() {
+    func soldOutStatus(isBidWon: Bool?) -> String? {
+      AuctionAPI.auctionSearchList(
+        keyword: nil,
+        region: nil,
+        district: nil,
+        buildTypes: nil,
+        auctionFailCount: nil,
+        isCertified: nil,
+        isBidWon: isBidWon,
+        minimumPrice: nil,
+        maximumPrice: nil,
+        nextCursor: nil,
+        sort: nil,
+        size: nil
+      ).queryParam?["soldOutStatus"] as? String
+    }
+
+    XCTAssertEqual(soldOutStatus(isBidWon: true), "SOLD_OUT")
+    XCTAssertEqual(soldOutStatus(isBidWon: false), "ALL")
+    XCTAssertEqual(soldOutStatus(isBidWon: nil), "ALL")
   }
 }
