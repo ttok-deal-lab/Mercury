@@ -49,6 +49,9 @@ extension BaseAPI {
     if error is NetworkError {
       return error
     }
+    if error is HTTPStatusError {
+      return error
+    }
     return NetworkError.unknownError
   }
 
@@ -73,7 +76,7 @@ extension BaseAPI {
       handleAuthorizationRefresh(http)
 
       guard (200...299).contains(http.statusCode) else {
-        throw NetworkError.invalidStatusCode
+        throw HTTPStatusError(statusCode: http.statusCode)
       }
 
       do {
@@ -108,7 +111,7 @@ extension BaseAPI {
       handleAuthorizationRefresh(http)
 
       guard (200...299).contains(http.statusCode) else {
-        throw NetworkError.invalidStatusCode
+        throw HTTPStatusError(statusCode: http.statusCode)
       }
     } catch {
       throw mapError(error)

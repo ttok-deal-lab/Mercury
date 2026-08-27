@@ -21,3 +21,12 @@ public enum NetworkError: Int, Error {
     }
   }
 }
+
+/// HTTP 응답 실패의 상태 코드를 보존한다. 화면이 404/5xx 등 계약상 의미 있는 실패를 구분할 수 있다.
+public struct HTTPStatusError: Error, Sendable {
+  public let statusCode: Int
+
+  public init(statusCode: Int) {
+    self.statusCode = statusCode
+  }
+}

@@ -24,6 +24,7 @@ public final class AuctionDetailModelData {
   /// 상세 최초 로딩 실패. 찜 실패 등 부분 동작 에러(`error`)와 분리해야
   /// 이미 그려진 화면이 에러 화면으로 바뀌지 않는다.
   var loadError: Error?
+  var isAuctionUnavailable: Bool = false
   var auctionDetailItem: AuctionDetail?
   var isLoading: Bool = false
   var isLoadingMapCoordinate: Bool = false
@@ -95,6 +96,7 @@ public final class AuctionDetailModelData {
   /// 상세 로딩 실패 후 재시도
   func retryLoadAuctionDetail() async {
     self.loadError = nil
+    self.isAuctionUnavailable = false
     await self.loadAuctionDetail()
   }
   
@@ -145,10 +147,15 @@ public final class AuctionDetailModelData {
       self.auctionDetailItem = item
       self.zzimCount = item.zzimCount
       self.loadError = nil
+      self.isAuctionUnavailable = false
 
       async let mapTask: Void = self.loadMapCoordinate(for: item)
       async let interestTask: Void = self.loadInterestState()
       _ = await (mapTask, interestTask)
+    } catch let error as HTTPStatusError {
+      self.loadError = error
+      // 서버가 삭제/비노출 매물에도 5xx를 반환하는 계약을 유지 중이다.
+      self.isAuctionUnavailable = error.statusCode == 404 || (500...599).contains(error.statusCode)
     } catch let error as MercuryError {
       self.loadError = error
     } catch {
