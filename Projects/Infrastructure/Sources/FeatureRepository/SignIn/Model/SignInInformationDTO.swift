@@ -45,7 +45,8 @@ struct SignInUserInfoDTO: Codable, Sendable {
   init(from decoder: any Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     self.id = try container.decode(Int.self, forKey: .id)
-    self.email = try container.decode(String.self, forKey: .email)
+    // 카카오 이메일 제공 미동의 시 서버가 빈 값 또는 필드 누락으로 응답할 수 있다.
+    self.email = try container.decodeIfPresent(String.self, forKey: .email) ?? ""
     self.name = try container.decode(String.self, forKey: .name)
     self.provider = try container.decode(String.self, forKey: .provider)
     self.status = try container.decode(String.self, forKey: .status)
