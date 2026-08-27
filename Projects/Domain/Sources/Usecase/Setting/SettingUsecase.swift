@@ -15,6 +15,10 @@ public class SettingUsecase: SettingUsecasable {
   public func signOut() async throws {
     try await fetcher.signOut()
   }
+
+  public func logout() async throws {
+    try await fetcher.logout()
+  }
 }
 
 actor SettingFetcher {
@@ -26,5 +30,9 @@ actor SettingFetcher {
   
   func signOut() async throws {
     try await repository.signOut()
+  }
+
+  func logout() async throws {
+    try await repository.logout()
   }
 }

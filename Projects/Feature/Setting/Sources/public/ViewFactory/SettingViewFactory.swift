@@ -25,7 +25,7 @@ public struct SettingViewFactory: ViewFactory {
   public func makeView(_ settingRouter: SettingRoute) -> some View {
     switch settingRouter.route {
     case .settingList:
-      SettingView()
+      SettingView(settingUsecase: settingUsecase)
     case .version:
       EmptyView()
     case .signOut:

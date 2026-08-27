@@ -8,4 +8,5 @@ import Foundation
 
 public protocol SettingRepositoriable {
   func signOut() async throws
+  func logout() async throws
 }

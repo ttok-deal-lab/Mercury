@@ -25,5 +25,9 @@ final class SettingModelData {
   public func signOut() async throws {
     try await settingUsecase.signOut()
   }
+
+  public func logout() async throws {
+    try await settingUsecase.logout()
+  }
   
 }
