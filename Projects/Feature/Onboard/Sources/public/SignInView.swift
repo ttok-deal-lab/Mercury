@@ -15,21 +15,21 @@ import Domain
 import Router
 
 public struct SignInView: View {
-  @StateObject private var modelData: OnboardingModelData
-  @State private var error: MercuryError?
+  @State private var modelData: OnboardingModelData
+  @State private var error: Error?
   
   private var onComplete: (() -> Void)?
   
   public init(
     onComplete: (() -> Void)? = nil,
     serviceSignInUsecasable: ServiceSignInUsecasable,
-    localStorageUsecasable: LocalStorageUsecasable
+    locationUsecasable: LocationUsecasable
   ) {
     self.onComplete = onComplete
-    self._modelData = StateObject(wrappedValue: OnboardingModelData(
+    self.modelData = OnboardingModelData(
       serviceSignInUsecasable: serviceSignInUsecasable,
-      localStorageUsecasable: localStorageUsecasable
-    ))
+      locationUsecasable: locationUsecasable
+    )
   }
   
   public var body: some View {
@@ -51,15 +51,18 @@ public struct SignInView: View {
       }
     }
     .alert(error: $error)
-    .loading(modelData.isLoading) // 여기
+    .loading(modelData.isLoading)
   }
   
   @MainActor
   private func handleSignIn(with provider: OauthProvider) async {
+    // 오프라인 안내는 앱 전역에서 쓰는 네트워크 끊김 바텀시트로 통일한다.
+    guard NetworkDisconnectPresenter.shared.ensureConnected() else { return }
+
     do {
       try await modelData.oauthSignIn(provider)
       onComplete?()
-    } catch let error as MercuryError  {
+    } catch let error as MercuryError {
       self.error = error
     } catch {
       self.error = MercuryError(.unknown)

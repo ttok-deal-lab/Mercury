@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppFoundation
 
 struct ContentView: View {
   @StateObject private var jokeFetcher = JokeFetcher()
@@ -30,7 +31,7 @@ struct ContentView: View {
       do {
         try await jokeFetcher.fetch()
       } catch {
-        print(error)
+        Log.debug("\(error)")
       }
     }
     

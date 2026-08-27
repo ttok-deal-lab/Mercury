@@ -18,7 +18,7 @@ struct MapSampleAppEntry: App {
   
   var body: some Scene {
     WindowGroup {
-      MapContentView()
+      MapContentView(targetLongitude: 0.0, targetLatitude: 0.0)
     }
   }
 }
@@ -27,13 +27,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
     
     if let sdkAppKey = CommonDefine.mapKey {
-      print(sdkAppKey)
+      Log.debug("\(sdkAppKey)")
       SDKInitializer.InitSDK(appKey: sdkAppKey)
     }
     return true
   }
-}
-
-#Preview {
-  MapContentView()
+  
 }

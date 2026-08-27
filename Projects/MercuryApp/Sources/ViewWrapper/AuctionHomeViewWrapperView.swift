@@ -5,18 +5,24 @@
 //  Created by 송하민 on 4/13/25.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 import Router
-import Auction
+import AuctionHome
+import Domain
+import Infrastructure
 
 public struct AuctionHomeViewWrapperView: View, AuctionHomeViewable {
-  
   let hostView: AuctionHomeView
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.hostView = AuctionHomeView(navigationStream: navigationStream)
+  public init() {
+    self.hostView = AuctionHomeView(
+      auctionListUsecase: AuctionSalesListUsecase(repository: AuctionSalesListRepository()),
+      auctionSearchFilterUsecase: AuctionSearchFilterUsecase(repository: AuctionSearchFilterRepository()),
+      auctionInterestUsecase: AuctionInterestUsecase(repository: AuctionInterestRepository()),
+      localStorageUsecase: LocalStorageUsecase(repository: UserDefaultsStoreRepository())
+    )
   }
   
   public var body: some View {

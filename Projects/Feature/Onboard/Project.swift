@@ -16,7 +16,7 @@ let project = Project.framework(
     .uiComponent,
     .router,
     .domain,
-    .network,
+    .networking,
     .infrastructure,
     .googleSignIn,
     .googleSignInSwift,

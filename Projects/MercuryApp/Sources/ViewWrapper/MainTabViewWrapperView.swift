@@ -10,13 +10,22 @@ import Combine
 
 import Router
 import MainTab
+import Domain
+import Infrastructure
 
 public struct MainTabViewWrapperView: View, MainTabViewable {
   
-  let hostView: MainTabView<AuctionHomeViewWrapperView, InterestViewWrapperView, ReportViewWrapperView, MyPageViewWrapperView, SignInViewWrapperView>
+  let hostView: MainTabView<
+    AuctionHomeViewWrapperView,
+    InterestViewWrapperView,
+    MyPageViewWrapperView,
+    SignInViewWrapperView
+  >
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    hostView = MainTabView(navigationStream: navigationStream)
+  public init() {
+    hostView = MainTabView(
+      localStorageUsecase: LocalStorageUsecase(repository: UserDefaultsStoreRepository())
+    )
   }
   
   public var body: some View {

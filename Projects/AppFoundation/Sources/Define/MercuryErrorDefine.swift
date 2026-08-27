@@ -12,7 +12,7 @@ public enum MercuryErrorDefine: Int {
   // MARK: - Common
   
   /// 알 수 없는 에러
-  case unknown
+  case unknown = 1000
   /// 온라인이 아님
   case failToConnectInternet
   /// 정상 server status code가 아님
@@ -21,12 +21,16 @@ public enum MercuryErrorDefine: Int {
   case failToDeserializedDataToJSON
   /// 최상단 뷰를 찾을 수 없음
   case failToLoadTopWindow
+  /// 유저 정보를 찾을 수 없음
+  case notFoundUser
+  /// 디바이스 정보를 찾을 수 없음
+  case notFoundDeviceUUID
   
   
   // MARK: - Map
   
   /// 알 수 없는 위치권한 상태
-  case unknownLocationAuthenticationStatus
+  case unknownLocationAuthenticationStatus = 2000
   /// 사용자 위치정보 없음
   case failToGetUserLocationCoordinate
   
@@ -34,9 +38,7 @@ public enum MercuryErrorDefine: Int {
   // MARK: - SignIn
   
   /// 로그인 시도했으나 리턴 nil
-  case nilFromSignIn
-  /// 로그인 취소
-  case cancelUserLogin
+  case nilFromSignIn = 3000
   /// accessToken이 없음
   case noOauthToken
 }

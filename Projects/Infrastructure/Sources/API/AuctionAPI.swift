@@ -7,50 +7,127 @@
 
 import Foundation
 
-import Network
+import AppFoundation
+import Domain
+import Networking
 
-public enum AuctionAPI: BaseAPI {
-  case auctionList(_ largeCategory: String, mediumCategory: String, page: Int)
-  case auctionDetail(_ salesId: String, _ largeCategory: String, mediumCategory: String, _ courtName: String, salesNumber: Int)
+enum AuctionAPI: BaseAPI {
+  case auctionSearchList(keyword: String?, region: String?, district: String?, buildTypes: [String]?, auctionFailCount: [String]?, isCertified: Bool?, soldOutStatus: SoldOutStatus?, minimumPrice: Int?, maximumPrice: Int?, nextCursor: String?, sort: String?, size: Int?)
+  case auctionDetail(_ auctionID: Int)
+  case auctionSales(auctionIDs: [Int])
+  case auctionSearchFilter
   
-  public var baseURL: String {
+  var baseURL: String {
     RestAPIDefine.base(.common)
   }
   
-  public var domain: String? {
+  var domain: String? {
     switch self {
-    case .auctionList, .auctionDetail: "sales/"
+    case .auctionSearchList: "api/v2/"
+    case .auctionDetail, .auctionSales: "v2/courts/"
+    case .auctionSearchFilter: "api/v1/"
     }
   }
   
-  public var path: String {
+  var path: String {
     switch self {
-    case .auctionList: "court"
-    case .auctionDetail(let salesId, _, _, _, _): "court/\(salesId)"
+    case .auctionSearchList:
+      return "search"
+    case .auctionDetail(let auctionID):
+      return "sales/\(auctionID)"
+    case .auctionSales(let auctionIDs):
+      let queryString = auctionIDs
+        .map { "ids=\($0)" }
+        .joined(separator: "&")
+      return "sales?\(queryString)"
+    case .auctionSearchFilter:
+      return "search/filters"
     }
   }
   
-  public var method: Network.HTTPMethod {
+  var method: Networking.HTTPMethod {
     switch self {
-    case .auctionList, .auctionDetail: .get
+    case .auctionSearchList: .get
+    case .auctionDetail: .get
+    case .auctionSales: .get
+    case .auctionSearchFilter: .get
     }
   }
+
+  var headers: [String: String]? {
+    ["Authorization": MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
+  }
   
-  public var queryParam: [String : Any]? {
+  var queryParam: [String : Any]? {
     switch self {
-    case let .auctionList(largeCategory, mediumCategory, page):
-      return [
-        "largeCategory": largeCategory,
-        "mediumCategory": mediumCategory,
-        "page": "\(page)"
-      ]
-    case .auctionDetail(_, let largeCategory, let mediumCategory, let courtName, let salesNumber):
-      return [
-        "largeCategory": "\(largeCategory)",
-        "mediumCategory": "\(mediumCategory)",
-        "courtName": "\(courtName)",
-        "salesNumber": "\(salesNumber)"
-      ]
+    case let .auctionSearchList(keyword, region, district, buildTypes, auctionFailCount, isCertified, soldOutStatus, minimumPrice, maximumPrice, nextCursor, sort, size):
+      var params: [String: Any] = [:]
+      
+      params["keyword"] = keyword ?? "unknown"
+      
+      if let region = region {
+        params["region"] = region
+      } else {
+        params["region"] = "ALL"
+      }
+      
+      if let district = district {
+        if district.lowercased() == "unknown" {
+          params["district"] = "unknown"
+        } else {
+          params["district"] = district
+        }
+      } else {
+        params["district"] = "unknown"
+      }
+      
+      // 서버 스펙(OpenAPI): `buildType` 은 `type: array` — 반복 키 직렬화.
+      // Set→Array 변환의 무작위 순서를 `.sorted()` 로 안정화한다 (URL 캐시 친화적).
+      if let buildTypes = buildTypes, !buildTypes.isEmpty {
+        params["buildType"] = buildTypes.sorted()
+      } else {
+        params["buildType"] = ["ALL"]
+      }
+
+      if let auctionFailCount = auctionFailCount, !auctionFailCount.isEmpty {
+        params["auctionFailCount"] = auctionFailCount.sorted()
+      } else {
+        params["auctionFailCount"] = ["ALL"]
+      }
+      
+      if let isCertified = isCertified {
+        params["verificationStatus"] = isCertified ? "VERIFIED" : "ALL"
+      } else {
+        params["verificationStatus"] = "ALL"
+      }
+
+      params["soldOutStatus"] = soldOutStatus?.rawValue ?? SoldOutStatus.all.rawValue
+
+      params["minimumPrice"] = minimumPrice ?? -1
+      
+      params["maximumPrice"] = maximumPrice ?? -1
+      
+      if let size {
+        params["size"] = size
+      }
+      
+      if let nextCursor {
+        params["nextCursor"] = nextCursor
+      }
+      
+      if let sort = sort {
+        params["sort"] = sort
+      } else {
+        params["sort"] = "LATEST_REGISTERED"
+      }
+      
+      return params
+    case .auctionDetail:
+      return nil
+    case .auctionSales:
+      return nil
+    case .auctionSearchFilter:
+      return nil
     }
   }
   

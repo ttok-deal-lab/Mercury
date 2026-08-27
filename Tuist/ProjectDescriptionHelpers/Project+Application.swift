@@ -21,7 +21,9 @@ extension Project {
       name: name,
       destinations: destinations,
       scripts: [
-        .prebuildScript(utility: .swiftLint, name: "Lint")
+        .prebuildScript(.swiftLint, name: "Lint"),
+        .prebuildScript(.localization, name: "Generate Localization"),
+        .prebuildScript(.swiftGen, name: "SwiftGen")
       ],
       dependencies: dependencies,
       testDependencies: testDependencies
@@ -30,7 +32,7 @@ extension Project {
     return Project(
       name: name,
       settings: .settings(
-        configurations: Configuration.configure(isOwn: true)
+        configurations: Configuration.mainAppConfigure()
       ),
       targets: targets,
       resourceSynthesizers: []
@@ -68,7 +70,7 @@ extension Project {
         base: [
           "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon"
         ],
-        configurations: Configuration.configure(isOwn: true)
+        configurations: Configuration.mainAppConfigure()
       ),
       coreDataModels: coreDataModels
     )
@@ -83,7 +85,7 @@ extension Project {
       resources: [],
       scripts: scripts,
       dependencies: [.target(name: name)] + testDependencies,
-      settings: .settings(configurations: Configuration.configure(isOwn: true))
+      settings: .settings(configurations: Configuration.mainAppConfigure())
     )
     
     return [mainTarget, testTarget]

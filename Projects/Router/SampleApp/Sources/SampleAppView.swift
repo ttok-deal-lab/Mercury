@@ -14,7 +14,7 @@ struct SampleAppView: View {
   @StateObject var coordinator = NavigationCoordinator<SampleRoute>()
   
   var body: some View {
-    NavigationStack(path: $coordinator.navigationPath) {
+    NavigationStack(path: $coordinator.rootStack) {
       AView(coordinator: coordinator.eventSubject)
         .navigationDestination(for: SampleRoute.self) { route in
           SampleViewFactory().makeView(route, navigationStream: coordinator.eventSubject)
@@ -22,7 +22,7 @@ struct SampleAppView: View {
     }
     .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
       if let route = coordinator.fullScreenRoute {
-        NavigationStack(path: $coordinator.fullScreenPath) {
+        NavigationStack(path: $coordinator.fullScreenStack) {
           SampleViewFactory().makeView(route, navigationStream: coordinator.eventSubject)
             .navigationDestination(for: SampleRoute.self) { route in
               SampleViewFactory().makeView(route, navigationStream: coordinator.eventSubject)

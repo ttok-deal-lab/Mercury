@@ -54,6 +54,7 @@
 		<string>kakaotalk</string>
 		<string>naversearchapp</string>
 		<string>naversearchthirdlogin</string>
+		<string>googlegmail</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

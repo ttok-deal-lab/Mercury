@@ -36,7 +36,7 @@ extension Project {
       resources: resources,
       scripts: targetScripts,
       dependencies: frameworkDependencies,
-      settings: .settings(configurations: Configuration.configure())
+      settings: .settings(configurations: Configuration.frameworkConfigure())
     )
     
     let sampleApp = Target.target(
@@ -50,7 +50,7 @@ extension Project {
       resources: sampleAppResources,
       entitlements: Project.commonEntitlement,
       dependencies: [.target(name: name)],
-      settings: .settings(configurations: Configuration.configure())
+      settings: .settings(configurations: Configuration.frameworkConfigure())
     )
     
     let tests = Target.target(
@@ -63,7 +63,7 @@ extension Project {
       sources: ["Tests/**"],
       resources: [],
       dependencies: [.target(name: name)] + testDependencies,
-      settings: .settings(configurations: Configuration.configure())
+      settings: .settings(configurations: Configuration.frameworkConfigure())
     )
     
     return [sources, tests, sampleApp]
@@ -94,7 +94,7 @@ extension Project {
     return Project(
       name: name,
       settings: .settings(
-        configurations: Configuration.configure()
+        configurations: Configuration.frameworkConfigure()
       ),
       targets: targets,
       resourceSynthesizers: resourceSynthesizers

@@ -7,36 +7,42 @@
 
 import Foundation
 
-import Network
+import AppFoundation
+import Domain
+import Networking
 
-public enum FCMTokenAPI {
-  case registFCMToken(userID: String, deviceID: String)
-  case loadFCMToken(userID: String)
-  case requestDeleteFCMToken(userID: String)
+enum FCMTokenAPI {
+  case registFCMToken(fcmToken: String, userID: Int, deviceID: String, deviceType: String)
+  case loadFCMToken(userID: Int)
+  case requestDeleteFCMToken(userID: Int)
 }
 
 extension FCMTokenAPI: BaseAPI {
   
-  public var baseURL: String {
-    RestAPIDefine.base(.common)
+  var baseURL: String {
+    RestAPIDefine.base(.auth)
   }
   
-  public var domain: String? {
-    "v1/fcm/"
+  var domain: String? {
+    "v1/users/"
   }
   
-  public var path: String {
+  var path: String {
     switch self {
-    case let .registFCMToken(userID, deviceID):
-      return "\(userID)/\(deviceID)"
+    case let .registFCMToken(_, userID, deviceID, _):
+      return "\(userID)/fcm/\(deviceID)"
     case let .loadFCMToken(userID):
-      return "\(userID)"
+      return "\(userID)/fcm"
     case let .requestDeleteFCMToken(userID):
-      return "\(userID)"
+      return "\(userID)/fcm"
     }
   }
   
-  public var method: Network.HTTPMethod {
+  var requestBody: [String : Any]? {
+    nil
+  }
+  
+  var method: Networking.HTTPMethod {
     switch self {
     case .registFCMToken:
       return .post
@@ -44,6 +50,23 @@ extension FCMTokenAPI: BaseAPI {
       return .get
     case .requestDeleteFCMToken:
       return .delete
+    }
+  }
+  
+  var headers: [String: String]? {
+    let accessToken: String  = MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""
+    return ["Authorization": accessToken]
+  }
+
+  var additionalHeaders: [String : String]? {
+    switch self {
+    case let .registFCMToken(fcmToken, _, _, deviceType):
+      return [
+        "FCM-TOKEN": fcmToken,
+        "DEVICE-TYPE": deviceType
+      ]
+    default:
+      return nil
     }
   }
   

@@ -6,26 +6,45 @@
 //
 
 import SwiftUI
-import Combine
 
 import AppFoundation
 import Domain
 
-final class CustomSplashModelData: ObservableObject {
-  @Inject private var signInTokenInformable: SignInTokenInformable
-  private var store = Set<AnyCancellable>()
+@Observable
+final class CustomSplashModelData {
+  var isAppFirstRun: Bool = false
   
-  init(onComplete: @escaping (Bool) -> Void) {
+  init(onComplete: @escaping (Bool) -> Void, localStorageUsecasable: LocalStorageUsecasable) {
     Task { @MainActor [weak self] in
       guard let self else { return }
-      signInTokenInformable.tokenInfo
-        .map { $0?.accessToken != nil }
-        .sink { isUserLogged in
-          onComplete(isUserLogged)
-        }
-        .store(in: &store)
+      if let isAppFirstRun: Bool = await localStorageUsecasable.get(forKey: LocalStorageKey.isAppFirst.rawValue) {
+        self.isAppFirstRun = isAppFirstRun
+      } else {
+        await localStorageUsecasable.set(false, forKey: LocalStorageKey.isAppFirst.rawValue)
+      }
+      onComplete(await Self.resolveLaunchLoginState(localStorageUsecasable: localStorageUsecasable))
     }
+    
+  }
+  
+  static func resolveLaunchLoginState(localStorageUsecasable: LocalStorageUsecasable) async -> Bool {
+    async let storedToken = localStorageUsecasable.getModel(
+      forKey: LocalStorageKey.signInTokenInfo.rawValue,
+      as: UserAccessToken.self
+    )
+    async let storedUser = localStorageUsecasable.getModel(
+      forKey: LocalStorageKey.signInUserInfo.rawValue,
+      as: UserInformation.self
+    )
+
+    let (token, user) = await (storedToken, storedUser)
+    
+    guard let token, !token.isExpired, user != nil else {
+      await localStorageUsecasable.remove(forKey: LocalStorageKey.signInTokenInfo.rawValue)
+      await localStorageUsecasable.remove(forKey: LocalStorageKey.signInUserInfo.rawValue)
+      return false
+    }
+    
+    return true
   }
 }
-
-

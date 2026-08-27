@@ -7,42 +7,75 @@
 
 import Foundation
 
-import Network
+import AppFoundation
+import Domain
+import Networking
 
-public enum AuthAPI {
+enum AuthAPI {
   case signIn(provider: String, idToken: String)
+  case signOut(userID: Int)
+  case logout(deviceID: String)
 }
 
 extension AuthAPI: BaseAPI {
-  public var baseURL: String {
+  var baseURL: String {
     RestAPIDefine.base(.auth)
   }
   
-  public var domain: String? {
-    return "v1/auth/"
+  var domain: String? {
+    switch self {
+    case .signIn, .logout:
+      return "v1/auth/"
+    case .signOut:
+      return "v1/users/"
+    }
   }
   
-  public var path: String {
+  var path: String {
     switch self {
     case let .signIn(providier, _):
       "\(providier)"
+    case let .signOut(userID):
+      "\(userID)"
+    case .logout:
+      "logout"
     }
+    
   }
   
-  public var method: Network.HTTPMethod {
+  var method: Networking.HTTPMethod {
     switch self {
     case .signIn:
       return .post
+    case .logout:
+      return .post
+    case .signOut:
+      return .delete
     }
   }
   
-  public var requestBody: [String : Any]? {
+  var requestBody: [String : Any]? {
     switch self {
     case let .signIn(_, idToken):
       return [
         "idToken": idToken
       ]
+    default: return nil
     }
   }
-    
+  
+  var additionalHeaders: [String: String]? {
+    switch self {
+    case .signOut:
+      return ["Authorization": MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
+    case let .logout(deviceID):
+      return [
+        "Authorization": MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? "",
+        "DEVICE-ID": deviceID
+      ]
+    default:
+      return nil
+    }
+  }
+
 }

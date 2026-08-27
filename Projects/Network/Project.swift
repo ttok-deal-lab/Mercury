@@ -9,10 +9,13 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.framework(
-  name: "Network",
+  name: "Networking",
   platform: .iOS,
   dependencies: [
-    .appFoundation
+    .appFoundation,
+    .pulse,
+    .pulseProxy,
+    .pulseUI
   ],
   testDependencies: [
     

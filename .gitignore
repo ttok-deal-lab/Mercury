@@ -53,7 +53,6 @@ Tuist/Package.resolved
 
 .build/
 
-
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
@@ -72,3 +71,23 @@ fastlane/.env.default
 Gemfile.lock
 Tuist/.DS_Store
 **/.DS_Store
+Projects/**/Derived
+
+# Claude
+CLAUDE.md
+.claude/
+agent_docs/
+
+# OMC (Ralph runtime state)
+.omc/
+.omx/
+.codex/*
+!.codex/agents/
+!.codex/agents/**
+!.codex/skills/
+!.codex/skills/**
+.codex/skills/.system/**
+!.codex/prompts/
+!.codex/prompts/**
+.codex
+AGENTS.md

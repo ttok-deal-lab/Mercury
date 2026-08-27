@@ -9,24 +9,68 @@ import SwiftUI
 import Combine
 
 import Router
-import Auction
+import AuctionHome
+import AuctionDetail
 import Onboard
 import Domain
 import Infrastructure
+import MyPage
+import Setting
+import Search
+
+import PulseUI
 
 struct RootViewFactory: ViewFactory {
   
   @ViewBuilder
   func makeView(
-    _ route: FeatureRoute,
-    navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>
+    _ route: FeatureRoute
   ) -> some View {
     switch route {
     case .onboard(let signInStep):
-      OnboardingFactory()
-        .makeView(signInStep, navigationStream: navigationStream)
-    case .auction:
-      EmptyView()
+      OnboardingFactory(
+        serviceSignInUsecasable: ServiceSignInUsecase(repository: ServiceSignInRepository()),
+        locationUsecasable: LocationUsecase()
+      )
+      .makeView(signInStep)
+    case .auctionDetail(let auctionStep):
+      AuctionDetailViewFactory<MapViewWrapperView>(
+        auctionDetailUsecase: AuctionDetailUsecase(auctionDetailRepositorable: AuctionDetailRepository()),
+        auctionInterestUsecase: AuctionInterestUsecase(repository: AuctionInterestRepository())
+      )
+      .makeView(auctionStep)
+    case .networkConsole:
+      ConsoleView()
+    case .setting(let settingStep):
+      SettingViewFactory(
+        settingUsecase: SettingUsecase(repository: SettingRepository())
+      )
+      .makeView(settingStep)
+      
+    case .terms(let termsRoute):
+      TermsViewFactory()
+        .makeView(termsRoute)
+    case .recentViewList(let myPageStep):
+      RecentSalesViewFactory(
+        recentViewListUsecase: RecentSalesUsecase(
+          repository: RecentSalesRepository(),
+          localStorageUseCase: LocalStorageUsecase(repository: UserDefaultsStoreRepository())
+        ),
+        auctionInterestUsecase: AuctionInterestUsecase(
+          repository: AuctionInterestRepository()
+        )
+      )
+      .makeView(myPageStep)
+    case .notification:
+      NotificationView()
+      
+    case .search(let searchStep):
+      SearchViewFactory(
+        auctionSalesListUsecase: AuctionSalesListUsecase(repository: AuctionSalesListRepository()),
+        auctionSearchFilterUsecase: AuctionSearchFilterUsecase(repository: AuctionSearchFilterRepository()),
+        localStoargeUsecase: LocalStorageUsecase(repository: UserDefaultsStoreRepository())
+      )
+      .makeView(searchStep)
     }
   }
 }

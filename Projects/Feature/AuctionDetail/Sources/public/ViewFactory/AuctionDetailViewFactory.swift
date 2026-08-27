@@ -1,0 +1,40 @@
+//
+//  AuctionDetailViewFactory.swift
+//  Auction
+//
+//  Created by 송하민 on 12/29/24.
+//
+
+import Foundation
+import SwiftUI
+import Combine
+
+import Router
+import Domain
+
+public struct AuctionDetailViewFactory<MapView: MapViewable>: ViewFactory {
+  
+  private let auctionDetailUsecase: AuctionDetailUsecase
+  private let auctionInterestUsecase: any AuctionInterestUsecasable
+  
+  public init(
+    auctionDetailUsecase: AuctionDetailUsecase,
+    auctionInterestUsecase: any AuctionInterestUsecasable
+  ) {
+    self.auctionDetailUsecase = auctionDetailUsecase
+    self.auctionInterestUsecase = auctionInterestUsecase
+  }
+  
+  public func makeView(
+    _ auctionRoute: AuctionDetailRoute
+  ) -> some View {
+    switch auctionRoute.route {
+    case .auctionDetail(let auctionID):
+      AuctionDetailView<MapView>(
+        auctionID: auctionID,
+        auctionDetailUsecase: self.auctionDetailUsecase,
+        auctionInterestUsecase: self.auctionInterestUsecase
+      )
+    }
+  }
+}

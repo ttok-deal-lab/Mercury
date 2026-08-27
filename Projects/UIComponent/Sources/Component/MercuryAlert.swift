@@ -71,7 +71,7 @@ public struct MercuryAlertView: View {
   public var body: some View {
     if let type = model.type {
       ZStack {
-        Asset.Colors.gray10TextWhite.color
+        Asset.Colors.neutralWhite.color
         VStack(spacing: .zero) {
           switch type {
           case .confirmable(let information):
@@ -121,14 +121,14 @@ public struct MercuryAlertView: View {
         HStack(spacing: .zero) {
           Text(information.title)
             .fonts(.titleLargeBold)
-            .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+            .foregroundStyle(Asset.Colors.neutral.color)
           Spacer()
         }
         .padding(.horizontal, 24)
         
         HStack(spacing: .zero) {
           Text(information.description)
-            .foregroundStyle(Asset.Colors.gray400TextSubText.color)
+            .foregroundStyle(Asset.Colors.neutralSubtler.color)
             .fonts(.bodyMediumMedium)
           Spacer()
         }
@@ -154,18 +154,20 @@ public struct MercuryAlertView: View {
         HStack(spacing: .zero) {
           Text(information.title)
             .fonts(.titleLargeBold)
-            .foregroundStyle(Asset.Colors.gray700TextDefault.color)
+            .foregroundStyle(Asset.Colors.neutral.color)
           Spacer()
         }
         .padding(.horizontal, 24)
         
-        HStack(spacing: .zero) {
-          Text(information.description)
-            .foregroundStyle(Asset.Colors.gray400TextSubText.color)
-            .fonts(.bodyMediumMedium)
-          Spacer()
+        if information.description != "" {
+          HStack(spacing: .zero) {
+            Text(information.description)
+              .foregroundStyle(Asset.Colors.neutralSubtler.color)
+              .fonts(.bodyMediumMedium)
+            Spacer()
+          }
+          .padding(.horizontal, 24)
         }
-        .padding(.horizontal, 24)
       }
       .padding(.bottom, 24)
       

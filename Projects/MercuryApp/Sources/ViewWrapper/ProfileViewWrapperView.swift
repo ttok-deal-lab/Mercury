@@ -8,15 +8,22 @@
 import SwiftUI
 import Combine
 
+import Domain
 import Router
 import MyPage
+import Infrastructure
 
 public struct MyPageViewWrapperView: View, MyPageViewable {
   
   let hostView: MyPageView
   
-  public init(navigationStream: PassthroughSubject<NavigationEvent<FeatureRoute>, Never>) {
-    self.hostView = MyPageView(navigationStream: navigationStream)
+  public init() {
+    self.hostView = MyPageView(
+      userProfileUsecase: MyPageUsecase(
+        repository: MyPageRepository(),
+        mailManager: MailManager()
+      )
+    )
   }
   
   public var body: some View {

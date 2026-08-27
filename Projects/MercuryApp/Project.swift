@@ -9,7 +9,7 @@ let project = Project.app(
   dependencies: [
     .appFoundation,
     .uiComponent,
-    .network,
+    .networking,
     .router,
     .domain,
     .infrastructure,
@@ -18,17 +18,23 @@ let project = Project.app(
     .feature(target: "Interest"),
     .feature(target: "Report"),
     .feature(target: "MyPage"),
-    .feature(target: "Analysis"),
-    .feature(target: "Auction"),
+    .feature(target: "AuctionHome"),
+    .feature(target: "AuctionDetail"),
     .feature(target: "Comment"),
     .feature(target: "Map"),
     .feature(target: "Onboard"),
     .feature(target: "SignUp"),
+    .feature(target: "Setting"),
+    .feature(target: "Search"),
     .firebaseCore,
     .firebaseDatabase,
     .firebaseMessaging,
     .firebaseCrashlytics,
-    .firebaseAnalytics
+    .firebaseAnalytics,
+    .firebaseRemoteConfig,
+    .pulse,
+    .pulseProxy,
+    .pulseUI
   ],
   testDependencies: []
 )

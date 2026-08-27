@@ -1,9 +1,6 @@
-git_url(ENV["MATCH_GIT_BRANCH"])
+git_url("git@github.com:naldal/MercuryMatch.git")
 storage_mode("git")
 type("development")
 
 username(ENV['APPLE_ID'])
 app_identifier(ENV['APP_IDENTIFIER'])
-git_basic_authorization(ENV['GIT_PRIVATE_KEY'])
-git_private_key(ENV['GIT_PRIVATE_KEY'])
-
