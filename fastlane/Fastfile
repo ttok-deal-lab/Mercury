@@ -55,7 +55,8 @@ platform :ios do
     match(
       storage_mode: "git",
       type: "appstore",
-      readonly: true,
+      # 만료된 배포 인증서는 CI에서 새 인증서/프로파일로 갱신할 수 있어야 한다.
+      readonly: false,
       skip_docs: true,
       generate_apple_certs: false,
       app_identifier: "#{APP_IDENTIFIER}",
