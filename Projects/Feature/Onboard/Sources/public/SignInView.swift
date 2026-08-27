@@ -56,6 +56,11 @@ public struct SignInView: View {
   
   @MainActor
   private func handleSignIn(with provider: OauthProvider) async {
+    guard NetworkMonitor.shared.isConnected else {
+      self.error = MercuryError(.failToConnectInternet)
+      return
+    }
+
     do {
       try await modelData.oauthSignIn(provider)
       onComplete?()
