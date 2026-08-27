@@ -12,7 +12,6 @@ import Domain
 
 enum AuctionDetailTabTitles: String, CaseIterable, Identifiable, Hashable {
   case auction = "경매정보"
-  case rights = "권리분석"
   var id: Self { self }
 }
 
@@ -29,8 +28,6 @@ struct AuctionDetailTabPagerContainerView: View {
       switch tab {
       case .auction:
         AuctionDetailTabBriefCardView(auctionDetailInfo: auctionDetailInfo)
-      case .rights:
-        AuctionDetailTabRightsAnalysisView(rightsAnalysis: auctionDetailInfo.rightsAnalysis)
       }
     }
   }
