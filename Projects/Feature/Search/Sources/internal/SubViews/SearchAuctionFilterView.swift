@@ -48,7 +48,7 @@ struct SearchAuctionFilterView: View {
       case .certified:
         modelData.currentAuctionFilter.isCertified.toggle()
       case .bidWon:
-        modelData.currentAuctionFilter.isBidWon.toggle()
+        modelData.currentAuctionFilter.soldOutStatus.selectNext()
       default:
         return
       }

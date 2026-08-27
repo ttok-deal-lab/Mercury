@@ -198,7 +198,7 @@ extension SearchModelData {
     case .price:
       return currentAuctionFilter.minimumPrice != nil || currentAuctionFilter.maximumPrice != nil
     case .bidWon:
-      return currentAuctionFilter.isBidWon
+      return currentAuctionFilter.soldOutStatus != .all
     }
   }
   
@@ -239,6 +239,8 @@ extension SearchModelData {
     case .price:
       return makePriceString() ?? type.defaultTitle
       
+    case .bidWon:
+      return currentAuctionFilter.soldOutStatus.displayName
     default:
       return type.defaultTitle
     }

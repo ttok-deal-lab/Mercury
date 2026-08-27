@@ -35,9 +35,13 @@ actor SampleAuctionSalesListUsecase: AuctionSalesListUsecasable {
       }
     }
 
-    // 서버의 soldOutStatus=SOLD_OUT 과 동일하게 매각 완료 매물만 남긴다.
-    if filter?.isBidWon == true {
-      items = items.filter { $0.isSoldOut }
+    switch filter?.soldOutStatus {
+    case .soldOut:
+      items = items.filter(\.isSoldOut)
+    case .notSoldOut:
+      items = items.filter { !$0.isSoldOut }
+    case .all, .none:
+      break
     }
 
     return items
@@ -49,7 +53,7 @@ actor SampleAuctionSalesListUsecase: AuctionSalesListUsecasable {
       filter?.region?.code ?? "ALL",
       filter?.district?.code ?? "unknown",
       buildingTypes,
-      filter?.isBidWon == true ? "SOLD_OUT" : "ALL",
+      filter?.soldOutStatus.rawValue ?? "ALL",
       filter?.sort?.code ?? "LATEST_REGISTERED"
     ].joined(separator: "|")
   }

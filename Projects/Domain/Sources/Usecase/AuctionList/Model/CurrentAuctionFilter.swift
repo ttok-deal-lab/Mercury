@@ -6,6 +6,28 @@
 //
 
 /// 적용중인 필터
+public enum SoldOutStatus: String, Sendable {
+  case all = "ALL"
+  case soldOut = "SOLD_OUT"
+  case notSoldOut = "NOT_SOLD_OUT"
+
+  public var displayName: String {
+    switch self {
+    case .all: "낙찰 여부"
+    case .soldOut: "낙찰 완료"
+    case .notSoldOut: "진행 중"
+    }
+  }
+
+  public mutating func selectNext() {
+    self = switch self {
+    case .all: .notSoldOut
+    case .notSoldOut: .soldOut
+    case .soldOut: .all
+    }
+  }
+}
+
 public struct CurrentAuctionFilter {
   /// 검색어
   public var keyword: String?
@@ -25,8 +47,8 @@ public struct CurrentAuctionFilter {
   public var sort: Option?
   /// 인증여부
   public var isCertified: Bool = false
-  /// 낙찰여부
-  public var isBidWon: Bool = false
+  /// 낙찰 여부 (전체 / 낙찰 완료 / 진행 중)
+  public var soldOutStatus: SoldOutStatus = .all
   
   public var isEmpty: Bool {
     self.keyword == nil &&
@@ -37,7 +59,7 @@ public struct CurrentAuctionFilter {
     self.maximumPrice == nil &&
     self.sort == nil &&
     self.isCertified == false &&
-    self.isBidWon == false
+    self.soldOutStatus == .all
   }
   
   public init() {
@@ -53,6 +75,6 @@ public struct CurrentAuctionFilter {
     self.maximumPrice = nil
     self.sort = nil
     self.isCertified = false
-    self.isBidWon = false
+    self.soldOutStatus = .all
   }
 }

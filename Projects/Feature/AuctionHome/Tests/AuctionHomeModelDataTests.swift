@@ -46,19 +46,51 @@ final class AuctionHomeModelDataTests: XCTestCase {
     )
 
     try await modelData.fetchSearchFilters()
-    modelData.currentAuctionFilter.isBidWon = true
+    modelData.currentAuctionFilter.soldOutStatus = .soldOut
 
     await modelData.loadAuctionSalesList()
 
     // 낙찰 여부가 실제로 하위 계층까지 전달되어야 한다.
     let receivedFilter = await listUsecase.receivedFilter()
-    XCTAssertEqual(receivedFilter?.isBidWon, true)
+    XCTAssertEqual(receivedFilter?.soldOutStatus, .soldOut)
 
     // 매각 완료 매물만 남는다. (아파트 6건 + 빌라 2건)
     XCTAssertEqual(modelData.filteredItemCount, 8)
     XCTAssertEqual(modelData.auctionSalesItems.count, 8)
     XCTAssertTrue(modelData.auctionSalesItems.allSatisfy { $0.isSoldOut })
     XCTAssertTrue(modelData.isFilterActive(.bidWon))
+  }
+
+  func testNotSoldOutFilterExcludesSoldOutItems() async throws {
+    let modelData = AuctionHomeModelData(
+      localStorageUsecase: NoopLocalStorageUsecase(),
+      auctionListUsecase: StubAuctionSalesListUsecase(),
+      auctionSearchFilterUsecase: StubAuctionSearchFilterUsecase(),
+      auctionInterestUsecase: StubAuctionInterestUsecase()
+    )
+
+    try await modelData.fetchSearchFilters()
+    modelData.currentAuctionFilter.soldOutStatus = .notSoldOut
+
+    await modelData.loadAuctionSalesList()
+
+    XCTAssertEqual(modelData.filteredItemCount, 24)
+    XCTAssertTrue(modelData.auctionSalesItems.allSatisfy { !$0.isSoldOut })
+    XCTAssertTrue(modelData.isFilterActive(.bidWon))
+  }
+
+  func testInitialLoadFailureSetsLoadError() async throws {
+    let modelData = AuctionHomeModelData(
+      localStorageUsecase: NoopLocalStorageUsecase(),
+      auctionListUsecase: FailingAuctionSalesListUsecase(),
+      auctionSearchFilterUsecase: StubAuctionSearchFilterUsecase(),
+      auctionInterestUsecase: StubAuctionInterestUsecase()
+    )
+
+    await modelData.loadAuctionSalesList()
+
+    XCTAssertNotNil(modelData.loadError)
+    XCTAssertTrue(modelData.auctionSalesItems.isEmpty)
   }
 
   func testTurningOffBidWonFilterRestoresFullList() async throws {
@@ -70,11 +102,11 @@ final class AuctionHomeModelDataTests: XCTestCase {
     )
 
     try await modelData.fetchSearchFilters()
-    modelData.currentAuctionFilter.isBidWon = true
+    modelData.currentAuctionFilter.soldOutStatus = .soldOut
     await modelData.loadAuctionSalesList()
     XCTAssertEqual(modelData.filteredItemCount, 8)
 
-    modelData.currentAuctionFilter.isBidWon = false
+    modelData.currentAuctionFilter.soldOutStatus = .all
     await modelData.loadAuctionSalesList()
 
     XCTAssertEqual(modelData.filteredItemCount, 32)
@@ -120,9 +152,13 @@ private actor StubAuctionSalesListUsecase: AuctionSalesListUsecasable {
       }
     }
 
-    // 서버의 soldOutStatus=SOLD_OUT 과 동일하게 매각 완료 매물만 남긴다.
-    if filter?.isBidWon == true {
-      items = items.filter { $0.isSoldOut }
+    switch filter?.soldOutStatus {
+    case .soldOut:
+      items = items.filter(\.isSoldOut)
+    case .notSoldOut:
+      items = items.filter { !$0.isSoldOut }
+    case .all, .none:
+      break
     }
 
     return items
@@ -134,9 +170,19 @@ private actor StubAuctionSalesListUsecase: AuctionSalesListUsecasable {
       filter?.region?.code ?? "ALL",
       filter?.district?.code ?? "unknown",
       buildingTypes,
-      filter?.isBidWon == true ? "SOLD_OUT" : "ALL",
+      filter?.soldOutStatus.rawValue ?? "ALL",
       filter?.sort?.code ?? "LATEST_REGISTERED"
     ].joined(separator: "|")
+  }
+}
+
+private actor FailingAuctionSalesListUsecase: AuctionSalesListUsecasable {
+  func fetchAuctionSales(filter: CurrentAuctionFilter?) async throws -> (auctionCount: Int?, items: [AuctionSalesItem]) {
+    throw MercuryError(.failToConnectInternet)
+  }
+
+  func fetchNextAuctionSales(filter: CurrentAuctionFilter?) async throws -> [AuctionSalesItem] {
+    throw MercuryError(.failToConnectInternet)
   }
 }
 
