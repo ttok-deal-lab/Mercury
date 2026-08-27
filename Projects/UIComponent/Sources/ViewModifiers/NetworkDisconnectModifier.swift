@@ -16,6 +16,7 @@ import AppFoundation
 /// 화면을 통째로 덮는 프레젠테이션 컨텍스트마다(루트, fullScreenCover 내부) 개별로 붙인다.
 struct NetworkDisconnectModifier: ViewModifier {
   private let networkMonitor = NetworkMonitor.shared
+  private let presenter = NetworkDisconnectPresenter.shared
   private let isEnabled: Bool
   @State private var isShowNetworkDisconnect: Bool = false
 
@@ -34,6 +35,10 @@ struct NetworkDisconnectModifier: ViewModifier {
         syncPresentation()
       }
       .onChange(of: isEnabled) { _, _ in
+        syncPresentation()
+      }
+      // 버튼 탭 등으로 재표시를 요청한 경우. 오프라인에서 시트를 내려버린 뒤에도 다시 띄운다.
+      .onChange(of: presenter.requestID) { _, _ in
         syncPresentation()
       }
       .sheet(isPresented: $isShowNetworkDisconnect) {

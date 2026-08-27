@@ -56,10 +56,8 @@ public struct SignInView: View {
   
   @MainActor
   private func handleSignIn(with provider: OauthProvider) async {
-    guard NetworkMonitor.shared.isConnected else {
-      self.error = MercuryError(.failToConnectInternet)
-      return
-    }
+    // 오프라인 안내는 앱 전역에서 쓰는 네트워크 끊김 바텀시트로 통일한다.
+    guard NetworkDisconnectPresenter.shared.ensureConnected() else { return }
 
     do {
       try await modelData.oauthSignIn(provider)

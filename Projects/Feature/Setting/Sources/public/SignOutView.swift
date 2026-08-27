@@ -19,7 +19,6 @@ public struct SignOutView: View {
   @Inject private var tokenInvalidator: AccessTokenInvalidatable
   @State private var modelData: SettingModelData
   @State private var isChecked: Bool = false
-  @State private var signOutError: Error?
   
   public init(settingUsecase: SettingUsecasable) {
     self.modelData = SettingModelData(
@@ -90,6 +89,8 @@ public struct SignOutView: View {
         
         MercuryButton("탈퇴하기") {
           guard isChecked else { return }
+          // 오프라인이면 안내 시트만 띄우고 요청은 보내지 않는다.
+          guard NetworkDisconnectPresenter.shared.ensureConnected() else { return }
           Task {
             do {
               try await modelData.signOut()
@@ -97,7 +98,9 @@ public struct SignOutView: View {
               // 루트를 SignInView 로 되돌린다.
               tokenInvalidator.invalidateAccessToken()
             } catch {
-              signOutError = error
+              // 요청 도중 끊긴 경우에도 같은 안내 시트로 알린다.
+              NetworkDisconnectPresenter.shared.ensureConnected()
+              Log.debug("탈퇴 실패: \(error)")
             }
           }
         }
@@ -109,7 +112,6 @@ public struct SignOutView: View {
     }
     .background(Asset.Colors.neutralWeak.color)
     .navigationBarBackButtonHidden()
-    .alert(error: $signOutError)
   }
 }
 
