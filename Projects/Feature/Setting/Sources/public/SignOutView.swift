@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+import AppFoundation
 import UIComponent
 import Domain
 import Router
@@ -15,8 +16,10 @@ public struct SignOutView: View {
   
   // MARK: - private property
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
+  @Inject private var tokenInvalidator: AccessTokenInvalidatable
   @State private var modelData: SettingModelData
   @State private var isChecked: Bool = false
+  @State private var signOutError: Error?
   
   public init(settingUsecase: SettingUsecasable) {
     self.modelData = SettingModelData(
@@ -86,9 +89,15 @@ public struct SignOutView: View {
         Spacer()
         
         MercuryButton("탈퇴하기") {
-          if isChecked {
-            Task {
+          guard isChecked else { return }
+          Task {
+            do {
               try await modelData.signOut()
+              // 토큰·유저정보·로컬 캐시를 모두 비우면 MainView 가 토큰 스트림을 받아
+              // 루트를 SignInView 로 되돌린다.
+              tokenInvalidator.invalidateAccessToken()
+            } catch {
+              signOutError = error
             }
           }
         }
@@ -100,6 +109,7 @@ public struct SignOutView: View {
     }
     .background(Asset.Colors.neutralWeak.color)
     .navigationBarBackButtonHidden()
+    .alert(error: $signOutError)
   }
 }
 
