@@ -38,6 +38,13 @@ public struct TermsView: View {
           onItemTap(termsType: type)
         }
       }
+
+      Text("경매 데이터·사진 출처: 대한민국법원 법원경매정보\n저작권법 제24조의2에 따른 공공저작물 이용")
+        .fonts(.bodyMicroRegular)
+        .foregroundStyle(Asset.Colors.neutralSubtler.color)
+        .multilineTextAlignment(.leading)
+        .padding(.horizontal, 20)
+        .padding(.top, 20)
       
       Spacer()
     }
