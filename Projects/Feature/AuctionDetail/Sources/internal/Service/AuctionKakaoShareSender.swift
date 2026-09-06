@@ -19,7 +19,11 @@ import Domain
 enum AuctionShareLink {
   static func url(for auctionID: Int) -> URL {
     // swiftlint:disable:next force_unwrapping
+    #if DEBUG
     URL(string: "https://ttok-front-dev.estateslug.com/detail/\(auctionID)")!
+    #else
+    URL(string: "https://estateslug.com/detail/\(auctionID)")!
+    #endif
   }
 }
 
