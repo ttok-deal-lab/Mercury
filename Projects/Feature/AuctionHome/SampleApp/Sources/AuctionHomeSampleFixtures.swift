@@ -27,13 +27,24 @@ actor SampleAuctionSalesListUsecase: AuctionSalesListUsecasable {
   }
 
   private func filteredItems(for filter: CurrentAuctionFilter?) -> [AuctionSalesItem] {
-    guard let selectedTypes = filter?.buildingTypeCodes, !selectedTypes.isEmpty else {
-      return allItems
+    var items = allItems
+
+    if let selectedTypes = filter?.buildingTypeCodes, !selectedTypes.isEmpty {
+      items = items.filter { item in
+        !selectedTypes.isDisjoint(with: Set(item.salesCategories.map(\.rawValue)))
+      }
     }
 
-    return allItems.filter { item in
-      !selectedTypes.isDisjoint(with: Set(item.salesCategories.map(\.rawValue)))
+    switch filter?.soldOutStatus {
+    case .soldOut:
+      items = items.filter(\.isSoldOut)
+    case .notSoldOut:
+      items = items.filter { !$0.isSoldOut }
+    case .all, .none:
+      break
     }
+
+    return items
   }
 
   private func filterKey(for filter: CurrentAuctionFilter?) -> String {
@@ -42,6 +53,7 @@ actor SampleAuctionSalesListUsecase: AuctionSalesListUsecasable {
       filter?.region?.code ?? "ALL",
       filter?.district?.code ?? "unknown",
       buildingTypes,
+      filter?.soldOutStatus.rawValue ?? "ALL",
       filter?.sort?.code ?? "LATEST_REGISTERED"
     ].joined(separator: "|")
   }
@@ -91,7 +103,8 @@ enum SampleAuctionDataFactory {
         address: "서울특별시 강남구 샘플로 \(index)",
         buildingName: "아파트 \(index)호",
         category: .apartment,
-        price: 500_000_000 + index * 1_000_000
+        price: 500_000_000 + index * 1_000_000,
+        isSoldOut: index % 4 == 0
       )
     }
 
@@ -101,7 +114,8 @@ enum SampleAuctionDataFactory {
         address: "서울특별시 마포구 빌라길 \(index)",
         buildingName: "빌라 \(index)호",
         category: .villa,
-        price: 300_000_000 + index * 500_000
+        price: 300_000_000 + index * 500_000,
+        isSoldOut: index % 4 == 0
       )
     }
 
@@ -111,7 +125,8 @@ enum SampleAuctionDataFactory {
         address: "서울특별시 서초구 오피스텔로 \(index)",
         buildingName: "오피스텔 \(index)호",
         category: .office_tel,
-        price: 400_000_000 + index * 750_000
+        price: 400_000_000 + index * 750_000,
+        isSoldOut: index % 4 == 0
       )
     }
 
@@ -123,7 +138,8 @@ enum SampleAuctionDataFactory {
     address: String,
     buildingName: String,
     category: AuctionSalesCategory,
-    price: Int
+    price: Int,
+    isSoldOut: Bool
   ) -> AuctionSalesItem {
     AuctionSalesItem(
       id: id,
@@ -138,7 +154,7 @@ enum SampleAuctionDataFactory {
       zzimCount: id % 5,
       registerDate: Date().addingTimeInterval(-86400 * 2),
       verified: id % 2 == 0,
-      isSoldOut: false
+      isSoldOut: isSoldOut
     )
   }
 }

@@ -25,9 +25,12 @@ public struct SettingView: View {
   private var isNeedUpdate: Bool = true
   @Inject private var accessTokenManager: AccessTokenManagable
   @Inject private var configService: AppConfigService
+  @State private var modelData: SettingModelData
   
   // MARK: - life cycle
-  public init() { }
+  public init(settingUsecase: SettingUsecasable) {
+    self.modelData = SettingModelData(settingUsecase: settingUsecase)
+  }
   
   public var body: some View {
     ZStack {
@@ -132,8 +135,13 @@ public struct SettingView: View {
                   confirmButtonTitle: L10n.commonYes,
                   cancelButtonTitle: L10n.commonNo,
                   onConfirm: {
-                    accessTokenManager.removeAccessToken()
-                    coordinator.popToRoot()
+                    Task {
+                      // 로컬 로그아웃은 기존처럼 서버 응답과 무관하게 완료한다.
+                      // 401은 repository에서 이미 로그아웃된 상태로 흡수한다.
+                      _ = try? await modelData.logout()
+                      accessTokenManager.removeAccessToken()
+                      coordinator.popToRoot()
+                    }
                   },
                   onCancel: { }
                 )

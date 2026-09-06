@@ -12,7 +12,7 @@ import Domain
 import Networking
 
 enum AuctionAPI: BaseAPI {
-  case auctionSearchList(keyword: String?, region: String?, district: String?, buildTypes: [String]?, auctionFailCount: [String]?, isCertified: Bool?, minimumPrice: Int?, maximumPrice: Int?, nextCursor: String?, sort: String?, size: Int?)
+  case auctionSearchList(keyword: String?, region: String?, district: String?, buildTypes: [String]?, auctionFailCount: [String]?, isCertified: Bool?, soldOutStatus: SoldOutStatus?, minimumPrice: Int?, maximumPrice: Int?, nextCursor: String?, sort: String?, size: Int?)
   case auctionDetail(_ auctionID: Int)
   case auctionSales(auctionIDs: [Int])
   case auctionSearchFilter
@@ -60,7 +60,7 @@ enum AuctionAPI: BaseAPI {
   
   var queryParam: [String : Any]? {
     switch self {
-    case let .auctionSearchList(keyword, region, district, buildTypes, auctionFailCount, isCertified, minimumPrice, maximumPrice, nextCursor, sort, size):
+    case let .auctionSearchList(keyword, region, district, buildTypes, auctionFailCount, isCertified, soldOutStatus, minimumPrice, maximumPrice, nextCursor, sort, size):
       var params: [String: Any] = [:]
       
       params["keyword"] = keyword ?? "unknown"
@@ -100,7 +100,9 @@ enum AuctionAPI: BaseAPI {
       } else {
         params["verificationStatus"] = "ALL"
       }
-      
+
+      params["soldOutStatus"] = soldOutStatus?.rawValue ?? SoldOutStatus.all.rawValue
+
       params["minimumPrice"] = minimumPrice ?? -1
       
       params["maximumPrice"] = maximumPrice ?? -1

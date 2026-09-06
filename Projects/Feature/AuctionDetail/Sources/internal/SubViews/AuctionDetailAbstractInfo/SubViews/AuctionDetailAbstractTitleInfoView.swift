@@ -71,9 +71,11 @@ struct AuctionDetailAbstractTitleInfoView: View {
   
   @ViewBuilder
   private func exlusiveAreaView() -> some View {
-    Text(L10n.auctionDetailExclusiveArea(auctionDetailInfo.exclusiveArea))
-      .fonts(.bodyMiniMedium)
-      .foregroundStyle(Asset.Colors.neutralSubtler.color)
+    if auctionDetailInfo.exclusiveArea > 0 {
+      Text(L10n.auctionDetailExclusiveArea(auctionDetailInfo.exclusiveArea))
+        .fonts(.bodyMiniMedium)
+        .foregroundStyle(Asset.Colors.neutralSubtler.color)
+    }
   }
   /// 사건 번호
   private func auctionNumberView() -> some View {

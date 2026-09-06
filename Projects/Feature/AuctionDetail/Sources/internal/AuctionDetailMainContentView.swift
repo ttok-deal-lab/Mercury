@@ -20,7 +20,7 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
     if let auctionDetailItem = modelData.auctionDetailItem {
       mainContentView(auctionDetailItem: auctionDetailItem)
     } else if modelData.loadError != nil {
-      AuctionDetailErrorView {
+      AuctionDetailErrorView(isAuctionUnavailable: modelData.isAuctionUnavailable) {
         Task { await modelData.retryLoadAuctionDetail() }
       }
     } else {
@@ -62,7 +62,7 @@ struct AuctionDetailMainContentView<MapView: MapViewable>: View {
           AuctionDetailHistoryView(
             auctionStartDateText: auctionDetailItem.salesOpenDate.toKoreanDateString(),
             distributionDeadlineText: auctionDetailItem.distributionRequiredDeadlineDate.toKoreanDateString(),
-            investigationDateText: auctionDetailItem.conditionReport.investigationDate.toKoreanDateString(),
+            investigationDateText: auctionDetailItem.conditionReport.investigationDate?.toKoreanDateString() ?? "-",
             salesDetails: modelData.sortedSalesDetailByTime()
           )
           

@@ -13,9 +13,21 @@ import Domain
 
 struct AuctionDetailAbstractTopCardView: View {
   let auctionDetailInfo: AuctionDetail
+
+  /// 상단 요약은 저장 당시의 루트 가격보다 최신 매각기일의 저감 가격을 우선한다.
+  private var currentLowestSalesPrice: Int {
+    auctionDetailInfo.salesDetails
+      .filter {
+        if case .sale = $0.type { return true }
+        return false
+      }
+      .sorted { ($0.timeStamp ?? .distantPast) > ($1.timeStamp ?? .distantPast) }
+      .compactMap(\.leastSalesPrice)
+      .first ?? auctionDetailInfo.lowestSalesPrice
+  }
   
   private var priceDifference: Int {
-    auctionDetailInfo.lowestSalesPrice - auctionDetailInfo.appraisalPrice
+    currentLowestSalesPrice - auctionDetailInfo.appraisalPrice
   }
   
   private var priceDifferenceRate: Double {
@@ -64,7 +76,7 @@ struct AuctionDetailAbstractTopCardView: View {
           .fonts(.bodySmallMedium)
           .foregroundStyle(Asset.Colors.neutralSubtler.color)
         Spacer()
-        Text(auctionDetailInfo.lowestSalesPrice.toKoreanCurrency())
+        Text(currentLowestSalesPrice.toKoreanCurrency())
           .fonts(.titleMediumBold)
           .foregroundStyle(Asset.Colors.neutral.color)
       }

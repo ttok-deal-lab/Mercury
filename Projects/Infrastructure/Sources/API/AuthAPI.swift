@@ -14,6 +14,7 @@ import Networking
 enum AuthAPI {
   case signIn(provider: String, idToken: String)
   case signOut(userID: Int)
+  case logout(deviceID: String)
 }
 
 extension AuthAPI: BaseAPI {
@@ -23,7 +24,7 @@ extension AuthAPI: BaseAPI {
   
   var domain: String? {
     switch self {
-    case .signIn:
+    case .signIn, .logout:
       return "v1/auth/"
     case .signOut:
       return "v1/users/"
@@ -36,6 +37,8 @@ extension AuthAPI: BaseAPI {
       "\(providier)"
     case let .signOut(userID):
       "\(userID)"
+    case .logout:
+      "logout"
     }
     
   }
@@ -43,6 +46,8 @@ extension AuthAPI: BaseAPI {
   var method: Networking.HTTPMethod {
     switch self {
     case .signIn:
+      return .post
+    case .logout:
       return .post
     case .signOut:
       return .delete
@@ -63,6 +68,11 @@ extension AuthAPI: BaseAPI {
     switch self {
     case .signOut:
       return ["Authorization": MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? ""]
+    case let .logout(deviceID):
+      return [
+        "Authorization": MercuryContainer.shared.resolve(SignInInformationReadable.self).accessToken?.value ?? "",
+        "DEVICE-ID": deviceID
+      ]
     default:
       return nil
     }

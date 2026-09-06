@@ -100,14 +100,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>Our app need your permission to use your camera phone</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>내 위치 확인을 위해 권한이 필요합니다.</string>
-	<key>NSLocationUsageDescription</key>
-	<string>내 위치 확인을 위해 권한이 필요합니다.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>내 위치 확인을 위해 권한이 필요합니다.</string>
+	<string>민달팽이는 경매 물건의 위치를 지도에서 확인할 때 사용자의 현재 위치를 표시하고 지도 중심을 현재 위치로 이동하기 위해 위치 정보를 사용합니다. 예: 지도에서 현재 위치를 확인하면 내 위치가 지도에 표시됩니다.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

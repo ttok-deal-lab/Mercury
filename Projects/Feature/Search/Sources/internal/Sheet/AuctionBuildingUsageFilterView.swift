@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+import AppFoundation
 import UIComponent
 import Domain
 
@@ -42,7 +43,7 @@ struct AuctionBuildingUsageFilterView: View {
         )
       }
 
-      MercuryButton("\(modelData.filteredItemCount)개 매물 보기") {
+      MercuryButton("\(modelData.filteredItemCount.toCappedCountText)개 매물 보기") {
         onClosed()
       }
       .padding(.horizontal, 20)

@@ -26,6 +26,8 @@ final class AuctionHomeModelData {
   var isLoadingForPaging: Bool = false
   var filteredItemCount: Int = .zero
   var error: Error?
+  /// 최초 목록 로딩 실패는 찜·페이지네이션 오류와 분리해 재시도 화면으로 표현한다.
+  var loadError: Error?
   
   // MARK: - Private Properties
   
@@ -77,8 +79,13 @@ final class AuctionHomeModelData {
       let updatedInterestList = try await self.loadInterestAuctionList(list: auctionSales.items)
       
       self.auctionSalesItems = updatedInterestList
+      self.loadError = nil
     } catch let error {
-      self.error = error
+      if self.auctionSalesItems.isEmpty {
+        self.loadError = error
+      } else {
+        self.error = error
+      }
     }
   }
   
@@ -232,7 +239,7 @@ extension AuctionHomeModelData {
     case .price:
       return currentAuctionFilter.minimumPrice != nil || currentAuctionFilter.maximumPrice != nil
     case .bidWon:
-      return currentAuctionFilter.isBidWon
+      return currentAuctionFilter.soldOutStatus != .all
     }
   }
   
@@ -273,6 +280,8 @@ extension AuctionHomeModelData {
     case .price:
       return makePriceString() ?? type.defaultTitle
       
+    case .bidWon:
+      return currentAuctionFilter.soldOutStatus.displayName
     default:
       return type.defaultTitle
     }

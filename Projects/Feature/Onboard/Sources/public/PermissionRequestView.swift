@@ -74,6 +74,9 @@ public struct PermissionRequestView: View {
             Spacer()
             
             MercuryButton("확인") {
+              // 오프라인이면 안내 시트를 띄우고 진행을 막는다.
+              // 여기서 pop 해버리면 시트가 올라올 화면 자체가 사라진다.
+              guard NetworkDisconnectPresenter.shared.ensureConnected() else { return }
               modelData.requestUserPermission()
               coordinator.pop()
             }

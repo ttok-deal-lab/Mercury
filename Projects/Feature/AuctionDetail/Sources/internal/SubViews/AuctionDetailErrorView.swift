@@ -13,6 +13,7 @@ import UIComponent
 /// 상세 응답을 못 받은 상태라 툴바에 주소·공유를 띄울 수 없어 뒤로가기만 노출한다.
 struct AuctionDetailErrorView: View {
   @Environment(\.dismiss) private var dismiss
+  let isAuctionUnavailable: Bool
   let onRetry: () -> Void
 
   var body: some View {
@@ -41,20 +42,32 @@ struct AuctionDetailErrorView: View {
           .background(Asset.Colors.neutralWeak.color)
           .clipShape(Circle())
 
-        Text("일시적인 오류가 발생했어요.")
+        Text(isAuctionUnavailable ? "매물을 찾을 수 없어요." : "일시적인 오류가 발생했어요.")
           .fonts(.bodyMicroMedium)
           .foregroundStyle(Asset.Colors.neutralSubtler.color)
 
-        Button {
-          onRetry()
-        } label: {
-          Text("재시도")
-            .fonts(.bodyMicroMedium)
-            .foregroundStyle(Asset.Colors.neutralWhite.color)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 10)
-            .background(Asset.Colors.primary.color)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+        if isAuctionUnavailable {
+          Button("홈으로") {
+            dismiss()
+          }
+          .fonts(.bodyMicroMedium)
+          .foregroundStyle(Asset.Colors.neutralWhite.color)
+          .padding(.horizontal, 20)
+          .padding(.vertical, 10)
+          .background(Asset.Colors.primary.color)
+          .clipShape(RoundedRectangle(cornerRadius: 8))
+        } else {
+          Button {
+            onRetry()
+          } label: {
+            Text("재시도")
+              .fonts(.bodyMicroMedium)
+              .foregroundStyle(Asset.Colors.neutralWhite.color)
+              .padding(.horizontal, 20)
+              .padding(.vertical, 10)
+              .background(Asset.Colors.primary.color)
+              .clipShape(RoundedRectangle(cornerRadius: 8))
+          }
         }
       }
 

@@ -19,7 +19,7 @@ public struct AuctionHomeView: View {
   @State private var modelData: AuctionHomeModelData
   @State private var isShowFilterArea: Bool = false
   private var isZzim: Bool = false
-  
+
   public init(
     auctionListUsecase: AuctionSalesListUsecasable,
     auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
@@ -33,7 +33,7 @@ public struct AuctionHomeView: View {
       auctionInterestUsecase: auctionInterestUsecase
     )
   }
-  
+
   public var body: some View {
     VStack(spacing: .zero) {
       AuctionHomeNavigationView(
@@ -45,40 +45,48 @@ public struct AuctionHomeView: View {
           coordinator.push(.search(SearchRoute(route: .searchHome)))
         }
       )
-      
+
       AuctionFilterView()
-      
+
       AuctionSortView()
-      
-      ScrollView(.vertical) {
-        LazyVStack(spacing: .zero) {
-          InformCertificationView()
-          
-          ForEach(modelData.auctionSalesItems) { item in
-            Button {
-              coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
-              Task {
-                await modelData.saveRecentSales(id: item.id)
-              }
-            } label: {
-              AuctionSalesItemView(item: item, onZzim: {
-                Task {
-                  try await modelData.tapOnZzim(auctionID: item.id)
+
+      Group {
+        if modelData.loadError != nil, modelData.auctionSalesItems.isEmpty {
+          AuctionHomeErrorView {
+            Task { await modelData.loadAuctionSalesList() }
+          }
+        } else {
+          ScrollView(.vertical) {
+            LazyVStack(spacing: .zero) {
+              InformCertificationView()
+
+              ForEach(modelData.auctionSalesItems) { item in
+                Button {
+                  coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
+                  Task {
+                    await modelData.saveRecentSales(id: item.id)
+                  }
+                } label: {
+                  AuctionSalesItemView(item: item, onZzim: {
+                    Task {
+                      try await modelData.tapOnZzim(auctionID: item.id)
+                    }
+                  })
                 }
-              })
+              }
+
+              if !modelData.auctionSalesItems.isEmpty {
+                loadMoreView()
+              }
+
+              if modelData.isLoadingForPaging {
+                ProgressView()
+                  .frame(width: 50, height: 50)
+              }
             }
-          }
-          
-          if !modelData.auctionSalesItems.isEmpty {
-            loadMoreView()
-          }
-          
-          if modelData.isLoadingForPaging {
-            ProgressView()
-              .frame(width: 50, height: 50)
+            Spacer()
           }
         }
-        Spacer()
       }
       .refreshable {
         await modelData.loadAuctionSalesList()
@@ -101,7 +109,7 @@ public struct AuctionHomeView: View {
       else {
         return
       }
-      
+
       modelData.syncZzimState(auctionID: auctionID, isZzimed: isZzimed, zzimCount: zzimCount)
     }
     .sheet(isPresented: $isShowFilterArea, content: {
@@ -110,25 +118,50 @@ public struct AuctionHomeView: View {
           await modelData.loadAuctionSalesList()
           isShowFilterArea = false
         }
-        
+
       }
     })
   }
-  
+
   private func shouldTriggerLoadMore(at index: Int) -> Bool {
     let itemCount = modelData.auctionSalesItems.count
     guard itemCount >= 20 else { return false }
-    
+
     let thresholdIndex = itemCount - 3
     return index == thresholdIndex
   }
-  
+
   @ViewBuilder
   private func loadMoreView() -> some View {
     Color.clear
       .task {
         await modelData.loadMoreAuctionSales()
       }
+  }
+}
+
+private struct AuctionHomeErrorView: View {
+  let onRetry: () -> Void
+
+  var body: some View {
+    VStack(spacing: 16) {
+      Spacer()
+      Text("인터넷 연결을 확인해주세요")
+        .fonts(.bodySmallBold)
+        .foregroundStyle(Asset.Colors.neutralSubtler.color)
+      Text("연결 후 다시 시도해주세요")
+        .fonts(.bodySmallMedium)
+        .foregroundStyle(Asset.Colors.neutralSubtler.color)
+      Button("재시도", action: onRetry)
+        .fonts(.bodySmallBold)
+        .foregroundStyle(Asset.Colors.neutralWhite.color)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 10)
+        .background(Asset.Colors.primary.color)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+      Spacer()
+    }
+    .frame(maxWidth: .infinity)
   }
 }
 

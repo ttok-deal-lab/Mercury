@@ -31,7 +31,8 @@ struct InformCertificationView: View {
         }
         
         HStack(spacing: .zero) {
-          Text(L10n.auctionIntroduceCertifiedListingDescription)
+//          Text(L10n.auctionIntroduceCertifiedListingDescription)
+          Text("감정평가서가 존재해 정확한 정보를 확인할 수 있어요")
             .foregroundStyle(Asset.Colors.neutralSubtler.color)
             .fonts(.bodyMiniMedium)
           Spacer()

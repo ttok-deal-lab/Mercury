@@ -30,10 +30,28 @@ final class CustomSplashModelDataTests: XCTestCase {
       UserAccessToken(value: "Bearer \(makeJWT(expiration: Date(timeIntervalSinceNow: 3600)))"),
       forKey: LocalStorageKey.signInTokenInfo.rawValue
     )
+    await storage.setModel(
+      UserInformation(id: 1, email: "user@example.com", name: "User", status: .active),
+      forKey: LocalStorageKey.signInUserInfo.rawValue
+    )
 
     let isLoggedIn = await CustomSplashModelData.resolveLaunchLoginState(localStorageUsecasable: storage)
 
     XCTAssertTrue(isLoggedIn)
+  }
+
+  func testResolveLaunchLoginStateClearsTokenWithoutUserInfo() async {
+    let storage = InMemoryLocalStorageUsecase()
+    await storage.setModel(
+      UserAccessToken(value: "Bearer \(makeJWT(expiration: Date(timeIntervalSinceNow: 3600)))"),
+      forKey: LocalStorageKey.signInTokenInfo.rawValue
+    )
+
+    let isLoggedIn = await CustomSplashModelData.resolveLaunchLoginState(localStorageUsecasable: storage)
+
+    XCTAssertFalse(isLoggedIn)
+    let storedToken: UserAccessToken? = await storage.getModel(forKey: LocalStorageKey.signInTokenInfo.rawValue, as: UserAccessToken.self)
+    XCTAssertNil(storedToken)
   }
 
   private func makeJWT(expiration: Date) -> String {

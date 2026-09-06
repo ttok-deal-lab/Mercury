@@ -9,4 +9,5 @@ import Foundation
 
 public protocol SettingUsecasable {
   func signOut() async throws
+  func logout() async throws
 }

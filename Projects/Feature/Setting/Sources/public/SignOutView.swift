@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+import AppFoundation
 import UIComponent
 import Domain
 import Router
@@ -15,6 +16,7 @@ public struct SignOutView: View {
   
   // MARK: - private property
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
+  @Inject private var tokenInvalidator: AccessTokenInvalidatable
   @State private var modelData: SettingModelData
   @State private var isChecked: Bool = false
   
@@ -86,9 +88,19 @@ public struct SignOutView: View {
         Spacer()
         
         MercuryButton("탈퇴하기") {
-          if isChecked {
-            Task {
+          guard isChecked else { return }
+          // 오프라인이면 안내 시트만 띄우고 요청은 보내지 않는다.
+          guard NetworkDisconnectPresenter.shared.ensureConnected() else { return }
+          Task {
+            do {
               try await modelData.signOut()
+              // 토큰·유저정보·로컬 캐시를 모두 비우면 MainView 가 토큰 스트림을 받아
+              // 루트를 SignInView 로 되돌린다.
+              tokenInvalidator.invalidateAccessToken()
+            } catch {
+              // 요청 도중 끊긴 경우에도 같은 안내 시트로 알린다.
+              NetworkDisconnectPresenter.shared.ensureConnected()
+              Log.debug("탈퇴 실패: \(error)")
             }
           }
         }

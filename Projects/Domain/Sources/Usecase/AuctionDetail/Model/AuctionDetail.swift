@@ -725,8 +725,8 @@ public struct AuctionDetail: Sendable {
 
   /// 경매 상세 기일 정보
   public struct SalesDetail: Sendable {
-    /// 기일
-    public let timeStamp: Date
+    /// 기일. 서버 값이 파싱 불가한 형식이면 nil (가짜 날짜로 대체하지 않는다)
+    public let timeStamp: Date?
     /// 기일 종류
     public let type: SalesDetailType
     /// 기일 장소
@@ -736,7 +736,7 @@ public struct AuctionDetail: Sendable {
     /// 기일 결과
     public let result: SalesResult
 
-    public init(timeStamp: Date, type: SalesDetailType, location: String, leastSalesPrice: Int?, result: SalesResult) {
+    public init(timeStamp: Date?, type: SalesDetailType, location: String, leastSalesPrice: Int?, result: SalesResult) {
       self.timeStamp = timeStamp
       self.type = type
       self.location = location
@@ -744,14 +744,29 @@ public struct AuctionDetail: Sendable {
       self.result = result
     }
     
+    /// 서버 `salesDetails[].type` enum (AuctionDetailType) 매핑
+    /// - 원본: sherbet-common `CourtItemFeignModels.kt:140` `AuctionDetailType`
     public enum SalesDetailType: Sendable {
-      case saleDate
+      /// 매각기일
+      case sale
+      /// 매각결정기일
+      case saleDecision
+      /// 신규/미매핑 코드
       case other(String)
-      
+
       public init(rawValue: String) {
         switch rawValue {
-        case "매각기일": self = .saleDate
-        default: self = .other(rawValue)
+        case "SALE":          self = .sale
+        case "SALE_DECISION": self = .saleDecision
+        default:              self = .other(rawValue)
+        }
+      }
+
+      public var displayName: String {
+        switch self {
+        case .sale:                return "매각기일"
+        case .saleDecision:        return "매각결정기일"
+        case .other(let rawValue): return rawValue
         }
       }
     }
@@ -1017,8 +1032,8 @@ public struct AuctionDetail: Sendable {
   
   /// 현황 조사서
   public struct ConditionReport: Sendable {
-    /// 현황 조사일
-    public let investigationDate: Date
+    /// 현황 조사일. 서버 값이 파싱 불가한 형식이면 nil
+    public let investigationDate: Date?
     /// 부동산 임대차 정보
     public let estateLeaseInfos: [EstateLeaseInfo]
     /// 부동산 점유 관계
@@ -1026,7 +1041,7 @@ public struct AuctionDetail: Sendable {
     /// 임대차 관계 조사서
     public let occupationRelationReports: [OccupationRelationReport]
     
-    public init(investigationDate: Date, estateLeaseInfos: [EstateLeaseInfo], occupationRelations: [OccupationRelation], occupationRelationReports: [OccupationRelationReport]) {
+    public init(investigationDate: Date?, estateLeaseInfos: [EstateLeaseInfo], occupationRelations: [OccupationRelation], occupationRelationReports: [OccupationRelationReport]) {
       self.investigationDate = investigationDate
       self.estateLeaseInfos = estateLeaseInfos
       self.occupationRelations = occupationRelations
@@ -1103,12 +1118,12 @@ public struct AuctionDetail: Sendable {
       public let deposit: Int
       /// 차임 (ex. 50)
       public let rental: Int
-      /// 전입일자
-      public let movedAt: Date
-      /// 확정일자
-      public let confirmedAt: Date
+      /// 전입일자. 서버 값이 파싱 불가한 형식이면 nil
+      public let movedAt: Date?
+      /// 확정일자. 서버 값이 파싱 불가한 형식이면 nil
+      public let confirmedAt: Date?
       
-      public init(sequence: Int, address: String, occupant: String, relation: OccupantRelation, occupiedPart: String, purpose: OccupationPurpose, duration: String, deposit: Int, rental: Int, movedAt: Date, confirmedAt: Date) {
+      public init(sequence: Int, address: String, occupant: String, relation: OccupantRelation, occupiedPart: String, purpose: OccupationPurpose, duration: String, deposit: Int, rental: Int, movedAt: Date?, confirmedAt: Date?) {
         self.sequence = sequence
         self.address = address
         self.occupant = occupant

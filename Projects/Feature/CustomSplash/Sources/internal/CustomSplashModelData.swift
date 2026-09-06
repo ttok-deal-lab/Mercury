@@ -28,12 +28,18 @@ final class CustomSplashModelData {
   }
   
   static func resolveLaunchLoginState(localStorageUsecasable: LocalStorageUsecasable) async -> Bool {
-    let storedToken = await localStorageUsecasable.getModel(
+    async let storedToken = localStorageUsecasable.getModel(
       forKey: LocalStorageKey.signInTokenInfo.rawValue,
       as: UserAccessToken.self
     )
+    async let storedUser = localStorageUsecasable.getModel(
+      forKey: LocalStorageKey.signInUserInfo.rawValue,
+      as: UserInformation.self
+    )
+
+    let (token, user) = await (storedToken, storedUser)
     
-    guard let storedToken, !storedToken.isExpired else {
+    guard let token, !token.isExpired, user != nil else {
       await localStorageUsecasable.remove(forKey: LocalStorageKey.signInTokenInfo.rawValue)
       await localStorageUsecasable.remove(forKey: LocalStorageKey.signInUserInfo.rawValue)
       return false
@@ -42,4 +48,3 @@ final class CustomSplashModelData {
     return true
   }
 }
-

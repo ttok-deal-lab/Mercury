@@ -89,5 +89,11 @@ public extension Int {
   
   var toKoreanManWon: String { toKoreanCurrency(style: .manWonOnly) }
   var toKoreanFullWon: String { toKoreanCurrency(style: .full) }
+  
+  /// 검색 결과 건수 표기. 10,000건 이상은 "9999+" 로 축약한다.
+  var toCappedCountText: String {
+    let maxDisplayCount = 9_999
+    return self > maxDisplayCount ? "\(maxDisplayCount)+" : "\(self)"
+  }
 }
 

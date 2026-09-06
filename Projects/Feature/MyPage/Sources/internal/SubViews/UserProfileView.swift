@@ -23,6 +23,13 @@ struct UserProfileView: View {
         }
         .padding(.bottom, 6)
         
+        HStack {
+          Text(modelData.userProfile?.email ?? "")
+            .fonts(.bodyMiniMedium)
+          Spacer()
+        }
+        .padding(.bottom, 6)
+        
         HStack(spacing: 0) {
           modelData.userProfile?.provider.toImage()
             .resizable()

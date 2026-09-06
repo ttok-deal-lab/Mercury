@@ -120,26 +120,20 @@ public struct SearchView: View {
       EmptyView()
     case .userSearched:
       if !searchModelData.isLoading,
-         searchModelData.auctionSalesItems.isEmpty,
-         searchModelData.currentAuctionFilter.isEmpty {
+         searchModelData.auctionSalesItems.isEmpty {
         NoSearchResultView()
       } else {
         VStack(spacing: .zero) {
           SearchAuctionFilterView()
           SearchAuctionSortView()
-          if !searchModelData.currentAuctionFilter.isEmpty,
-             searchModelData.auctionSalesItems.isEmpty {
-            EmptyView() // 필터에 따른 물건 결과가 없을 때
-          } else {
-            ScrollView(.vertical) {
-              ForEach(searchModelData.auctionSalesItems) { item in
-                Button {
-                  coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
-                } label: {
-                  SearchAuctionSalesItemView(item: item, onZzim: {
-                    // 찜 했을때의 액션
-                  })
-                }
+          ScrollView(.vertical) {
+            ForEach(searchModelData.auctionSalesItems) { item in
+              Button {
+                coordinator.push(.auctionDetail(AuctionDetailRoute(route: .auctionDetail(auctionID: item.id))))
+              } label: {
+                SearchAuctionSalesItemView(item: item, onZzim: {
+                  // 찜 했을때의 액션
+                })
               }
             }
           }

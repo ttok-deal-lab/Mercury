@@ -25,6 +25,9 @@ struct MainView: View {
     ZStack {
       currentView()
     }
+    // 스플래시·로그인·메인탭을 모두 덮는 루트 컨텍스트.
+    // fullScreenCover 가 올라온 동안에는 그쪽 시트가 담당하므로 비활성화한다.
+    .networkDisconnectSheet(isEnabled: !coordinator.isFullScreenPresented)
     .shake(onPresent: {
       self.coordinator.presentFullScreen(.networkConsole)
     })
@@ -65,6 +68,8 @@ struct MainView: View {
       .fullScreenCover(isPresented: $coordinator.isFullScreenPresented) {
         fullScreenCoverContent()
           .environmentObject(coordinator)
+          // 온보딩 등 fullScreenCover 로 올라온 화면은 루트 시트가 위로 올라오지 못한다.
+          .networkDisconnectSheet()
       }
       .toast(isPresented: isUserLoggedIn, text: "로그인 되었습니다!")
     }
