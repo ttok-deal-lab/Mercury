@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+import AppFoundation
 import UIComponent
 
 struct AuctionPriceFilterView: View {
@@ -37,7 +38,7 @@ struct AuctionPriceFilterView: View {
         bounds: 0...2_000_000_000
       )
       
-      MercuryButton("\(modelData.filteredItemCount)개 매물 보기") {
+      MercuryButton("\(modelData.filteredItemCount.toCappedCountText)개 매물 보기") {
         onComplete()
       }
       .padding(.horizontal, 20)

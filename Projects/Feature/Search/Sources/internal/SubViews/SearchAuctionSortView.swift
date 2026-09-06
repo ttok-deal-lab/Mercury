@@ -20,7 +20,7 @@ struct SearchAuctionSortView: View {
         Text(L10n.auctionItem)
           .fonts(.bodyMicroMedium)
           .foregroundStyle(Asset.Colors.neutral.color)
-        Text("\(modelData.filteredItemCount)")
+        Text(modelData.filteredItemCount.toCappedCountText)
           .fonts(.bodyMicroBold)
           .foregroundStyle(Asset.Colors.neutral.color)
         Spacer()
