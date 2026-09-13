@@ -194,17 +194,22 @@ public final class AuctionDetailModelData {
   /// 경매 상세 응답(`courtInfo`)에 포함된 위경도를 좌표로 변환한다.
   /// 좌표가 없거나(0,0) 유효 범위를 벗어난 건물은 건너뛴다.
   static func embeddedCoordinate(for auctionDetail: AuctionDetail) -> CLLocationCoordinate2D? {
-//    for court in auctionDetail.courtInfo {
-    let court = auctionDetail.courtInfo
+    var latitudeValue: Double = 0
+    var longitudeValue: Double = 0
+    for court in auctionDetail.salesBuildings {
+//      let court = auctionDetail.courtInfo
       guard let latitude = court.latitude,
             let longitude = court.longitude else {
-//        continue
+        //        continue
         return nil
       }
+      latitudeValue = latitude
+      longitudeValue = longitude
+    }
 
-      let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+      let coordinate = CLLocationCoordinate2D(latitude: latitudeValue, longitude: longitudeValue)
       guard CLLocationCoordinate2DIsValid(coordinate),
-            !(latitude == 0 && longitude == 0) else {
+            !(latitudeValue == 0 && longitudeValue == 0) else {
 //        continue
         return nil
       }
@@ -220,6 +225,7 @@ public final class AuctionDetailModelData {
     defer {
       self.isLoadingZzim = false
     }
+    
     
     do {
       self.isZzimed = try await self.loadAuctionInterestState(self.auctionID)
