@@ -17,11 +17,18 @@ struct AuctionBuildingUsageFilterView: View {
 
   @State private var reloadTask: Task<Void, Never>?
 
+  /// 서버 `buildType` enum 의 "전체" 코드
+  static let allBuildingTypeCode = "ALL"
+
   private var selectedBuildTypeCodes: Binding<Set<String>> {
     Binding(
       get: { modelData.currentAuctionFilter.buildingTypeCodes ?? [] },
       set: { newValue in
-        modelData.currentAuctionFilter.buildingTypeCodes = newValue
+        let current = modelData.currentAuctionFilter.buildingTypeCodes ?? []
+        modelData.currentAuctionFilter.buildingTypeCodes = Self.resolvingAllExclusivity(
+          current: current,
+          new: newValue
+        )
         reloadTask?.cancel()
         reloadTask = Task {
           try? await Task.sleep(nanoseconds: 500_000_000) // 0.5
@@ -52,6 +59,23 @@ struct AuctionBuildingUsageFilterView: View {
     .onDisappear {
       reloadTask?.cancel()
     }
+  }
+
+  /// "전체" 와 개별 항목은 동시에 선택될 수 없다.
+  /// - 개별 항목이 선택된 상태에서 "전체" 를 새로 고르면 나머지를 모두 해제한다.
+  /// - "전체" 가 선택된 상태에서 개별 항목을 새로 고르면 "전체" 를 해제한다.
+  /// - 해제만 일어난 경우에는 그대로 반영한다.
+  static func resolvingAllExclusivity(current: Set<String>, new: Set<String>) -> Set<String> {
+    let added = new.subtracting(current)
+    guard !added.isEmpty else { return new }
+
+    if added.contains(allBuildingTypeCode) {
+      return [allBuildingTypeCode]
+    }
+    if new.contains(allBuildingTypeCode) {
+      return new.subtracting([allBuildingTypeCode])
+    }
+    return new
   }
 
   private var header: some View {
