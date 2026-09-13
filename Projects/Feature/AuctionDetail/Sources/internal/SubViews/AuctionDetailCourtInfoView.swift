@@ -86,7 +86,7 @@ struct AuctionDetailCourtInfoView<MapView: MapViewable>: View {
       }
       .padding(.bottom, 20)
 
-      Text("물건 위치")
+      Text(L10n.auctionDetailPropertyLocation)
         .fonts(.bodyMediumMedium)
         .foregroundStyle(Asset.Colors.neutral.color)
         .padding(.bottom, 12)
