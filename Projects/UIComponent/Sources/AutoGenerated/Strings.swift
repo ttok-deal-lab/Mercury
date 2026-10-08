@@ -256,6 +256,40 @@ public enum L10n {
   public static let propertyTypeShop = L10n.tr("Localizable", "property_type_shop", fallback: "상점")
   /// 빌라
   public static let propertyTypeVilla = L10n.tr("Localizable", "property_type_villa", fallback: "빌라")
+  /// 현재: %@/%@명 신청 (%@%% 크루 성사!)
+  public static func reportCrewCurrent(_ p1: Any, _ p2: Any, _ p3: Any) -> String {
+    return L10n.tr("Localizable", "report_crew_current", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "현재: %@/%@명 신청 (%@%% 크루 성사!)")
+  }
+  /// 이름: %@
+  public static func reportCrewName(_ p1: Any) -> String {
+    return L10n.tr("Localizable", "report_crew_name", String(describing: p1), fallback: "이름: %@")
+  }
+  /// 남은시간: %@일 남음
+  public static func reportCrewRemainingDays(_ p1: Any) -> String {
+    return L10n.tr("Localizable", "report_crew_remaining_days", String(describing: p1), fallback: "남은시간: %@일 남음")
+  }
+  /// 상태: [%@]
+  public static func reportCrewStatus(_ p1: Any) -> String {
+    return L10n.tr("Localizable", "report_crew_status", String(describing: p1), fallback: "상태: [%@]")
+  }
+  /// 마감
+  public static let reportCrewStatusClosed = L10n.tr("Localizable", "report_crew_status_closed", fallback: "마감")
+  /// 진행중
+  public static let reportCrewStatusOngoing = L10n.tr("Localizable", "report_crew_status_ongoing", fallback: "진행중")
+  /// 모집중
+  public static let reportCrewStatusRecruiting = L10n.tr("Localizable", "report_crew_status_recruiting", fallback: "모집중")
+  /// 전체
+  public static let reportFilterAll = L10n.tr("Localizable", "report_filter_all", fallback: "전체")
+  /// 신청하기
+  public static let reportLeaderApplyButton = L10n.tr("Localizable", "report_leader_apply_button", fallback: "신청하기")
+  /// 지금 바로 모임을 만들어보세요.
+  public static let reportLeaderApplyDesc = L10n.tr("Localizable", "report_leader_apply_desc", fallback: "지금 바로 모임을 만들어보세요.")
+  /// 크루장 신청하실래요?
+  public static let reportLeaderApplyTitle = L10n.tr("Localizable", "report_leader_apply_title", fallback: "크루장 신청하실래요?")
+  /// 진행중인 크루
+  public static let reportOngoingCrew = L10n.tr("Localizable", "report_ongoing_crew", fallback: "진행중인 크루")
+  /// 임장크루
+  public static let reportTitle = L10n.tr("Localizable", "report_title", fallback: "임장크루")
   /// 소재지
   public static let rightsAddress = L10n.tr("Localizable", "rights_address", fallback: "소재지")
   /// 확정일자
@@ -355,6 +389,8 @@ public enum L10n {
   public static let tabHome = L10n.tr("Localizable", "tab_home", fallback: "홈")
   /// 관심
   public static let tabInterest = L10n.tr("Localizable", "tab_interest", fallback: "관심")
+  /// 임장보고서
+  public static let tabReport = L10n.tr("Localizable", "tab_report", fallback: "임장보고서")
   /// 설정
   public static let tabSetting = L10n.tr("Localizable", "tab_setting", fallback: "설정")
   /// 상업

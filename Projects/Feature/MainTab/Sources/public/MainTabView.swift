@@ -18,6 +18,7 @@ import Domain
 public struct MainTabView<
   AuctionHomeView: AuctionHomeViewable,
   InterestView: InterestViewable,
+  ReportView: ReportViewable,
   MyPageView: MyPageViewable,
   SignInView: SignInViewable
 >: View {
@@ -64,6 +65,7 @@ public struct MainTabView<
     switch appTab {
     case .home: return .home
     case .favorite: return .interest
+    case .report: return .report
     case .mypage: return .setting
     }
   }
@@ -81,6 +83,12 @@ public struct MainTabView<
           Tab.interest.iconView(isSelected: selection == .interest)
         }
         .tag(Tab.interest)
+      
+      ReportView()
+        .tabItem {
+          Tab.report.iconView(isSelected: selection == .report)
+        }
+        .tag(Tab.report)
       
       MyPageView()
         .tabItem {
@@ -125,12 +133,13 @@ private struct TabBarAppearanceConfigurator: UIViewControllerRepresentable {
 }
 
 enum Tab {
-  case home, interest, setting
+  case home, interest, report, setting
   
   var title: String {
     switch self {
     case .home: return L10n.tabHome
     case .interest: return L10n.tabInterest
+    case .report: return L10n.tabReport
     case .setting: return L10n.tabSetting
     }
   }
@@ -139,7 +148,9 @@ enum Tab {
     switch self {
     case .home: return isSelected ? Asset.Images.gnbHome.image : Asset.Images.gnbHomeGray.image
     case .interest: return isSelected ? Asset.Images.gnbInterest.image : Asset.Images.gnbInterestGray.image
+    case .report: return isSelected ? Asset.Images.gnbReport.image : Asset.Images.gnbReportGray.image
     case .setting: return isSelected ? Asset.Images.gnbMypage.image : Asset.Images.gnbMypageGray.image
+      
     }
   }
   

@@ -11,5 +11,6 @@ import Foundation
 public enum AppTab: Hashable {
   case home
   case favorite
+  case report
   case mypage
 }

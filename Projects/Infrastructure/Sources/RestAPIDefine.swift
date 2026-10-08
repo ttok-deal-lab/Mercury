@@ -20,8 +20,8 @@ struct RestAPIDefine {
   static let authURL = "https://sherbet-api-gateway.dev.pursue503.com/api/sherbet-auth/"
   
   #else // release // TODO: production server 나오면 변경
-  static let commonURL = "https://sherbet-api-gateway.dev.pursue503.com/api/sherbet-api/"
-  static let authURL = "https://sherbet-api-gateway.dev.pursue503.com/api/sherbet-auth/"
+  static let commonURL = "https://sherbet-api-gateway.estateslug.com/api/sherbet-api/"
+  static let authURL = "https://sherbet-auth.estateslug.com/api/sherbet-auth/"
   
   #endif
 }

@@ -1,5 +1,6 @@
 "common_confirm" = "COMMON";
 "tab_home" = "TAB";
+"report_crew_current" = "REPORT";
 "home_default_area" = "HOME";
 "error_title" = "ERROR";
 "network_disconnected_title" = "NETWORK";
