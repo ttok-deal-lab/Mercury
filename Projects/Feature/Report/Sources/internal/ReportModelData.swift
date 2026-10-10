@@ -16,6 +16,8 @@ final class ReportModelData {
   // MARK: - internal property
   var crewList: [ReportCrewItem] = []
   var selectedFilter: ReportCrewFilterType = .all
+  /// 크루장 승인 여부. 상단 배너가 신청 안내 ↔ 크루 만들기 로 바뀐다. 사용자 API 가 확정되면 서버 값으로 교체한다.
+  var isCrewLeader: Bool = false
   var isLoading: Bool = false
   var error: Error?
   
@@ -35,10 +37,6 @@ final class ReportModelData {
     defer { isLoading = false }
     // 크루 API 가 아직 없어 초기 화면 확인용 목 데이터를 노출한다.
     crewList = Self.mockCrewList
-  }
-  
-  func applyCrewLeader() {
-    // 크루장 신청 플로우(라우트/API) 가 확정되면 연결한다.
   }
   
   // MARK: - private property

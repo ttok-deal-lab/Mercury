@@ -256,6 +256,54 @@ public enum L10n {
   public static let propertyTypeShop = L10n.tr("Localizable", "property_type_shop", fallback: "상점")
   /// 빌라
   public static let propertyTypeVilla = L10n.tr("Localizable", "property_type_villa", fallback: "빌라")
+  /// 세부 주소 입력
+  public static let reportCrewCreateAddressPlaceholder = L10n.tr("Localizable", "report_crew_create_address_placeholder", fallback: "세부 주소 입력")
+  /// 상권분석
+  public static let reportCrewCreateAnalysisCommercial = L10n.tr("Localizable", "report_crew_create_analysis_commercial", fallback: "상권분석")
+  /// 주변인프라
+  public static let reportCrewCreateAnalysisInfra = L10n.tr("Localizable", "report_crew_create_analysis_infra", fallback: "주변인프라")
+  /// 분석할 내용 (중복선택 가능)
+  public static let reportCrewCreateAnalysisLabel = L10n.tr("Localizable", "report_crew_create_analysis_label", fallback: "분석할 내용 (중복선택 가능)")
+  /// 내용을 작성해주세요
+  public static let reportCrewCreateAnalysisPlaceholder = L10n.tr("Localizable", "report_crew_create_analysis_placeholder", fallback: "내용을 작성해주세요")
+  /// 시세
+  public static let reportCrewCreateAnalysisPrice = L10n.tr("Localizable", "report_crew_create_analysis_price", fallback: "시세")
+  /// 학군
+  public static let reportCrewCreateAnalysisSchool = L10n.tr("Localizable", "report_crew_create_analysis_school", fallback: "학군")
+  /// 임장날짜
+  public static let reportCrewCreateDateLabel = L10n.tr("Localizable", "report_crew_create_date_label", fallback: "임장날짜")
+  /// 날짜를 선택해주세요
+  public static let reportCrewCreateDatePlaceholder = L10n.tr("Localizable", "report_crew_create_date_placeholder", fallback: "날짜를 선택해주세요")
+  /// 참가비
+  public static let reportCrewCreateFeeLabel = L10n.tr("Localizable", "report_crew_create_fee_label", fallback: "참가비")
+  /// 참가비를 입력해주세요
+  public static let reportCrewCreateFeePlaceholder = L10n.tr("Localizable", "report_crew_create_fee_placeholder", fallback: "참가비를 입력해주세요")
+  /// 임장크루 소개
+  public static let reportCrewCreateIntroLabel = L10n.tr("Localizable", "report_crew_create_intro_label", fallback: "임장크루 소개")
+  /// 모집인원
+  public static let reportCrewCreateMembersLabel = L10n.tr("Localizable", "report_crew_create_members_label", fallback: "모집인원")
+  /// 최소 2명 ~ 최대 000명
+  public static let reportCrewCreateMembersPlaceholder = L10n.tr("Localizable", "report_crew_create_members_placeholder", fallback: "최소 2명 ~ 최대 000명")
+  /// 종료일
+  public static let reportCrewCreatePeriodEnd = L10n.tr("Localizable", "report_crew_create_period_end", fallback: "종료일")
+  /// 크루 모집기간
+  public static let reportCrewCreatePeriodLabel = L10n.tr("Localizable", "report_crew_create_period_label", fallback: "크루 모집기간")
+  /// 시작일
+  public static let reportCrewCreatePeriodStart = L10n.tr("Localizable", "report_crew_create_period_start", fallback: "시작일")
+  /// 모임장소
+  public static let reportCrewCreatePlaceLabel = L10n.tr("Localizable", "report_crew_create_place_label", fallback: "모임장소")
+  /// 장소선택
+  public static let reportCrewCreatePlaceSelect = L10n.tr("Localizable", "report_crew_create_place_select", fallback: "장소선택")
+  /// 지역
+  public static let reportCrewCreateRegionLabel = L10n.tr("Localizable", "report_crew_create_region_label", fallback: "지역")
+  /// 지역선택
+  public static let reportCrewCreateRegionSelect = L10n.tr("Localizable", "report_crew_create_region_select", fallback: "지역선택")
+  /// 방 만들기
+  public static let reportCrewCreateSubmit = L10n.tr("Localizable", "report_crew_create_submit", fallback: "방 만들기")
+  /// 제목
+  public static let reportCrewCreateTitleLabel = L10n.tr("Localizable", "report_crew_create_title_label", fallback: "제목")
+  /// 제목을 작성해주세요
+  public static let reportCrewCreateTitlePlaceholder = L10n.tr("Localizable", "report_crew_create_title_placeholder", fallback: "제목을 작성해주세요")
   /// 현재: %@/%@명 신청 (%@%% 크루 성사!)
   public static func reportCrewCurrent(_ p1: Any, _ p2: Any, _ p3: Any) -> String {
     return L10n.tr("Localizable", "report_crew_current", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "현재: %@/%@명 신청 (%@%% 크루 성사!)")
@@ -282,10 +330,62 @@ public enum L10n {
   public static let reportFilterAll = L10n.tr("Localizable", "report_filter_all", fallback: "전체")
   /// 신청하기
   public static let reportLeaderApplyButton = L10n.tr("Localizable", "report_leader_apply_button", fallback: "신청하기")
+  /// 민달팽이팀이 확인 후
+  /// 영업일 기준 5일 이내 승인 완료될 예정입니다.
+  public static let reportLeaderApplyCompleteDesc = L10n.tr("Localizable", "report_leader_apply_complete_desc", fallback: "민달팽이팀이 확인 후\n영업일 기준 5일 이내 승인 완료될 예정입니다.")
+  /// 크루장 신청완료
+  public static let reportLeaderApplyCompleteTitle = L10n.tr("Localizable", "report_leader_apply_complete_title", fallback: "크루장 신청완료")
   /// 지금 바로 모임을 만들어보세요.
   public static let reportLeaderApplyDesc = L10n.tr("Localizable", "report_leader_apply_desc", fallback: "지금 바로 모임을 만들어보세요.")
+  /// 크루장이 되면 임장크루를
+  /// 모집할 수 있어요
+  public static let reportLeaderApplyGuide = L10n.tr("Localizable", "report_leader_apply_guide", fallback: "크루장이 되면 임장크루를\n모집할 수 있어요")
+  /// 크루장 신청하기
+  public static let reportLeaderApplySubmit = L10n.tr("Localizable", "report_leader_apply_submit", fallback: "크루장 신청하기")
   /// 크루장 신청하실래요?
   public static let reportLeaderApplyTitle = L10n.tr("Localizable", "report_leader_apply_title", fallback: "크루장 신청하실래요?")
+  /// 크루 만들기
+  public static let reportLeaderBannerButton = L10n.tr("Localizable", "report_leader_banner_button", fallback: "크루 만들기")
+  /// 크루장이 되셨어요!
+  public static let reportLeaderBannerTitle = L10n.tr("Localizable", "report_leader_banner_title", fallback: "크루장이 되셨어요!")
+  /// 경력
+  public static let reportLeaderProfileCareer = L10n.tr("Localizable", "report_leader_profile_career", fallback: "경력")
+  /// 약력으로 소개할만한 경력을 입력해주세요
+  public static let reportLeaderProfileCareerDesc = L10n.tr("Localizable", "report_leader_profile_career_desc", fallback: "약력으로 소개할만한 경력을 입력해주세요")
+  /// 경력을 입력해주세요
+  public static let reportLeaderProfileCareerPlaceholder = L10n.tr("Localizable", "report_leader_profile_career_placeholder", fallback: "경력을 입력해주세요")
+  /// 연락처
+  public static let reportLeaderProfileContact = L10n.tr("Localizable", "report_leader_profile_contact", fallback: "연락처")
+  /// 왜 연락처를 받는지
+  public static let reportLeaderProfileContactDesc = L10n.tr("Localizable", "report_leader_profile_contact_desc", fallback: "왜 연락처를 받는지")
+  /// 연락처를 입력해주세요
+  public static let reportLeaderProfileContactPlaceholder = L10n.tr("Localizable", "report_leader_profile_contact_placeholder", fallback: "연락처를 입력해주세요")
+  /// 프로필 이미지
+  public static let reportLeaderProfileImage = L10n.tr("Localizable", "report_leader_profile_image", fallback: "프로필 이미지")
+  /// 크루장 소개
+  public static let reportLeaderProfileIntro = L10n.tr("Localizable", "report_leader_profile_intro", fallback: "크루장 소개")
+  /// 글을 작성해주세요
+  public static let reportLeaderProfileIntroPlaceholder = L10n.tr("Localizable", "report_leader_profile_intro_placeholder", fallback: "글을 작성해주세요")
+  /// 링크
+  public static let reportLeaderProfileLink = L10n.tr("Localizable", "report_leader_profile_link", fallback: "링크")
+  /// 추가하기
+  public static let reportLeaderProfileLinkAdd = L10n.tr("Localizable", "report_leader_profile_link_add", fallback: "추가하기")
+  /// 부동산 관련 활동중인 SNS 링크를 추가해주세요
+  public static let reportLeaderProfileLinkDesc = L10n.tr("Localizable", "report_leader_profile_link_desc", fallback: "부동산 관련 활동중인 SNS 링크를 추가해주세요")
+  /// 링크를 입력해주세요
+  public static let reportLeaderProfileLinkPlaceholder = L10n.tr("Localizable", "report_leader_profile_link_placeholder", fallback: "링크를 입력해주세요")
+  /// 임장보고서
+  public static let reportLeaderProfileReport = L10n.tr("Localizable", "report_leader_profile_report", fallback: "임장보고서")
+  /// 본인이 직접 작성한 임장보고서를 올려주세요
+  public static let reportLeaderProfileReportDesc = L10n.tr("Localizable", "report_leader_profile_report_desc", fallback: "본인이 직접 작성한 임장보고서를 올려주세요")
+  /// 파일을 선택해주세요
+  public static let reportLeaderProfileReportPlaceholder = L10n.tr("Localizable", "report_leader_profile_report_placeholder", fallback: "파일을 선택해주세요")
+  /// 파일선택
+  public static let reportLeaderProfileReportSelect = L10n.tr("Localizable", "report_leader_profile_report_select", fallback: "파일선택")
+  /// 제출
+  public static let reportLeaderProfileSubmit = L10n.tr("Localizable", "report_leader_profile_submit", fallback: "제출")
+  /// 크루장 프로필을 작성해주세요
+  public static let reportLeaderProfileTitle = L10n.tr("Localizable", "report_leader_profile_title", fallback: "크루장 프로필을 작성해주세요")
   /// 진행중인 크루
   public static let reportOngoingCrew = L10n.tr("Localizable", "report_ongoing_crew", fallback: "진행중인 크루")
   /// 임장크루

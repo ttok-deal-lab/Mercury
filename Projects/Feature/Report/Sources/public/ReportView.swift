@@ -14,6 +14,7 @@ import UIComponent
 import Router
 
 public struct ReportView: View {
+  @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
   @State private var modelData = ReportModelData()
   
   public init() { }
@@ -25,8 +26,9 @@ public struct ReportView: View {
       
       ScrollView(.vertical) {
         VStack(spacing: .zero) {
-          ReportCrewApplyBannerView {
-            modelData.applyCrewLeader()
+          ReportCrewApplyBannerView(isCrewLeader: modelData.isCrewLeader) {
+            let route: ReportRoute.Route = modelData.isCrewLeader ? .createCrewRoom : .crewLeaderApply
+            coordinator.push(.report(ReportRoute(route: route)))
           }
           
           Rectangle()
@@ -61,7 +63,11 @@ public struct ReportView: View {
       
       LazyVStack(spacing: 16) {
         ForEach(modelData.filteredCrewList) { item in
-          ReportCrewItemView(item: item)
+          Button {
+//            coordinator.push(.report(ReportRoute(route: .createCrewRoom)))
+          } label: {
+            ReportCrewItemView(item: item)
+          }
         }
       }
     }

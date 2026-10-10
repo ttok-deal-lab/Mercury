@@ -17,6 +17,7 @@ import Infrastructure
 import MyPage
 import Setting
 import Search
+import Report
 
 import PulseUI
 
@@ -71,6 +72,9 @@ struct RootViewFactory: ViewFactory {
         localStoargeUsecase: LocalStorageUsecase(repository: UserDefaultsStoreRepository())
       )
       .makeView(searchStep)
+    case .report(let reportStep):
+      ReportViewFactory()
+        .makeView(reportStep)
     }
   }
 }

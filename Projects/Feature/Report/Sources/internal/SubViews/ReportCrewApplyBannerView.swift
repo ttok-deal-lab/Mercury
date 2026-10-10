@@ -9,14 +9,24 @@ import SwiftUI
 
 import UIComponent
 
+/// 상단 배너. 크루장이 아니면 신청 안내, 크루장이면 크루 만들기 안내를 보여준다.
 struct ReportCrewApplyBannerView: View {
   
-  let onApply: () -> Void
+  let isCrewLeader: Bool
+  let onTap: () -> Void
+  
+  private var title: String {
+    isCrewLeader ? L10n.reportLeaderBannerTitle : L10n.reportLeaderApplyTitle
+  }
+  
+  private var buttonTitle: String {
+    isCrewLeader ? L10n.reportLeaderBannerButton : L10n.reportLeaderApplyButton
+  }
   
   var body: some View {
     HStack(alignment: .center, spacing: 12) {
       VStack(alignment: .leading, spacing: 4) {
-        Text(L10n.reportLeaderApplyTitle)
+        Text(title)
           .fonts(.bodyMediumBold)
           .foregroundStyle(Asset.Colors.neutral.color)
         
@@ -28,9 +38,9 @@ struct ReportCrewApplyBannerView: View {
       Spacer()
       
       Button {
-        onApply()
+        onTap()
       } label: {
-        Text(L10n.reportLeaderApplyButton)
+        Text(buttonTitle)
           .fonts(.bodySmallBold)
           .foregroundStyle(Asset.Colors.neutralWhite.color)
           .padding(.horizontal, 16)

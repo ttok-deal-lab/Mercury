@@ -16,5 +16,6 @@ public enum FeatureRoute: Hashable {
   case terms(TermsRoute)
   case notification
   case search(SearchRoute)
+  case report(ReportRoute)
   case networkConsole
 }

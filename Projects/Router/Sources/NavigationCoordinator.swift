@@ -39,6 +39,8 @@ public final class NavigationCoordinator<Route: Hashable>: ObservableObject {
   public func pop() { eventSubject.send(.pop) }
   public func popToRoot() { eventSubject.send(.popToRoot) }
   public func popTo(_ route: Route) { eventSubject.send(.popTo(route)) }
+  /// popToRoot 후 push 와 같은 결과를 path 한 번의 변경으로 만든다.
+  public func replaceStack(with route: Route) { eventSubject.send(.replaceStack(route)) }
   public func presentFullScreen(_ route: Route) { eventSubject.send(.presentFullScreen(route)) }
   public func dismissFullScreen() { eventSubject.send(.dismissFullScreen) }
   public func selectTab(_ tab: AppTab) { selectedTab = tab }
@@ -75,6 +77,13 @@ public final class NavigationCoordinator<Route: Hashable>: ObservableObject {
         fullScreenRoute = nil
       }
       rootStack.removeAll()
+
+    case .replaceStack(let route):
+      if isFullScreenPresented {
+        fullScreenStack = [route]
+      } else {
+        rootStack = [route]
+      }
 
     case .popTo(let route):
       if isFullScreenPresented {
