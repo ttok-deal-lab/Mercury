@@ -7,15 +7,19 @@
 
 import SwiftUI
 
+import Domain
 import Router
 import Report
+import Infrastructure
 
 public struct ReportViewWrapperView: View, ReportViewable {
   
   let hostView: ReportView
   
   public init() {
-    self.hostView = ReportView()
+    self.hostView = ReportView(
+      crewLeaderUsecase: CrewLeaderUsecase(repository: CrewLeaderRepository())
+    )
   }
   
   public var body: some View {

@@ -1,5 +1,6 @@
 import SwiftUI
 
+import Domain
 import Router
 import Report
 
@@ -11,7 +12,7 @@ struct ReportSampleApp: App {
   var body: some Scene {
     WindowGroup {
       NavigationStack(path: $coordinator.rootStack) {
-        ReportView()
+        ReportView(crewLeaderUsecase: SampleCrewLeaderUsecase())
           .navigationDestination(for: FeatureRoute.self) { route in
             if case .report(let reportRoute) = route {
               ReportViewFactory().makeView(reportRoute)

@@ -10,14 +10,17 @@ import SwiftUI
 import Combine
 
 import AppFoundation
+import Domain
 import UIComponent
 import Router
 
 public struct ReportView: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
-  @State private var modelData = ReportModelData()
+  @State private var modelData: ReportModelData
   
-  public init() { }
+  public init(crewLeaderUsecase: CrewLeaderUsecasable) {
+    self.modelData = ReportModelData(crewLeaderUsecase: crewLeaderUsecase)
+  }
   
   public var body: some View {
     VStack(spacing: .zero) {
@@ -26,6 +29,10 @@ public struct ReportView: View {
       
       ScrollView(.vertical) {
         VStack(spacing: .zero) {
+          #if DEBUG
+          ReportDebugStatusPickerView(status: $modelData.crewLeaderStatus)
+          #endif
+          
           ReportCrewApplyBannerView(isCrewLeader: modelData.isCrewLeader) {
             let route: ReportRoute.Route = modelData.isCrewLeader ? .createCrewRoom : .crewLeaderApply
             coordinator.push(.report(ReportRoute(route: route)))
