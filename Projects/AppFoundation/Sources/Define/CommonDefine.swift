@@ -18,6 +18,8 @@ public class CommonDefine {
   public static let naverClientSecret = Bundle.main.object(forInfoDictionaryKey: "NAVER_CLIENT_SECRET") as? String
   public static let naverURLScheme = Bundle.main.object(forInfoDictionaryKey: "NAVER_URL_SCHEME") as? String
   public static let kakaoAuthKey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_AUTH_KEY") as? String  
+  /// 카카오 로컬(주소 검색) REST API 키
+  public static let kakaoRestAPIKey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_REST_API_KEY") as? String
 }
 
 

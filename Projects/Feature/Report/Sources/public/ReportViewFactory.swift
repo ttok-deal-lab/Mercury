@@ -8,11 +8,22 @@
 import Foundation
 import SwiftUI
 
+import Domain
 import Router
 
-public struct ReportViewFactory: ViewFactory {
+/// LocationPicker: 지도에서 위치 선택에 쓰는 지도 뷰 (앱에서는 Map 모듈 구현을 주입)
+public struct ReportViewFactory<LocationPicker: LocationPickerMapViewable>: ViewFactory {
   
-  public init() { }
+  private let auctionSearchFilterUsecase: AuctionSearchFilterUsecasable
+  private let addressSearchUsecase: AddressSearchUsecasable
+  
+  public init(
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
+    addressSearchUsecase: AddressSearchUsecasable
+  ) {
+    self.auctionSearchFilterUsecase = auctionSearchFilterUsecase
+    self.addressSearchUsecase = addressSearchUsecase
+  }
   
   public func makeView(_ reportRouter: ReportRoute) -> some View {
     switch reportRouter.route {
@@ -23,7 +34,10 @@ public struct ReportViewFactory: ViewFactory {
     case .crewLeaderApplyComplete:
       CrewLeaderApplyCompleteView()
     case .createCrewRoom:
-      CreateCrewFormView()
+      CreateCrewFormView<LocationPicker>(
+        auctionSearchFilterUsecase: auctionSearchFilterUsecase,
+        addressSearchUsecase: addressSearchUsecase
+      )
     }
   }
 }

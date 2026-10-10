@@ -73,7 +73,10 @@ struct RootViewFactory: ViewFactory {
       )
       .makeView(searchStep)
     case .report(let reportStep):
-      ReportViewFactory()
+      ReportViewFactory<LocationPickerMapWrapperView>(
+        auctionSearchFilterUsecase: AuctionSearchFilterUsecase(repository: AuctionSearchFilterRepository()),
+        addressSearchUsecase: AddressSearchUsecase(repository: AddressSearchRepository())
+      )
         .makeView(reportStep)
     }
   }

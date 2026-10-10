@@ -15,7 +15,11 @@ struct ReportSampleApp: App {
         ReportView(crewLeaderUsecase: SampleCrewLeaderUsecase())
           .navigationDestination(for: FeatureRoute.self) { route in
             if case .report(let reportRoute) = route {
-              ReportViewFactory().makeView(reportRoute)
+              ReportViewFactory<SampleLocationPickerView>(
+                auctionSearchFilterUsecase: SampleAuctionSearchFilterUsecase(),
+                addressSearchUsecase: SampleAddressSearchUsecase()
+              )
+              .makeView(reportRoute)
             } else {
               EmptyView()
             }

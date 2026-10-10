@@ -10,137 +10,39 @@ import SwiftUI
 import UIComponent
 import Domain
 
+/// 홈 지역 필터. UI 는 UIComponent 의 공용 지역 선택 시트를 쓰고, 선택 결과만 필터 모델에 반영한다.
 struct AuctionFilterLocationView: View {
   @Binding var modelData: AuctionHomeModelData
   
   var onApplied: (() -> Void)
   
-  var region: [Region]? {
-    modelData.auctionSearchFilter?.regions
+  private var regions: [Region] {
+    modelData.auctionSearchFilter?.regions ?? []
   }
   
   var body: some View {
-    VStack(alignment: .leading, spacing: .zero) {
-      HStack(spacing: .zero) {
-        Text("지역 선택")
-          .fonts(.titleLargeBold)
-          .foregroundStyle(Asset.Colors.neutral.color)
-        
-        Spacer()
-        
-        Button {
-          onApplied()
-        } label: {
-          Text("적용")
-            .fonts(.bodyMediumMedium)
-            .foregroundStyle(Asset.Colors.neutral.color)
-        }
-        
-      }
-      .padding(.top, 50)
-      .padding(.bottom, 16)
-      .padding(.horizontal, 20)
-      
-      Rectangle()
-        .foregroundStyle(Asset.Colors.neutralLight.color)
-        .frame(height: 1)
-        .frame(maxWidth: .infinity)
-      
-      ScrollView(.vertical) {
-        VStack(spacing: .zero) {
-          HStack(spacing: .zero) {
-            RegionsSelectView(
-              currentRegion: $modelData.currentAuctionFilter.region,
-              regions: region
-            ) { _ in 
-              modelData.currentAuctionFilter.district = nil
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.vertical, 16)
-            
-            if let selectedRegion = modelData.currentAuctionFilter.region {
-              DistrictSelectView(
-                selectedDistrict: $modelData.currentAuctionFilter.district,
-                districts: selectedRegion.districts
-              )
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .padding(.vertical, 16)
-            }
-          }
-        }
-      }
-    }
+    RegionSelectSheetView(
+      regions: regions.map(\.selectItem),
+      selectedRegionID: modelData.currentAuctionFilter.region?.id,
+      selectedDistrictID: modelData.currentAuctionFilter.district?.id,
+      onSelectRegion: { item in
+        modelData.currentAuctionFilter.region = regions.first { $0.id == item.id }
+        modelData.currentAuctionFilter.district = nil
+      },
+      onSelectDistrict: { item in
+        modelData.currentAuctionFilter.district = modelData.currentAuctionFilter.region?.districts.first { $0.id == item.id }
+      },
+      onApply: onApplied
+    )
   }
 }
 
-struct RegionsSelectView: View {
-  @Binding var currentRegion: Region?
-  let regions: [Region]?
-  var completion: (Region) -> Void
-  
-  var body: some View {
-    VStack(alignment: .leading, spacing: .zero) {
-      ForEach(regions ?? []) { region in
-        Button {
-          currentRegion = region
-          completion(region)
-        } label: {
-          HStack(spacing: .zero) {
-            Text(region.displayName)
-              .fonts(.bodyLargeMedium)
-              .foregroundColor(
-                currentRegion == region
-                ? .white
-                : Asset.Colors.neutral.color
-              )
-              .frame(height: 48)
-              .padding(.horizontal, 20)
-            
-            Spacer()
-          }
-        }
-        .background(
-          currentRegion == region
-          ? Asset.Colors.neutral.color
-          : .clear
-        )
-      }
-      Spacer()
-    }
+private extension Region {
+  var selectItem: RegionSelectItem {
+    RegionSelectItem(
+      id: id,
+      title: displayName,
+      children: districts.map { RegionSelectItem(id: $0.id, title: $0.displayName) }
+    )
   }
 }
-
-struct DistrictSelectView: View {
-  @Binding var selectedDistrict: District?
-  let districts: [District]
-  
-  var body: some View {
-    VStack(alignment: .leading, spacing: .zero) {
-      ForEach(districts) { district in
-        Button {
-          selectedDistrict = district
-        } label: {
-          HStack(spacing: .zero) {
-            Text(district.displayName)
-              .fonts(.bodyLargeMedium)
-              .foregroundColor(
-                selectedDistrict == district
-                ? Color.white
-                : Asset.Colors.neutral.color
-              )
-              .frame(height: 48)
-              .padding(.horizontal, 20)
-            Spacer()
-          }
-        }
-        .background(
-          selectedDistrict == district
-          ? Asset.Colors.neutral.color
-          : Color.clear
-        )
-      }
-      Spacer()
-    }
-  }
-}
-

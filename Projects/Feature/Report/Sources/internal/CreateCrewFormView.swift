@@ -8,16 +8,26 @@
 import SwiftUI
 
 import AppFoundation
+import Domain
 import UIComponent
 import Router
 
-struct CreateCrewFormView: View {
+struct CreateCrewFormView<LocationPicker: LocationPickerMapViewable>: View {
   @EnvironmentObject private var coordinator: NavigationCoordinator<FeatureRoute>
-  @State private var modelData = CrewRoomCreateModelData()
-  @State private var isVisitDatePickerPresented: Bool = false
+  @State private var modelData: CrewRoomCreateModelData
+  @State private var isRegionSheetPresented: Bool = false
+  @State private var isPlaceSearchPresented: Bool = false
+  @State private var isVisitDatePresented: Bool = false
   @State private var isPeriodPickerPresented: Bool = false
+  private let addressSearchUsecase: AddressSearchUsecasable
   
-  init() { }
+  init(
+    auctionSearchFilterUsecase: AuctionSearchFilterUsecasable,
+    addressSearchUsecase: AddressSearchUsecasable
+  ) {
+    self.modelData = CrewRoomCreateModelData(auctionSearchFilterUsecase: auctionSearchFilterUsecase)
+    self.addressSearchUsecase = addressSearchUsecase
+  }
   
   var body: some View {
     VStack(spacing: .zero) {
@@ -43,15 +53,15 @@ struct CreateCrewFormView: View {
           }
           
           CrewLeaderFormSectionView(title: L10n.reportCrewCreateRegionLabel, isRequired: true) {
-            CrewRoomChipButtonView(title: modelData.region ?? L10n.reportCrewCreateRegionSelect) {
-              // 지역 선택 UI 가 확정되면 연결한다.
+            CrewRoomChipButtonView(title: modelData.regionText ?? L10n.reportCrewCreateRegionSelect) {
+              isRegionSheetPresented = true
             }
           }
           
           CrewLeaderFormSectionView(title: L10n.reportCrewCreatePlaceLabel, isRequired: true) {
             VStack(alignment: .leading, spacing: 8) {
-              CrewRoomChipButtonView(title: modelData.place ?? L10n.reportCrewCreatePlaceSelect) {
-                // 장소 선택 UI 가 확정되면 연결한다.
+              CrewRoomChipButtonView(title: modelData.place?.displayAddress ?? L10n.reportCrewCreatePlaceSelect) {
+                isPlaceSearchPresented = true
               }
               
               CrewLeaderTextFieldView(text: $modelData.address, placeholder: L10n.reportCrewCreateAddressPlaceholder)
@@ -60,7 +70,7 @@ struct CreateCrewFormView: View {
           
           CrewLeaderFormSectionView(title: L10n.reportCrewCreateDateLabel, isRequired: true) {
             CrewRoomDateFieldView(text: modelData.visitDateText, placeholder: L10n.reportCrewCreateDatePlaceholder) {
-              isVisitDatePickerPresented = true
+              isVisitDatePresented = true
             }
           }
           
@@ -124,12 +134,35 @@ struct CreateCrewFormView: View {
     .loading(modelData.isLoading)
     .alert(error: $modelData.error)
     .navigationBarBackButtonHidden()
-    .sheet(isPresented: $isVisitDatePickerPresented) {
-      CrewRoomDatePickerSheetView(initialDate: modelData.visitDate ?? Date()) { date in
-        modelData.visitDate = date
-        isVisitDatePickerPresented = false
+    .task {
+      await modelData.loadRegions()
+    }
+    .sheet(isPresented: $isRegionSheetPresented) {
+      RegionSelectSheetView(
+        regions: modelData.regions.map(\.selectItem),
+        selectedRegionID: modelData.selectedRegion?.id,
+        selectedDistrictID: modelData.selectedDistrict?.id,
+        onSelectRegion: { modelData.selectRegion(id: $0.id) },
+        onSelectDistrict: { modelData.selectDistrict(id: $0.id) },
+        onApply: { isRegionSheetPresented = false }
+      )
+    }
+    .navigationDestination(isPresented: $isPlaceSearchPresented) {
+      PlaceSearchView<LocationPicker>(
+        addressSearchUsecase: addressSearchUsecase,
+        serviceRegionName: modelData.serviceRegionName,
+        initialPlace: modelData.place
+      ) { place in
+        modelData.place = place
+        // 검색 화면과 지도 화면을 한 번에 닫는다.
+        isPlaceSearchPresented = false
       }
-      .dynamicSheet()
+    }
+    .navigationDestination(isPresented: $isVisitDatePresented) {
+      VisitDateSelectView(initialDate: modelData.visitDate) { date in
+        modelData.visitDate = date
+        isVisitDatePresented = false
+      }
     }
     .sheet(isPresented: $isPeriodPickerPresented) {
       CrewRoomPeriodPickerSheetView(

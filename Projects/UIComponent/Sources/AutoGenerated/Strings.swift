@@ -388,8 +388,58 @@ public enum L10n {
   public static let reportLeaderProfileTitle = L10n.tr("Localizable", "report_leader_profile_title", fallback: "크루장 프로필을 작성해주세요")
   /// 진행중인 크루
   public static let reportOngoingCrew = L10n.tr("Localizable", "report_ongoing_crew", fallback: "진행중인 크루")
+  /// 지번
+  public static let reportPlaceJibun = L10n.tr("Localizable", "report_place_jibun", fallback: "지번")
+  /// 이 위치로 주소 선택
+  public static let reportPlaceMapConfirm = L10n.tr("Localizable", "report_place_map_confirm", fallback: "이 위치로 주소 선택")
+  /// 지도를 움직여 위치를 이동해요
+  public static let reportPlaceMapHint = L10n.tr("Localizable", "report_place_map_hint", fallback: "지도를 움직여 위치를 이동해요")
+  /// 이 위치에는 주소가 없어요
+  public static let reportPlaceMapNoAddress = L10n.tr("Localizable", "report_place_map_no_address", fallback: "이 위치에는 주소가 없어요")
+  /// 지도에서 위치 선택
+  public static let reportPlaceMapTitle = L10n.tr("Localizable", "report_place_map_title", fallback: "지도에서 위치 선택")
+  /// 도로명
+  public static let reportPlaceRoad = L10n.tr("Localizable", "report_place_road", fallback: "도로명")
+  /// 검색 결과가 없어요
+  public static let reportPlaceSearchEmpty = L10n.tr("Localizable", "report_place_search_empty", fallback: "검색 결과가 없어요")
+  /// 지역명(동/리) + 건물명(아파트명)
+  public static let reportPlaceSearchGuideBuilding = L10n.tr("Localizable", "report_place_search_guide_building", fallback: "지역명(동/리) + 건물명(아파트명)")
+  /// 예) 분당 주공 / 연수동 주공 3차
+  public static let reportPlaceSearchGuideBuildingExample = L10n.tr("Localizable", "report_place_search_guide_building_example", fallback: "예) 분당 주공 / 연수동 주공 3차")
+  /// 지역명(동/리) + 번지
+  public static let reportPlaceSearchGuideJibun = L10n.tr("Localizable", "report_place_search_guide_jibun", fallback: "지역명(동/리) + 번지")
+  /// 예) 삼평동 681 / 제주 영평동 2181
+  public static let reportPlaceSearchGuideJibunExample = L10n.tr("Localizable", "report_place_search_guide_jibun_example", fallback: "예) 삼평동 681 / 제주 영평동 2181")
+  /// 사서함명 + 번호
+  public static let reportPlaceSearchGuidePobox = L10n.tr("Localizable", "report_place_search_guide_pobox", fallback: "사서함명 + 번호")
+  /// 예) 분당우체국사서함 1~100
+  public static let reportPlaceSearchGuidePoboxExample = L10n.tr("Localizable", "report_place_search_guide_pobox_example", fallback: "예) 분당우체국사서함 1~100")
+  /// 도로명 + 건물번호
+  public static let reportPlaceSearchGuideRoad = L10n.tr("Localizable", "report_place_search_guide_road", fallback: "도로명 + 건물번호")
+  /// 예) 판교역로 235 / 제주 첨단로 242
+  public static let reportPlaceSearchGuideRoadExample = L10n.tr("Localizable", "report_place_search_guide_road_example", fallback: "예) 판교역로 235 / 제주 첨단로 242")
+  /// 아래와 같은 조합으로 검색을 하시면 더욱 정확한 결과가 검색돼요.
+  public static let reportPlaceSearchGuideTitle = L10n.tr("Localizable", "report_place_search_guide_title", fallback: "아래와 같은 조합으로 검색을 하시면 더욱 정확한 결과가 검색돼요.")
+  /// 지도에서 위치 선택
+  public static let reportPlaceSearchMap = L10n.tr("Localizable", "report_place_search_map", fallback: "지도에서 위치 선택")
+  /// 지번 · 도로명 · 건물명으로 검색
+  public static let reportPlaceSearchPlaceholder = L10n.tr("Localizable", "report_place_search_placeholder", fallback: "지번 · 도로명 · 건물명으로 검색")
+  /// 주소지 검색
+  public static let reportPlaceSearchTitle = L10n.tr("Localizable", "report_place_search_title", fallback: "주소지 검색")
+  /// 서비스 가능 지역
+  public static let reportPlaceServiceAvailable = L10n.tr("Localizable", "report_place_service_available", fallback: "서비스 가능 지역")
   /// 임장크루
   public static let reportTitle = L10n.tr("Localizable", "report_title", fallback: "임장크루")
+  /// 선택하기
+  public static let reportVisitDateConfirm = L10n.tr("Localizable", "report_visit_date_confirm", fallback: "선택하기")
+  /// 시
+  public static let reportVisitDateHour = L10n.tr("Localizable", "report_visit_date_hour", fallback: "시")
+  /// 분
+  public static let reportVisitDateMinute = L10n.tr("Localizable", "report_visit_date_minute", fallback: "분")
+  /// 날짜 선택
+  public static let reportVisitDateSelectDate = L10n.tr("Localizable", "report_visit_date_select_date", fallback: "날짜 선택")
+  /// 시간 선택
+  public static let reportVisitDateSelectTime = L10n.tr("Localizable", "report_visit_date_select_time", fallback: "시간 선택")
   /// 소재지
   public static let rightsAddress = L10n.tr("Localizable", "rights_address", fallback: "소재지")
   /// 확정일자
